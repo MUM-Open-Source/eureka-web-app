@@ -1,0 +1,6 @@
+.round-img {
+    @include shadow;
+    width: $round-img-width;
+    height: auto;
+    border-radius: 50%;
+}

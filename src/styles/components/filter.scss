@@ -1,0 +1,13 @@
+.filter {
+    width: $filter-div-width;
+    margin-left: auto;
+    margin-right: auto;
+    &__inputs {
+        width: $filter-inputs-width;
+    }
+}
+@media (min-width: 765px) {
+    .filter {
+        position: fixed;
+    }
+}

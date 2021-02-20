@@ -1,0 +1,10 @@
+// change what the cursor does on hover
+
+.cursor {
+    &__pointer:hover {
+        cursor: pointer;
+    }
+    &__default:hover {
+        cursor: default;
+    }
+}

@@ -1,0 +1,42 @@
+@import '_font';
+@import '_spacing';
+@import '_variables';
+@import '_mixins';
+@import '_cursor';
+
+* {
+    margin: 0;
+    transition: $transition-duration;
+}
+
+body {
+    margin-top: $top-nav-height;
+}
+
+// prevent image selection
+img {
+    user-drag: none; 
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+// anchor tag styling
+a{
+    text-decoration: none;
+    color:$color-dark;
+}
+a:visited{
+    text-decoration: none;
+    color:$color-dark;
+}
+#sidenav a {
+    width: 100%;
+}
+
+// multiselect 
+.multiselect-options {
+    overflow-x: hidden;
+}

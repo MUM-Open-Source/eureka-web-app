@@ -1,0 +1,33 @@
+.event-card {
+    @include shadow;
+    position: relative;
+    width: $event-card-width;
+    border-radius: $app-border-radius;
+    display: flex;
+    flex-direction: column;
+    &__img {        
+        margin-top: $event-card-margin-top;
+    }
+    &__heart {
+        .heart__icon {
+            position: absolute;
+            right: $event-card-heart-right;
+            width: $event-card-heart-width;
+        }
+    }
+    &__particulars {
+        &--type {
+            display: inline-block;
+        }
+        &--organizer {
+            text-transform: uppercase;
+        }
+        &--date{
+            position: absolute;
+            bottom: $event-card-date-bottom;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+    
+}

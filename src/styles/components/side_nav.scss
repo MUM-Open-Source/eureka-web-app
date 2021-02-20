@@ -1,0 +1,42 @@
+/* The sidebar menu */
+#sidenav {
+    height: 100%;
+    width: $side-nav-width;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    background-color: $color-side-nav-bg;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.side-nav__hide {
+    left: -$side-nav-width;
+}
+.side-nav__show {
+    left: 0;
+}
+.side-nav__group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $side-nav-group-padding;
+    width: 100%;
+    text-align: center;
+    &:hover {
+        background-color: $color-side-nav-bg-hover;
+        cursor: pointer;
+    }
+    .side-nav__text {
+        width: $side-nav-text-width;
+    }
+    &--bottom {
+        position: absolute;
+        bottom: 0;
+    }
+}
+.side-nav__icon {
+    width: $side-nav-icon-width;
+    margin-bottom: $side-nav-icon-mar-b;
+}
