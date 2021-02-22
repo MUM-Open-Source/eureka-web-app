@@ -146,7 +146,7 @@ export default {
         image: store.state.user_data.image_url || 'https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b',
         fName: store.state.user_data.first_name || '',
         lName: store.state.user_data.last_name || '',
-        email: store.state.user_data.email_id || '',
+        email: store.state.user_data.social_links.email_id || '',
         background: store.state.user_data.background || '',
         bio: store.state.user_data.bio || '',
         github: store.state.user_data.social_links.github_url || '',
