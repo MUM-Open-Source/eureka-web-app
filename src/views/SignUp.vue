@@ -41,7 +41,6 @@
               mentor: 'Mentor'
           }"
         />
-        <!-- <SignUpInputRadio /> -->
         <Button text="Sign Up" class="mar--auto mar__t--3 mar__b--1" @click='handleSignUp'/>
       </div>
     </div>
@@ -55,7 +54,6 @@ import store from '@/store';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import Multiselect from '@vueform/multiselect';
-// import SignUpInputRadio from '@/components/SignUpInputRadio';
 import "firebase/auth";
 
 export default {
