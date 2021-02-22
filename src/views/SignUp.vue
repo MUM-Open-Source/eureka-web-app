@@ -31,7 +31,17 @@
           id='password' 
           class="mar__t--2 mar__b--2" 
         />
-        <SignUpInputRadio />
+        <label class="tagline">Who are you?</label>
+        <Multiselect
+          class="mar__t--1 mar__b--2"
+          v-model="role"
+          placeholder="Role"
+          :options="{
+              talent: 'Talent', 
+              mentor: 'Mentor'
+          }"
+        />
+        <!-- <SignUpInputRadio /> -->
         <Button text="Sign Up" class="mar--auto mar__t--3 mar__b--1" @click='handleSignUp'/>
       </div>
     </div>
@@ -40,17 +50,22 @@
 
 <script>
 
+import { ref } from 'vue';
 import store from '@/store';
 import Button from '@/components/Button';
 import InputField from '@/components/InputField';
-import SignUpInputRadio from '@/components/SignUpInputRadio';
+import Multiselect from '@vueform/multiselect';
+// import SignUpInputRadio from '@/components/SignUpInputRadio';
 import "firebase/auth";
 
 export default {
   name: 'SignUp',
-  components: { InputField, SignUpInputRadio, Button },
+  components: { InputField, Multiselect, Button },
 
   setup() {
+
+    // v-models
+    const role = ref('');
 
     function handleSignUp() {
 
@@ -58,17 +73,24 @@ export default {
       var password =  document.getElementById('password').value;
       var first_name =  document.getElementById('first_name').value;
       var last_name =  document.getElementById('last_name').value;
-      if (first_name == null || first_name == ''|| last_name == null|| last_name ==''){
+      if (first_name==null || first_name=='' || last_name==null || last_name=='' || role.value==''){
         alert("Please fill up all the required fields");
       }
       else{
-        store.dispatch('signUpUser', {email_id: email_id, password: password, first_name: first_name, last_name: last_name});
+        store.dispatch('signUpUser', {
+          email_id: email_id, 
+          password: password, 
+          first_name: first_name, 
+          last_name: last_name, 
+          role: role.value
+        });
       }
   }
 
     // return everything that needs to be referenced in the template
     return {
-      handleSignUp
+      handleSignUp,
+      role
     }
 
   }

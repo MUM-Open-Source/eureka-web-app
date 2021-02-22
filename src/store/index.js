@@ -75,7 +75,7 @@ export default createStore({
             bio: "",
             interests: [],
             experience_level: 0,
-            roles: ['talent'],    // TODO: retrieve this from the signup form
+            roles: [user.role],    // TODO: retrieve this from the signup form
             social_links: {
               email_id: user.email_id,
               github_url: "",
