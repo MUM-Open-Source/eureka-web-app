@@ -13,7 +13,7 @@
     &__full {
         width: 100%;
     }
-    &__reduced {
+    &__reduced {        
         width: calc(100% - 100px);
     }
     &__left, &__right {
@@ -43,7 +43,5 @@
     #top-nav__name, .top-nav__logo {
         display: none;
     }
-    .top-nav__reduced {
-        left: $side-nav-width;
-    }
+    
 }
