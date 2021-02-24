@@ -54,7 +54,6 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          // alert(ex.message); 
           Swal.fire({icon: 'error', title: ex.message});
         });
     },
@@ -88,7 +87,6 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          // alert(ex.message); 
           Swal.fire({icon: 'error', title: ex.message});
         });
     },
@@ -118,7 +116,6 @@ export default createStore({
           });
         })
         .catch(function(error) {
-          // alert("Error getting document:", error);
           console.log("Error getting document:"+ error)
         });
     },
@@ -162,11 +159,9 @@ export default createStore({
         message: feedback.message
       })
       .then(() => {
-        // alert("Thank you! Your feedback is well received!")
         Swal.fire({icon: 'success', title: "Thank you!", text: "Your feedback is well received!"});
       })
       .catch((error) => {
-        // alert(error);
         Swal.fire({icon: 'error', title: error});
       });
     },

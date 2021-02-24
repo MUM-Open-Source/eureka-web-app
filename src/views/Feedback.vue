@@ -62,7 +62,7 @@ export default {
                 feedback.subject = ''
                 feedback.message = ''
             } else {
-                // alert('Please fill all fields');
+
                 Swal.fire({icon: 'warning', title:'Oops...', text: 'Please fill all fields' }) 
             } 
         }
