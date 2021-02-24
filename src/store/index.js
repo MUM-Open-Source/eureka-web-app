@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 import firebase from 'firebase/app';
 import router from '@/router';
 import { db, auth } from "@/firebase";
+import Swal from 'sweetalert2';
 
 export default createStore({
   // application-level data
@@ -54,7 +55,8 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          alert(ex.message);
+          // alert(ex.message); 
+          Swal.fire({icon: 'error', title: ex.message});
         });
     },
 
@@ -87,7 +89,8 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          alert(ex.message);
+          // alert(ex.message); 
+          Swal.fire({icon: 'error', title: ex.message});
         });
     },
 
@@ -119,7 +122,8 @@ export default createStore({
           });
         })
         .catch(function(error) {
-          alert("Error getting document:", error);
+          // alert("Error getting document:", error);
+          console.log("Error getting document:"+ error)
         });
     },
 
@@ -221,10 +225,12 @@ export default createStore({
         message: feedback.message
       })
       .then(() => {
-        alert("Thank you! Your feedback is well received!")
+        // alert("Thank you! Your feedback is well received!")
+        Swal.fire({icon: 'success', title: "Thank you!", text: "Your feedback is well received!"});
       })
       .catch((error) => {
-        alert(error);
+        // alert(error);
+        Swal.fire({icon: 'error', title: error});
       });
     },
 

@@ -41,6 +41,8 @@ import { reactive } from 'vue';
 import store from '@/store';
 import Multiselect from '@vueform/multiselect';
 import Button from '@/components/Button';
+import Swal from 'sweetalert2';
+
 
 export default {
   
@@ -60,7 +62,8 @@ export default {
                 feedback.subject = ''
                 feedback.message = ''
             } else {
-                alert('Please fill all fields');
+                // alert('Please fill all fields');
+                Swal.fire({icon: 'warning', title:'Oops...', text: 'Please fill all fields' }) 
             } 
         }
 

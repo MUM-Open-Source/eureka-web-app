@@ -23,6 +23,7 @@ import { onMounted, ref } from 'vue';
 import store from '@/store';
 import ProfileCard from '@/components/ProfileCard';
 import MentorFilter from '@/components/MentorFilter';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'FindMentor',
@@ -43,6 +44,29 @@ export default {
 
         // TODO: Update the DB like value and ensure it updates the component
         const toggleWave = (user) => {
+            let timerInterval
+            Swal.fire({icon: 'success', title:'Waved~', timer: 1500, timerProgressBar: true,
+                    didOpen: () => {
+                    Swal.showLoading()
+                    timerInterval = setInterval(() => {
+                            const content = Swal.getContent()
+                        if (content) {
+                            const b = content.querySelector('b')
+                        if (b) {
+                             b.textContent = Swal.getTimerLeft()
+                                }
+                        }
+                    }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+                    }
+            }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+            }});
+           
             console.log('Toggle prompt works');
             console.log(user);
         }
