@@ -54,7 +54,7 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          // alert(ex.message); old msg
+          // alert(ex.message); 
           Swal.fire({icon: 'error', title: ex.message});
         });
     },
@@ -88,7 +88,7 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          // alert(ex.message); old message
+          // alert(ex.message); 
           Swal.fire({icon: 'error', title: ex.message});
         });
     },
@@ -101,13 +101,11 @@ export default createStore({
             state.user_data = doc.data();
           } else {
             // doc.data() will be undefined in this case
-            // console.log("No such document!");
-            Swal.fire({icon: 'error', title: "No such document!"});
+            console.log("No such document!");
           }
         })
         .catch(function(error) {
-          // console.log("Error getting document:", error);
-          Swal.fire({icon: 'error', title: "Error getting document:", text: error});
+          console.log("Error getting document:", error);
         });
     },
 
@@ -121,7 +119,7 @@ export default createStore({
         })
         .catch(function(error) {
           // alert("Error getting document:", error);
-          Swal.fire({icon: 'error', title: "Error getting document:", text: error});
+          console.log("Error getting document:"+ error)
         });
     },
     
@@ -136,8 +134,7 @@ export default createStore({
           });
         })
         .catch(function(error) {
-          // console.log("Error getting document:", error);
-          Swal.fire({icon: 'error', title: "Error getting document:", text: error});
+          console.log("Error getting document:", error);
         });
     },
 
@@ -152,8 +149,7 @@ export default createStore({
           });
         })
         .catch(function(error) {
-          // console.log("Error getting document:", error);
-          Swal.fire({icon: 'error', title: "Error getting document:", text: error});
+          console.log("Error getting document:", error);
         });
     },
 
