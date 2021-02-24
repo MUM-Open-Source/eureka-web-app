@@ -45,30 +45,15 @@ export default {
 
         // TODO: Update the DB like value and ensure it updates the component
         const toggleWave = (user) => {
-            let timerInterval
-            Swal.fire({icon: 'success', title:'Waved~', timer: 1500, timerProgressBar: true,
-                    didOpen: () => {
-                    Swal.showLoading()
-                    timerInterval = setInterval(() => {
-                            const content = Swal.getContent()
-                        if (content) {
-                            const b = content.querySelector('b')
-                        if (b) {
-                             b.textContent = Swal.getTimerLeft()
-                                }
-                        }
-                    }, 100)
-                    },
-                    willClose: () => {
-                        clearInterval(timerInterval)
-                    }
-            }).then((result) => {
-            /* Read more about handling dismissals below */
-            if (result.dismiss === Swal.DismissReason.timer) {
-                console.log('I was closed by the timer')
-            }});
-           
-
+            
+            Swal.fire({
+                icon: 'success', 
+                title:'Waved~', 
+                timer: 1500, 
+                timerProgressBar: true,
+                toast : true,
+                position: 'top-end',
+                showConfirmButton:false});
             console.log('Toggle prompt works');
             console.log(user);
         }
