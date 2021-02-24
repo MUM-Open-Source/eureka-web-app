@@ -11,7 +11,6 @@
                     v-for="event in filteredEvents" 
                     :key="event.key"
                     :event="event"
-                    @toggle-like="toggleLike"
                 />
             </div>
         </div>
