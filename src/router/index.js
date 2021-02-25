@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
+import Admin from '@/views/Admin.vue';
 import SignUp from '@/views/SignUp.vue';
 import FindTalent from '@/views/FindTalent.vue';
 import FindMentor from '@/views/FindMentor.vue';
@@ -21,9 +22,14 @@ const routes = [
     name: 'Login',
     component: Login
   }, {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin
+  },
+  {
     path: '/signup',
     name: 'SignUp',
-    component: SignUp 
+    component: SignUp
   }, {
     path: '/find-talent',
     name: 'FindTalent',
@@ -58,7 +64,7 @@ const routes = [
     }
   }, {
     path: '/profile/info',
-    
+
   }, {
     path: '/browse-events',
     name: 'BrowseEvents',
