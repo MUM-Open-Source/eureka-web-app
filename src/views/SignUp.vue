@@ -71,7 +71,7 @@ export default {
       var password =  document.getElementById('password').value;
       var first_name =  document.getElementById('first_name').value;
       var last_name =  document.getElementById('last_name').value;
-      if (first_name==null || first_name=='' || last_name==null || last_name=='' || role.value==''){
+      if (first_name==null || first_name.trim()=='' || last_name==null || last_name.trim()=='' || role.value.trim()==''){
         alert("Please fill up all the required fields");
       }
       else{
