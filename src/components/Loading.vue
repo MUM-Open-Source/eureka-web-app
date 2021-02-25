@@ -34,13 +34,13 @@ export default {
 		border: $loader-border solid $color-brand-alt;
 		opacity: 1;
 		border-radius: $loader-position-ratio;
-		animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+		animation: ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 		&:nth-child(2) {
 			animation-delay: $loader-delay;
 		}
 	}
 }
-@keyframes lds-ripple {
+@keyframes ripple {
   0% {
     top: $loader-top-left;
     left: $loader-top-left;
