@@ -198,7 +198,7 @@ export default createStore({
           event_id: eventId,
           user_id: auth.currentUser.uid
         })
-        // TODO: Replace with SweetAlert2
+        // Alert with SweetAlert2
         .then(() => {
           likeToast.fire({
             icon: 'success',
@@ -229,7 +229,7 @@ export default createStore({
         // from_to -> userId_eventId
         .doc(auth.currentUser.uid+'_'+eventId)
         .delete()
-        // TODO: Replace with SweetAlert2
+        // Alert with SweetAlert2
         .then(() => {          
           likeToast.fire({
             icon: 'success',
