@@ -181,6 +181,15 @@ export default createStore({
     },
 
     LIKE_EVENT(_, eventId) {
+      // SweetAlert config
+      const likeToast = Swal.mixin({
+        toast: true,
+        position: 'bottom-start',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      });
+
       // writing event like to DB
       db.collection("event_likes")
         // from_to -> userId_eventId
@@ -191,25 +200,48 @@ export default createStore({
         })
         // TODO: Replace with SweetAlert2
         .then(() => {
-          alert("Liked")
+          likeToast.fire({
+            icon: 'success',
+            title: 'Liked event'
+          });
         })
         .catch((error) => {
-          alert(error);
+          console.log(error);
+          likeToast.fire({
+            icon: 'error',
+            title: 'Can\'t like the event now'
+          });
         });
     },
 
     UNLIKE_EVENT(_, eventId) {
+      // SweetAlert config
+      const likeToast = Swal.mixin({
+        toast: true,
+        position: 'bottom-start',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      });
+
       // writing event like to DB
       db.collection("event_likes")
         // from_to -> userId_eventId
         .doc(auth.currentUser.uid+'_'+eventId)
         .delete()
         // TODO: Replace with SweetAlert2
-        .then(() => {
-          alert("Unliked");
+        .then(() => {          
+          likeToast.fire({
+            icon: 'success',
+            title: 'Uniked event'
+          });
         })
         .catch((error) => {
-          alert("Error removing document: ", error);
+          console.log(error);
+          likeToast.fire({
+            icon: 'error',
+            title: 'Can\'t unlike the event now'
+          });
         });
     },
 
