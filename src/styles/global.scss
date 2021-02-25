@@ -11,6 +11,7 @@
 
 body {
     margin-top: $top-nav-height;
+    transition: padding-right 0s;   // to avoid the body content jump when displaying SweetAlert
 }
 
 
@@ -41,7 +42,3 @@ a:visited{
 .multiselect-options {
     overflow-x: hidden;
 }
-
-body {
-    transition: padding-right 0s;
-  }
