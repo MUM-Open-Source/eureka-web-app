@@ -55,6 +55,7 @@ import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import Multiselect from '@vueform/multiselect';
 import "firebase/auth";
+import Swal from 'sweetalert2';
 
 export default {
   name: 'SignUp',
@@ -72,7 +73,8 @@ export default {
       var first_name =  document.getElementById('first_name').value;
       var last_name =  document.getElementById('last_name').value;
       if (first_name==null || first_name=='' || last_name==null || last_name=='' || role.value==''){
-        alert("Please fill up all the required fields");
+        
+        Swal.fire({icon: 'warning', title: 'Please fill up all the required fields'});
       }
       else{
         store.dispatch('signUpUser', {

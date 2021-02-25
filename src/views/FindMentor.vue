@@ -23,6 +23,7 @@ import { onMounted, ref } from 'vue';
 import store from '@/store';
 import ProfileCard from '@/components/ProfileCard';
 import MentorFilter from '@/components/MentorFilter';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'FindMentor',
@@ -43,6 +44,22 @@ export default {
 
         // TODO: Update the DB like value and ensure it updates the component
         const toggleWave = (user) => {
+            const mentorToast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+            mentorToast.fire({
+            icon: 'success',
+            title: 'Waved~'
+            })
             console.log('Toggle prompt works');
             console.log(user);
         }
