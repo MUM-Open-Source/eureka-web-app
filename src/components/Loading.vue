@@ -1,10 +1,9 @@
 <template>
   <!-- Loading screen -->
-  <div class="loading__center">
-      <div class="heading">Loading</div>
-      <div class="ring"><div></div><div></div><div></div><div></div></div>
+<div class="loader"><div></div><div></div></div>
+ <div class="loading__center">
+      <div class="ripple"><div></div><div></div></div>
   </div>
-  
 </template>
 
 <script>
@@ -15,52 +14,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .loading__center {
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+  top: $loader-position-ratio;
+  left: $loader-position-ratio;
+  transform: translate(-$loader-position-ratio,-$loader-position-ratio);
 }
-
-.ring {
-  display: flex;
-  flex-direction: column;
-	align-items: center;
-	justify-content: center;
-  position: relative;
-  width: 80px;
-  height: 70px;
-  div {
-    box-sizing: border-box;
-    display: block;
-    position: absolute;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
-    border: 8px solid #000;
-    border-radius: 50%;
-    animation: ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: #000 transparent transparent transparent;
-    &:nth-child(1) {
-      animation-delay: -0.45s;
-    }
-    &:nth-child(2) {
-      animation-delay: -0.3s;
-    }
-    &:nth-child(3) {
-      animation-delay: -0.15s;
-    }
-  }  
+.ripple {
+	display: inline-block;
+	position: relative;
+	width: $loader-width-height;
+	height: $loader-width-height;
+	div {
+		position: absolute;
+		border: $loader-border solid $color-brand-alt;
+		opacity: 1;
+		border-radius: $loader-position-ratio;
+		animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+		&:nth-child(2) {
+			animation-delay: $loader-delay;
+		}
+	}
 }
-@keyframes ring {
+@keyframes lds-ripple {
   0% {
-    transform: rotate(0deg);
+    top: $loader-top-left;
+    left: $loader-top-left;
+    width: $loader-zero;
+    height: $loader-zero;
+    opacity: $loader-one;
   }
   100% {
-    transform: rotate(360deg);
+    top: $loader-zero;
+    left: $loader-zero;
+    width: $loader-changed-wh;
+    height: $loader-changed-wh;
+    opacity: $loader-zero;
   }
 }
+
 </style>
