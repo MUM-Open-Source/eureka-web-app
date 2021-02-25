@@ -44,15 +44,22 @@ export default {
 
         // TODO: Update the DB like value and ensure it updates the component
         const toggleWave = (user) => {
-            
-            Swal.fire({
-                icon: 'success', 
-                title:'Waved~', 
-                timer: 1500, 
-                timerProgressBar: true,
-                toast : true,
-                position: 'top-end',
-                showConfirmButton:false});
+            const mentorToast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+            mentorToast.fire({
+            icon: 'success',
+            title: 'Waved~'
+            })
             console.log('Toggle prompt works');
             console.log(user);
         }

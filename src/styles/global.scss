@@ -13,6 +13,7 @@ body {
     margin-top: $top-nav-height;
 }
 
+
 // prevent image selection
 img {
     user-drag: none; 
@@ -40,3 +41,7 @@ a:visited{
 .multiselect-options {
     overflow-x: hidden;
 }
+
+body {
+    transition: padding-right 0s;
+  }
