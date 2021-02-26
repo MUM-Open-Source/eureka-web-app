@@ -13,9 +13,10 @@ export default createStore({
     user_data: null,                      // user data pulled from db
     user_image: null,
     events: [],
-    liked_events: [],                     // list of events liked by the user
     talent:[],
     mentors: [],
+    liked_events: [],                     // list of events liked by the user
+    user_waves: []                        // list of users waved at by the auth user
   },
 
   // functions that affect the state
@@ -156,6 +157,8 @@ export default createStore({
         .where("roles", "array-contains", "talent")
         .get()
         .then((querySnapshot) => {
+          // fetch users that auth user waved at
+          this.commit('GET_USER_WAVES');
           querySnapshot.forEach((doc) => {
             state.talent.push(doc.data());
           });
@@ -177,6 +180,32 @@ export default createStore({
         })
         .catch(function(error) {
           console.log("Error getting document:", error);
+        });
+    },
+
+    GET_USER_WAVES(state) {
+      db.collection("user_waves")
+        .where("from_user_id", "==", auth.currentUser.uid)
+        // listening for realtime updates
+        .onSnapshot((snapshot) => {
+          // only working with the changes and not entire collection
+          snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+              // add the event like to the state
+              state.user_waves.push(change.doc.data().to_user_id);
+            }
+            if (change.type === "modified") {
+              // we don't support modification yet so let's just console.log
+              console.log("Modified user wave: ", change.doc.data());
+            }
+            if (change.type === "removed") {
+              // remove the user wave from the state 
+              const index = state.user_waves.indexOf(change.doc.data().to_user_id);
+              if (index > -1) {
+                state.user_waves.splice(index, 1);
+              }
+            }
+          });
         });
     },
 
@@ -241,6 +270,71 @@ export default createStore({
           likeToast.fire({
             icon: 'error',
             title: 'Can\'t unlike the event now'
+          });
+        });
+    },
+
+    WAVE_AT_USER(_, toUserId) {
+      // SweetAlert config
+      const waveToast = Swal.mixin({
+        toast: true,
+        position: 'bottom-start',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      });
+
+      // writing event like to DB
+      db.collection("user_waves")
+        // from_to -> fromUserId_toUserId
+        .doc(auth.currentUser.uid+'_'+toUserId)
+        .set({
+          from_user_id: auth.currentUser.uid,
+          to_user_id: toUserId
+        })
+        // Alert with SweetAlert2
+        .then(() => {
+          waveToast.fire({
+            icon: 'success',
+            title: 'You just waved!'
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          waveToast.fire({
+            icon: 'error',
+            title: 'Can\'t wave now'
+          });
+        });
+    },
+
+    UNWAVE_AT_USER(_, toUserId) {
+      // SweetAlert config
+      const waveToast = Swal.mixin({
+        toast: true,
+        position: 'bottom-start',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      });
+
+      // writing event like to DB
+      db.collection("user_waves")
+        // from_to -> userId_eventId
+        .doc(auth.currentUser.uid+'_'+toUserId)
+        .delete()
+        // Alert with SweetAlert2
+        .then(() => {          
+          waveToast.fire({
+            icon: 'success',
+            title: 'Removed your wave'
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          waveToast.fire({
+            icon: 'error',
+            title: 'Can\'t undo a wave now'
           });
         });
     },
@@ -313,6 +407,14 @@ export default createStore({
 
     unlikeEvent({ commit }, eventId) {
       commit('UNLIKE_EVENT', eventId);
+    },
+
+    waveAtUser({ commit }, toUserId) {
+      commit('WAVE_AT_USER', toUserId);
+    },
+
+    unwaveAtUser({ commit }, toUserId) {
+      commit('UNWAVE_AT_USER', toUserId);
     },
 
     sendFeedback({ commit }, feedback) {
