@@ -174,6 +174,8 @@ export default createStore({
         .where("roles", "array-contains", "mentor")
         .get()
         .then((querySnapshot) => {
+          // fetch users that auth user waved at
+          this.commit('GET_USER_WAVES');
           querySnapshot.forEach((doc) => {
             state.mentors.push(doc.data());
           });
@@ -184,29 +186,32 @@ export default createStore({
     },
 
     GET_USER_WAVES(state) {
-      db.collection("user_waves")
-        .where("from_user_id", "==", auth.currentUser.uid)
-        // listening for realtime updates
-        .onSnapshot((snapshot) => {
-          // only working with the changes and not entire collection
-          snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-              // add the event like to the state
-              state.user_waves.push(change.doc.data().to_user_id);
-            }
-            if (change.type === "modified") {
-              // we don't support modification yet so let's just console.log
-              console.log("Modified user wave: ", change.doc.data());
-            }
-            if (change.type === "removed") {
-              // remove the user wave from the state 
-              const index = state.user_waves.indexOf(change.doc.data().to_user_id);
-              if (index > -1) {
-                state.user_waves.splice(index, 1);
+      // if it is not already populated
+      if (!state.user_waves.length) {
+        db.collection("user_waves")
+          .where("from_user_id", "==", auth.currentUser.uid)
+          // listening for realtime updates
+          .onSnapshot((snapshot) => {
+            // only working with the changes and not entire collection
+            snapshot.docChanges().forEach((change) => {
+              if (change.type === "added") {
+                // add the event like to the state
+                state.user_waves.push(change.doc.data().to_user_id);
               }
-            }
+              if (change.type === "modified") {
+                // we don't support modification yet so let's just console.log
+                console.log("Modified user wave: ", change.doc.data());
+              }
+              if (change.type === "removed") {
+                // remove the user wave from the state 
+                const index = state.user_waves.indexOf(change.doc.data().to_user_id);
+                if (index > -1) {
+                  state.user_waves.splice(index, 1);
+                }
+              }
+            });
           });
-        });
+      }
     },
 
     LIKE_EVENT(_, eventId) {
