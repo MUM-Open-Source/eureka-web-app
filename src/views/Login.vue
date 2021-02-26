@@ -19,7 +19,9 @@
           class="mar__t--2 mar__b--2" 
         />
         <Button text="Login" class="mar--auto mar__t--3 mar__b--1" @click='handleLogin'/>
-        <div class="tagline--bold text--primary">Forgot my password</div>
+        <router-link :to="{ name: 'ResetPassword'}">
+          <div class="tagline--bold text--primary" >Forgot my password </div>
+        </router-link>
       </div>
     </div>
   </div>  
@@ -45,7 +47,7 @@ export default {
 
     // return everything that needs to be referenced in the template
     return {
-      handleLogin
+      handleLogin,
     }
 
   }
