@@ -72,6 +72,7 @@
 
 <script>
 import { computed } from 'vue';
+import store from '@/store';
 import RoundImage from '@/components/RoundImage';
 
 export default {
@@ -83,17 +84,19 @@ export default {
             required: true
         }
     },
-    setup(props, context) {
+    setup(props) {
         // getting the like value from props 
         const isWaved = computed(() => {
-            let res = props.user.wave;
-            return res
+            return store.state.user_waves.includes(props.user.id);
         })
 
-        // telling the parent component to toggle the like value
-        // TODO: pass the event id as a paramenter and in the parent update the db
+        // toggle the wave
         const toggleWave = () => {
-            context.emit('toggle-wave');
+            if (!isWaved.value) {
+                store.dispatch('waveAtUser', props.user.id);
+            } else {
+                store.dispatch('unwaveAtUser', props.user.id);
+            }
         }
 
         return {
