@@ -8,10 +8,11 @@
           type='text' 
           id='email' 
           class="mar__b--2"/>
-         <router-link :to="{ name: 'Login'}">
-            <Button text="Cancel" class="resetPasswordPage-button" />
-         </router-link>
-        <Button text="Reset" type="submit" class="resetPasswordPage-button" @click="resetPassword" />
+
+        <Button text="Reset" class="resetPasswordPage-button" @click="resetPassword" />
+        <router-link :to="{ name: 'Login'}">
+            <div class="tagline text--black mar__b--1" >Back to login </div>
+        </router-link>
       </div>
     </div>
   </div>  
@@ -38,7 +39,7 @@ export default {
     function resetPassword(){
         var email = document.getElementById('email').value;
         if (email !== '') {
-            store.dispatch('resetPassword', {email:email});
+            store.dispatch('resetPassword',email);
             }
          else {
             Swal.fire({icon: 'warning', title:'Oops...', text: 'Please fill in your registered email.' }) 

@@ -92,7 +92,7 @@ const routes = [
     name: 'NotFound',
     component: NotFound,
   }, {
-    path: '/resetPassword',
+    path: '/reset-password',
     name: 'ResetPassword',
     component: ResetPassword,
     meta: {
