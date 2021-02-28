@@ -13,12 +13,12 @@
         </div>
         <div class="top-nav__right mar--2">
             <img class="top-nav__icon" src="@/assets/notification-icon.svg" v-if="isLoggedIn" />
-                <Dropdown class = "dropdown" :items="menu_items.items">
-                    <div class="top-nav__right--user">
-                        <div id="top-nav__name" class="body mar--1">{{ displayName }}</div>
-                        <img class="top-nav__profile-img" src="@/assets/profile-user.svg" />
-                    </div>
-                </Dropdown>
+            <Dropdown class = "dropdown" :items="menu_items.items" v-if="isLoggedIn">
+                <div class="top-nav__right--user">
+                    <div id="top-nav__name" class="body mar--1">{{ displayName }}</div>
+                    <img class="top-nav__profile-img" src="@/assets/profile-user.svg" />
+                </div>
+            </Dropdown>
         </div>
     </div>
 </template>
@@ -59,17 +59,17 @@ export default {
             items: [{
                 title: 'User Info',
                 link:'Profile',
-                svg_src:"@/assets/userInfo-icon.svg"
+                svg_src:require("@/assets/profile-user-icon.svg")
             },
             {
                 title: 'Waves from talents',
                 link: 'WavesFromTalent',
-                svg_src:"@/assets/wavesFromTalents-icon.svg"
+                svg_src:require("@/assets/profile-talent-icon.svg")
             },
             {
                 title: 'Waves from mentors',
                 link: 'WavesFromMentors',
-                svg_src:"@/assets/wavesFromMentors-icon.svg"
+                svg_src:require("@/assets/profile-mentor-icon.svg")
             }
             ]
 
