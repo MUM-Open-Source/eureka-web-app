@@ -15,6 +15,7 @@ export default createStore({
     events: [],
     talent: [],
     mentors: [],
+    feedbacks: [],
   },
 
   // functions that affect the state
@@ -156,6 +157,18 @@ export default createStore({
           console.log("Error getting document:", error);
         });
     },
+    GET_FEEDBACK(state) {
+      db.collection("feedbacks")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            state.feedbacks.push(doc.data());
+          });
+        })
+        .catch(function (error) {
+          console.log("Error getting document:", error);
+        });
+    },
 
     SEND_FEEDBACK(_, feedback) {
       // writing feedback to db
@@ -172,8 +185,9 @@ export default createStore({
           Swal.fire({ icon: 'error', title: error });
         });
     },
-
   },
+
+  
 
 
   // functions to be called throughout the app that, in turn, call mutations
@@ -195,8 +209,8 @@ export default createStore({
       commit('SIGNUP_USER', user);
     },
 
-    setEvents({commit},eventObj){
-      commit('SET_EVENTS',eventObj);
+    setEvents({ commit }, eventObj) {
+      commit('SET_EVENTS', eventObj);
     },
     getEvents({ commit }) {
       commit('GET_EVENTS');
@@ -212,8 +226,10 @@ export default createStore({
 
     sendFeedback({ commit }, feedback) {
       commit('SEND_FEEDBACK', feedback);
+    },
+    getFeedbacks({ commit }) {
+      commit('GET_FEEDBACK');
     }
-
   }
-
-})
+}
+)

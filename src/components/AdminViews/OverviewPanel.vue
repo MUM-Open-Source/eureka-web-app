@@ -1,22 +1,10 @@
 <template>
-  <div className="outer-div">
-    <feedback-list-tile/>
-    <feedback-list-tile/>    
-    <feedback-list-tile/>
-    <feedback-list-tile/>    
-    <feedback-list-tile/>
-    <feedback-list-tile/>    
-    <feedback-list-tile/>
-    <feedback-list-tile/>    
-    <feedback-list-tile/>
-    <feedback-list-tile/>    
+  <div className="outer-div">     
   </div>
 </template>
 
 <script>
-import FeedbackListTile from '../../components/AdminPanelComponent/FeedbackListTile.vue';
-export default {
-  components: { FeedbackListTile },
+export default {  
   name: "OverviewPanel",  
 };
 </script>

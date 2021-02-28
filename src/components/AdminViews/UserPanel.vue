@@ -10,7 +10,9 @@ import UserListTile from "../../components/AdminPanelComponent/UserListTile.vue"
 export default {
   name: "UserPanel",
   components: { UserListTile },
+  
 };
+
 </script>
 
 <style lang='css' scoped>

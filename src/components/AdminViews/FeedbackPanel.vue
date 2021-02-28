@@ -1,18 +1,31 @@
 <template>
   <div className="outer-div">
     <FeedbackListTile
-      :event="event"
-      :v-for="(event, index) in filteredEvents"
-      :key="index"
+      v-for="feedback in feedbacks"
+      :key="feedback.key"
+      :feedback="feedback"
     />
   </div>
 </template>
 
 <script>
 import FeedbackListTile from "../../components/AdminPanelComponent/FeedbackListTile.vue";
+import store from "@/store";
+import { onMounted, ref } from "vue";
 export default {
   components: { FeedbackListTile },
   name: "FeedbackPanel",
+  setup() {
+    onMounted(() => {
+      if (!store.state.feedbacks || store.state.feedbacks.length ===0) {
+        store.dispatch("getFeedbacks");
+      }
+    });
+    const feedbacks = ref(store.state.feedbacks);
+    return {
+      feedbacks,
+    };
+  },
 };
 </script>
 

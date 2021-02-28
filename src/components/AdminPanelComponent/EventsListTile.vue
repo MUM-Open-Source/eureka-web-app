@@ -29,7 +29,7 @@
         <input type="text" :placeholder="event.organizer" />
         <h4>Event Type</h4>
         <input type="text" :placeholder="event.type" />
-        <Button text="Done" />
+        <Button text="Done" v-on:click="updateEvent" />
       </div>
     </div>
   </div>
@@ -47,11 +47,21 @@ export default {
       required: true,
     },
   },  
+  data(){
+    return {inEdit:false}
+  },
   methods: {
     onEditClicked() {
       this.inEdit = !this.inEdit;
     },
+    updateEvent(){
+
+    },
+    removeEvent(){
+
+    }
   },
+
 };
 </script>
 
