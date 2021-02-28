@@ -18,14 +18,9 @@ export default createStore({
     events: [],
     talent:[],
     mentors: [],
-<<<<<<< HEAD
     liked_events: [],                     // list of events liked by the user
-<<<<<<< HEAD
-    user_waves: []                        // list of users waved at by the auth user
-=======
-=======
     user_waves: [],                       // list of users waved at by the auth user
->>>>>>> filter2
+
     filters: {
       event:{
         type:[],
@@ -45,10 +40,7 @@ export default createStore({
         full_name: [],
       }
     },
-<<<<<<< HEAD
->>>>>>> filter
-=======
->>>>>>> filter2
+
   },
 
   // functions that affect the state
