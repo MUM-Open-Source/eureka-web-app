@@ -12,7 +12,6 @@
                     v-for="user in filteredTalent" 
                     :key="user.key"
                     :user="user"
-                    @toggle-wave="toggleWave(user)"
                 />
             </div>
         </div>
@@ -24,7 +23,6 @@ import { onMounted, ref } from 'vue';
 import store from '@/store';
 import ProfileCard from '@/components/ProfileCard';
 import Filter from '@/components/Filter';
-import Swal from 'sweetalert2';
 
 export default {
     name: 'FindTalent',
@@ -42,28 +40,6 @@ export default {
         const filter = ref({});
         // the input to the ProfileCard
         const filteredTalent = ref(store.state.talent);
-
-        // TODO: Update the DB like value and ensure it updates the component
-        const toggleWave = (user) => {
-            const talentToast = Swal.mixin({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 2500,
-                                    timerProgressBar: true,
-                                    didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                    }
-                                })
-
-            talentToast.fire({
-            icon: 'success',
-            title: 'Waved~'
-            })
-            console.log('Toggle prompt works');
-            console.log(user);
-        }
 
         // updating the filter and array of users
         function updateFilter(latestFilters) {
@@ -88,7 +64,6 @@ export default {
         }
 
         return {
-            toggleWave,
             updateFilter,
             filteredTalent
         }
