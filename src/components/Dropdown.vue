@@ -1,31 +1,30 @@
 <template >
   <div class="menu" @click="toggleSubMenu">
-      <div id="top-nav__name" class="body mar--1">{{ displayName }}</div>
-      <img class="top-nav__profile-img" src="@/assets/profile-user.svg" />
-      <!-- <a href="#">
-          {{ title }}
-      </a> -->
-    <div class ="sub-menu" id = "subMenu"  >
-        <div v-for="(item, i) in items" :key="i" class="sub-menu__item">
-                    <router-link :to="{ name: item.link}">
-                    <div class="sub-menu__item--title"><img class='sub-menu__item--image' :src="item.svg_src" />{{ item.title }}
-                    </div>
-                    <!-- TODO: Adds icon for each sub menu -->
-                    <!-- <img class='sub-menu__item--image' :src="item.svg_src" /> -->
-
-                    </router-link>
-
-        </div>
+    <div class="menu-body" @click="handleOutsideClick">
+        <div id="top-nav__name" class="body mar--1">{{ displayName }}</div>
+        <img class="top-nav__profile-img" src="@/assets/profile-user.svg" />
     </div>
+        <div class ="sub-menu"  id = "subMenu"  >
+            <div v-for="(item, i) in items" :key="i" class="sub-menu__item">
+                        <router-link :to="{ name: item.link}">
+                        <div class="sub-menu__item--title"><img class='sub-menu__item--image' :src="item.svg_src" />{{ item.title }}
+                        </div>
+                        </router-link>
+
+            </div>
+        </div>
   </div>
 </template>
 <script>
 import { reactive } from 'vue'
 import store from '@/store';
 import { computed } from 'vue';
+
 export default {
     name: 'Dropdown',
     props: ['title', 'items'],
+
+
     setup(){
 
         //check if if menu is clicked
@@ -48,12 +47,23 @@ export default {
                 subMenu.style.display = "none";
             }
         }
+        //closes dropdown menu when clicks outside are detected
+        function handleOutsideClick(){
+            var subMenu = document.getElementById("subMenu");
+            document.addEventListener("click", function(event){
+                //if clicking menu, don't do anything
+                if(event.target.closest(".menu"))return
+                //clicking outside menu will close the dropdown menu
+                subMenu.style.display = "none";
+            })
+        }
 
 
            return{
                checkSubMenu,
                displayName,
-               toggleSubMenu
+               toggleSubMenu,
+               handleOutsideClick
            }
                
 
@@ -62,6 +72,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.menu-body {
+    display: flex;
+    align-items: center;
+}
 .sub-menu {
     display: none;
     position:absolute;
