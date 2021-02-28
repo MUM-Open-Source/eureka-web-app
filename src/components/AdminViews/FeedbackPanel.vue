@@ -1,20 +1,15 @@
 <template>
   <div className="outer-div">
     <feedback-list-tile/>
-    <hr/>
+    <feedback-list-tile/>    
     <feedback-list-tile/>
-    <hr/>
+    <feedback-list-tile/>    
     <feedback-list-tile/>
-    <hr/>
+    <feedback-list-tile/>    
     <feedback-list-tile/>
-    <hr/>
+    <feedback-list-tile/>    
     <feedback-list-tile/>
-    <hr/>
-    <feedback-list-tile/>
-    <hr/>
-    <feedback-list-tile/>
-    <hr/>
-    <feedback-list-tile/>
+    <feedback-list-tile/>    
   </div>
 </template>
 
@@ -27,9 +22,11 @@ export default {
 </script>
 
 <style lang='css' scoped>
-.outer-div {    
-    z-index: -1;
-    width: 100%;        
+.outer-div {          
+    flex-direction: column;    
+    display: flex;    
+    justify-content: flex-start;
+    width: 100%;            
     margin: 0;
     padding: 0;  
 }

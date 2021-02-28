@@ -1,96 +1,70 @@
 <template>
   <div class="outer-div">
-    <div style="width: 100%; height: 100px">
-      <h1 style="padding-bottom: 20px">Mission Control</h1>
-      <div class="top-button-bar">
-        <FlatButton
-          v-on:click="changeTab(0)"
-          v-bind:enabled="currentTab === 0"
-          text="Overview"
-        />
-        <FlatButton
-          v-on:click="changeTab(1)"
-          v-bind:enabled="currentTab === 1"
-          text="Users"
-        />
-        <FlatButton
-          v-on:click="changeTab(2)"
-          v-bind:enabled="currentTab === 2"
-          text="Events"
-        />
-        <FlatButton
-          v-on:click="changeTab(3)"
-          v-bind:enabled="currentTab === 3"
-          text="Feedback"
-        />
+    <div class="inner-div">
+      <h1 style="padding: 8px">Mission Control</h1>
+      <admin-button-bar
+        :onTabChange="(num) => changeTabs(num)"
+      ></admin-button-bar>
+      <div class="panel-div">
+        <overview-panel v-if="tab === 0"></overview-panel>
+        <user-panel v-if="tab === 1"></user-panel>
+        <events-panel v-if="tab === 2"></events-panel>
+        <feedback-panel v-if="tab === 3"></feedback-panel>
       </div>
-    </div>
-
-    <div class="bottom-div">
-      <feedback-panel v-if="currentTab === 3"></feedback-panel>
     </div>
   </div>
 </template>
 
 <script>
-import FlatButton from "@/components/FlatButton";
-import FeedbackPanel from "./AdminViews/FeedbackPanel.vue";
-
+import AdminButtonBar from "../components/AdminPanelComponent/AdminButtonBar.vue";
+import EventsPanel from "../components/AdminViews/EventsPanel.vue";
+import FeedbackPanel from "../components/AdminViews/FeedbackPanel.vue";
+import OverviewPanel from "../components/AdminViews/OverviewPanel.vue";
+import UserPanel from "../components/AdminViews/UserPanel.vue";
 export default {
+  components: {
+    AdminButtonBar,
+    FeedbackPanel,
+    OverviewPanel,
+    UserPanel,
+    EventsPanel,
+  },
   name: "Admin",
-  components: { FlatButton, FeedbackPanel },
   data() {
     return {
-      currentTab: 0,
+      tab: 0,
     };
   },
   methods: {
-    changeTab(number) {
-      this.currentTab = number;
-    },
+    changeTabs(newNumber){this.tab = newNumber;}
   },
 };
 </script>
 
 
 <style lang="css">
-.overview {
+.outer-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 60px);
   width: 100%;
 }
 
-.outer-div {
-  padding: 40px;
+.inner-div {
   display: flex;
   flex-direction: column;
-}
-.top-button-bar {
-  flex-direction: row;
-  display: flex;
-}
-
-.bottom-div {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border-radius: 10px;
-  margin-top: 10px;
+  position: relative;
+  width: 95%;
+  height: 95%;
 }
 
-@media screen and (max-width: 500px) {
-  .top-button-bar {
-    width: 100%;
-    flex-direction: row;
-    display: flex;
-    align-items: center;
-  }
-  h1 {
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .outer-div {
-    display: flex;
-    flex-direction: column;
-  }
+.panel-div {
+  margin: 8px;
+  overflow-y: scroll;
+  height: calc(100% - 16px);
+  width: calc(100% - 16px);
 }
 </style>
+
+

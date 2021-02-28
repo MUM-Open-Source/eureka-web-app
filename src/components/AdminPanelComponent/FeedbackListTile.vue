@@ -13,12 +13,12 @@
 
 <script>
 export default {
-  name: "UserListTile",
+  name: "FeedBackListTile",
   props: {
-    created_at: {
-      type: String,
-      required: true,
-    },
+    // created_at: {
+    //   type: String,
+    //   required: true,
+    // },
     // id: {
     //   type: String,
     //   required: true,
@@ -33,10 +33,12 @@ export default {
     // },
   },
 };
+
 </script>
 
 <style lang='scss' scoped>
 .card {
-  padding: 20px;  
+  
+  padding-top: 20px;  
 }
 </style>
