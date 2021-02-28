@@ -14,24 +14,9 @@
 <script>
 export default {
   name: "FeedBackListTile",
-  props: {
-    // created_at: {
-    //   type: String,
-    //   required: true,
-    // },
-    // id: {
-    //   type: String,
-    //   required: true,
-    // },
-    // message: {
-    //   type: String,
-    //   required: true,
-    // },
-    // subject: {
-    //   type: String,
-    //   required: true,
-    // },
-  },
+  data(){
+
+  }  
 };
 
 </script>

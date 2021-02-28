@@ -1,24 +1,71 @@
 <template>
   <div className="outer-div">
-    <events-list-tile></events-list-tile>
-    <events-list-tile></events-list-tile>
-    <events-list-tile></events-list-tile>
+    <EventsListTile
+      v-for="event in filteredEvents"
+      :key="event.key"
+      :event="event"
+    />
   </div>
 </template>
 
 <script>
 import EventsListTile from "../AdminPanelComponent/EventsListTile.vue";
+import store from "@/store";
+import { onMounted, ref } from "vue";
 export default {
   components: { EventsListTile },
   name: "EventsPanel",
+  setup() {
+    onMounted(() => {
+      if (!store.state.events.length) {
+        store.dispatch("getEvents");
+      }
+    });
+
+    const filter = ref({});
+    const filteredEvents = ref(store.state.events);
+
+    console.log(filteredEvents);
+
+    function updateFilter(latestFilters) {
+      filter.value = latestFilters;
+      filteredEvents.value = calcFilteredUsers();
+    }
+
+    const calcFilteredUsers = () => {
+      return store.state.events.filter((event) => {
+        return (
+          // type
+          event.type
+            .toLowerCase()
+            .match(filter.value.type.replaceAll("_", " ").toLowerCase()) &&
+          // organizer
+          event.organizer
+            .toLowerCase()
+            .match(filter.value.organizer.replaceAll("_", " ").toLowerCase()) &&
+          // name
+          event.name
+            .toLowerCase()
+            .match(filter.value.name.replaceAll("_", " ").toLowerCase())
+        );
+      });
+    };
+
+    return {
+      updateFilter,
+      filteredEvents,
+    };
+  },
 };
 </script>
 
 <style lang='css' scoped>
 .outer-div {
+  display: relative;
   flex-direction: column;
   display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
   width: 100%;
   margin: 0;
   padding: 0;

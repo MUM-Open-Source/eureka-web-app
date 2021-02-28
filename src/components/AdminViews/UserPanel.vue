@@ -1,6 +1,6 @@
 <template>
-  <div classNa me="outer-div">
-    <user-list-tile></user-list-tile>
+  <div className="outer-div">    
+    <user-list-tile></user-list-tile>    
   </div>
 </template>
 
@@ -15,9 +15,12 @@ export default {
 
 <style lang='css' scoped>
 .outer-div {
-  z-index: -1;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+   flex-direction: column;    
+    display: flex;    
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;            
+    margin: 0;
+    padding: 0;  
 }
 </style>

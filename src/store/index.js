@@ -13,7 +13,7 @@ export default createStore({
     user_data: null,                      // user data pulled from db
     user_image: null,
     events: [],
-    talent:[],
+    talent: [],
     mentors: [],
   },
 
@@ -54,7 +54,7 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          Swal.fire({icon: 'error', title: ex.message});
+          Swal.fire({ icon: 'error', title: ex.message });
         });
     },
 
@@ -87,14 +87,14 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          Swal.fire({icon: 'error', title: ex.message});
+          Swal.fire({ icon: 'error', title: ex.message });
         });
     },
 
-    FETCH_CURRENT_USER_DATA_FROM_DB(state){
+    FETCH_CURRENT_USER_DATA_FROM_DB(state) {
       db.collection("users").doc(auth.currentUser.uid)
         .get()
-        .then(function(doc) {
+        .then(function (doc) {
           if (doc.exists) {
             state.user_data = doc.data();
           } else {
@@ -102,12 +102,12 @@ export default createStore({
             console.log("No such document!");
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("Error getting document:", error);
         });
     },
 
-    GET_EVENTS(state){
+    GET_EVENTS(state) {
       db.collection("events")
         .get()
         .then((querySnapshot) => {
@@ -115,12 +115,19 @@ export default createStore({
             state.events.push(doc.data());
           });
         })
-        .catch(function(error) {
-          console.log("Error getting document:"+ error)
+        .catch(function (error) {
+          console.log("Error getting document:" + error)
         });
     },
-    
-    GET_TALENT(state){
+
+    SET_EVENTS(state, eventObj) {
+      db.collection("events")
+        .doc(eventObj.id)
+        .set(eventObj).catch(function (error) {
+          console.log("Error getting document:" + error)
+        });
+    },
+    GET_TALENT(state) {
       db.collection("users")
         .where("id", "!=", auth.currentUser.uid)
         .where("roles", "array-contains", "talent")
@@ -130,12 +137,12 @@ export default createStore({
             state.talent.push(doc.data());
           });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("Error getting document:", error);
         });
     },
 
-    GET_MENTORS(state){
+    GET_MENTORS(state) {
       db.collection("users")
         .where("id", "!=", auth.currentUser.uid)
         .where("roles", "array-contains", "mentor")
@@ -145,7 +152,7 @@ export default createStore({
             state.mentors.push(doc.data());
           });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("Error getting document:", error);
         });
     },
@@ -158,12 +165,12 @@ export default createStore({
         subject: feedback.subject,
         message: feedback.message
       })
-      .then(() => {
-        Swal.fire({icon: 'success', title: "Thank you!", text: "Your feedback is well received!"});
-      })
-      .catch((error) => {
-        Swal.fire({icon: 'error', title: error});
-      });
+        .then(() => {
+          Swal.fire({ icon: 'success', title: "Thank you!", text: "Your feedback is well received!" });
+        })
+        .catch((error) => {
+          Swal.fire({ icon: 'error', title: error });
+        });
     },
 
   },
@@ -171,7 +178,7 @@ export default createStore({
 
   // functions to be called throughout the app that, in turn, call mutations
   actions: {
-    
+
     toggleSideNavState({ commit }) {
       commit('SET_IS_SIDE_NAV_COLLAPSED')
     },
@@ -188,14 +195,17 @@ export default createStore({
       commit('SIGNUP_USER', user);
     },
 
+    setEvents({commit},eventObj){
+      commit('SET_EVENTS',eventObj);
+    },
     getEvents({ commit }) {
       commit('GET_EVENTS');
     },
-    
+
     getTalent({ commit }) {
       commit('GET_TALENT');
     },
-    
+
     getMentors({ commit }) {
       commit('GET_MENTORS');
     },

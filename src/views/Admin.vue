@@ -9,7 +9,7 @@
         <overview-panel v-if="tab === 0"></overview-panel>
         <user-panel v-if="tab === 1"></user-panel>
         <events-panel v-if="tab === 2"></events-panel>
-        <feedback-panel v-if="tab === 3"></feedback-panel>
+        <feedback-panel v-if="tab === 3"></feedback-panel>        
       </div>
     </div>
   </div>
@@ -58,6 +58,8 @@ export default {
   width: 95%;
   height: 95%;
 }
+
+
 
 .panel-div {
   margin: 8px;
