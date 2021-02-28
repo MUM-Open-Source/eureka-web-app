@@ -486,9 +486,7 @@ export default createStore({
       commit('SEND_FEEDBACK', feedback);
     },
 
-    resetPassword({ commit }, email) {
-      commit('RESET_PASSWORD', email);
-    }
+
 
   }
 
