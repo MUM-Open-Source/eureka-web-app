@@ -354,8 +354,8 @@ export default createStore({
         Swal.fire({icon: 'error', title: error});
       });
     },
-    RESET_PASSWORD(state, user){
-      auth.sendPasswordResetEmail(user.email)
+    RESET_PASSWORD(state, email){
+      auth.sendPasswordResetEmail(email)
       .then(function() {
         // Email sent.
         Swal.fire({icon: 'success', title: "Email sent", text: "Please reset your password with sent link."});
