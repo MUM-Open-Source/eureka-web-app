@@ -4,6 +4,7 @@ import router from '@/router';
 import { db, auth } from "@/firebase";
 import Swal from 'sweetalert2';
 
+
 export default createStore({
   // application-level data
   state: {
@@ -120,13 +121,32 @@ export default createStore({
           console.log("Error getting document:" + error)
         });
     },
-
     SET_EVENTS(state, eventObj) {
       db.collection("events")
         .doc(eventObj.id)
         .set(eventObj).catch(function (error) {
           console.log("Error getting document:" + error)
         });
+    },
+    ADD_EVENTS(state, eventObj) {
+      db.collection("events")
+        .doc(eventObj.id)
+        .set(eventObj).then(() =>
+          state.events.push(eventObj)
+        ).catch(function (error) {
+          console.log("Error getting document:" + error)
+        });
+    },
+    DELETE_EVENTS(state, eventObj) {
+      db.collection("events")
+        .doc(eventObj.id)
+        .delete().then(
+          () => {
+            const index = state.events.findIndex((e)=>e.id === eventObj.id)            
+            if (index >= 0)
+              state.events.splice(index,1)            
+          }
+        );
     },
     GET_TALENT(state) {
       db.collection("users")
@@ -187,7 +207,7 @@ export default createStore({
     },
   },
 
-  
+
 
 
   // functions to be called throughout the app that, in turn, call mutations
@@ -215,15 +235,18 @@ export default createStore({
     getEvents({ commit }) {
       commit('GET_EVENTS');
     },
-
+    deleteEvents({ commit }, obj) {
+      commit('DELETE_EVENTS', obj);
+    },
     getTalent({ commit }) {
       commit('GET_TALENT');
     },
-
+    addEvents({ commit }, obj) {
+      commit('ADD_EVENTS', obj)
+    },
     getMentors({ commit }) {
       commit('GET_MENTORS');
     },
-
     sendFeedback({ commit }, feedback) {
       commit('SEND_FEEDBACK', feedback);
     },
