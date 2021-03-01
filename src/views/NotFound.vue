@@ -1,7 +1,10 @@
 <template>
     <div class="page-pad">
-        <div class="padding heading">Error 404: Not Found</div>
-        <p>Oops! Something went wrong. PLease try another way.</p>
+        <aside><img src="@/assets/error-logo.svg" width="200" height="200" /></aside>
+        <div class="padding">
+            <h1 class="header-padding">Eu-rrer 404: Not Found</h1>
+            <p>Eure- wait. Something went wrong! Try another way, For the Eureka path is not easy</p>
+        </div>
     </div>
 </template>
 
@@ -13,10 +16,33 @@ export default {
 
 <style lang="scss" scoped>
 .page-pad {
-    padding-top: 36%;
+    display: flex;
+    align-items: center;
+    height: 80vh;
+    max-width: 1000px;
+    margin: 0 auto;
+    > * {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    max-width: 500px;
+    width: 100%;
+  }
 }
 
 .padding {
-    padding-bottom: 0.7rem;
+    p {
+        font-size: 20px;
+        text-align: center;
+    }
+    h1 {
+        font-size: 50px;
+    }
+}
+
+.header-padding {
+    padding-bottom: 0.8rem;
 }
 </style>
