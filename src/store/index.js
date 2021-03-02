@@ -165,14 +165,15 @@ export default createStore({
         Swal.fire({icon: 'error', title: error});
       });
     },
-    RESET_PASSWORD(state, email){
-      auth.sendPasswordResetEmail(email)
-      .then(function() {
+
+    RESET_PASSWORD(_, emailId){
+      auth.sendPasswordResetEmail(emailId)
+      .then(() => {
         // Email sent.
         Swal.fire({icon: 'success', title: "Email sent", text: "Please reset your password with sent link."});
         router.push('Login');
       })
-      .catch(function(error) {
+      .catch(error => {
         // An error happened.
         Swal.fire({icon: 'error', title: error});
       });
@@ -216,8 +217,8 @@ export default createStore({
       commit('SEND_FEEDBACK', feedback);
     },
 
-    resetPassword({ commit }, email) {
-      commit('RESET_PASSWORD', email);
+    resetPassword({ commit }, emailId) {
+      commit('RESET_PASSWORD', emailId);
     }
 
   }
