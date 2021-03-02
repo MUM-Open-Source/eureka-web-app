@@ -1,7 +1,7 @@
 <template>
     <div class="user-profile page-pad">
+      <div class="profile__page">
         <div class="profile__menu mar__b--3">
-            <div class="subheading mar__b--1">Explore</div>
             <router-link :to="{ name: 'Profile'}">
                 <div class="active profile__menu--option pad__t--1 pad__b--1">
                     <img class="profile__menu--icon" src="@/assets/profile-user-icon.svg" />
@@ -24,7 +24,7 @@
         <div class="profile__content">
             <!-- <div class="heading mar__b--3 text--center">User Profile</div> -->
             <div class="profile__img">
-                <RoundImage :src="user?.image_url" alt="" />
+                <RoundImage :src="user?.image_url" alt="" class="profile__img--roundImage"/>
                 <div class="profile__img--upload mar__t--1">
                     <Button text="Upload New" />
                     <div class="tagline mar__t--1">Acceptable formats: jpg, png</div>
@@ -119,9 +119,10 @@
             </div>
             <div class="text--center">
                 <div v-if="state.hasUnsavedChanges" class="tagline mar__b--1">Unsaved changes</div>
-                <Button class="mar--auto" text="Save Changes" @click='handleInfoUpdate' />
+                <Button class="btn-saveChanges" text="Save Changes" @click='handleInfoUpdate' />
             </div>
         </div>
+    </div>
   </div>  
 </template>
 
@@ -180,47 +181,74 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.body{
+    font-size: 95%;
+}
 .user-profile {
     display: flex;
     flex-direction: row;
 }
 
 .profile {
+    &__content{
+        display:flex;
+    }
     &__menu {
         display: flex;
-        flex-direction: column;
-        max-width: 220px;
-        width: 90%;
+        flex-direction: row;
+        max-width: 500%;
+        width: 300%;
+        border-bottom: 1px solid ;
+        border-color: rgba(192, 183, 183, 0.5);
         &--option {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
+            padding: 8px 8px;
+            border: 1px solid ;
+            border-color: rgba(192, 183, 183, 0.5);
+
+        }
+        &--option:hover{
+            background: rgba(228, 227, 227, 0.5); 
+            border-top: 6px solid;
+            border-color:rgba(84, 47, 187, 0.5);  ;
+            position:static;
         }
         &--icon {
-            height: 25px;
-            margin-right: 10px;
+            height: 20px;
         }
         .active {
-            border-right: 3px solid $color-brand;
+            //border-right: 3px solid $color-brand;
         }
     }
     &__img {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+        flex-direction: column;
+        margin-left: 10%;
+        //align-items: center;
+        //justify-content: center;
         &--upload {
-            margin-left: 30px;
+            margin-top: 20%;
+            margin-left: 0;
+            width:max-content;
+            height: max-content;
+        }
+        &--roundImage{
+            margin-top: 20%;
+            margin-left: 15%;
         }
     }
     &__inputs {
         display: flex;
-        flex-direction: row;
+        margin-left: 20%;
+       // margin-right: 0;
+        flex-direction: column;
         flex-wrap: wrap;
         justify-content: space-evenly;
         .form__group {
             max-width: 300px; 
             width: 100%;
-            margin-right: 30px;
+            margin-right: 0px;
         }
     }
 }
