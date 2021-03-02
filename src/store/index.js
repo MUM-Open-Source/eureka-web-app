@@ -360,6 +360,19 @@ export default createStore({
       });
     },
 
+    RESET_PASSWORD(_, emailId){
+      auth.sendPasswordResetEmail(emailId)
+      .then(() => {
+        // Email sent.
+        Swal.fire({icon: 'success', title: "Email sent", text: "Please reset your password with sent link."});
+        router.push('Login');
+      })
+      .catch(error => {
+        // An error happened.
+        Swal.fire({icon: 'error', title: error});
+      });
+    }
+
   },
 
 
@@ -412,6 +425,10 @@ export default createStore({
 
     sendFeedback({ commit }, feedback) {
       commit('SEND_FEEDBACK', feedback);
+    },
+
+    resetPassword({ commit }, emailId) {
+      commit('RESET_PASSWORD', emailId);
     }
 
   }
