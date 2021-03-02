@@ -1,9 +1,9 @@
 <template>
     <div class="top-nav" :class='topNavWidth'>
         <div class="top-nav__left">
-            <img 
-                class="top-nav__icon cursor__pointer" 
-                @click='toggleSideNavState' 
+            <img
+                class="top-nav__icon cursor__pointer"
+                @click='toggleSideNavState'
                 src="@/assets/menu-icon.svg"
                 v-if="isLoggedIn"
             />
@@ -11,6 +11,7 @@
                 <img class="top-nav__logo" src="@/assets/logo.svg"/>
             </router-link>
         </div>
+<<<<<<< HEAD
         <div class="top-nav__right mar--2" @click='toggleUserMenuState'>
             <img class="top-nav__icon" src="@/assets/notification-icon.svg" v-if="isLoggedIn" />
             <div class="top-nav__right--user cursor__pointer">
@@ -18,6 +19,16 @@
                 <img class="top-nav__profile-img" src="@/assets/profile-user.svg" />
             </div>
             <UserMenu v-if="isUserMenuShown" />
+=======
+        <div class="top-nav__right mar--2">
+            <img id="bell" class="top-nav__icon" src="@/assets/notification-icon.svg" v-if="isLoggedIn" />
+                <Dropdown class = "dropdown" :items="menu_items.items">
+                    <div class="top-nav__right--user">
+                        <div id="top-nav__name" class="body mar--1">{{ displayName }}</div>
+                        <img class="top-nav__profile-img" src="@/assets/profile-user.svg" />
+                    </div>
+                </Dropdown>
+>>>>>>> top-nav
         </div>
     </div>
 </template>
@@ -41,6 +52,7 @@ export default {
         const toggleSideNavState = () => {
             store.dispatch('toggleSideNavState');
         }
+<<<<<<< HEAD
         // show and hide user menu
         const toggleUserMenuState = () => {
             if (isLoggedIn.value) {
@@ -49,9 +61,14 @@ export default {
                 router.push({ name: 'Login' });
             }
         }
+=======
+
+        // check if user is logged in
+        const isLoggedIn = computed(() => store.state.user !== null);
+>>>>>>> top-nav
 
         // display the logged in user
-        const displayName = computed(() => 
+        const displayName = computed(() =>
             store.state.user_data
             ? store.state.user_data.full_name
             : 'Login'
@@ -59,8 +76,8 @@ export default {
 
         // identify nav width
         const topNavWidth = computed(() =>
-            store.state.isSideNavCollapsed 
-            ? 'top-nav__full' 
+            store.state.isSideNavCollapsed
+            ? 'top-nav__full'
             : 'top-nav__reduced'
         )
 
