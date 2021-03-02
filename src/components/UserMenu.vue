@@ -8,7 +8,7 @@
                 </div>
             </router-link>
         </div>
-        <div class="user-menu__item pad--2" @click="handleLogout">
+        <div class="user-menu__item pad--2 cursor__pointer" @click="handleLogout">
             <img class='user-menu__item--icon' src="@/assets/logout-icon.svg" />
             <div class="body">Logout</div>
         </div>
