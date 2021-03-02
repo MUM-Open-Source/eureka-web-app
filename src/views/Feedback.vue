@@ -86,6 +86,6 @@ export default {
 textarea {
     resize: vertical;
     outline: none;
-    border-color: $color-side-nav-bg-hover;
+    border-color: $color-bg-hover;
 }
 </style> 
