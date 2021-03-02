@@ -1,5 +1,6 @@
 <template>
-    <div class="user-profile page-pad">
+    <div>Waves From Talents Testing</div>
+    <!-- <div class="user-profile page-pad">
         <div class="profile__menu mar__b--3">
             <div class="subheading mar__b--1">Explore</div>
             <router-link :to="{ name: 'Profile'}">
@@ -39,21 +40,21 @@
                 :wave="user.wave"
             />
         </div>
-  </div>  
+  </div>   -->
 </template>
 
 <script>
-import {testUsers} from '@/assets/testUsers.js';    // test users
-import ProfileCard from '@/components/ProfileCard';
+//import {testUsers} from '@/assets/testUsers.js';    // test users
+//import ProfileCard from '@/components/ProfileCard';
 
 export default {
   name: 'WavesFromTalent',
-  components: { ProfileCard },
+ // components: { ProfileCard },
 
   setup() {
       
     return {
-        testUsers
+       // testUsers
     }
 
   }
