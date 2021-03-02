@@ -11,7 +11,6 @@
                     v-for="user in filteredMentors" 
                     :key="user.key"
                     :user="user"
-                    @toggle-wave="toggleWave(user)"
                 />
             </div>
         </div>
@@ -41,12 +40,6 @@ export default {
         // the input to the ProfileCard
         const filteredMentors = ref(store.state.mentors);
 
-        // TODO: Update the DB like value and ensure it updates the component
-        const toggleWave = (user) => {
-            console.log('Toggle prompt works');
-            console.log(user);
-        }
-
         // updating the filter and array of users
         function updateFilter(latestFilters) {
             filter.value = latestFilters;
@@ -71,7 +64,6 @@ export default {
 
         return {
             updateFilter,
-            toggleWave,
             filteredMentors
         }
         

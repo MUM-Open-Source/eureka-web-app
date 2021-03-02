@@ -20,7 +20,6 @@
             <div class="tagline event-card__particulars--type mar__b--1 text--capsule cursor__default">{{ event.type }}</div>
             <div class="subheading">{{ event.name }}</div>
             <div class="tagline event-card__particulars--organizer mar__b--2">{{ event.organizer }}</div>
-            <!-- <div class="body event-card__particulars--bio">{{ event.organizer }}</div> -->
             <div class="body event-card__particulars--bio">{{ event.description }}</div>
             <div class="tagline--bold  event-card__particulars--date">{{ event.dates }}</div>
         </div>
@@ -29,8 +28,9 @@
 </template>
 
 <script>
-import SquareImage from '@/components/SquareImage';
 import { computed } from 'vue';
+import store from '@/store';
+import SquareImage from '@/components/SquareImage';
 
 export default {
     name: 'EventCard',
@@ -41,17 +41,20 @@ export default {
             required: true
         }
     },
-    setup(props, context) {
-        // getting the like value from props 
+    setup(props) {
+
+        // getting the like value from store.state 
         const isLiked = computed(() => {
-            let res = props.event.like;
-            return res
+            return store.state.liked_events.includes(props.event.id);
         })
 
-        // telling the parent component to toggle the like value
-        // TODO: pass the event id as a paramenter and in the parent update the db
+        // toggling the like
         const toggleLike = () => {
-            context.emit('toggle-like');
+            if (!isLiked.value) {
+                store.dispatch('likeEvent', props.event.id);
+            } else {
+                store.dispatch('unlikeEvent', props.event.id);
+            }
         }
 
         return {

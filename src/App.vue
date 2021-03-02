@@ -4,7 +4,7 @@
     <div class="main" :class='marginLeft'>
       <TopNav />
       <!-- routing -->
-      <Loading v-if="isLoading"/>
+      <Loader v-if="isLoading"/>
       <router-view v-else/>
     </div>
   </div>
@@ -13,14 +13,14 @@
 <script>
 import { onMounted, computed } from 'vue';
 import store from '@/store';
-import Loading from '@/components/Loading';
+import Loader from '@/components/Loader';
 import SideNav from '@/components/SideNav';
 import TopNav from '@/components/TopNav';
 
 export default {
   name: 'App',    // name of the component
 
-  components: { Loading, SideNav, TopNav },  // imported components
+  components: { Loader, SideNav, TopNav },  // imported components
   
   // Vue 3 Composition API
   setup() {

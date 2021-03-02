@@ -14,6 +14,7 @@ $color-disabled: #F1F1F1;
 $transition-duration: 0.5s;
 $transition-duration-fast: 0.2s;
 
+
 // used to scale spacing in the app 
 $spacer: 10px;
 
@@ -118,3 +119,21 @@ $user-menu-top: 105%;
 $user-menu-right: 25px;
 $user-menu-icon-width: 25px;
 $user-menu-icon-margin-right: 10px;
+
+//loader
+$loader-position-ratio:50%;
+$loader-width-height: 80px;
+$loader-margin: 8px;
+$loader-border: 4px;
+$loader-top-left: 36px;
+$loader-changed-wh: 72px;
+$loader-zeropx: 0px;
+$loader-zero: 0;
+$loader-one: 1;
+$loader-delay: -0.5s;
+
+// Not Found
+$not-found-position-ratio: 50%;
+$not-found-img-width: 150px;
+$not-found-img-width-sm: 100px;
+$not-found-img-padding-right: 40px;

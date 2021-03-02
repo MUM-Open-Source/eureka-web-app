@@ -1,22 +1,18 @@
 <template>
   <!-- Loading screen -->
+  <div class="loader"><div></div><div></div></div>
   <div class="loading__center">
-      <div class="heading">Loading..</div>
+    <div class="ripple"><div></div><div></div></div>
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'Loading'
+  name: 'Loader'
 }
 </script>
 
 <style lang="scss" scoped>
-.loading__center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
+@import '@/styles/components/loader';
 </style>

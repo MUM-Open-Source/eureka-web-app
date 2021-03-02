@@ -24,7 +24,7 @@
         <div class="profile__content">
             <!-- <div class="heading mar__b--3 text--center">User Profile</div> -->
             <div class="profile__img">
-                <RoundImage :src="user.image" alt="" />
+                <RoundImage :src="user?.image_url" alt="" />
                 <div class="profile__img--upload mar__t--1">
                     <Button text="Upload New" />
                     <div class="tagline mar__t--1">Acceptable formats: jpg, png</div>
@@ -36,7 +36,7 @@
                     id="fname" 
                     label="First Name" 
                     type="text"
-                    :value="user.fName"
+                    :value="user?.first_name"
                     disabled="true"
                     @change="handleInputUpdate"
                 />
@@ -45,7 +45,7 @@
                     id="lname" 
                     label="Last Name" 
                     type="text" 
-                    :value="user.lName" 
+                    :value="user?.last_name" 
                     disabled="true"
                     @change="handleInputUpdate"
                 />
@@ -54,7 +54,7 @@
                     id="email" 
                     label="Email Address" 
                     type="email" 
-                    :value="user.email" 
+                    :value="user?.social_links.email_id" 
                     disabled="true"
                     @change="handleInputUpdate"
                 />
@@ -64,7 +64,7 @@
                     id="background" 
                     label="Background (Degree/Job)" 
                     type="text"
-                    :value='user.background' 
+                    :value='user?.background' 
                     placeholder="Computer Science" 
                     @change="handleInputUpdate"
                 />
@@ -73,7 +73,7 @@
                     id="bio" 
                     label="Bio" 
                     type="text" 
-                    :value='user.bio' 
+                    :value='user?.bio' 
                     placeholder="I am.."
                     @change="handleInputUpdate"
                 />
@@ -82,7 +82,7 @@
                     id="github" 
                     label="GitHub URL" 
                     type="url" 
-                    :value='user.github' 
+                    :value='user?.social_links.github_url' 
                     placeholder="https://github.com/username/"
                     @change="handleInputUpdate"
                 />
@@ -91,7 +91,7 @@
                     id="linkedin" 
                     label="LinkedIn URL" 
                     type="url" 
-                    :value='user.linkedin'
+                    :value='user?.social_links.linkedin_url'
                     placeholder="https://linkedin.com/in/username/"
                     @change="handleInputUpdate"
                 />
@@ -100,20 +100,20 @@
                     id="website" 
                     label="Website URL" 
                     type="url" 
-                    :value='user.website'
+                    :value='user?.social_links.website_url'
                     placeholder="https://google.com"
                     @change="handleInputUpdate"
                 />
                 <InputMultiSelect 
                     id="interests"
-                    :values='user.interests'
+                    :values='user?.interests'
                 />
                 <InputField 
                     class="mar__b--2" 
                     id="experience_level" 
                     label="Experience Level" 
                     type="text" 
-                    :value='user.experience_level'
+                    :value='user?.experience_level'
                     placeholder="Beginner"
                 />
             </div>
@@ -127,7 +127,7 @@
 
 <script>
 // import { testUsers } from '@/assets/testUsers.js';    // test users
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import store from '@/store';
 import RoundImage from '@/components/RoundImage';
 import Button from '@/components/Button';
@@ -142,17 +142,7 @@ export default {
 
     // fetching the user details with default data provided
     // TODO: Improve and include interests
-    const user = reactive({
-        image: store.state.user_data.image_url || 'https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b',
-        fName: store.state.user_data.first_name || '',
-        lName: store.state.user_data.last_name || '',
-        email: store.state.user_data.email_id || '',
-        background: store.state.user_data.background || '',
-        bio: store.state.user_data.bio || '',
-        github: store.state.user_data.social_links.github_url || '',
-        linkedin: store.state.user_data.social_links.linkedin_url || '',
-        website: store.state.user_data.social_links.website_url || ''
-    })
+    const user = computed(() => store.state.user_data);
 
     // to check if changes were made
     const state = reactive({
@@ -162,13 +152,13 @@ export default {
     // TODO: Handle image upload, interests and experience updates
     function handleInputUpdate() {
         state.hasUnsavedChanges =
-            document.getElementById('background').value !== user.background || 
-            document.getElementById('bio').value !== user.bio ||
-            document.getElementById('github').value !== user.github ||
-            document.getElementById('linkedin').value !== user.linkedin ||
-            document.getElementById('website').value !== user.website ||
-            document.getElementById('interests').value !== user.interests ||
-            document.getElementById('experience_level').value !== user.experience_level;
+            document.getElementById('background').value !== user.value.background || 
+            document.getElementById('bio').value !== user.value.bio ||
+            document.getElementById('github').value !== user.value.social_links.github_url ||
+            document.getElementById('linkedin').value !== user.value.social_links.linkedin_url ||
+            document.getElementById('website').value !== user.value.social_links.website_url ||
+            document.getElementById('interests').value !== user.value.interests ||
+            document.getElementById('experience_level').value !== user.value.experience_level;
     }
 
     function handleInfoUpdate() {
