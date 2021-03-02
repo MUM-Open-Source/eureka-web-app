@@ -99,7 +99,8 @@ export default createStore({
         .then(function (doc) {
           if (doc.exists) {
             state.user_data = doc.data();
-          } else {
+            console.log(state.user_data.roles[0] === 'admin')
+          } else {            
             // doc.data() will be undefined in this case
             console.log("No such document!");
           }
@@ -224,7 +225,9 @@ export default createStore({
     setUser({ commit }, user) {
       commit('SET_USER', user);
     },
-
+    fetchCurrentUserFromDB({commit}){
+      commit('FETCH_CURRENT_USER_DATA_FROM_DB')
+    },
     signUpUser({ commit }, user) {
       commit('SIGNUP_USER', user);
     },
