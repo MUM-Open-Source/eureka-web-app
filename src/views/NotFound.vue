@@ -1,9 +1,9 @@
 <template>
-    <div class="page-pad">
-        <aside><img src="@/assets/error-logo.svg" width="200" height="200" /></aside>
-        <div class="padding">
-            <h1 class="header-padding">Eu-rrer 404: Not Found</h1>
-            <p>Eure- wait. Something went wrong! Try another way, For the Eureka path is not easy</p>
+    <div class="not-found">
+        <img src="@/assets/not-found-icon.svg" class="pad__b--1"/>
+        <div class="">
+            <div class="heading pad__b--1">Eu-rrer 404: Not Found</div>
+            <div class="body">Eure- wait. Something went wrong! Try another way, for the Eureka path is not easy.</div>
         </div>
     </div>
 </template>
@@ -15,34 +15,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-pad {
+.not-found {
     display: flex;
     align-items: center;
-    height: 80vh;
-    max-width: 1000px;
-    margin: 0 auto;
-    > * {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: center;
-    height: 80vh;
-    max-width: 500px;
-    width: 100%;
-  }
+    position: fixed;
+    top: $not-found-position-ratio;
+    left: $not-found-position-ratio;
+    transform: translate(-$not-found-position-ratio,-$not-found-position-ratio);
+    img {
+        width: $not-found-img-width;
+        padding-right: $not-found-img-padding-right;
+    }
 }
 
-.padding {
-    p {
-        font-size: 20px;
+@media (max-width: 765px) {
+    .not-found {
+        justify-content: center;
+        flex-direction: column;
         text-align: center;
-    }
-    h1 {
-        font-size: 50px;
+        img {
+            width: $not-found-img-width-sm;
+            padding-right: 0;
+        }
     }
 }
 
-.header-padding {
-    padding-bottom: 0.8rem;
-}
 </style>
