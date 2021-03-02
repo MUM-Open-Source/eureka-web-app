@@ -8,7 +8,6 @@
     height: $top-nav-height;
     align-items: center;
     justify-content: space-between;
-    //overflow: hidden;
     background-color: $color-white;
     &__full {
         width: 100%;
@@ -26,9 +25,8 @@
         margin-left: $top-nav-elem-margin;
     }
     &__logo, &__profile-img {
-        height: $top-nav-img-height ;
+        height: $top-nav-img-height;
         margin-right: $top-nav-elem-margin;
-        //margin-top: 5px;
     }
     &__logo, &__right--user {
         margin-left: $top-nav-elem-margin;

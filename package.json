@@ -16,7 +16,6 @@
     "sass-loader": "^10.1.0",
     "sweetalert2": "^10.15.5",
     "vue": "^3.0.0",
-    "vue-clickaway": "^2.2.2",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0-0"
   },

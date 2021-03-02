@@ -7,7 +7,7 @@ $color-dark: #464646;
 $color-light: #8E8E8E;
 $color-white: #FFFFFF;
 $color-side-nav-bg: #F1F1F1;
-$color-side-nav-bg-hover: #DDDBDB;
+$color-bg-hover: #DDDBDB;
 $color-disabled: #F1F1F1;
 
 // behaviour
@@ -131,3 +131,9 @@ $not-found-position-ratio: 50%;
 $not-found-img-width: 150px;
 $not-found-img-width-sm: 100px;
 $not-found-img-padding-right: 40px;
+
+// user menu
+$user-menu-top: 105%;
+$user-menu-right: 25px;
+$user-menu-icon-width: 25px;
+$user-menu-icon-margin-right: 10px;
