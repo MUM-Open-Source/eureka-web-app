@@ -20,6 +20,7 @@ export default createStore({
     mentors: [],
     liked_events: [],                     // list of events liked by the user
     user_waves: [],                       // list of users waved at by the auth user
+    waves_from_other_users: [],           // list of user ids who waved at the auth user
     filters: {
       event:{
         type: [],
@@ -431,6 +432,21 @@ export default createStore({
         // An error happened.
         Swal.fire({icon: 'error', title: error});
       });
+    },
+
+    GET_WAVES_FROM_OTHER_USERS(state){
+      db.collection("user_waves")
+        .where("to_user_id", "==", auth.currentUser.uid)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            // populating the mentors array
+            state.waves_from_other_users.push(doc.data().from_user_id);
+          });
+        })
+        .catch(function(error) {
+          console.log("Error getting document:", error);
+        });
     }
 
   },
@@ -489,6 +505,10 @@ export default createStore({
       
     resetPassword({ commit }, emailId) {
       commit('RESET_PASSWORD', emailId);
+    },
+      
+    getWavesFromOtherUsers({ commit }) {
+      commit('GET_WAVES_FROM_OTHER_USERS');
     }
 
   }
