@@ -13,7 +13,7 @@ import WavesFromMentors from '@/views/WavesFromMentors.vue';
 import BrowseEvents from '@/views/BrowseEvents.vue';
 import About from '@/views/About.vue';
 import NotFound from '@/views/NotFound.vue';
-
+import ResetPassword from '@/views/ResetPassword.vue'
 
 // all the different paths for the SPA
 const routes = [
@@ -97,7 +97,15 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
-  }
+  }, {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  
   // {
   //   path: '/about',
   //   name: 'About',

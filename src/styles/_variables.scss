@@ -7,7 +7,7 @@ $color-dark: #464646;
 $color-light: #8E8E8E;
 $color-white: #FFFFFF;
 $color-side-nav-bg: #F1F1F1;
-$color-side-nav-bg-hover: #DDDBDB;
+$color-bg-hover: #DDDBDB;
 $color-disabled: #F1F1F1;
 
 // behaviour
@@ -114,6 +114,12 @@ $signup-radio-label-last-border-radius-sm: 0 0 4px 4px;
 $multiselect-width: 460px;
 $multiselect-width-sm: 320px;
 
+// user menu
+$user-menu-top: 105%;
+$user-menu-right: 25px;
+$user-menu-icon-width: 25px;
+$user-menu-icon-margin-right: 10px;
+
 //loader
 $loader-position-ratio:50%;
 $loader-width-height: 80px;
@@ -125,3 +131,9 @@ $loader-zeropx: 0px;
 $loader-zero: 0;
 $loader-one: 1;
 $loader-delay: -0.5s;
+
+// Not Found
+$not-found-position-ratio: 50%;
+$not-found-img-width: 150px;
+$not-found-img-width-sm: 100px;
+$not-found-img-padding-right: 40px;

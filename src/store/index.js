@@ -401,6 +401,20 @@ export default createStore({
           Swal.fire({ icon: 'error', title: error });
         });
     },
+
+    RESET_PASSWORD(_, emailId){
+      auth.sendPasswordResetEmail(emailId)
+      .then(() => {
+        // Email sent.
+        Swal.fire({icon: 'success', title: "Email sent", text: "Please reset your password with sent link."});
+        router.push('Login');
+      })
+      .catch(error => {
+        // An error happened.
+        Swal.fire({icon: 'error', title: error});
+      });
+    }
+
   },
 
 
@@ -461,8 +475,13 @@ export default createStore({
     sendFeedback({ commit }, feedback) {
       commit('SEND_FEEDBACK', feedback);
     },
+
     getFeedbacks({ commit }) {
       commit('GET_FEEDBACK');
+    },
+
+    resetPassword({ commit }, emailId) {
+      commit('RESET_PASSWORD', emailId);
     }
   }
 });
