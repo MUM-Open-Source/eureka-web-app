@@ -22,14 +22,14 @@ export default createStore({
     user_waves: [],                       // list of users waved at by the auth user
     filters: {
       event:{
-        type:[],
-        organizer:[],
+        type: [],
+        organizer: [],
         name: [],
       },
       talent: {
         interests: [],
-        experience_level: [],
-        background:[],
+        experience_level: ['Beginner', 'Intermediate', 'Advanced'],
+        background: [],
         full_name: [],
       },
       mentor: {
@@ -139,22 +139,20 @@ export default createStore({
           this.commit('GET_LIKED_EVENTS');
           // update state
           querySnapshot.forEach((doc) => {
+            // populating the respective filter array
             if (!state.filters.event.type.includes(doc.data().type)) {
-              // push the value into the array
               state.filters.event.type.push(doc.data().type)
             }
             if (!state.filters.event.organizer.includes(doc.data().organizer)) {
-              // push the value into the array
               state.filters.event.organizer.push(doc.data().organizer)
             }
-
             if (!state.filters.event.name.includes(doc.data().name)) {
-              // push the value into the array
               state.filters.event.name.push(doc.data().name)
             }
+
+            // populating the event array 
             state.events.push(doc.data());
           });
-          // console.log(state.filters.event);
         })
         .catch(function(error) {
           console.log("Error getting document:"+ error)
@@ -197,12 +195,9 @@ export default createStore({
           this.commit('GET_USER_WAVES');
           querySnapshot.forEach((doc) => {
             
-            //populate values into array
+            // populating the respective filter array
             if (!state.filters.talent.interests.includes(doc.data().interests)) {
               state.filters.talent.interests.push(doc.data().interests)
-            }
-            if (!state.filters.talent.experience_level.includes(doc.data().experience_level)) {
-              state.filters.talent.experience_level.push(doc.data().experience_level)
             }
             if (!state.filters.talent.background.includes(doc.data().background)) {
               state.filters.talent.background.push(doc.data().background)
@@ -211,9 +206,9 @@ export default createStore({
               state.filters.talent.full_name.push(doc.data().full_name)
             }
             
+            // populating the talent array
             state.talent.push(doc.data());
           });
-          // console.log(state.filters.talent);
         })
         .catch(function(error) {
           console.log("Error getting document:", error);
@@ -230,26 +225,20 @@ export default createStore({
           this.commit('GET_USER_WAVES');
           querySnapshot.forEach((doc) => {
 
-            //populate values into array
+            // populating the respective filter array
             if (!state.filters.mentor.skill.includes(doc.data().skill)) {
               state.filters.mentor.skill.push(doc.data().skill)
             }
-
-            if (!state.filters.mentor.experience_level.includes(doc.data().experience_level)) {
-              state.filters.mentor.experience_level.push(doc.data().experience_level)
-            }
-
             if (!state.filters.mentor.background.includes(doc.data().background)) {
               state.filters.mentor.background.push(doc.data().background)
             }
-
             if (!state.filters.mentor.full_name.includes(doc.data().full_name)) {
               state.filters.mentor.full_name.push(doc.data().full_name)
             }
             
+            // populating the mentors array
             state.mentors.push(doc.data());
           });
-          // console.log(state.filters.talent);
         })
         .catch(function(error) {
           console.log("Error getting document:", error);
