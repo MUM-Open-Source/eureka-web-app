@@ -28,7 +28,7 @@
         height: $top-nav-img-height;
         margin-right: $top-nav-elem-margin;
     }
-    &__logo, &__right--user {
+    &__logo {
         margin-left: $top-nav-elem-margin;
     }
     &__right--user {
@@ -39,16 +39,18 @@
 }
 
 @media (max-width: 576px) {
+    #top-nav__name {
+        display: none;
+    }
 
     #bell {
         margin-left: 0;
-        margin-right: $top-nav-bell-margin-right-sm;
-        margin-top: 7px;
+        margin-right: $top-nav-bell-margin;
     }
+}
 
-    #top-nav{
-        &__name {
-            display: none;
-        }
+@media (max-width: 326px) {
+    .top-nav__logo {
+        display: none;
     }
 }
