@@ -1,6 +1,6 @@
 <template>
-  <div v-bind:class="{ card: !inEdit, 'editing-card': inEdit }">
-    <div class="leading pad__t--1">
+  <div v-bind:class="{ card: !inEdit, 'editing-card': inEdit }" class="event__card pad__t--1 pad__b--1">
+    <div class="leading">
       <div class="leading">
         <img :src="event.image_url" />
         <div class="data" v-if="!inEdit">
@@ -102,6 +102,9 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.event__card {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
 .card {
   width: 100%;
   display: flex;
