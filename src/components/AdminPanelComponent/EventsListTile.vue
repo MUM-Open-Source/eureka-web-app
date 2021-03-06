@@ -75,9 +75,10 @@ export default {
         ...this.event,        
         dates: this.dates,
         name:this.name,
-        image:this.image_url,
+        image_url:this.image_url,
         organizer: this.organizer,
         type: this.type,
+        description: this.description
       });
       this.onEditClicked();
     },
