@@ -24,7 +24,7 @@
         <div class="profile__content">
             <!-- <div class="heading mar__b--3 text--center">User Profile</div> -->
             <div class="profile__img">
-                <RoundImage :src="user?.image_url" alt="" class="profile__img--roundImage"/>
+                <RoundImage :src="user?.image_url" alt="" class="profile__img--roundImage" id="user-image"/>
                 <div class="profile__img--upload mar__t--1">
                         <form class="btn-chooseFile" >
                             <label for="imageUpload"></label>
@@ -158,6 +158,7 @@ import RoundImage from '@/components/RoundImage';
 import Button from '@/components/Button';
 import ProfileInputField from '@/components/ProfileInputField';
 import Multiselect from '@vueform/multiselect';
+import Swal from 'sweetalert2';
 
 
 export default {
@@ -235,10 +236,12 @@ export default {
         handleInputsUpdate();
 
     }
+    
     function handleImageUpload(){
         //handles image upload
         const file = document.querySelector("#imageUpload").files[0]
         if (file){
+            Swal.fire({icon: 'success', title: "Buffering", text: "The process takes a bit of time"});
             const fileName = new Date() + '-' + file.name;
             const metadata = {contentType:file.type}
             store.dispatch('uploadUserImage', {file:file, fileName:fileName, metadata:metadata})
@@ -284,7 +287,7 @@ export default {
 
 <style src="@vueform/multiselect/themes/default.css"></style>
 <style lang="scss" scoped>
-@import '@/styles/components/input_multiselect';
+@import '@/styles/components/multiselect';
 input[type=file]::-webkit-file-upload-button {
     background-image: linear-gradient(to right, #5986E1, #7450CB);
     font-family: inherit;
