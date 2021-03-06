@@ -134,9 +134,9 @@ export default {
 }
 
 .button-div {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  position: absolute;
+  top: 60px;
+  right: 10px;
 }
 
 .add-button {
