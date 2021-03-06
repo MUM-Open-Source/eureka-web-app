@@ -8,12 +8,11 @@
     height: $top-nav-height;
     align-items: center;
     justify-content: space-between;
-    //overflow: hidden;
     background-color: $color-white;
     &__full {
         width: 100%;
     }
-    &__reduced {        
+    &__reduced {
         width: calc(100% - 100px);
     }
     &__left, &__right {
@@ -26,11 +25,10 @@
         margin-left: $top-nav-elem-margin;
     }
     &__logo, &__profile-img {
-        height: $top-nav-img-height ;
+        height: $top-nav-img-height;
         margin-right: $top-nav-elem-margin;
-        //margin-top: 5px;
     }
-    &__logo, &__right--user {
+    &__logo {
         margin-left: $top-nav-elem-margin;
     }
     &__right--user {
@@ -41,8 +39,18 @@
 }
 
 @media (max-width: 576px) {
-    #top-nav__name, .top-nav__logo {
+    #top-nav__name {
         display: none;
     }
-    
+
+    #bell {
+        margin-left: 0;
+        margin-right: $top-nav-bell-margin;
+    }
+}
+
+@media (max-width: 326px) {
+    .top-nav__logo {
+        display: none;
+    }
 }

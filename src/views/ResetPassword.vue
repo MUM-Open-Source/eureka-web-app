@@ -2,6 +2,9 @@
   <div class="resetPassword__section">
     <div class="resetPassword__wrapper text--center mar--auto">
       <div class="heading text--white">Reset Password</div>
+      <router-link :to="{ name: 'Login'}">
+          <div class="tagline text--white mar__b--1" >Back to login &#11166;</div>
+      </router-link>
       <div class="resetPassword__form pad--4 pad__t--3 pad__b--4" >
         <InputField 
           label='Registered Email' 
@@ -9,10 +12,7 @@
           id='email' 
           class="mar__b--2"/>
 
-        <Button text="Reset" class="resetPasswordPage-button" @click="resetPassword" />
-        <router-link :to="{ name: 'Login'}">
-            <div class="tagline text--black mar__b--1" >Back to login </div>
-        </router-link>
+        <Button text="Reset" class="mar--auto mar__t--3 mar__b--1" @click="resetPassword" />
       </div>
     </div>
   </div>  
@@ -24,22 +24,17 @@ import Button from '@/components/Button';
 import InputField from '@/components/InputField';
 import Swal from 'sweetalert2';
 
-
-
 export default {
   name: 'resetPassword',
   components: { InputField, Button },
 
   setup() {
 
-
-
-
     //resets password with a link sent to registered email
     function resetPassword(){
-        var email = document.getElementById('email').value;
-        if (email !== '') {
-            store.dispatch('resetPassword',email);
+        let email_id = document.getElementById('email').value;
+        if (email_id !== '') {
+            store.dispatch('resetPassword', email_id);
             }
          else {
             Swal.fire({icon: 'warning', title:'Oops...', text: 'Please fill in your registered email.' }) 
@@ -49,7 +44,6 @@ export default {
     // return everything that needs to be referenced in the template
     return {
       resetPassword,
-
     }
 
   }
@@ -57,14 +51,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.heading {
-    margin:8px ;
-}
-.resetPasswordPage-button{
-    display: inline-block;
-    padding: 6px 24px;
-    margin: 10px;
-}
 .resetPassword__section {
   min-height: calc(100vh - 60px);
   background-image: linear-gradient(to right, $color-brand, $color-brand-alt);

@@ -6,6 +6,9 @@ import Swal from 'sweetalert2';
 
 export default createStore({
   // application-level data
+ 
+
+
   state: {
     user: auth.currentUser,               // firebase auth user
     isSideNavCollapsed: true,             // bool to check if sidenav is showing
@@ -13,9 +16,31 @@ export default createStore({
     user_data: null,                      // user data pulled from db
     user_image: null,
     events: [],
-    liked_events: [],                     // list of events liked by the user
     talent:[],
     mentors: [],
+    liked_events: [],                     // list of events liked by the user
+    user_waves: [],                       // list of users waved at by the auth user
+    waves_from_other_users: [],           // list of user ids who waved at the auth user
+    filters: {
+      event:{
+        type: [],
+        organizer: [],
+        name: [],
+      },
+      talent: {
+        interests: [],
+        experience_level: ['Beginner', 'Intermediate', 'Advanced'],
+        background: [],
+        full_name: [],
+      },
+      mentor: {
+        skill: [],
+        experience_level: [],
+        background: [],
+        full_name: [],
+      }
+    },
+
   },
 
   // functions that affect the state
@@ -116,6 +141,18 @@ export default createStore({
           this.commit('GET_LIKED_EVENTS');
           // update state
           querySnapshot.forEach((doc) => {
+            // populating the respective filter array
+            if (!state.filters.event.type.includes(doc.data().type)) {
+              state.filters.event.type.push(doc.data().type)
+            }
+            if (!state.filters.event.organizer.includes(doc.data().organizer)) {
+              state.filters.event.organizer.push(doc.data().organizer)
+            }
+            if (!state.filters.event.name.includes(doc.data().name)) {
+              state.filters.event.name.push(doc.data().name)
+            }
+
+            // populating the event array 
             state.events.push(doc.data());
           });
         })
@@ -156,7 +193,22 @@ export default createStore({
         .where("roles", "array-contains", "talent")
         .get()
         .then((querySnapshot) => {
+          // fetch users that auth user waved at
+          this.commit('GET_USER_WAVES');
           querySnapshot.forEach((doc) => {
+            
+            // populating the respective filter array
+            if (!state.filters.talent.interests.includes(doc.data().interests)) {
+              state.filters.talent.interests.push(doc.data().interests)
+            }
+            if (!state.filters.talent.background.includes(doc.data().background)) {
+              state.filters.talent.background.push(doc.data().background)
+            }
+            if (!state.filters.talent.full_name.includes(doc.data().full_name)) {
+              state.filters.talent.full_name.push(doc.data().full_name)
+            }
+            
+            // populating the talent array
             state.talent.push(doc.data());
           });
         })
@@ -171,13 +223,57 @@ export default createStore({
         .where("roles", "array-contains", "mentor")
         .get()
         .then((querySnapshot) => {
+          // fetch users that auth user waved at
+          this.commit('GET_USER_WAVES');
           querySnapshot.forEach((doc) => {
+
+            // populating the respective filter array
+            if (!state.filters.mentor.skill.includes(doc.data().skill)) {
+              state.filters.mentor.skill.push(doc.data().skill)
+            }
+            if (!state.filters.mentor.background.includes(doc.data().background)) {
+              state.filters.mentor.background.push(doc.data().background)
+            }
+            if (!state.filters.mentor.full_name.includes(doc.data().full_name)) {
+              state.filters.mentor.full_name.push(doc.data().full_name)
+            }
+            
+            // populating the mentors array
             state.mentors.push(doc.data());
           });
         })
         .catch(function(error) {
           console.log("Error getting document:", error);
         });
+    },
+
+    GET_USER_WAVES(state) {
+      // if it is not already populated
+      if (!state.user_waves.length) {
+        db.collection("user_waves")
+          .where("from_user_id", "==", auth.currentUser.uid)
+          // listening for realtime updates
+          .onSnapshot((snapshot) => {
+            // only working with the changes and not entire collection
+            snapshot.docChanges().forEach((change) => {
+              if (change.type === "added") {
+                // add the event like to the state
+                state.user_waves.push(change.doc.data().to_user_id);
+              }
+              if (change.type === "modified") {
+                // we don't support modification yet so let's just console.log
+                console.log("Modified user wave: ", change.doc.data());
+              }
+              if (change.type === "removed") {
+                // remove the user wave from the state 
+                const index = state.user_waves.indexOf(change.doc.data().to_user_id);
+                if (index > -1) {
+                  state.user_waves.splice(index, 1);
+                }
+              }
+            });
+          });
+      }
     },
 
     LIKE_EVENT(_, eventId) {
@@ -245,6 +341,71 @@ export default createStore({
         });
     },
 
+    WAVE_AT_USER(_, toUserId) {
+      // SweetAlert config
+      const waveToast = Swal.mixin({
+        toast: true,
+        position: 'bottom-start',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      });
+
+      // writing event like to DB
+      db.collection("user_waves")
+        // from_to -> fromUserId_toUserId
+        .doc(auth.currentUser.uid+'_'+toUserId)
+        .set({
+          from_user_id: auth.currentUser.uid,
+          to_user_id: toUserId
+        })
+        // Alert with SweetAlert2
+        .then(() => {
+          waveToast.fire({
+            icon: 'success',
+            title: 'You just waved!'
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          waveToast.fire({
+            icon: 'error',
+            title: 'Can\'t wave now'
+          });
+        });
+    },
+
+    UNWAVE_AT_USER(_, toUserId) {
+      // SweetAlert config
+      const waveToast = Swal.mixin({
+        toast: true,
+        position: 'bottom-start',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      });
+
+      // writing event like to DB
+      db.collection("user_waves")
+        // from_to -> userId_eventId
+        .doc(auth.currentUser.uid+'_'+toUserId)
+        .delete()
+        // Alert with SweetAlert2
+        .then(() => {          
+          waveToast.fire({
+            icon: 'success',
+            title: 'Removed your wave'
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          waveToast.fire({
+            icon: 'error',
+            title: 'Can\'t undo a wave now'
+          });
+        });
+    },
+
     SEND_FEEDBACK(_, feedback) {
       // writing feedback to db
       db.collection("feedbacks").add({
@@ -260,17 +421,33 @@ export default createStore({
         Swal.fire({icon: 'error', title: error});
       });
     },
-    RESET_PASSWORD(state, email){
-      auth.sendPasswordResetEmail(email)
-      .then(function() {
+
+    RESET_PASSWORD(_, emailId){
+      auth.sendPasswordResetEmail(emailId)
+      .then(() => {
         // Email sent.
         Swal.fire({icon: 'success', title: "Email sent", text: "Please reset your password with sent link."});
         router.push('Login');
       })
-      .catch(function(error) {
+      .catch(error => {
         // An error happened.
         Swal.fire({icon: 'error', title: error});
       });
+    },
+
+    GET_WAVES_FROM_OTHER_USERS(state){
+      db.collection("user_waves")
+        .where("to_user_id", "==", auth.currentUser.uid)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            // populating the mentors array
+            state.waves_from_other_users.push(doc.data().from_user_id);
+          });
+        })
+        .catch(function(error) {
+          console.log("Error getting document:", error);
+        });
     }
 
   },
@@ -315,14 +492,26 @@ export default createStore({
       commit('UNLIKE_EVENT', eventId);
     },
 
+    waveAtUser({ commit }, toUserId) {
+      commit('WAVE_AT_USER', toUserId);
+    },
+
+    unwaveAtUser({ commit }, toUserId) {
+      commit('UNWAVE_AT_USER', toUserId);
+    },
+
     sendFeedback({ commit }, feedback) {
       commit('SEND_FEEDBACK', feedback);
     },
-
-    resetPassword({ commit }, email) {
-      commit('RESET_PASSWORD', email);
+      
+    resetPassword({ commit }, emailId) {
+      commit('RESET_PASSWORD', emailId);
+    },
+      
+    getWavesFromOtherUsers({ commit }) {
+      commit('GET_WAVES_FROM_OTHER_USERS');
     }
 
   }
 
-})
+});
