@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import firebase from 'firebase/app';
 import router from '@/router';
-import { db, auth } from "@/firebase";
+import { db, auth, storage } from "@/firebase";
 import Swal from 'sweetalert2';
 
 export default createStore({
@@ -422,6 +422,7 @@ export default createStore({
       });
     },
 
+<<<<<<< HEAD
     RESET_PASSWORD(_, emailId){
       auth.sendPasswordResetEmail(emailId)
       .then(() => {
@@ -448,6 +449,60 @@ export default createStore({
         .catch(function(error) {
           console.log("Error getting document:", error);
         });
+=======
+    UPDATE_USER_PROFILE(_, user){
+      // updating user profile
+      db.collection("users").doc(auth.currentUser.uid).update({
+        background: user.background,
+        bio: user.bio,
+        interests: user.interests,
+        experience_level: user.experience_level,
+        //roles: [user.role],    // TODO: retrieve this from the signup form
+        social_links: {
+          github_url: user.github_url,
+          linkedin_url: user.linkedin_url,
+          website_url: user.website_url,
+        }
+      })
+      .then(() => {
+        this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
+        Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile is updated!"});
+      })
+      .catch((error) => {
+        Swal.fire({icon: 'error', title: error});
+      });
+      
+    },
+    UPLOAD_USER_IMAGE(_, user){
+      const task = storage.ref().child(user.fileName).put(user.file,user.metadata)
+      task
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(url => {
+        db.collection("users").doc(auth.currentUser.uid).update({
+          image_url: url
+        })
+        .then(() => {
+          this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
+          Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile picture is updated!"});
+        })
+        .catch((error) => {
+          Swal.fire({icon: 'error', title: error});
+        });
+      })
+    },
+    SET_DEFAULT_USER_IMAGE(){
+      db.collection("users").doc(auth.currentUser.uid).update({
+        image_url: "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b"
+      })
+      .then(() => {
+        this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
+        Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile picture is set to default!"});
+      })
+      .catch((error) => {
+        Swal.fire({icon: 'error', title: error});
+      });
+
+>>>>>>> userProfile
     }
 
   },
@@ -503,6 +558,7 @@ export default createStore({
     sendFeedback({ commit }, feedback) {
       commit('SEND_FEEDBACK', feedback);
     },
+<<<<<<< HEAD
       
     resetPassword({ commit }, emailId) {
       commit('RESET_PASSWORD', emailId);
@@ -510,6 +566,16 @@ export default createStore({
       
     getWavesFromOtherUsers({ commit }) {
       commit('GET_WAVES_FROM_OTHER_USERS');
+=======
+    updateUserProfile({ commit }, user) {
+      commit('UPDATE_USER_PROFILE', user);
+    },
+    uploadUserImage({ commit }, user){
+      commit('UPLOAD_USER_IMAGE',user);
+    },
+    setDefaultUserImage({ commit }){
+      commit('SET_DEFAULT_USER_IMAGE');
+>>>>>>> userProfile
     }
 
   }
