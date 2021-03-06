@@ -50,9 +50,6 @@ export default {
             }
         }
 
-        // check if user is logged in
-        const isLoggedIn = computed(() => store.state.user !== null);
-
         // display the logged in user
         const displayName = computed(() =>
             store.state.user_data
