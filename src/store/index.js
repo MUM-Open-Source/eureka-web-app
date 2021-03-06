@@ -444,10 +444,11 @@ export default createStore({
         });
     },
 
-    SEND_FEEDBACK(_, feedback) {
+    SEND_FEEDBACK(state, feedback) {
       // writing feedback to db
       db.collection("feedbacks").add({
-        id: auth.currentUser.uid,
+        user_id: auth.currentUser.uid,
+        user_name: state.user_data.full_name,
         created_at: firebase.firestore.FieldValue.serverTimestamp(),
         subject: feedback.subject,
         message: feedback.message

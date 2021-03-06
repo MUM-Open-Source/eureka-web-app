@@ -1,7 +1,7 @@
 <template>
   <div className="card">
     <h3>{{ subjectPrettier(feedback.subject) }}</h3>
-    <small>{{datePrettier(feedback.created_at)}}</small>
+    <small>{{datePrettier(feedback.created_at)}} • {{ feedback.user_name }}</small>
     <p>{{ feedback.message }}</p>
   </div>
 </template>
