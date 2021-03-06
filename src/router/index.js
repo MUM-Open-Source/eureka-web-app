@@ -11,7 +11,6 @@ import UserProfile from '@/views/UserProfile.vue';
 import WavesFromTalent from '@/views/WavesFromTalent.vue';
 import WavesFromMentors from '@/views/WavesFromMentors.vue';
 import BrowseEvents from '@/views/BrowseEvents.vue';
-import About from '@/views/About.vue';
 import NotFound from '@/views/NotFound.vue';
 import ResetPassword from '@/views/ResetPassword.vue'
 
@@ -55,13 +54,6 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
-  }, {
-    path: '/about',
-    name: 'About',
-    component: About,
-    meta: {
-      requiresAuth: true
-    }
   }, {
     path: '/profile/info',
 
