@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="inner-div" v-else>
-      <div class="heading">You need admin access</div>
+      <NotFound />
     </div>
   </div>
 </template>
@@ -24,6 +24,7 @@ import EventsPanel from "../components/AdminViews/EventsPanel.vue";
 import FeedbackPanel from "../components/AdminViews/FeedbackPanel.vue";
 import OverviewPanel from "../components/AdminViews/OverviewPanel.vue";
 import UserPanel from "../components/AdminViews/UserPanel.vue";
+import NotFound from "@/views/NotFound.vue";
 import store from "@/store";
 import { computed, ref } from "vue";
 
@@ -34,6 +35,7 @@ export default {
     OverviewPanel,
     UserPanel,
     EventsPanel,
+    NotFound
   },
   name: "Admin",
   setup() {
