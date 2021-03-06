@@ -422,7 +422,6 @@ export default createStore({
       });
     },
 
-<<<<<<< HEAD
     RESET_PASSWORD(_, emailId){
       auth.sendPasswordResetEmail(emailId)
       .then(() => {
@@ -448,8 +447,7 @@ export default createStore({
         })
         .catch(function(error) {
           console.log("Error getting document:", error);
-        });
-=======
+        });},
     UPDATE_USER_PROFILE(_, user){
       // updating user profile
       db.collection("users").doc(auth.currentUser.uid).update({
@@ -502,7 +500,6 @@ export default createStore({
         Swal.fire({icon: 'error', title: error});
       });
 
->>>>>>> userProfile
     }
 
   },
@@ -558,7 +555,6 @@ export default createStore({
     sendFeedback({ commit }, feedback) {
       commit('SEND_FEEDBACK', feedback);
     },
-<<<<<<< HEAD
       
     resetPassword({ commit }, emailId) {
       commit('RESET_PASSWORD', emailId);
@@ -566,7 +562,7 @@ export default createStore({
       
     getWavesFromOtherUsers({ commit }) {
       commit('GET_WAVES_FROM_OTHER_USERS');
-=======
+    },
     updateUserProfile({ commit }, user) {
       commit('UPDATE_USER_PROFILE', user);
     },
@@ -575,9 +571,8 @@ export default createStore({
     },
     setDefaultUserImage({ commit }){
       commit('SET_DEFAULT_USER_IMAGE');
->>>>>>> userProfile
     }
 
   }
 
-});
+  });
