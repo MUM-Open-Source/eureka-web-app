@@ -20,7 +20,7 @@
     </router-link>
     <router-link
       :to="{ name: 'Admin' }"
-      v-if="store.state.user_data?.roles[0] === 'admin'"
+      v-if="store.state.user_data?.roles.includes('admin')"
     >
       <div class="side-nav__group">
         <img class="side-nav__icon" src="@/assets/info-icon.svg" />
