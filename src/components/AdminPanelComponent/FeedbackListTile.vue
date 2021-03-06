@@ -1,7 +1,7 @@
 <template>
   <div className="card">
     <h3>{{ subjectPrettier(feedback.subject) }}</h3>
-    <small>{{datePrettier(Date(feedback.created_at))}}</small>
+    <small>{{datePrettier(feedback.created_at)}}</small>
     <p>{{ feedback.message }}</p>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   }, 
   methods:{
     datePrettier(date){
-      return date.substring(0,15)
+      return date.toDate().toDateString()
     },
     subjectPrettier(subject){          
       return subject[0].toUpperCase() + subject.substring(1).replace("_"," ")
