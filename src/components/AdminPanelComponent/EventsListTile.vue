@@ -1,6 +1,6 @@
 <template>
   <div v-bind:class="{ card: !inEdit, 'editing-card': inEdit }">
-    <div class="leading">
+    <div class="leading pad__t--1">
       <div class="leading">
         <img :src="event.image_url" />
         <div class="data" v-if="!inEdit">
@@ -22,7 +22,7 @@
         </icon-button>
       </div>
     </div>
-    <div v-if="inEdit" class="data">
+    <div v-if="inEdit" class="data pad__b--1">
       <h4>Name</h4>
       <input type="text" v-model="name" />
       <h4>Image</h4>
@@ -107,16 +107,11 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-top: 20px;
-  transition: 1s;
 }
 
 .editing-card {
-  width: calc(100% - 50px);
-  padding: 15px;
   display: flex;
   flex-direction: column;
-  transition: 1s;
 }
 
 .buttons {
