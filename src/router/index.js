@@ -121,6 +121,8 @@ router.beforeEach(async (to, from, next) => {
 
   // to redirect users who aren't logged in
   if (requiresAuth && !isLoggedIn && isLoading) next({ name: 'Home' })
+  // to redirect users accessing login and signup pages before they are authenticated
+  else if (['Login', 'SignUp'].includes(to.name) && isLoading) next({ name: 'Home' })
   else next();
 })
 
