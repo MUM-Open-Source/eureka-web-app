@@ -132,7 +132,6 @@ export default createStore({
         .then(function (doc) {
           if (doc.exists) {
             state.user_data = doc.data();
-            console.log(state.user_data.roles[0] === 'admin')
           } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
