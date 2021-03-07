@@ -120,7 +120,7 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
   // to redirect users who aren't logged in
-  if (requiresAuth && !isLoggedIn && !isLoading) next({ name: 'Login' })
+  if (requiresAuth && !isLoggedIn && isLoading) next({ name: 'Home' })
   else next();
 })
 
