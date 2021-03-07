@@ -48,14 +48,16 @@ export default {
         
         // filter logic
         const calcFilteredUsers = () => {
+            console.log('HELOOOOOOOOOOO<<<')
+            console.log(filter.value);
             return store.state.events.filter((event) => {
                 return (
                     // type
-                    event.type.toLowerCase().match(filter.value.type.replaceAll('_',' ').toLowerCase()) &&
+                    event.type.match(filter.value.type) &&
                     // organizer
-                    event.organizer.toLowerCase().match(filter.value.organizer.replaceAll('_',' ').toLowerCase()) &&
+                    event.organizer.match(filter.value.organizer) &&
                     // name
-                    event.name.toLowerCase().match(filter.value.name.replaceAll('_',' ').toLowerCase())
+                    event.name.match(filter.value.name)
                 )
             })
         }

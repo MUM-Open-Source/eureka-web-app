@@ -86,6 +86,8 @@ export default {
                     console.log(filterOptions.value[key][filter[key]])
                     console.log(key) 
                     newFilter[key] = filterOptions.value[key][filter[key]];
+                } else {
+                    newFilter[key] = '';
                 }                      
             });
             console.log('filter ' + newFilter);
