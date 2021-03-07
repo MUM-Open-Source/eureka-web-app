@@ -7,10 +7,10 @@
     background-color: $color-white;
 
     &__items {
-        &:first-child .user-menu__item {
+        &--loop:first-child .user-menu__item {
             border-radius: $app-border-radius $app-border-radius 0 0;
         }
-        &:last-child .user-menu__item {
+        &:last-child > .user-menu__item {
             border-radius: 0 0 $app-border-radius $app-border-radius;
         }
     }
