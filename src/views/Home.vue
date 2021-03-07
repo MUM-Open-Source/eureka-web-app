@@ -4,7 +4,7 @@
     <div class="home__hero text--center">
       <div class="heading heading--normal">Your Go-To Platform to</div>
       <div class="heading mar__b--2">Network with Monash Talent</div>
-      <div class="body mar__t--2 mar__b--2">
+      <div class="body home__subtitle mar__t--2 mar__b--2">
         Look no further if you need to find others within the Monash SOIT Community with whom you can team up,
         seek guidance or just simply say hi. We aim to make it easier to find people to join you on your unique
         adventures.
@@ -18,7 +18,7 @@
       <img src="@/assets/home-hero-illustration.svg" class="mar__t--3 mar__b--5 home__hero--img" />
     </div>
     <div class="home__features">
-      <div class="row pad--3">
+      <div class="row">
         <img src="@/assets/event-illustration.svg" class="feature__image pad--3" />
         <div class="mar--auto">
           <div class="subheading mar__b--2">Explore Events Happening Around You</div>
@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-      <div class="row pad--3 feature__order--unchanged">
+      <div class="row feature__order--unchanged">
         <div class="mar--auto">
           <div class="subheading mar__b--2">Meet Talent From The Student Community</div>
           <div class="body mar__b--3">
@@ -40,7 +40,7 @@
         </div>
         <img src="@/assets/talent-illustration.svg" class="feature__image pad--3" />
       </div>
-      <div class="row pad--3">
+      <div class="row">
         <img src="@/assets/mentor-illustration.svg" class="feature__image pad--3" />
         <div class="mar--auto">
           <div class="subheading mar__b--2">A Place For Seniors And Alumni To Share Their Expertise</div>
@@ -72,8 +72,8 @@
   </div>
   <div class="home__footer pad--3 text--white">
     <div class="home__footer--left">
-      <div class="tagline cursor__pointer">Privacy</div>
-      <div class="tagline cursor__pointer">Terms & Conditions</div>
+      <div class="tagline cursor__pointer margin">Privacy</div>
+      <div class="tagline cursor__pointer margin">Terms & Conditions</div>
     </div>
     <div>
       <div class="tagline">&copy; {{currentYear}} Eureka Open Source. All rights reserved.</div>
@@ -116,6 +116,9 @@ export default {
   &__features {
     .row {
       display: flex;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .feature__image {
       height: 300px;
@@ -137,6 +140,9 @@ export default {
         margin-left: 30px;
       }
     }
+  }
+  &__subtitle {
+    max-width: 800px;
   }
 }
 
@@ -164,6 +170,9 @@ export default {
   }
   .feature__image {
     padding: 0;
+  }
+  .margin {
+    margin-bottom: $spacer * 1.5;
   }
 }
 </style>
