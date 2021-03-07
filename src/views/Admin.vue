@@ -63,7 +63,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - $top-nav-height);
+  height: calc(100vh - 60px);
   width: 100%;
   .inner-div {
     display: flex;
