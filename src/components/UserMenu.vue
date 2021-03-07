@@ -1,29 +1,32 @@
 <template >
     <div class="user-menu" >
-        <div v-for="(item, i) in menu_items" :key="i" class="user-menu__items">
-            <router-link :to="{ name: item.component_name}">
-                <div class="user-menu__item pad--2">
-                    <img class='user-menu__item--icon' :src="item.icon_src" />
-                    <div class="body">{{ item.title }}</div>
-                </div>
-            </router-link>
-        </div>
-        <div class="user-menu__item pad--2 cursor__pointer" @click="handleLogout">
-            <img class='user-menu__item--icon' src="@/assets/logout-icon.svg" />
-            <div class="body">Logout</div>
+        <div class="user-menu__items">
+            <div v-for="(item, i) in menu_items" :key="i" class="user-menu__items--loop">
+                <router-link :to="{ name: item.component_name}">
+                    <div class="user-menu__item pad--2">
+                        <img class='user-menu__item--icon' :src="item.icon_src" />
+                        <div class="body">{{ item.title }}</div>
+                    </div>
+                </router-link>
+            </div>
+            <div class="user-menu__item pad--2 cursor__pointer" @click="handleLogout">
+                <img class='user-menu__item--icon' src="@/assets/logout-icon.svg" />
+                <div class="body">Logout</div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import store from '@/store';
+
 export default {
     name: 'UserMenu',
 
     setup() {
-        // TODO
         // logging out the user
         const handleLogout = () => {
-            console.log('Logging out');
+            store.dispatch('signoutUser');
         }
 
         // list of menu items to be displayed
