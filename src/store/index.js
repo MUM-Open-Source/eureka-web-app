@@ -72,7 +72,6 @@ export default createStore({
         }
       })
     },
-
     SIGNOUT_USER(state) {
       state.isLoading = true;
       auth.signOut().then(() => {
