@@ -4,9 +4,9 @@
     <div class="home__hero text--center">
       <div class="heading heading--normal">Your Go-To Platform to</div>
       <div class="heading mar__b--2">Network with Monash Talent</div>
-      <div class="body mar__t--2 mar__b--2">
+      <div class="body home__subtitle mar__t--2 mar__b--2">
         Look no further if you need to find others within the Monash SOIT Community with whom you can team up,
-        seek guidance or just simply say hi. We aim to make it easier to find people to join you on your unique 
+        seek guidance or just simply say hi. We aim to make it easier to find people to join you on your unique
         adventures.
       </div>
       <router-link :to="{ name: 'SignUp'}" v-if="isLoggedIn">
@@ -18,34 +18,34 @@
       <img src="@/assets/home-hero-illustration.svg" class="mar__t--3 mar__b--5 home__hero--img" />
     </div>
     <div class="home__features">
-      <div class="row pad--3">
+      <div class="row">
         <img src="@/assets/event-illustration.svg" class="feature__image pad--3" />
-        <div class="pad--3 mar--auto">
-          <div class="subheading">Explore Events Happening Around You</div>
-          <div class="body">
-            Go through the list of events to find something you will potentially be 
-            interested to take part in. You can find upcoming hackathons, datathons, talks, 
+        <div class="mar--auto">
+          <div class="subheading mar__b--2">Explore Events Happening Around You</div>
+          <div class="body mar__b--3">
+            Go through the list of events to find something you will potentially be
+            interested to take part in. You can find upcoming hackathons, datathons, talks,
             workshops and more, all in one location.
           </div>
         </div>
       </div>
-      <div class="row pad--3 feature__order--unchanged">
-        <div class="pad--3 mar--auto">
-          <div class="subheading">Meet Talent From The Student Community</div>
-          <div class="body">
-            Filter and team up with other like-minded students who are just as passionate and 
-            ambitious as you. You might just find your next teammate for a competition, personal 
+      <div class="row feature__order--unchanged">
+        <div class="mar--auto">
+          <div class="subheading mar__b--2">Meet Talent From The Student Community</div>
+          <div class="body mar__b--3">
+            Filter and team up with other like-minded students who are just as passionate and
+            ambitious as you. You might just find your next teammate for a competition, personal
             project and more!
           </div>
         </div>
         <img src="@/assets/talent-illustration.svg" class="feature__image pad--3" />
       </div>
-      <div class="row pad--3">
+      <div class="row">
         <img src="@/assets/mentor-illustration.svg" class="feature__image pad--3" />
-        <div class="pad--3 mar--auto">
-          <div class="subheading">A Place For Seniors And Alumni To Share Their Expertise</div>
-          <div class="body">
-            Network with experienced members of the community who are ready to guide you and your team. 
+        <div class="mar--auto">
+          <div class="subheading mar__b--2">A Place For Seniors And Alumni To Share Their Expertise</div>
+          <div class="body mar__b--5">
+            Network with experienced members of the community who are ready to guide you and your team.
             If you are interested to be a mentor, do get in touch with our team or create an account today!
           </div>
         </div>
@@ -53,17 +53,14 @@
     </div>
   </div>
   <div class="home__develop text--center text--white page-pad">
-    <div class="pad--5">
       <div class="heading mar__b--3">Come Develop This Platform</div>
       <div class="body mar__b--3">
-        We're going Open Source soon and you'll be able to help build and add features 
+        We're going Open Source soon and you'll be able to help build and add features
         to make this platform better! Built by the student community for the community.
       </div>
       <div class="body">Stay tuned for more.</div>
-    </div>
   </div>
   <div class="home__cta page-pad text--center">
-    <div class="pad--5">
       <div class="heading mar__b--2">Ready to Form Your Ultimate Team?</div>
       <div class="body mar__b--3">You solution is just a click away.</div>
       <router-link :to="{ name: 'SignUp'}" v-if="isLoggedIn">
@@ -72,12 +69,11 @@
       <router-link :to="{ name: 'FindTalent'}" v-else>
         <Button text="Find Talent" class="mar--auto mar__t--2 mar__b--2" />
       </router-link>
-    </div>
   </div>
   <div class="home__footer pad--3 text--white">
     <div class="home__footer--left">
-      <div class="tagline cursor__pointer">Privacy</div>
-      <div class="tagline cursor__pointer">Terms & Conditions</div>
+      <div class="tagline cursor__pointer margin">Privacy</div>
+      <div class="tagline cursor__pointer margin">Terms & Conditions</div>
     </div>
     <div>
       <div class="tagline">&copy; {{currentYear}} Eureka Open Source. All rights reserved.</div>
@@ -120,6 +116,9 @@ export default {
   &__features {
     .row {
       display: flex;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .feature__image {
       height: 300px;
@@ -141,6 +140,9 @@ export default {
         margin-left: 30px;
       }
     }
+  }
+  &__subtitle {
+    max-width: 800px;
   }
 }
 
@@ -165,6 +167,12 @@ export default {
         margin-left: 0;
       }
     }
+  }
+  .feature__image {
+    padding: 0;
+  }
+  .margin {
+    margin-bottom: $spacer * 1.5;
   }
 }
 </style>

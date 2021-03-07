@@ -61,7 +61,7 @@ export default {
         const displayPic = computed(() =>
             store.state.user_data
             ? store.state.user_data.image_url
-            : '@/assets/profile-user.svg'
+            : require('@/assets/default-user-image.png')
         );
 
         // identify nav width
