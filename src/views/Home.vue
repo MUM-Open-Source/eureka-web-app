@@ -72,8 +72,12 @@
   </div>
   <div class="home__footer pad--3 text--white">
     <div class="home__footer--left">
-      <div class="tagline cursor__pointer margin">Privacy</div>
-      <div class="tagline cursor__pointer margin">Terms & Conditions</div>
+      <router-link :to="{ name: 'Privacy'}">
+        <div class="tagline cursor__pointer margin text--white">Privacy</div>
+      </router-link>
+      <router-link :to="{ name: 'Terms'}">
+        <div class="tagline cursor__pointer margin text--white">Terms & Conditions</div>
+      </router-link>
     </div>
     <div>
       <div class="tagline">&copy; {{currentYear}} Eureka Open Source. All rights reserved.</div>

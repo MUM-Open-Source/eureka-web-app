@@ -13,6 +13,8 @@ import WavesFromMentors from '@/views/WavesFromMentors.vue';
 import BrowseEvents from '@/views/BrowseEvents.vue';
 import NotFound from '@/views/NotFound.vue';
 import ResetPassword from '@/views/ResetPassword.vue'
+import Terms from '@/views/Terms.vue'
+import Privacy from '@/views/Privacy.vue'
 
 // all the different paths for the SPA
 const routes = [
@@ -96,8 +98,16 @@ const routes = [
     meta: {
       requiresAuth: false
     }
-  },
-  
+  }, {
+    path: '/terms-and-conditions',
+    name: 'Terms',
+    component: Terms,
+  }, {
+    path: '/privacy-policy',
+    name: 'Privacy',
+    component: Privacy,
+  }
+
   // {
   //   path: '/about',
   //   name: 'About',
@@ -113,7 +123,7 @@ const router = createRouter({
   routes
 })
 
-// router guards 
+// router guards
 router.beforeEach(async (to, from, next) => {
   const isLoggedIn = (store.state.user !== null);
   const isLoading = store.state.isLoading;
