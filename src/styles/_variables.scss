@@ -15,7 +15,7 @@ $transition-duration: 0.5s;
 $transition-duration-fast: 0.2s;
 
 
-// used to scale spacing in the app 
+// used to scale spacing in the app
 $spacer: 10px;
 
 // font size
@@ -57,6 +57,7 @@ $top-nav-height: 60px;
 $top-nav-icon-width: 25px;
 $top-nav-img-height: $top-nav-height/2;
 $top-nav-elem-margin: 20px;
+$top-nav-bell-margin: 10px;
 
 // profile card
 $profile-card-width: 280px;
@@ -74,7 +75,7 @@ $event-card-width : 280px;
 $event-card-margin-top: -40px;
 $event-card-heart-width: 25px;
 $event-card-heart-right: 20px;
-$event-card-date-bottom: 20px; 
+$event-card-date-bottom: 20px;
 
 
 // filter
@@ -85,7 +86,7 @@ $filter-inputs-width: 85%;
 $toggle-height: 25px;
 $toggle-width: 45px;
 $toggle-margin-top: 5px;
-$toggle-cicle-dimension: 17px; 
+$toggle-cicle-dimension: 17px;
 $toggle-cicle-border-radius: 50%;
 
 // feedback
