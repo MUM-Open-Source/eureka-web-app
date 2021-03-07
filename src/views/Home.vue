@@ -35,7 +35,7 @@
           <p class="heading mar__b--2">to Share their Expertise</p>
           <p class="tagging">Network with experienced members of the community who are ready</p>
           <p class="tagging">to guide you and your team. If you are interested to be a mentor, do</p>
-          <p class="tagging">get in touch with our team or <a href="/">create an account</a> today</p>
+          <p class="tagging">get in touch with our team or <a href="/SignUp.vue">create an account</a> today</p>
         </div>
       </div>
     </div>
@@ -55,7 +55,7 @@
       <p class="heading mar__b--2">Ready to Form Your Ultimate Team?</p>
       <p class="tagging pad__b--2">You solution is just a click away.</p>
       <div id="button-div">
-        <a id="button" class="tagline text--capsule cursor__pointer">SIGNUP</a>
+        <a id="button" class="tagline text--capsule cursor__pointer" href="/SignUp.vue">SIGNUP</a>
       </div>
     </div>
   </div>
@@ -130,5 +130,17 @@ export default {
   background-color: $color-dark;
   display: flex;
   justify-content: space-between;
+}
+
+@media (max-width: 903px) {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  .column{
+    &__image {
+      width: 100%
+    }
+  }
 }
 </style>
