@@ -15,7 +15,7 @@
             <img id="bell" class="top-nav__icon" src="@/assets/notification-icon.svg" v-if="isLoggedIn" />
             <div class="top-nav__right--user cursor__pointer">
                 <div id="top-nav__name" class="body mar--1">{{ displayName }}</div>
-                <img class="top-nav__profile-img" src="@/assets/profile-user.svg" />
+                <img class="top-nav__profile-img" :src='displayPic' />
             </div>
             <UserMenu v-if="isUserMenuShown" />
         </div>
@@ -57,6 +57,13 @@ export default {
             : 'Login'
         );
 
+        // display the logged in user's profile pic
+        const displayPic = computed(() =>
+            store.state.user_data
+            ? store.state.user_data.image_url
+            : '@/assets/profile-user.svg'
+        );
+
         // identify nav width
         const topNavWidth = computed(() =>
             store.state.isSideNavCollapsed
@@ -66,6 +73,7 @@ export default {
 
         return {
             displayName,
+            displayPic,
             toggleSideNavState,
             isLoggedIn,
             isUserMenuShown,
