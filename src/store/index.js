@@ -4,11 +4,9 @@ import router from '@/router';
 import { db, auth } from "@/firebase";
 import Swal from 'sweetalert2';
 
+
 export default createStore({
   // application-level data
- 
-
-
   state: {
     user: auth.currentUser,               // firebase auth user
     isSideNavCollapsed: true,             // bool to check if sidenav is showing
@@ -16,8 +14,9 @@ export default createStore({
     user_data: null,                      // user data pulled from db
     user_image: null,
     events: [],
-    talent:[],
+    talent: [],
     mentors: [],
+    feedbacks: [],
     liked_events: [],                     // list of events liked by the user
     user_waves: [],                       // list of users waved at by the auth user
     waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -79,7 +78,7 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          Swal.fire({icon: 'error', title: ex.message});
+          Swal.fire({ icon: 'error', title: ex.message });
         });
     },
 
@@ -112,27 +111,28 @@ export default createStore({
         })
         .catch((ex) => {
           //catching errors and display them
-          Swal.fire({icon: 'error', title: ex.message});
+          Swal.fire({ icon: 'error', title: ex.message });
         });
     },
 
-    FETCH_CURRENT_USER_DATA_FROM_DB(state){
+    FETCH_CURRENT_USER_DATA_FROM_DB(state) {
       db.collection("users").doc(auth.currentUser.uid)
         .get()
-        .then(function(doc) {
+        .then(function (doc) {
           if (doc.exists) {
             state.user_data = doc.data();
+            console.log(state.user_data.roles[0] === 'admin')
           } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("Error getting document:", error);
         });
     },
 
-    GET_EVENTS(state){
+    GET_EVENTS(state) {
       db.collection("events")
         .get()
         .then((querySnapshot) => {
@@ -155,10 +155,38 @@ export default createStore({
             state.events.push(doc.data());
           });
         })
-        .catch(function(error) {
-          console.log("Error getting document:"+ error)
+        .catch(function (error) {
+          console.log("Error getting document:" + error)
         });
     },
+    SET_EVENTS(state, eventObj) {
+      db.collection("events")
+        .doc(eventObj.id)
+        .set(eventObj).catch(function (error) {
+          console.log("Error getting document:" + error)
+        });
+    },
+    ADD_EVENTS(state, eventObj) {
+      db.collection("events")
+        .doc(eventObj.id)
+        .set(eventObj).then(() =>
+          state.events.push(eventObj)
+        ).catch(function (error) {
+          console.log("Error getting document:" + error)
+        });
+    },
+    DELETE_EVENTS(state, eventObj) {
+      db.collection("events")
+        .doc(eventObj.id)
+        .delete().then(
+          () => {
+            const index = state.events.findIndex((e) => e.id === eventObj.id)
+            if (index >= 0)
+              state.events.splice(index, 1)
+          }
+        );
+    },
+
 
     GET_LIKED_EVENTS(state) {
       db.collection("event_likes")
@@ -185,8 +213,7 @@ export default createStore({
           });
         });
     },
-    
-    GET_TALENT(state){
+    GET_TALENT(state) {
       db.collection("users")
         .where("id", "!=", auth.currentUser.uid)
         .where("roles", "array-contains", "talent")
@@ -211,12 +238,12 @@ export default createStore({
             state.talent.push(doc.data());
           });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("Error getting document:", error);
         });
     },
 
-    GET_MENTORS(state){
+    GET_MENTORS(state) {
       db.collection("users")
         .where("id", "!=", auth.currentUser.uid)
         .where("roles", "array-contains", "mentor")
@@ -241,7 +268,19 @@ export default createStore({
             state.mentors.push(doc.data());
           });
         })
-        .catch(function(error) {
+        .catch(function (error) {
+          console.log("Error getting document:", error);
+        });
+    },
+    GET_FEEDBACK(state) {
+      db.collection("feedbacks")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            state.feedbacks.push(doc.data());
+          });
+        })
+        .catch(function (error) {
           console.log("Error getting document:", error);
         });
     },
@@ -288,7 +327,7 @@ export default createStore({
       // writing event like to DB
       db.collection("event_likes")
         // from_to -> userId_eventId
-        .doc(auth.currentUser.uid+'_'+eventId)
+        .doc(auth.currentUser.uid + '_' + eventId)
         .set({
           event_id: eventId,
           user_id: auth.currentUser.uid
@@ -322,10 +361,10 @@ export default createStore({
       // writing event like to DB
       db.collection("event_likes")
         // from_to -> userId_eventId
-        .doc(auth.currentUser.uid+'_'+eventId)
+        .doc(auth.currentUser.uid + '_' + eventId)
         .delete()
         // Alert with SweetAlert2
-        .then(() => {          
+        .then(() => {
           likeToast.fire({
             icon: 'success',
             title: 'Uniked event'
@@ -353,7 +392,7 @@ export default createStore({
       // writing event like to DB
       db.collection("user_waves")
         // from_to -> fromUserId_toUserId
-        .doc(auth.currentUser.uid+'_'+toUserId)
+        .doc(auth.currentUser.uid + '_' + toUserId)
         .set({
           from_user_id: auth.currentUser.uid,
           to_user_id: toUserId
@@ -387,10 +426,10 @@ export default createStore({
       // writing event like to DB
       db.collection("user_waves")
         // from_to -> userId_eventId
-        .doc(auth.currentUser.uid+'_'+toUserId)
+        .doc(auth.currentUser.uid + '_' + toUserId)
         .delete()
         // Alert with SweetAlert2
-        .then(() => {          
+        .then(() => {
           waveToast.fire({
             icon: 'success',
             title: 'Removed your wave'
@@ -405,20 +444,21 @@ export default createStore({
         });
     },
 
-    SEND_FEEDBACK(_, feedback) {
+    SEND_FEEDBACK(state, feedback) {
       // writing feedback to db
       db.collection("feedbacks").add({
-        id: auth.currentUser.uid,
+        user_id: auth.currentUser.uid,
+        user_name: state.user_data.full_name,
         created_at: firebase.firestore.FieldValue.serverTimestamp(),
         subject: feedback.subject,
         message: feedback.message
       })
-      .then(() => {
-        Swal.fire({icon: 'success', title: "Thank you!", text: "Your feedback is well received!"});
-      })
-      .catch((error) => {
-        Swal.fire({icon: 'error', title: error});
-      });
+        .then(() => {
+          Swal.fire({ icon: 'success', title: "Thank you!", text: "Your feedback is well received!" });
+        })
+        .catch((error) => {
+          Swal.fire({ icon: 'error', title: error });
+        });
     },
 
     RESET_PASSWORD(_, emailId){
@@ -451,38 +491,42 @@ export default createStore({
 
   },
 
-
   // functions to be called throughout the app that, in turn, call mutations
   actions: {
-    
+
     toggleSideNavState({ commit }) {
       commit('SET_IS_SIDE_NAV_COLLAPSED')
     },
-
     setAuthUser({ commit }) {
       commit('SET_AUTH_USER');
     },
-
     setUser({ commit }, user) {
       commit('SET_USER', user);
     },
-
+    fetchCurrentUserFromDB({ commit }) {
+      commit('FETCH_CURRENT_USER_DATA_FROM_DB')
+    },
     signUpUser({ commit }, user) {
       commit('SIGNUP_USER', user);
     },
-
+    setEvents({ commit }, eventObj) {
+      commit('SET_EVENTS', eventObj);
+    },
     getEvents({ commit }) {
       commit('GET_EVENTS');
     },
-    
+    deleteEvents({ commit }, obj) {
+      commit('DELETE_EVENTS', obj);
+    },
     getTalent({ commit }) {
       commit('GET_TALENT');
     },
-    
+    addEvents({ commit }, obj) {
+      commit('ADD_EVENTS', obj)
+    },
     getMentors({ commit }) {
       commit('GET_MENTORS');
     },
-
     likeEvent({ commit }, eventId) {
       commit('LIKE_EVENT', eventId);
     },
@@ -502,7 +546,11 @@ export default createStore({
     sendFeedback({ commit }, feedback) {
       commit('SEND_FEEDBACK', feedback);
     },
-      
+
+    getFeedbacks({ commit }) {
+      commit('GET_FEEDBACK');
+    },
+
     resetPassword({ commit }, emailId) {
       commit('RESET_PASSWORD', emailId);
     },
@@ -510,7 +558,6 @@ export default createStore({
     getWavesFromOtherUsers({ commit }) {
       commit('GET_WAVES_FROM_OTHER_USERS');
     }
-
   }
 
 });
