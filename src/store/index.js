@@ -1,5 +1,7 @@
 import { createStore } from 'vuex';
-import firebase from 'firebase/app';
+import firebase from 'firebase';
+import firebaseApp from 'firebase/app';
+import 'firebase/auth'
 import router from '@/router';
 import { db, auth, storage } from "@/firebase";
 import Swal from 'sweetalert2';
@@ -21,7 +23,7 @@ export default createStore({
     user_waves: [],                       // list of users waved at by the auth user
     waves_from_other_users: [],           // list of user ids who waved at the auth user
     filters: {
-      event:{
+      event: {
         type: [],
         organizer: [],
         name: [],
@@ -55,13 +57,13 @@ export default createStore({
       auth.onAuthStateChanged(user => {
         if (user) {
           state.user = user;
-          // save the last login in the db
-          db.collection("users").doc(auth.currentUser.uid).set({
-            last_login: firebase.firestore.FieldValue.serverTimestamp()
-          }, { merge: true });
           // fetch the user data
           this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
           state.isLoading = false;
+          // save the last login in the db
+          db.collection("users").doc(auth.currentUser.uid).set({
+            last_login: firebaseApp.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
         } else {
           // resetting the user's details
           state.user = null;
@@ -71,7 +73,6 @@ export default createStore({
         }
       })
     },
-
     SIGNOUT_USER(state) {
       state.isLoading = true;
       auth.signOut().then(() => {
@@ -80,53 +81,69 @@ export default createStore({
         Swal.fire({ icon: 'error', title: error.message });
       });
     },
+    SIGNUP_USER(state, signUpUser) {
+      const DOMAIN_NAMES = ['@student.monash.edu']
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('email');
 
-    SET_USER(state, user) {
-      auth
-        .signInWithEmailAndPassword(user.email, user.password)
-        .then(() => {
-          // authenticated successfully
-          router.push({ name: 'Home' });
-        })
-        .catch((ex) => {
-          //catching errors and display them
-          Swal.fire({ icon: 'error', title: ex.message });
+      function checksEmailMatchesDomains(arrayOfAcceptableDomainNames, userEmail) {
+        return arrayOfAcceptableDomainNames
+          .map((domain_name) => userEmail.toLowerCase().endsWith(domain_name))
+          .includes(true)
+      }
+      function evaluatesUserMail(userEmail, arrayOfAcceptableDomainNames, onAccepted, onRejected) {
+        checksEmailMatchesDomains(arrayOfAcceptableDomainNames, userEmail) ?
+          onAccepted() :
+          onRejected()
+      }
+      function whenAccept(authUser) {
+        db.collection("users").doc(auth.currentUser.uid).set({
+          created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
+          id: auth.currentUser.uid,
+          first_name: signUpUser.first_name,
+          last_name: signUpUser.last_name,
+          full_name: signUpUser.first_name + " " + signUpUser.last_name,
+          image_url: "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b",
+          background: "",
+          bio: "",
+          interests: [],
+          experience_level: 0,
+          roles: [signUpUser.role],    // TODO: retrieve this from the signup form
+          social_links: {
+            email_id: authUser.email,
+            github_url: "",
+            linkedin_url: "",
+            website_url: "",
+          }
+        });
+        router.push({ name: 'Home' });
+      }
+      function whenReject(user, errorMessage) {
+        // If it doesn't match, deletes the user from authentication
+        auth.signOut().then(() => {
+          user.delete();
+          errorMessage()          
+        }).catch((error) => {
+          Swal.fire({ icon: 'error', title: error.message });
+        });        
+      }
+
+      firebase.auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          var user = result.user;
+          var isNewUser = result.additionalUserInfo.isNewUser
+          if (isNewUser) {
+            if (signUpUser)
+              evaluatesUserMail(user.email, DOMAIN_NAMES, () => whenAccept(user),
+                () => whenReject(user, () => Swal.fire({ icon: 'error', title: 'You need a Monash student account' })));
+            else
+              whenReject(user, () => Swal.fire({ icon: 'error', title: 'Please Sign Up Your Account' }))
+          }
+          else
+            router.push({ name: 'Home' });
         });
     },
-
-    SIGNUP_USER(_, user) {
-      auth
-        .createUserWithEmailAndPassword(user.email_id, user.password)
-        .then(() => {
-          //signed up successfully  
-          router.push({ name: 'Profile' });
-          // writing user to db
-          db.collection("users").doc(auth.currentUser.uid).set({
-            created_at: firebase.firestore.FieldValue.serverTimestamp(),
-            id: auth.currentUser.uid,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            full_name: user.first_name + " " + user.last_name,
-            image_url: "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b",
-            background: "",
-            bio: "",
-            interests: [],
-            experience_level: 0,
-            roles: [user.role],    // TODO: retrieve this from the signup form
-            social_links: {
-              email_id: user.email_id,
-              github_url: "",
-              linkedin_url: "",
-              website_url: "",
-            }
-          });
-        })
-        .catch((ex) => {
-          //catching errors and display them
-          Swal.fire({ icon: 'error', title: ex.message });
-        });
-    },
-
     FETCH_CURRENT_USER_DATA_FROM_DB(state) {
       db.collection("users").doc(auth.currentUser.uid)
         .get()
@@ -134,8 +151,7 @@ export default createStore({
           if (doc.exists) {
             state.user_data = doc.data();
           } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
+            console.log('User not found')
           }
         })
         .catch(function (error) {
@@ -233,7 +249,7 @@ export default createStore({
           // fetch users that auth user waved at
           this.commit('GET_USER_WAVES');
           querySnapshot.forEach((doc) => {
-            
+
             // populating the respective filter array
             if (!state.filters.talent.interests.includes(doc.data().interests)) {
               state.filters.talent.interests.push(doc.data().interests)
@@ -244,7 +260,7 @@ export default createStore({
             if (!state.filters.talent.full_name.includes(doc.data().full_name)) {
               state.filters.talent.full_name.push(doc.data().full_name)
             }
-            
+
             // populating the talent array
             state.talent.push(doc.data());
           });
@@ -274,7 +290,7 @@ export default createStore({
             if (!state.filters.mentor.full_name.includes(doc.data().full_name)) {
               state.filters.mentor.full_name.push(doc.data().full_name)
             }
-            
+
             // populating the mentors array
             state.mentors.push(doc.data());
           });
@@ -460,7 +476,7 @@ export default createStore({
       db.collection("feedback").add({
         user_id: auth.currentUser.uid,
         user_name: state.user_data.full_name,
-        created_at: firebase.firestore.FieldValue.serverTimestamp(),
+        created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
         subject: feedback.subject,
         message: feedback.message
       })
@@ -472,20 +488,20 @@ export default createStore({
         });
     },
 
-    RESET_PASSWORD(_, emailId){
+    RESET_PASSWORD(_, emailId) {
       auth.sendPasswordResetEmail(emailId)
-      .then(() => {
-        // Email sent.
-        Swal.fire({icon: 'success', title: "Email sent", text: "Please reset your password with sent link."});
-        router.push('Login');
-      })
-      .catch(error => {
-        // An error happened.
-        Swal.fire({icon: 'error', title: error});
-      });
+        .then(() => {
+          // Email sent.
+          Swal.fire({ icon: 'success', title: "Email sent", text: "Please reset your password with sent link." });
+          router.push('Login');
+        })
+        .catch(error => {
+          // An error happened.
+          Swal.fire({ icon: 'error', title: error });
+        });
     },
 
-    GET_WAVES_FROM_OTHER_USERS(state){
+    GET_WAVES_FROM_OTHER_USERS(state) {
       db.collection("user_waves")
         .where("to_user_id", "==", auth.currentUser.uid)
         .get()
@@ -495,7 +511,7 @@ export default createStore({
             state.waves_from_other_users.push(doc.data().from_user_id);
           });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("Error getting document:", error);
         });},
     UPDATE_USER_PROFILE(_, user){
@@ -566,9 +582,6 @@ export default createStore({
     signoutUser({ commit }) {
       commit('SIGNOUT_USER');
     },
-    setUser({ commit }, user) {
-      commit('SET_USER', user);
-    },
     fetchCurrentUserFromDB({ commit }) {
       commit('FETCH_CURRENT_USER_DATA_FROM_DB')
     },
@@ -620,7 +633,7 @@ export default createStore({
     resetPassword({ commit }, emailId) {
       commit('RESET_PASSWORD', emailId);
     },
-      
+
     getWavesFromOtherUsers({ commit }) {
       commit('GET_WAVES_FROM_OTHER_USERS');
     },
