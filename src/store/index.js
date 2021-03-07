@@ -62,11 +62,22 @@ export default createStore({
           this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
           state.isLoading = false;
         } else {
+          // resetting the user's details
           state.user = null;
+          state.user_data = null;
           state.isLoading = false;
           router.push({ name: 'Home' });
         }
       })
+    },
+
+    SIGNOUT_USER(state) {
+      state.isLoading = true;
+      auth.signOut().then(() => {
+        Swal.fire({ icon: 'success', title: "You have logged out" });
+      }).catch((error) => {
+        Swal.fire({ icon: 'error', title: error.message });
+      });
     },
 
     SET_USER(state, user) {
@@ -499,6 +510,9 @@ export default createStore({
     },
     setAuthUser({ commit }) {
       commit('SET_AUTH_USER');
+    },
+    signoutUser({ commit }) {
+      commit('SIGNOUT_USER');
     },
     setUser({ commit }, user) {
       commit('SET_USER', user);

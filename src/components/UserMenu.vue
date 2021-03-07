@@ -16,14 +16,15 @@
 </template>
 
 <script>
+import store from '@/store';
+
 export default {
     name: 'UserMenu',
 
     setup() {
-        // TODO
         // logging out the user
         const handleLogout = () => {
-            console.log('Logging out');
+            store.dispatch('signoutUser');
         }
 
         // list of menu items to be displayed
