@@ -101,6 +101,8 @@ export default {
             name: '',
         })
 
+        
+
         // passing the filter data to the parent
         const updateFilter = () => {
             // replacing null fields with empty string 

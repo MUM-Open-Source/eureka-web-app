@@ -15,12 +15,7 @@
                 :searchable="true"
                 :caret="false"
                 placeholder="Type"
-                :options="{
-                    hackathon: 'Hackathon',
-                    datathon: 'Datathon',
-                    workshop: 'Workshop',
-                    panel_talk: 'Panel Talk'
-                }"
+                :options="filterOptions.type"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -30,10 +25,7 @@
                 :searchable="true"
                 :caret="false"
                 placeholder="Organizer"
-                :options="{
-                    monash_university: 'Monash University',
-                    jolliebean: 'Jolliebean'
-                }"
+                :options="filterOptions.organizer"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -43,11 +35,7 @@
                 :searchable="true"
                 :caret="false"
                 placeholder="Name"
-                :options="{
-                    quick_hack: 'Quick Hack',
-                    quickly_hack: 'Quickly Hack',
-                    hack_the_sea: 'Hack The SEA'
-                }"
+                :options="filterOptions.name"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -61,7 +49,8 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { ref, reactive } from 'vue';
+import store from '@/store';
 import Multiselect from '@vueform/multiselect';
 // import Toggle from '@/components/Toggle';
 
@@ -77,18 +66,37 @@ export default {
             name: ''
         })
 
+        let newFilter = {
+            type: '',
+            organizer :'',
+            name: ''
+        }
+
+        // get the filter value
+        const filterOptions = ref(store.state.filters.event);
+
+        
+
         // passing the filter data to the parent
         const updateFilter = () => {
             // replacing null fields with empty string 
             Object.keys(filter).forEach(function(key) {
-                if (filter[key] == null) filter[key] = ''
+                if (Number.isInteger(filter[key])){
+                    console.log('before' + filter[key]) 
+                    console.log(filterOptions.value[key][filter[key]])
+                    console.log(key) 
+                    newFilter[key] = filterOptions.value[key][filter[key]];
+                }                      
             });
+            console.log('filter ' + newFilter);
+            
 
-            context.emit('update-filter', filter);
+            context.emit('update-filter', newFilter);
         }
 
         return {
             filter,
+            filterOptions,
             updateFilter
         }
     }
