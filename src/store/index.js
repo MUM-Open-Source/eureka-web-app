@@ -16,7 +16,7 @@ export default createStore({
     events: [],
     talent: [],
     mentors: [],
-    feedbacks: [],
+    feedback: [],
     liked_events: [],                     // list of events liked by the user
     user_waves: [],                       // list of users waved at by the auth user
     waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -283,11 +283,11 @@ export default createStore({
         });
     },
     GET_FEEDBACK(state) {
-      db.collection("feedbacks")
+      db.collection("feedback")
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            state.feedbacks.push(doc.data());
+            state.feedback.push(doc.data());
           });
         })
         .catch(function (error) {
@@ -456,7 +456,7 @@ export default createStore({
 
     SEND_FEEDBACK(state, feedback) {
       // writing feedback to db
-      db.collection("feedbacks").add({
+      db.collection("feedback").add({
         user_id: auth.currentUser.uid,
         user_name: state.user_data.full_name,
         created_at: firebase.firestore.FieldValue.serverTimestamp(),
@@ -560,7 +560,7 @@ export default createStore({
       commit('SEND_FEEDBACK', feedback);
     },
 
-    getFeedbacks({ commit }) {
+    getFeedback({ commit }) {
       commit('GET_FEEDBACK');
     },
 

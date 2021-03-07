@@ -1,9 +1,9 @@
 <template>
   <div className="outer-div">
     <FeedbackListTile
-      v-for="feedback in feedbacks"
-      :key="feedback.key"
-      :feedback="feedback"
+      v-for="satuFeedback in feedback"
+      :key="satuFeedback.key"
+      :feedback="satuFeedback"
     />
   </div>
 </template>
@@ -17,13 +17,13 @@ export default {
   name: "FeedbackPanel",
   setup() {
     onMounted(() => {
-      if (!store.state.feedbacks || store.state.feedbacks.length ===0) {
-        store.dispatch("getFeedbacks");
+      if (!store.state.feedback || store.state.feedback.length ===0) {
+        store.dispatch("getFeedback");
       }
     });
-    const feedbacks = ref(store.state.feedbacks);
+    const feedback = ref(store.state.feedback);
     return {
-      feedbacks,
+      feedback,
     };
   },
 };
