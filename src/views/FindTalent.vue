@@ -50,15 +50,29 @@ export default {
         // filter logic
         const calcFilteredUsers = () => {
             return store.state.talent.filter((user) => {
+
+
+                //added this here because user.experience_level is an integer but filter.value.experience_level is a string (proxy)
+                // console.log(filter.value.experience_level)
+                if (filter.value.experience_level === 'Beginner'){
+                    filter.value.experience_level = 0
+                }
+                else if (filter.value.experience_level=== 'Intermediate'){
+                    filter.value.experience_level = 1
+                }
+                else if (filter.value.experience_level === ' Advanced'){
+                    filter.value.experience_level = 2
+                }
+                // console.log(filter.value.experience_level)
                 return (
                     // interests
-                    (user.interests.includes(filter.value.interest.replaceAll('_',' ').toLowerCase()) || filter.value.interest === '') &&
+                    (user.interests.includes(filter.value.interests) || filter.value.interests === '') &&
                     // experience
-                    (user.experience_level.toString() === filter.value.experience_level || filter.value.experience_level === '') &&
+                    (user.experience_level === filter.value.experience_level || filter.value.experience_level === '') &&
                     // degree
-                    user.background.toLowerCase().match(filter.value.degree.replaceAll('_',' ').toLowerCase()) &&
+                    user.background.match(filter.value.background) &&
                     // name
-                    user.full_name.toLowerCase().match(filter.value.name.replaceAll('_',' ').toLowerCase())
+                    user.full_name.match(filter.value.full_name)
                 )
             })
         }

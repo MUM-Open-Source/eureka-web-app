@@ -9,7 +9,7 @@
                 :searchable="true"
                 :caret="false"
                 placeholder="Interest"
-                :options='user?.interests'
+                :options='filterOptions.interests'
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -29,11 +29,7 @@
                 :searchable="true"
                 :caret="false"
                 placeholder="Degree"
-                :options="{
-                    data_science: 'Data Science', 
-                    computer_science: 'Computer Science', 
-                    software_engineering: 'Software Engineering'
-                }"
+                :options="filterOptions.background"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -69,7 +65,7 @@
 </template>
 s
 <script>
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive } from 'vue';
 import store from '@/store';
 import Multiselect from '@vueform/multiselect';
 // import Toggle from '@/components/Toggle';
@@ -97,9 +93,8 @@ export default {
         }
 
         const filterOptions = ref(store.state.filters.talent);
-        console.log(filterOptions.value.interests)
+        console.log(filterOptions.value.experience_level)
 
-        const user = computed(() => store.state.user_data);
 
         // passing the filter data to the parent
         const updateFilter = () => {
@@ -119,7 +114,7 @@ export default {
         return {
             filter,
             filterOptions,
-            user,
+            
             updateFilter
         }
     }

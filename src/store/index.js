@@ -197,10 +197,13 @@ export default createStore({
           querySnapshot.forEach((doc) => {
             
             // populating the respective filter array
-            if (!state.filters.talent.interests.includes(doc.data().interests)) {
-              state.filters.talent.interests.push(doc.data().interests)
-            }
-            if (!state.filters.talent.background.includes(doc.data().background)) {
+            doc.data().interests.forEach((interest)=>{
+              if (!state.filters.talent.interests.includes(interest)) {
+                state.filters.talent.interests.push(interest)
+              }
+            })
+            
+            if (!state.filters.talent.background.includes(doc.data().background) && doc.data().background != '') {
               state.filters.talent.background.push(doc.data().background)
             }
             if (!state.filters.talent.full_name.includes(doc.data().full_name)) {
