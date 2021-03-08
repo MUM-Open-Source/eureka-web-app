@@ -48,8 +48,6 @@ export default {
         
         // filter logic
         const calcFilteredUsers = () => {
-            console.log('HELOOOOOOOOOOO<<<')
-            console.log(filter.value);
             return store.state.events.filter((event) => {
                 return (
                     // type

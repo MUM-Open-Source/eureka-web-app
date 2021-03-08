@@ -5,35 +5,27 @@
         <div class="filter__inputs">
             <Multiselect
                 class="mar__t--2 mar__b--2"
-                v-model="filter.interest"
+                v-model="filter.interests"
                 :searchable="true"
                 :caret="false"
                 placeholder="Interest"
-                :options="{
-                    python: 'Python', 
-                    consumerism: 'Consumerism', 
-                    tensorflow: 'TensorFlow'
-                }"
+                :options='user?.interests'
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
             <Multiselect
                 class="mar__t--2 mar__b--2"
-                v-model="filter.experience"
+                v-model="filter.experience_level"
                 :searchable="true"
                 :caret="false"
                 placeholder="Experience"
-                :options="{
-                    '1': 'Beginner', 
-                    '2': 'Intermediate', 
-                    '3': 'Advanced'
-                }"
+                :options="filterOptions.experience_level"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
             <Multiselect
                 class="mar__t--2 mar__b--2"
-                v-model="filter.degree"
+                v-model="filter.background"
                 :searchable="true"
                 :caret="false"
                 placeholder="Degree"
@@ -59,17 +51,11 @@
             /> -->
             <Multiselect
                 class="mar__t--2 mar__b--2"
-                v-model="filter.name"
+                v-model="filter.full_name"
                 :searchable="true"
                 :caret="false"
                 placeholder="Name"
-                :options="{
-                    yasheen_peiris: 'Yasheen Peiris', 
-                    mike_kevin_balapitiya: 'Mike Kevin Balapitiya', 
-                    jun_ming_khong: 'Jun Ming Khong',
-                    nitin_mathew: 'Nitin Mathew',
-                    tommy_mcwell: 'Tommy McWell'
-                }"
+                :options="filterOptions.full_name"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -81,9 +67,10 @@
         </div>
     </div>
 </template>
-
+s
 <script>
-import { reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
+import store from '@/store';
 import Multiselect from '@vueform/multiselect';
 // import Toggle from '@/components/Toggle';
 
@@ -94,27 +81,45 @@ export default {
 
         // reactive filter data point
         const filter = reactive({
-            interest: '',
-            experience: '',
-            degree: '',
-            event: '',
-            name: '',
+            interests: '',
+            experience_level: '',
+            background: '',
+            // event: '',
+            full_name: '',
         })
 
-        
+        let newFilter = {
+            interests: '',
+            experience_level: '',
+            background: '',
+            // event: '',
+            full_name: '',
+        }
+
+        const filterOptions = ref(store.state.filters.talent);
+        console.log(filterOptions.value.interests)
+
+        const user = computed(() => store.state.user_data);
 
         // passing the filter data to the parent
         const updateFilter = () => {
             // replacing null fields with empty string 
             Object.keys(filter).forEach(function(key) {
-                if (filter[key] == null) filter[key] = ''
-            });
+                if (Number.isInteger(filter[key])){ 
+                    newFilter[key] = filterOptions.value[key][filter[key]];
+                }
+                else {
+                    newFilter[key] = '';
+                }                      
+            });           
 
-            context.emit('update-filter', filter);
+            context.emit('update-filter', newFilter);
         }
 
         return {
             filter,
+            filterOptions,
+            user,
             updateFilter
         }
     }

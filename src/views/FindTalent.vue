@@ -54,7 +54,7 @@ export default {
                     // interests
                     (user.interests.includes(filter.value.interest.replaceAll('_',' ').toLowerCase()) || filter.value.interest === '') &&
                     // experience
-                    (user.experience_level.toString() === filter.value.experience || filter.value.experience === '') &&
+                    (user.experience_level.toString() === filter.value.experience_level || filter.value.experience_level === '') &&
                     // degree
                     user.background.toLowerCase().match(filter.value.degree.replaceAll('_',' ').toLowerCase()) &&
                     // name

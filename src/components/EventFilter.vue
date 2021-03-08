@@ -81,17 +81,12 @@ export default {
         const updateFilter = () => {
             // replacing null fields with empty string 
             Object.keys(filter).forEach(function(key) {
-                if (Number.isInteger(filter[key])){
-                    console.log('before' + filter[key]) 
-                    console.log(filterOptions.value[key][filter[key]])
-                    console.log(key) 
+                if (Number.isInteger(filter[key])){ 
                     newFilter[key] = filterOptions.value[key][filter[key]];
                 } else {
                     newFilter[key] = '';
                 }                      
-            });
-            console.log('filter ' + newFilter);
-            
+            });           
 
             context.emit('update-filter', newFilter);
         }
