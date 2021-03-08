@@ -10,8 +10,15 @@
 }
 
 body {
+    // Removes scroll bars
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
     margin-top: $top-nav-height;
     transition: padding-right 0s;   // to avoid the body content jump when displaying SweetAlert
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 
