@@ -15,6 +15,7 @@ export default createStore({
     events: [],
     talent:[],
     mentors: [],
+    upload_image_url:"",
   },
 
   // functions that affect the state
@@ -189,21 +190,29 @@ export default createStore({
       });
       
     },
+    //set user image url only in db
+    SET_USER_IMAGE_URL(_,url){
+      db.collection("users").doc(auth.currentUser.uid).update({
+        image_url: url
+      })
+      .then(() => {
+        this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
+        Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile picture is updated!"});
+        router.push({ path: '/profile'});
+      })
+      .catch((error) => {
+        Swal.fire({icon: 'error', title: error});
+      });
+
+    },
+
+
     UPLOAD_USER_IMAGE(_, user){
       const task = storage.ref().child(user.fileName).put(user.file,user.metadata)
       task
       .then(snapshot => snapshot.ref.getDownloadURL())
       .then(url => {
-        db.collection("users").doc(auth.currentUser.uid).update({
-          image_url: url
-        })
-        .then(() => {
-          this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
-          Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile picture is updated!"});
-        })
-        .catch((error) => {
-          Swal.fire({icon: 'error', title: error});
-        });
+        this.commit('SET_USER_IMAGE_URL',url)
       })
     },
     SET_DEFAULT_USER_IMAGE(){
@@ -218,7 +227,17 @@ export default createStore({
         Swal.fire({icon: 'error', title: error});
       });
 
-    }
+    },
+    
+    UPLOAD_USER_CROPPED_IMAGE(state,user){
+      const task = storage.ref().child(user.fileName).put(user.file,user.metadata)
+      task
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(url => {
+        state.upload_image_url = url;
+        router.push({ path: '/profile/crop-image'});
+      })
+    },
 
   },
 
@@ -265,6 +284,12 @@ export default createStore({
     },
     setDefaultUserImage({ commit }){
       commit('SET_DEFAULT_USER_IMAGE');
+    },
+    uploadUserCroppedImage({commit},user){
+      commit('UPLOAD_USER_CROPPED_IMAGE',user);
+    },
+    setUserImageURL({commit},image_url){
+      commit('SET_USER_IMAGE_URL', image_url)
     }
 
   }

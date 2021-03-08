@@ -158,12 +158,12 @@ import RoundImage from '@/components/RoundImage';
 import Button from '@/components/Button';
 import ProfileInputField from '@/components/ProfileInputField';
 import Multiselect from '@vueform/multiselect';
-import Swal from 'sweetalert2';
+
 
 
 export default {
   name: 'UserProfile',
-  components: { RoundImage, Button, ProfileInputField, Multiselect },
+  components: { RoundImage, Button, ProfileInputField, Multiselect},
 
   setup() {
 
@@ -240,11 +240,19 @@ export default {
     function handleImageUpload(){
         //handles image upload
         const file = document.querySelector("#imageUpload").files[0]
+        console.log(file)
+        console.log(document.querySelector("#imageUpload").files)
         if (file){
-            Swal.fire({icon: 'success', title: "Buffering", text: "The process takes a bit of time"});
             const fileName = new Date() + '-' + file.name;
             const metadata = {contentType:file.type}
-            store.dispatch('uploadUserImage', {file:file, fileName:fileName, metadata:metadata})
+            store.dispatch('uploadUserCroppedImage', {file:file, fileName:fileName, metadata:metadata});
+
+
+            ////normal image upload
+            //Swal.fire({icon: 'success', title: "Buffering", text: "The process takes a bit of time"});
+            // const fileName = new Date() + '-' + file.name;
+            // const metadata = {contentType:file.type}
+            // store.dispatch('uploadUserImage', {file:file, fileName:fileName, metadata:metadata})
         }
     }
     function setDefaultImage(){
@@ -266,6 +274,7 @@ export default {
         }
     }
 
+
     return {
         state,
         user,
@@ -278,7 +287,7 @@ export default {
         selectedInterests,
         handleImageUpload,
         setDefaultImage,
-        hasDefaultImage
+        hasDefaultImage,
     }
 
   }

@@ -12,6 +12,7 @@ import WavesFromMentors from '@/views/WavesFromMentors.vue';
 import BrowseEvents from '@/views/BrowseEvents.vue';
 import About from '@/views/About.vue';
 import NotFound from '@/views/NotFound.vue';
+import CropImage from '@/views/CropImage.vue';
 
 
 // all the different paths for the SPA
@@ -73,7 +74,16 @@ const routes = [
     meta: {
       requiresAuth: true
     }
-  }, {
+  },{
+    path: '/profile/crop-image',
+    name: 'CropImage',
+    component: CropImage,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  
+  {
     path: '/profile/waves-from-talent',
     name: 'WavesFromTalent',
     component: WavesFromTalent,
