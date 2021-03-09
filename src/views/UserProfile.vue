@@ -1,7 +1,7 @@
 <template>
     <div class="user-profile page-pad">
       <div class="profile__page">
-        <div class="profile__menu mar__b--3">
+        <!-- <div class="profile__menu mar__b--3">
             <router-link :to="{ name: 'Profile'}">
                 <div class="active profile__menu--option pad__t--1 pad__b--1">
                     <img class="profile__menu--icon" src="@/assets/profile-user-icon.svg" />
@@ -20,22 +20,22 @@
                     <div class="body">Waves from mentors</div>
                 </div>
             </router-link>
-        </div>
+        </div> -->
+        <div class="heading mar__b--3 text--center">User Profile</div>
         <div class="profile__content">
-            <!-- <div class="heading mar__b--3 text--center">User Profile</div> -->
-            <div class="profile__img">
+            <div class="profile__img text--center">
                 <RoundImage :src="user?.image_url" alt="" class="profile__img--roundImage" id="user-image"/>
                 <div class="profile__img--upload mar__t--1">
-                        <form class="btn-chooseFile" >
-                            <label for="imageUpload"></label>
-                            <input type="file" id="imageUpload">
-                        </form>
-                        <div class = "image-button-wrapper">
+                    <form class="btn-chooseFile">
+                        <label for="imageUpload" class="custom-file-upload">lol</label>
+                        <input type="file" id="imageUpload" class="inputfile">
+                    </form>
+                    <div class = "image-button-wrapper">
                         <Button class="btn-upload" text="Upload" @click='handleImageUpload' />
                         <div v-if="!hasDefaultImage">
-                        <Button  class="btn-setDefaultImage" text="set Default Image" @click='setDefaultImage' /> 
+                            <Button class="btn-setDefaultImage" text="set Default Image" @click='setDefaultImage' /> 
                         </div>
-                        </div>
+                    </div>
                     <div class="tagline mar__t--1">Acceptable formats: jpg, png</div>
                 </div>
             </div>
@@ -297,22 +297,31 @@ export default {
 <style src="@vueform/multiselect/themes/default.css"></style>
 <style lang="scss" scoped>
 @import '@/styles/components/multiselect';
+@import '@/styles/components/button';
 input[type=file]::-webkit-file-upload-button {
-    background-image: linear-gradient(to right, #5986E1, #7450CB);
-    font-family: inherit;
-    color: white;
-    font-size: 110%;
-    padding: 14px 28px;
-    text-transform: uppercase;
-    border: none;
-    border-radius: $btn-border-radius;
-    z-index: 0;
-    &:focus {
-        outline: 0;
-    }
-    &:hover {
-        cursor: pointer;
-    }
+    // background-image: linear-gradient(to right, #5986E1, #7450CB);
+    // font-family: inherit;
+    // color: white;
+    // font-size: 110%;
+    // padding: 14px 28px;
+    // text-transform: uppercase;
+    // border: none;
+    // border-radius: $btn-border-radius;
+    // z-index: 0;
+    // &:focus {
+    //     outline: 0;
+    // }
+    // &:hover {
+    //     cursor: pointer;
+    // }
+    // display: inline-block;
+    // width: 50px;
+    // margin-left: auto;
+    // margin-right: auto;
+    // text-align: center !important;
+}
+.custom-file-upload {
+    // display: inline-block;
 }
 .image-button-wrapper{
     display: flex;
@@ -321,20 +330,20 @@ input[type=file]::-webkit-file-upload-button {
 
 .btn {
     &-upload {
-        font-size: 12px;
-        padding: 5px 10px;
-        margin-left:180px;
+        // font-size: 12px;
+        // padding: 5px 10px;
+        // margin-left:180px;
     }
     &-setDefaultImage{
-        font-size: 12px;
-        padding: 5px 10px;
-        margin-left:4px;
+        // font-size: 12px;
+        // padding: 5px 10px;
+        // margin-left:4px;
 
     }
 }
 
 .body{
-    font-size: 95%;
+    // font-size: 95%;
 }
 .user-profile {
     display: flex;
@@ -355,8 +364,12 @@ input[type=file]::-webkit-file-upload-button {
 }
 
 .profile {
+    &__page {
+        width: 100%;
+    }
     &__content{
         display:flex;
+        justify-content: center;
     }
     &__menu {
         display: flex;
@@ -389,23 +402,23 @@ input[type=file]::-webkit-file-upload-button {
     &__img {
         display: flex;
         flex-direction: column;
-        margin-left: 10%;
+        // margin-left: 10%;
         //align-items: center;
         //justify-content: center;
         &--upload {
-            margin-top: 20%;
-            margin-left: 0;
+            // margin-top: 20%;
+            // margin-left: 0;
             width:max-content;
             height: max-content;
         }
         &--roundImage{
-            margin-top: 20%;
-            margin-left: 15%;
+            // margin-top: 20%;
+            // margin-left: 15%;
         }
     }
     &__inputs {
         display: flex;
-        margin-left: 20%;
+        // margin-left: 20%;
        // margin-right: 0;
         flex-direction: column;
         flex-wrap: wrap;
@@ -416,14 +429,14 @@ input[type=file]::-webkit-file-upload-button {
             margin-right: 0px;
         }
         &--interests{
-            margin-top:8px;
-            margin-bottom:24px;
+            // margin-top:8px;
+            // margin-bottom:24px;
         }
         &--wrapper{
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-left: 60px;
+            // margin-left: 60px;
         }
     }
 }
