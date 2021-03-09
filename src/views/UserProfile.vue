@@ -72,10 +72,10 @@
                 <ProfileInputField 
                     class="mar__b--2" 
                     id="background" 
-                    label="Background (Degree/Job)" 
+                    :label="helper.backgroundLabel" 
                     type="text"
                     :value='user?.background' 
-                    placeholder="Computer Science" 
+                    :placeholder="helper.backgroundPlaceholder" 
                     @change="handleInputsUpdate"
                 />
                 <ProfileInputField 
@@ -114,14 +114,14 @@
                     placeholder="https://google.com"
                     @change="handleInputsUpdate"
                 />
-                <div class= "user-profile__multiselect--tagline">Interest</div>
+                <div class= "user-profile__multiselect--tagline">{{ helper.skillsLabel }}</div>
                 <Multiselect 
                     v-model="interest_value"
                     mode="tags"
                     :searchable="true"
                     :options="interestMenu.options"
-                    :max="6"
-                    placeholder="Enter up to 6 interests"
+                    :max="5"
+                    :placeholder="helper.skillsPlaceholder"
                     class="body user-profile__multiselect"
                     :createTag = "true"
                     @select = addInterest
@@ -169,8 +169,15 @@ export default {
 
     // fetching the user details with default data provided
     const user = computed(() => store.state.user_data);
+    const isUserTalent = computed(() => user.value.roles.includes('talent'));
+    const helper = {
+        backgroundLabel: isUserTalent.value ? 'Current Degree' : 'Job Title',
+        backgroundPlaceholder: isUserTalent.value ? 'Computer Science' : 'Software Engineer',
+        skillsLabel: isUserTalent.value ? 'Interests' : 'Skills',
+        skillsPlaceholder: "Enter upto 5 " + (isUserTalent.value ? 'interests' : 'skills')
+    }
     const interest_value = computed(() => store.state.user_data.interests);
-    const hasDefaultImage = computed(() => 
+    const hasDefaultImage = computed(() =>  
     store.state.user_data.image_url == 
     "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b");
     
@@ -278,6 +285,7 @@ export default {
     return {
         state,
         user,
+        helper,
         interest_value,
         handleInputsUpdate,
         handleInfoUpdate,
