@@ -57,7 +57,7 @@ import Multiselect from '@vueform/multiselect';
 export default {
     name: 'EventFilter',
     components: { Multiselect },
-    setup(props, context) {
+    setup(_, context) {
 
         // reactive filter data point
         const filter = reactive({
@@ -66,29 +66,30 @@ export default {
             name: ''
         })
 
-        let newFilter = {
+        // using a duplicate of filter to pass values to the parent
+        let filterToEmit = {
             type: '',
             organizer :'',
             name: ''
         }
 
         // get the filter value
-        const filterOptions = ref(store.state.filters.event);
-
-        
+        const filterOptions = ref(store.state.filters.event);       
 
         // passing the filter data to the parent
         const updateFilter = () => {
-            // replacing null fields with empty string 
+            // populating the filter object to return to parent
             Object.keys(filter).forEach(function(key) {
                 if (Number.isInteger(filter[key])){ 
-                    newFilter[key] = filterOptions.value[key][filter[key]];
+                    // convert index number to actual value
+                    filterToEmit[key] = filterOptions.value[key][filter[key]];
                 } else {
-                    newFilter[key] = '';
+                    // empty string for rest
+                    filterToEmit[key] = '';
                 }                      
             });           
 
-            context.emit('update-filter', newFilter);
+            context.emit('update-filter', filterToEmit);
         }
 
         return {
