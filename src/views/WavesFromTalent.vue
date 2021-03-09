@@ -1,98 +1,74 @@
 <template>
-    <div class="user-profile page-pad">
-        <div class="profile__menu mar__b--3">
-            <div class="subheading mar__b--1">Explore</div>
-            <router-link :to="{ name: 'Profile'}">
-                <div class="profile__menu--option pad__t--1 pad__b--1">
-                    <img class="profile__menu--icon" src="@/assets/profile-user-icon.svg" />
-                    <div class="body">User info</div>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'WavesFromTalent'}">
-                <div class="active profile__menu--option pad__t--1 pad__b--1">
-                    <img class="profile__menu--icon" src="@/assets/profile-talent-icon.svg" />
-                    <div class="body">Waves from talent</div>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'WavesFromMentors'}">
-                <div class="profile__menu--option pad__t--1 pad__b--1">
-                    <img class="profile__menu--icon" src="@/assets/profile-mentor-icon.svg" />
-                    <div class="body">Waves from mentors</div>
-                </div>
-            </router-link>
+    <div class="waves-from-users page-pad">
+        <div class="waves-from-users__content">
+            <div class="waves-from-users__content--title mar__b--3 text--center">
+                <div class="tagline">These Users Waved At You. Wave back!</div>
+                <div class="heading">Waves From Talent</div>
+            </div>
+            <div class="users">
+                <ProfileCard 
+                    v-for="user in wavesFromTalent" 
+                    :key="user.key"
+                    :user="user"
+                />
+            </div>
         </div>
-        <div class="profile__content">
-            <ProfileCard 
-                v-for="user in testUsers" 
-                :key="user.key"
-                :name="user.name"
-                :image="user.image"
-                :experienceLevel="user.experience_level"
-                :remainingExperience="3-user.experience_level"
-                :background="user.background"
-                :bio="user.bio"
-                :interests="user.interests"
-                :email="user.socials.email"
-                :linkedin="user.socials.linkedin"
-                :github="user.socials.github"
-                :website="user.socials.website"
-                :wave="user.wave"
-            />
-        </div>
-  </div>  
+    </div> 
 </template>
 
 <script>
-import {testUsers} from '@/assets/testUsers.js';    // test users
+import { onMounted, computed } from 'vue';
+import store from '@/store';
 import ProfileCard from '@/components/ProfileCard';
 
 export default {
-  name: 'WavesFromTalent',
-  components: { ProfileCard },
+    name: 'WavesFromTalent',
+    components: { ProfileCard },
+    setup() {
 
-  setup() {
-      
-    return {
-        testUsers
+        // mounted
+        onMounted(() => {
+            // fetch the data if there is nothing to display
+            if (!store.state.talent.length) {
+                store.dispatch('getTalent');
+            }
+            if (!store.state.waves_from_other_users.length) {
+                store.dispatch('getWavesFromOtherUsers');
+            }
+        })
+        
+        // the input to the ProfileCard
+        const wavesFromTalent = computed(() => store.state.talent.filter(hasGivenWave));
+
+        const hasGivenWave = (value) => store.state.waves_from_other_users.includes(value.id);
+
+        return { wavesFromTalent }
+
     }
-
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-.user-profile {
+.waves-from-users {
+    display: flex;
+    &__content {
+        width: 100%;
+    }
+}
+.users {
     display: flex;
     flex-direction: row;
-}
-.profile {
-    &__menu {
-        display: flex;
-        flex-direction: column;
-        max-width: 220px;
-        width: 90%;
-        &--option {
-            display: flex;
-            flex-direction: row;
-        }
-        &--icon {
-            height: 25px;
-            margin-right: 10px;
-        }
-        .active {
-            border-right: 3px solid $color-brand;
-        }
-    }
-    &__content {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-    }
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 @media (max-width: 736px) {
-    .user-profile {
+    .waves-from-users {
         flex-direction: column;
-        align-items: center;
+        &__content {
+            &--title {
+                text-align: center;
+            }
+        }
     }
 }
 </style>

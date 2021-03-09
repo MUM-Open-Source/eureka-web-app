@@ -15,12 +15,7 @@
                 :searchable="true"
                 :caret="false"
                 placeholder="Type"
-                :options="{
-                    hackathon: 'Hackathon',
-                    datathon: 'Datathon',
-                    workshop: 'Workshop',
-                    panel_talk: 'Panel Talk'
-                }"
+                :options="filterOptions.type"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -30,10 +25,7 @@
                 :searchable="true"
                 :caret="false"
                 placeholder="Organizer"
-                :options="{
-                    monash_university: 'Monash University',
-                    jolliebean: 'Jolliebean'
-                }"
+                :options="filterOptions.organizer"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -43,11 +35,7 @@
                 :searchable="true"
                 :caret="false"
                 placeholder="Name"
-                :options="{
-                    quick_hack: 'Quick Hack',
-                    quickly_hack: 'Quickly Hack',
-                    hack_the_sea: 'Hack The SEA'
-                }"
+                :options="filterOptions.name"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -61,14 +49,15 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { ref, reactive } from 'vue';
+import store from '@/store';
 import Multiselect from '@vueform/multiselect';
 // import Toggle from '@/components/Toggle';
 
 export default {
     name: 'EventFilter',
     components: { Multiselect },
-    setup(props, context) {
+    setup(_, context) {
 
         // reactive filter data point
         const filter = reactive({
@@ -77,18 +66,35 @@ export default {
             name: ''
         })
 
+        // using a duplicate of filter to pass values to the parent
+        let filterToEmit = {
+            type: '',
+            organizer :'',
+            name: ''
+        }
+
+        // get the filter value
+        const filterOptions = ref(store.state.filters.event);       
+
         // passing the filter data to the parent
         const updateFilter = () => {
-            // replacing null fields with empty string 
+            // populating the filter object to return to parent
             Object.keys(filter).forEach(function(key) {
-                if (filter[key] == null) filter[key] = ''
-            });
+                if (Number.isInteger(filter[key])){ 
+                    // convert index number to actual value
+                    filterToEmit[key] = filterOptions.value[key][filter[key]];
+                } else {
+                    // empty string for rest
+                    filterToEmit[key] = '';
+                }                      
+            });           
 
-            context.emit('update-filter', filter);
+            context.emit('update-filter', filterToEmit);
         }
 
         return {
             filter,
+            filterOptions,
             updateFilter
         }
     }

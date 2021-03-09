@@ -1,7 +1,10 @@
 <template>
     <div class="find-talent page-pad">
         <!-- Filter passing data -->
-        <Filter @update-filter="updateFilter"/>    
+        <Filter 
+            :filterOptions="filterOptions"
+            @update-filter="updateFilter"
+        />    
         <div class="find-talent__content">
             <div class="find-talent__content--title mar__b--3 text--center">
                 <div class="tagline">Current Students</div>
@@ -12,7 +15,6 @@
                     v-for="user in filteredTalent" 
                     :key="user.key"
                     :user="user"
-                    @toggle-wave="toggleWave(user)"
                 />
             </div>
         </div>
@@ -24,7 +26,6 @@ import { onMounted, ref } from 'vue';
 import store from '@/store';
 import ProfileCard from '@/components/ProfileCard';
 import Filter from '@/components/Filter';
-import Swal from 'sweetalert2';
 
 export default {
     name: 'FindTalent',
@@ -42,28 +43,8 @@ export default {
         const filter = ref({});
         // the input to the ProfileCard
         const filteredTalent = ref(store.state.talent);
-
-        // TODO: Update the DB like value and ensure it updates the component
-        const toggleWave = (user) => {
-            const talentToast = Swal.mixin({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 2500,
-                                    timerProgressBar: true,
-                                    didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                    }
-                                })
-
-            talentToast.fire({
-            icon: 'success',
-            title: 'Waved~'
-            })
-            console.log('Toggle prompt works');
-            console.log(user);
-        }
+        // input to the filter
+        const filterOptions = ref(store.state.filters.talent);
 
         // updating the filter and array of users
         function updateFilter(latestFilters) {
@@ -76,20 +57,20 @@ export default {
             return store.state.talent.filter((user) => {
                 return (
                     // interests
-                    (user.interests.includes(filter.value.interest.replaceAll('_',' ').toLowerCase()) || filter.value.interest === '') &&
+                    (user.interests.includes(filter.value.interests) || filter.value.interests === '') &&
                     // experience
-                    (user.experience_level.toString() === filter.value.experience || filter.value.experience === '') &&
+                    (user.experience_level === filter.value.experience_level || filter.value.experience_level === '') &&
                     // degree
-                    user.background.toLowerCase().match(filter.value.degree.replaceAll('_',' ').toLowerCase()) &&
+                    user.background.match(filter.value.background) &&
                     // name
-                    user.full_name.toLowerCase().match(filter.value.name.replaceAll('_',' ').toLowerCase())
+                    user.full_name.match(filter.value.full_name)
                 )
             })
         }
 
         return {
-            toggleWave,
             updateFilter,
+            filterOptions,
             filteredTalent
         }
     }

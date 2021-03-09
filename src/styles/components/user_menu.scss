@@ -1,0 +1,28 @@
+.user-menu {
+    @include shadow;
+    position: absolute;
+    top: $user-menu-top;
+    right: $user-menu-right;
+    border-radius: $app-border-radius;
+    background-color: $color-white;
+
+    &__items {
+        &--loop:first-child .user-menu__item {
+            border-radius: $app-border-radius $app-border-radius 0 0;
+        }
+        &:last-child > .user-menu__item {
+            border-radius: 0 0 $app-border-radius $app-border-radius;
+        }
+    }
+    &__item{
+        display: flex;
+        align-items: center;
+        &--icon{
+            width: $user-menu-icon-width;
+            margin-right: $user-menu-icon-margin-right;
+        }
+        &:hover{
+            background: $color-bg-hover;
+        }
+    }
+}

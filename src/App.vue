@@ -1,7 +1,7 @@
 <template>
   <div>
     <SideNav v-if="isLoggedIn" />
-    <div class="main" :class='marginLeft'>
+    <div class="main" :class="marginLeft">
       <TopNav />
       <!-- routing -->
       <Loader v-if="isLoading"/>
@@ -18,37 +18,34 @@ import SideNav from '@/components/SideNav';
 import TopNav from '@/components/TopNav';
 
 export default {
-  name: 'App',    // name of the component
+  name: "App", // name of the component
 
   components: { Loader, SideNav, TopNav },  // imported components
   
   // Vue 3 Composition API
   setup() {
-
     // mounted
     onMounted(() => {
-      store.dispatch('setAuthUser');
-    })
+      store.dispatch("setAuthUser");
+    });
 
     // computed properties
     const isLoggedIn = computed(() => store.state.user !== null);
     const isLoading = computed(() => store.state.isLoading === true);
     const marginLeft = computed(() =>
-        store.state.isSideNavCollapsed 
-        ? 'main__width--full' 
-        : 'main__width--reduced'
-    )
+      store.state.isSideNavCollapsed
+        ? "main__width--full"
+        : "main__width--reduced"
+    );
 
     // return everything that needs to be referenced in the template
     return {
       isLoggedIn,
       isLoading,
-      marginLeft
-    }
-
-  }
-}
-
+      marginLeft,
+    };
+  },
+};
 </script>
 
 <style lang="scss">

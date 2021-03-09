@@ -1,6 +1,9 @@
 <template>
     <div class="find-mentor page-pad">
-        <MentorFilter @update-filter="updateFilter" />    
+        <MentorFilter 
+            :filterOptions="filterOptions"
+            @update-filter="updateFilter" 
+        />    
         <div class="find-mentor__content">
             <div class="find-mentor__content--title mar__b--3 text--center">
                 <div class="tagline">Monash Alumni</div>
@@ -11,7 +14,6 @@
                     v-for="user in filteredMentors" 
                     :key="user.key"
                     :user="user"
-                    @toggle-wave="toggleWave(user)"
                 />
             </div>
         </div>
@@ -23,7 +25,6 @@ import { onMounted, ref } from 'vue';
 import store from '@/store';
 import ProfileCard from '@/components/ProfileCard';
 import MentorFilter from '@/components/MentorFilter';
-import Swal from 'sweetalert2';
 
 export default {
     name: 'FindMentor',
@@ -41,28 +42,8 @@ export default {
         const filter = ref({});
         // the input to the ProfileCard
         const filteredMentors = ref(store.state.mentors);
-
-        // TODO: Update the DB like value and ensure it updates the component
-        const toggleWave = (user) => {
-            const mentorToast = Swal.mixin({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 2500,
-                                    timerProgressBar: true,
-                                    didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                    }
-                                })
-
-            mentorToast.fire({
-            icon: 'success',
-            title: 'Waved~'
-            })
-            console.log('Toggle prompt works');
-            console.log(user);
-        }
+        // input to the filter
+        const filterOptions = ref(store.state.filters.mentors);
 
         // updating the filter and array of users
         function updateFilter(latestFilters) {
@@ -75,20 +56,20 @@ export default {
             return store.state.mentors.filter((user) => {
                 return (
                     // interests
-                    (user.interests.includes(filter.value.skill.replaceAll('_',' ').toLowerCase()) || filter.value.skill === '') &&
+                    (user.interests.includes(filter.value.skill) || filter.value.skill === '') &&
                     // experience
-                    (user.experience_level.toString() === filter.value.experience || filter.value.experience === '') &&
-                    // job title
-                    user.background.toLowerCase().match(filter.value.job_title.replaceAll('_',' ').toLowerCase()) &&
+                    (user.experience_level === filter.value.experience_level || filter.value.experience_level === '') &&
+                    // degree
+                    user.background.match(filter.value.background) &&
                     // name
-                    user.full_name.toLowerCase().match(filter.value.name.replaceAll('_',' ').toLowerCase())
+                    user.full_name.match(filter.value.full_name)
                 )
             })
         }
 
         return {
             updateFilter,
-            toggleWave,
+            filterOptions,
             filteredMentors
         }
         

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
+import Admin from '@/views/Admin.vue';
 import SignUp from '@/views/SignUp.vue';
 import FindTalent from '@/views/FindTalent.vue';
 import FindMentor from '@/views/FindMentor.vue';
@@ -10,10 +11,11 @@ import UserProfile from '@/views/UserProfile.vue';
 import WavesFromTalent from '@/views/WavesFromTalent.vue';
 import WavesFromMentors from '@/views/WavesFromMentors.vue';
 import BrowseEvents from '@/views/BrowseEvents.vue';
-import About from '@/views/About.vue';
 import NotFound from '@/views/NotFound.vue';
 import CropImage from '@/views/CropImage.vue';
-
+import ResetPassword from '@/views/ResetPassword.vue'
+import Terms from '@/views/Terms.vue'
+import Privacy from '@/views/Privacy.vue'
 
 // all the different paths for the SPA
 const routes = [
@@ -22,9 +24,14 @@ const routes = [
     name: 'Login',
     component: Login
   }, {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin
+  },
+  {
     path: '/signup',
     name: 'SignUp',
-    component: SignUp 
+    component: SignUp
   }, {
     path: '/find-talent',
     name: 'FindTalent',
@@ -51,15 +58,8 @@ const routes = [
     name: 'Home',
     component: Home
   }, {
-    path: '/about',
-    name: 'About',
-    component: About,
-    meta: {
-      requiresAuth: true
-    }
-  }, {
     path: '/profile/info',
-    
+
   }, {
     path: '/browse-events',
     name: 'BrowseEvents',
@@ -74,16 +74,14 @@ const routes = [
     meta: {
       requiresAuth: true
     }
-  },{
+  }, {
     path: '/profile/crop-image',
     name: 'CropImage',
     component: CropImage,
     meta: {
       requiresAuth: true
     }
-  },
-  
-  {
+  }, {
     path: '/profile/waves-from-talent',
     name: 'WavesFromTalent',
     component: WavesFromTalent,
@@ -101,7 +99,23 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
+  }, {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword,
+    meta: {
+      requiresAuth: false
+    }
+  }, {
+    path: '/terms-and-conditions',
+    name: 'Terms',
+    component: Terms,
+  }, {
+    path: '/privacy-policy',
+    name: 'Privacy',
+    component: Privacy,
   }
+
   // {
   //   path: '/about',
   //   name: 'About',
@@ -117,14 +131,16 @@ const router = createRouter({
   routes
 })
 
-// router guards 
+// router guards
 router.beforeEach(async (to, from, next) => {
   const isLoggedIn = (store.state.user !== null);
   const isLoading = store.state.isLoading;
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
   // to redirect users who aren't logged in
-  if (requiresAuth && !isLoggedIn && !isLoading) next({ name: 'Login' })
+  if (requiresAuth && !isLoggedIn && isLoading) next({ name: 'Home' })
+  // to redirect users accessing login and signup pages before they are authenticated
+  else if (['Login', 'SignUp'].includes(to.name) && isLoading) next({ name: 'Home' })
   else next();
 })
 
