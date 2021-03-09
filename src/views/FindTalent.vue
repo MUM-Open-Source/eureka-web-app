@@ -50,20 +50,6 @@ export default {
         // filter logic
         const calcFilteredUsers = () => {
             return store.state.talent.filter((user) => {
-
-
-                //added this here because user.experience_level is an integer but filter.value.experience_level is a string (proxy)
-                // console.log(filter.value.experience_level)
-                if (filter.value.experience_level === 'Beginner'){
-                    filter.value.experience_level = 0
-                }
-                else if (filter.value.experience_level=== 'Intermediate'){
-                    filter.value.experience_level = 1
-                }
-                else if (filter.value.experience_level === ' Advanced'){
-                    filter.value.experience_level = 2
-                }
-                // console.log(filter.value.experience_level)
                 return (
                     // interests
                     (user.interests.includes(filter.value.interests) || filter.value.interests === '') &&

@@ -73,7 +73,7 @@ import Multiselect from '@vueform/multiselect';
 export default {
     name: 'Filter',
     components: { Multiselect },
-    setup(props, context) {
+    setup(_, context) {
 
         // reactive filter data point
         const filter = reactive({
@@ -84,7 +84,8 @@ export default {
             full_name: '',
         })
 
-        let newFilter = {
+        // using a duplicate of filter to pass values to the parent
+        let filterToEmit = {
             interests: '',
             experience_level: '',
             background: '',
@@ -93,28 +94,32 @@ export default {
         }
 
         const filterOptions = ref(store.state.filters.talent);
-        console.log(filterOptions.value.experience_level)
-
 
         // passing the filter data to the parent
         const updateFilter = () => {
-            // replacing null fields with empty string 
+            // populating the filter object to return to parent
             Object.keys(filter).forEach(function(key) {
                 if (Number.isInteger(filter[key])){ 
-                    newFilter[key] = filterOptions.value[key][filter[key]];
+                    if (key === 'experience_level') {
+                        // return the xp lvl as an integer + 1
+                        filterToEmit[key] = filter[key]+1;
+                    } else {
+                        // convert index number to actual value
+                        filterToEmit[key] = filterOptions.value[key][filter[key]];
+                    }
                 }
                 else {
-                    newFilter[key] = '';
+                    // empty string for rest
+                    filterToEmit[key] = '';
                 }                      
             });           
 
-            context.emit('update-filter', newFilter);
+            context.emit('update-filter', filterToEmit);
         }
 
         return {
             filter,
             filterOptions,
-            
             updateFilter
         }
     }
