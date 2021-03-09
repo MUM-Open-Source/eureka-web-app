@@ -3,67 +3,43 @@
         <div class="subheading">Filter</div>
         <hr>
         <div class="filter__inputs">
-            <!-- <InputField 
-                label='Skills' 
-                type='text' 
-                id='interests' 
-                class="mar__t--1 mar__b--2" 
-            /> -->
             <Multiselect
                 class="mar__t--2 mar__b--2"
                 v-model="filter.skill"
                 :searchable="true"
                 :caret="false"
                 placeholder="Skill"
-                :options="{
-                    python: 'Python', 
-                    consumerism: 'Consumerism', 
-                    tensorflow: 'TensorFlow'
-                }"
+                :options="filterOptions.skill"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
             <Multiselect
                 class="mar__t--2 mar__b--2"
-                v-model="filter.experience"
+                v-model="filter.experience_level"
                 :searchable="true"
                 :caret="false"
                 placeholder="Experience"
-                :options="{
-                    '1': 'Beginner', 
-                    '2': 'Intermediate', 
-                    '3': 'Advanced'
-                }"
+                :options="filterOptions.experience_level"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
             <Multiselect
                 class="mar__t--2 mar__b--2"
-                v-model="filter.job_title"
+                v-model="filter.background"
                 :searchable="true"
                 :caret="false"
-                placeholder="Degree"
-                :options="{
-                    data_science: 'Data Science', 
-                    computer_science: 'Computer Science', 
-                    software_engineering: 'Software Engineering'
-                }"
+                placeholder="Background"
+                :options="filterOptions.background"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
             <Multiselect
                 class="mar__t--2 mar__b--2"
-                v-model="filter.name"
+                v-model="filter.full_name"
                 :searchable="true"
                 :caret="false"
                 placeholder="Name"
-                :options="{
-                    yasheen_peiris: 'Yasheen Peiris', 
-                    mike_kevin_balapitiya: 'Mike Kevin Balapitiya', 
-                    jun_ming_khong: 'Jun Ming Khong',
-                    nitin_mathew: 'Nitin Mathew',
-                    tommy_mcwell: 'Tommy McWell'
-                }"
+                :options="filterOptions.full_name"
                 @select="updateFilter"
                 @deselect="updateFilter"
             />
@@ -84,23 +60,50 @@ import Multiselect from '@vueform/multiselect';
 export default {
     name: 'MentorFilter',
     components: { Multiselect },
+    props: {
+        filterOptions: {
+            type: Object,
+            required: true
+        }
+    },
     setup(props, context){
         // reactive filter data point
         const filter = reactive({
             skill: '',
-            experience: '',
-            job_title: '',
-            name: ''
+            experience_level: '',
+            background: '',
+            full_name: ''
         })
+
+        // using a duplicate of filter to pass values to the parent
+        let filterToEmit = {
+            skill: '',
+            experience_level: '',
+            background: '',
+            // event: '',
+            full_name: '',
+        }
 
         // passing the filter data to the parent
         const updateFilter = () => {
-            // replacing null fields with empty string 
+            // populating the filter object to return to parent
             Object.keys(filter).forEach(function(key) {
-                if (filter[key] == null) filter[key] = ''
-            });
+                if (Number.isInteger(filter[key])){ 
+                    if (key === 'experience_level') {
+                        // return the xp lvl as an integer + 1
+                        filterToEmit[key] = filter[key]+1;
+                    } else {
+                        // convert index number to actual value
+                        filterToEmit[key] = props.filterOptions[key][filter[key]];
+                    }
+                }
+                else {
+                    // empty string for rest
+                    filterToEmit[key] = '';
+                }                      
+            });         
 
-            context.emit('update-filter', filter);
+            context.emit('update-filter', filterToEmit);
         }
 
         return {

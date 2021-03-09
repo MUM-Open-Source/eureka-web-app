@@ -32,9 +32,9 @@ export default createStore({
         background: [],
         full_name: [],
       },
-      mentor: {
+      mentors: {
         skill: [],
-        experience_level: [],
+        experience_level: ['Beginner', 'Intermediate', 'Advanced'],
         background: [],
         full_name: [],
       }
@@ -234,10 +234,13 @@ export default createStore({
           querySnapshot.forEach((doc) => {
             
             // populating the respective filter array
-            if (!state.filters.talent.interests.includes(doc.data().interests)) {
-              state.filters.talent.interests.push(doc.data().interests)
-            }
-            if (!state.filters.talent.background.includes(doc.data().background)) {
+            doc.data().interests.forEach((interest)=>{
+              if (!state.filters.talent.interests.includes(interest)) {
+                state.filters.talent.interests.push(interest)
+              }
+            })
+            
+            if (!state.filters.talent.background.includes(doc.data().background) && doc.data().background != '') {
               state.filters.talent.background.push(doc.data().background)
             }
             if (!state.filters.talent.full_name.includes(doc.data().full_name)) {
@@ -264,14 +267,16 @@ export default createStore({
           querySnapshot.forEach((doc) => {
 
             // populating the respective filter array
-            if (!state.filters.mentor.skill.includes(doc.data().skill)) {
-              state.filters.mentor.skill.push(doc.data().skill)
+            doc.data().interests.forEach((interest)=>{
+              if (!state.filters.mentors.skill.includes(interest)) {
+                state.filters.mentors.skill.push(interest)
+              }
+            })
+            if (!state.filters.mentors.background.includes(doc.data().background) && doc.data().background != '') {
+              state.filters.mentors.background.push(doc.data().background)
             }
-            if (!state.filters.mentor.background.includes(doc.data().background)) {
-              state.filters.mentor.background.push(doc.data().background)
-            }
-            if (!state.filters.mentor.full_name.includes(doc.data().full_name)) {
-              state.filters.mentor.full_name.push(doc.data().full_name)
+            if (!state.filters.mentors.full_name.includes(doc.data().full_name)) {
+              state.filters.mentors.full_name.push(doc.data().full_name)
             }
             
             // populating the mentors array
