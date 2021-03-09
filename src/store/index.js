@@ -121,21 +121,22 @@ export default createStore({
         // If it doesn't match, deletes the user from authentication
         auth.signOut().then(() => {
           user.delete();
-          errorMessage()          
+          errorMessage()
         }).catch((error) => {
           Swal.fire({ icon: 'error', title: error.message });
-        });        
+        });
       }
 
       firebase.auth()
         .signInWithPopup(provider)
         .then((result) => {
-          var user = result.user;
-          var isNewUser = result.additionalUserInfo.isNewUser
-          if (isNewUser) {
-            if (signUpUser)
+          var user = result.user;          
+          if (result.additionalUserInfo.isNewUser) {
+            if (signUpUser && signUpUser.role === 'talent')
               evaluatesUserMail(user.email, DOMAIN_NAMES, () => whenAccept(user),
                 () => whenReject(user, () => Swal.fire({ icon: 'error', title: 'You need a Monash student account' })));
+            else if (signUpUser && signUpUser.role === 'mentor')
+              whenAccept(user)
             else
               whenReject(user, () => Swal.fire({ icon: 'error', title: 'Please Sign Up Your Account' }))
           }
