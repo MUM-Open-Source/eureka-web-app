@@ -134,7 +134,7 @@
                     @change="handleInputsUpdate"
                 /> -->
                 <!-- Bio -->
-                <label for="bio" class="custom-input__label tagline--bold">Bio</label>
+                <label for="bio" class="custom-input__label tagline--bold">Bio*</label>
                 <input 
                     id="bio" 
                     class="custom-input mar__b--2"
@@ -220,7 +220,7 @@
                     @select = handleInputsUpdate
                     @deselect = handleInputsUpdate
                 />
-                <label class="custom-input__label tagline--bold">Experience</label>
+                <label class="custom-input__label tagline--bold">Experience*</label>
                 <Multiselect
                     class="mar__b--2 body user-profile__multiselect"
                     :searchable="false"
@@ -302,9 +302,9 @@ export default {
     });
     const isUserTalent = computed(() => user?.roles.includes('talent'));
     const helper = {
-        backgroundLabel: isUserTalent.value ? 'Current Degree' : 'Job Title',
+        backgroundLabel: isUserTalent.value ? 'Current Degree*' : 'Job Title*',
         backgroundPlaceholder: isUserTalent.value ? 'Computer Science' : 'Software Engineer',
-        skillsLabel: isUserTalent.value ? 'Interests' : 'Skills',
+        skillsLabel: isUserTalent.value ? 'Interests*' : 'Skills*',
         skillsPlaceholder: "Enter upto 5 " + (isUserTalent.value ? 'interests' : 'skills')
     }
     const interest_value = computed(() => store.state.user_data.interests);
@@ -383,6 +383,13 @@ export default {
 
     }
 
+    // checks if mandatory fields are filled
+    const allMandatoryFieldsFilled = () => 
+            inputValues.background.length === 0 || 
+            inputValues.bio.length === 0 || 
+            inputValues.interests.length === 0 || 
+            inputValues.experience_level === 0;
+
     // a very novice validator -> needs improvement
     const isInputValid = () => {
         // github
@@ -410,7 +417,14 @@ export default {
     }
 
     function handleInfoUpdate() {
-        if (!isInputValid()) {
+        if (allMandatoryFieldsFilled()) {
+            Swal.fire({
+                icon: 'error', 
+                title: "Please fill all the mandatory fields", 
+                text: "They are marked with an asterisk (*) for your convenience"
+            })
+        }
+        else if (!isInputValid()) {
             Swal.fire({
                 icon: 'error', 
                 title: "Something looks fishy about the URL(s)!", 
