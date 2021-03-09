@@ -490,15 +490,15 @@ export default createStore({
       });
     },
 
-    UPDATE_USER_PROFILE(_, user) {
+    UPDATE_USER_PROFILE(state, user) {
       // updating user profile
       db.collection("users").doc(auth.currentUser.uid).update({
         background: user.background,
         bio: user.bio,
         interests: user.interests,
-        experience_level: user.experience_level,
-        //roles: [user.role],    // TODO: retrieve this from the signup form
+        experience_level: parseInt(user.experience_level),
         social_links: {
+          ...state.user_data.social_links,
           github_url: user.github_url,
           linkedin_url: user.linkedin_url,
           website_url: user.website_url,

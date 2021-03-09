@@ -41,7 +41,7 @@
             </div>
           <div class="profile__inputs--wrapper">
             <div class="profile__inputs mar__t--3 mar__b--3">
-                <ProfileInputField 
+                <!-- <ProfileInputField 
                     class="mar__b--2" 
                     id="fname" 
                     label="First Name" 
@@ -49,8 +49,20 @@
                     :value="user?.first_name"
                     disabled="true"
                     @change="handleInputsUpdate"
-                />
-                <ProfileInputField 
+                /> -->
+                
+                <!-- First Name -->
+                <label for="firstName" class="custom-input__label tagline--bold">First Name</label>
+                <input 
+                    id="firstName" 
+                    class="custom-input custom-input--disabled mar__b--2"
+                    name="firstName"
+                    type="text" 
+                    :value="user?.first_name"
+                    @change="todo"
+                    disabled
+                >
+                <!-- <ProfileInputField 
                     class="mar__b--2" 
                     id="lname" 
                     label="Last Name" 
@@ -58,8 +70,19 @@
                     :value="user?.last_name" 
                     disabled="true"
                     @change="handleInputsUpdate"
-                />
-                <ProfileInputField 
+                /> -->
+                <!-- Last Name -->
+                <label for="lastName" class="custom-input__label tagline--bold">Last Name</label>
+                <input 
+                    id="lastName" 
+                    class="custom-input custom-input--disabled mar__b--2"
+                    name="lastName"
+                    type="text" 
+                    :value="user?.last_name"
+                    @change="todo"
+                    disabled
+                >
+                <!-- <ProfileInputField 
                     class="mar__b--2" 
                     id="email" 
                     label="Email Address" 
@@ -67,9 +90,20 @@
                     :value="user?.social_links.email_id" 
                     disabled="true"
                     @change="handleInputsUpdate"
-                />
+                /> -->
+                <!-- Email -->
+                <label for="email" class="custom-input__label tagline--bold">Email</label>
+                <input 
+                    id="email" 
+                    class="custom-input custom-input--disabled mar__b--2"
+                    name="email"
+                    type="email" 
+                    :value="user?.social_links.email_id"
+                    @change="todo"
+                    disabled
+                >
                 
-                <ProfileInputField 
+                <!-- <ProfileInputField 
                     class="mar__b--2" 
                     id="background" 
                     :label="helper.backgroundLabel" 
@@ -77,8 +111,20 @@
                     :value='user?.background' 
                     :placeholder="helper.backgroundPlaceholder" 
                     @change="handleInputsUpdate"
-                />
-                <ProfileInputField 
+                /> -->
+                
+                <!-- Background -->
+                <label for="background" class="custom-input__label tagline--bold">{{ helper.backgroundLabel }}</label>
+                <input 
+                    id="background" 
+                    class="custom-input mar__b--2"
+                    name="background"
+                    type="text" 
+                    v-model="inputValues.background"
+                    :placeholder="helper.backgroundPlaceholder"
+                    @change="handleInputsUpdate"
+                >
+                <!-- <ProfileInputField 
                     class="mar__b--2" 
                     id="bio" 
                     label="Bio" 
@@ -86,8 +132,19 @@
                     :value='user?.bio' 
                     placeholder="I am.."
                     @change="handleInputsUpdate"
-                />
-                <ProfileInputField 
+                /> -->
+                <!-- Bio -->
+                <label for="bio" class="custom-input__label tagline--bold">Bio</label>
+                <input 
+                    id="bio" 
+                    class="custom-input mar__b--2"
+                    name="bio"
+                    type="text" 
+                    v-model="inputValues.bio"
+                    placeholder="I am.."
+                    @change="handleInputsUpdate"
+                >
+                <!-- <ProfileInputField 
                     class="mar__b--2" 
                     id="github" 
                     label="GitHub URL" 
@@ -95,8 +152,19 @@
                     :value='user?.social_links.github_url' 
                     placeholder="https://github.com/username/"
                     @change="handleInputsUpdate"
-                />
-                <ProfileInputField 
+                /> -->
+                <!-- GitHub URL -->
+                <label for="github" class="custom-input__label tagline--bold">Github</label>
+                <input 
+                    id="github" 
+                    class="custom-input mar__b--2"
+                    name="github"
+                    type="url" 
+                    v-model="inputValues.github_url"
+                    placeholder="https://www.github.com/username"
+                    @change="handleInputsUpdate"
+                >
+                <!-- <ProfileInputField 
                     class="mar__b--2" 
                     id="linkedin" 
                     label="LinkedIn URL" 
@@ -104,8 +172,20 @@
                     :value='user?.social_links.linkedin_url'
                     placeholder="https://linkedin.com/in/username/"
                     @change="handleInputsUpdate"
-                />
-                <ProfileInputField 
+                /> -->
+                
+                <!-- Linkedin URL -->
+                <label for="linkedin" class="custom-input__label tagline--bold">Linkedin</label>
+                <input 
+                    id="linkedin" 
+                    class="custom-input mar__b--2"
+                    name="linkedin"
+                    type="url" 
+                    v-model="inputValues.linkedin_url"
+                    placeholder="https://www.linkedin.com/in/username"
+                    @change="handleInputsUpdate"
+                >
+                <!-- <ProfileInputField 
                     class="mar__b--2" 
                     id="website" 
                     label="Website URL" 
@@ -113,10 +193,23 @@
                     :value='user?.social_links.website_url'
                     placeholder="https://google.com"
                     @change="handleInputsUpdate"
-                />
-                <div class= "user-profile__multiselect--tagline">{{ helper.skillsLabel }}</div>
+                /> -->
+                <!-- Website URL -->
+                <label for="website" class="custom-input__label tagline--bold">Website</label>
+                <input 
+                    id="website" 
+                    class="custom-input mar__b--2"
+                    name="website"
+                    type="url" 
+                    v-model="inputValues.website_url"
+                    placeholder="https://www.your-awesome-site.com"
+                    @change="handleInputsUpdate"
+                >
+
+                <label class="custom-input__label tagline--bold">{{ helper.skillsLabel }}</label>
+                <div class= "tagline skills__tagline">You can enter values that aren't listed</div>
                 <Multiselect 
-                    v-model="interest_value"
+                    v-model="inputValues.interests"
                     mode="tags"
                     :searchable="true"
                     :options="interestMenu.options"
@@ -124,11 +217,26 @@
                     :placeholder="helper.skillsPlaceholder"
                     class="body user-profile__multiselect"
                     :createTag = "true"
-                    @select = addInterest
-                    @deselect = removeInterest
+                    @select = handleInputsUpdate
+                    @deselect = handleInputsUpdate
+                />
+                <label class="custom-input__label tagline--bold">Experience</label>
+                <Multiselect
+                    class="mar__b--2 body user-profile__multiselect"
+                    :searchable="false"
+                    :caret="true"
+                    placeholder="Beginner"
+                    v-model="inputValues.experience_level"
+                    :options="{
+                        1: 'Beginner',
+                        2: 'Intermediate',
+                        3: 'Advanced'
+                    }"
+                    @select = handleInputsUpdate
+                    @deselect = handleInputsUpdate
                 />
 
-                <ProfileInputField 
+                <!-- <ProfileInputField 
                     class="mar__b--2" 
                     id="experience_level" 
                     label="Experience Level" 
@@ -138,7 +246,7 @@
                     min = "0"
                     max = "2"
                     @change="handleInputsUpdate"
-                />
+                /> -->
 
             </div>
             <div class="text--center">
@@ -156,20 +264,43 @@ import { reactive, computed } from 'vue';
 import store from '@/store';
 import RoundImage from '@/components/RoundImage';
 import Button from '@/components/Button';
-import ProfileInputField from '@/components/ProfileInputField';
+// import ProfileInputField from '@/components/ProfileInputField';
 import Multiselect from '@vueform/multiselect';
+import Swal from "sweetalert2";
 
 
 
 export default {
   name: 'UserProfile',
-  components: { RoundImage, Button, ProfileInputField, Multiselect},
+  components: { RoundImage, Button, Multiselect},
 
   setup() {
 
     // fetching the user details with default data provided
-    const user = computed(() => store.state.user_data);
-    const isUserTalent = computed(() => user.value.roles.includes('talent'));
+    const user = store.state.user_data;
+    //recommended interests to pick from
+    const interestMenu = reactive({
+        options: [ 'Python', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tensorflow', 'Computer Vision', 'Pandas', 'Numpy'] 
+    })
+    const userInerestsIndices = computed(() => {
+        let indices = []
+        user?.interests.forEach((interest) => {
+            const index = interestMenu.options.indexOf(interest);
+            if (index != -1) indices.push(index)
+        })
+        return indices;
+    })
+
+    let inputValues = reactive({
+        background: user.background,
+        bio: user.bio,
+        github_url: user.social_links.github_url,
+        linkedin_url: user.social_links.linkedin_url,
+        website_url: user.social_links.website_url,
+        interests: userInerestsIndices.value,
+        experience_level: user.experience_level,
+    });
+    const isUserTalent = computed(() => user?.roles.includes('talent'));
     const helper = {
         backgroundLabel: isUserTalent.value ? 'Current Degree' : 'Job Title',
         backgroundPlaceholder: isUserTalent.value ? 'Computer Science' : 'Software Engineer',
@@ -181,18 +312,6 @@ export default {
     store.state.user_data.image_url == 
     "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b");
     
-    //recommended interests to pick from
-    const interestMenu = reactive({
-        options: [
-            { value: 'python', label: 'Python' },
-            { value: 'javascript', label: 'JavaScript' },
-            { value: 'typescript', label: 'TypeScript' },
-            { value: 'html', label: 'HTML' },
-            { value: 'css', label: 'CSS' },
-            { value: 'tensorflow', label: 'TensorFlow' },
-            { value: 'computer-vision', label: 'Computer Vision'},
-        ]
-    })
 
     // to check if changes were made
     const state = reactive({
@@ -200,32 +319,28 @@ export default {
     })
 
 
-    const userInputs = reactive({
-        background: "",
-        bio: "",
-        github_url: "",
-        website_url: "",
-        experience_level: "",
-        interests:[]
-    })
+    // const userInputs = reactive({
+    //     background: "",
+    //     bio: "",
+    //     github_url: "",
+    //     website_url: "",
+    //     experience_level: "",
+    //     interests:[]
+    // })
 
     function handleInputsUpdate() {
-        userInputs.background = document.getElementById('background').value;
-        userInputs.bio = document.getElementById('bio').value;
-        userInputs.github_url = document.getElementById('github').value;
-        userInputs.linkedin_url = document.getElementById('linkedin').value;
-        userInputs.website_url = document.getElementById('website').value;
-        userInputs.interests = selectedInterests.value;
-        userInputs.experience_level = document.getElementById('experience_level').value;
-        state.hasUnsavedChanges = userInputs.background !== user.value.background
-         || userInputs.bio !== user.value.bio 
-         || userInputs.github_url !== user.value.social_links.github_url
-         || userInputs.linkedin_url !== user.value.social_links.linkedin_url
-         || userInputs.website_url !== user.value.social_links.website_url
-         || userInputs.interests !== user.value.interests
-         || userInputs.experience_level !== user.value.experience_level
+        state.hasUnsavedChanges = 
+            inputValues.background !== user.background || 
+            inputValues.bio !== user.bio || 
+            inputValues.github_url !== user.social_links.github_url || 
+            inputValues.linkedin_url !== user.social_links.linkedin_url || 
+            inputValues.website_url !== user.social_links.website_url || 
+            parseInt(inputValues.experience_level) !== user.experience_level
     }
-    //Stores the list of selected interests
+
+
+  
+  //Stores the list of selected interests
     //Initial value is the existing/past selected interests from user's db
     const selectedInterests = computed(() => JSON.parse(JSON.stringify(store.state.user_data.interests)));
 
@@ -268,22 +383,64 @@ export default {
 
     }
 
-    function handleInfoUpdate() {
-        if (state.hasUnsavedChanges) {
-            //writes to db and updates store
-            store.dispatch('updateUserProfile', {background:userInputs.background, bio:userInputs.bio,
-            github_url:userInputs.github_url, linkedin_url:userInputs.linkedin_url, 
-            website_url: userInputs.website_url, interests:selectedInterests.value,
-            experience_level: userInputs.experience_level});
-
-            state.hasUnsavedChanges = false;
-            
+    // a very novice validator -> needs improvement
+    const isInputValid = () => {
+        // github
+        if (inputValues.github_url.length != 0) {
+            if (!(inputValues.github_url.startsWith("https://www.github.com/") ||
+            inputValues.github_url.startsWith("https://github.com/") ||
+            inputValues.github_url.startsWith("http://www.github.com/") || 
+            inputValues.github_url.startsWith("http://github.com/"))) return false
         }
+        // linkedin
+        if (inputValues.linkedin_url.length != 0) {
+            if (!(inputValues.linkedin_url.startsWith("https://www.linkedin.com/in/") ||
+            inputValues.linkedin_url.startsWith("https://linkedin.com/in/") ||
+            inputValues.linkedin_url.startsWith("http://www.linkedin.com/in/") || 
+            inputValues.linkedin_url.startsWith("http://linkedin.com/in/"))) return false
+        }
+        // website
+        if (inputValues.website_url.length != 0) {
+            if (!(inputValues.website_url.startsWith("https://www.") ||
+            inputValues.website_url.startsWith("https://") ||
+            inputValues.website_url.startsWith("http://www.") || 
+            inputValues.website_url.startsWith("http://"))) return false
+        }
+        return true
+    }
+
+    function handleInfoUpdate() {
+        if (!isInputValid()) {
+            Swal.fire({
+                icon: 'error', 
+                title: "Something looks fishy about the URL(s)!", 
+                text: "Please follow the format https://www.______.com/_______"
+            })
+        } else {
+            // sending the right format of interests, i.e, converting from integer to string values
+            // using a deep copy to not mess with the fields in the UI
+            let updatedValues = { ...inputValues};
+            updatedValues.interests = []
+            inputValues.interests.forEach((interestIndex) => {
+                const value = interestMenu.options[interestIndex];
+                if (value) {
+                    updatedValues.interests.push(value);
+                } else {
+                    // handling values that don't exist
+                    updatedValues.interests.push(interestIndex);
+                }
+            })
+
+            //writes to db and updates store
+            store.dispatch('updateUserProfile', updatedValues);
+            state.hasUnsavedChanges = false;       
+        }     
     }
 
 
     return {
         state,
+        inputValues,
         user,
         helper,
         interest_value,
@@ -306,6 +463,25 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/components/multiselect';
 @import '@/styles/components/button';
+
+.custom-input {
+  width: 100%;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  border: 1px solid $color-bg-hover;
+  border-radius: 4px;
+  &__label {
+      color: $color-brand;
+    //   padding-left: 8px;;
+  }
+  &--disabled {
+      background-color: $color-bg-hover;
+  }
+  &::placeholder {
+    color: $color-bg-hover;
+  }
+}
+
 input[type=file]::-webkit-file-upload-button {
     // background-image: linear-gradient(to right, #5986E1, #7450CB);
     // font-family: inherit;
@@ -435,6 +611,10 @@ input[type=file]::-webkit-file-upload-button {
             max-width: 300px; 
             width: 100%;
             margin-right: 0px;
+        }
+        .skills__tagline {
+            margin-left: 6px;
+            margin-top: 5px;
         }
         &--interests{
             // margin-top:8px;
