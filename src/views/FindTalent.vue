@@ -1,7 +1,10 @@
 <template>
     <div class="find-talent page-pad">
         <!-- Filter passing data -->
-        <Filter @update-filter="updateFilter"/>    
+        <Filter 
+            :filterOptions="filterOptions"
+            @update-filter="updateFilter"
+        />    
         <div class="find-talent__content">
             <div class="find-talent__content--title mar__b--3 text--center">
                 <div class="tagline">Current Students</div>
@@ -40,6 +43,8 @@ export default {
         const filter = ref({});
         // the input to the ProfileCard
         const filteredTalent = ref(store.state.talent);
+        // input to the filter
+        const filterOptions = ref(store.state.filters.talent);
 
         // updating the filter and array of users
         function updateFilter(latestFilters) {
@@ -65,6 +70,7 @@ export default {
 
         return {
             updateFilter,
+            filterOptions,
             filteredTalent
         }
     }

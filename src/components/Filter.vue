@@ -65,15 +65,20 @@
 </template>
 s
 <script>
-import { ref, reactive } from 'vue';
-import store from '@/store';
+import { reactive } from 'vue';
 import Multiselect from '@vueform/multiselect';
 // import Toggle from '@/components/Toggle';
 
 export default {
     name: 'Filter',
     components: { Multiselect },
-    setup(_, context) {
+    props: {
+        filterOptions: {
+            type: Object,
+            required: true
+        }
+    },
+    setup(props, context) {
 
         // reactive filter data point
         const filter = reactive({
@@ -93,8 +98,6 @@ export default {
             full_name: '',
         }
 
-        const filterOptions = ref(store.state.filters.talent);
-
         // passing the filter data to the parent
         const updateFilter = () => {
             // populating the filter object to return to parent
@@ -105,7 +108,7 @@ export default {
                         filterToEmit[key] = filter[key]+1;
                     } else {
                         // convert index number to actual value
-                        filterToEmit[key] = filterOptions.value[key][filter[key]];
+                        filterToEmit[key] = props.filterOptions[key][filter[key]];
                     }
                 }
                 else {
@@ -119,7 +122,6 @@ export default {
 
         return {
             filter,
-            filterOptions,
             updateFilter
         }
     }
