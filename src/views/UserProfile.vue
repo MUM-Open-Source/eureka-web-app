@@ -40,15 +40,6 @@
             </div>
           <div class="profile__inputs--wrapper">
             <div class="profile__inputs mar__t--3 mar__b--3">
-                <!-- <ProfileInputField 
-                    class="mar__b--2" 
-                    id="fname" 
-                    label="First Name" 
-                    type="text"
-                    :value="user?.first_name"
-                    disabled="true"
-                    @change="handleInputsUpdate"
-                /> -->
                 
                 <!-- First Name -->
                 <label for="firstName" class="custom-input__label tagline--bold">First Name</label>
@@ -61,15 +52,6 @@
                     @change="todo"
                     disabled
                 >
-                <!-- <ProfileInputField 
-                    class="mar__b--2" 
-                    id="lname" 
-                    label="Last Name" 
-                    type="text" 
-                    :value="user?.last_name" 
-                    disabled="true"
-                    @change="handleInputsUpdate"
-                /> -->
                 <!-- Last Name -->
                 <label for="lastName" class="custom-input__label tagline--bold">Last Name</label>
                 <input 
@@ -81,15 +63,6 @@
                     @change="todo"
                     disabled
                 >
-                <!-- <ProfileInputField 
-                    class="mar__b--2" 
-                    id="email" 
-                    label="Email Address" 
-                    type="email" 
-                    :value="user?.social_links.email_id" 
-                    disabled="true"
-                    @change="handleInputsUpdate"
-                /> -->
                 <!-- Email -->
                 <label for="email" class="custom-input__label tagline--bold">Email</label>
                 <input 
@@ -102,16 +75,6 @@
                     disabled
                 >
                 
-                <!-- <ProfileInputField 
-                    class="mar__b--2" 
-                    id="background" 
-                    :label="helper.backgroundLabel" 
-                    type="text"
-                    :value='user?.background' 
-                    :placeholder="helper.backgroundPlaceholder" 
-                    @change="handleInputsUpdate"
-                /> -->
-                
                 <!-- Background -->
                 <label for="background" class="custom-input__label tagline--bold">{{ helper.backgroundLabel }}</label>
                 <input 
@@ -123,15 +86,7 @@
                     :placeholder="helper.backgroundPlaceholder"
                     @change="handleInputsUpdate"
                 >
-                <!-- <ProfileInputField 
-                    class="mar__b--2" 
-                    id="bio" 
-                    label="Bio" 
-                    type="text" 
-                    :value='user?.bio' 
-                    placeholder="I am.."
-                    @change="handleInputsUpdate"
-                /> -->
+
                 <!-- Bio -->
                 <label for="bio" class="custom-input__label tagline--bold">Bio*</label>
                 <input 
@@ -143,15 +98,7 @@
                     placeholder="I am.."
                     @change="handleInputsUpdate"
                 >
-                <!-- <ProfileInputField 
-                    class="mar__b--2" 
-                    id="github" 
-                    label="GitHub URL" 
-                    type="url" 
-                    :value='user?.social_links.github_url' 
-                    placeholder="https://github.com/username/"
-                    @change="handleInputsUpdate"
-                /> -->
+
                 <!-- GitHub URL -->
                 <label for="github" class="custom-input__label tagline--bold">Github</label>
                 <input 
@@ -163,15 +110,6 @@
                     placeholder="https://www.github.com/username"
                     @change="handleInputsUpdate"
                 >
-                <!-- <ProfileInputField 
-                    class="mar__b--2" 
-                    id="linkedin" 
-                    label="LinkedIn URL" 
-                    type="url" 
-                    :value='user?.social_links.linkedin_url'
-                    placeholder="https://linkedin.com/in/username/"
-                    @change="handleInputsUpdate"
-                /> -->
                 
                 <!-- Linkedin URL -->
                 <label for="linkedin" class="custom-input__label tagline--bold">Linkedin</label>
@@ -184,15 +122,7 @@
                     placeholder="https://www.linkedin.com/in/username"
                     @change="handleInputsUpdate"
                 >
-                <!-- <ProfileInputField 
-                    class="mar__b--2" 
-                    id="website" 
-                    label="Website URL" 
-                    type="url" 
-                    :value='user?.social_links.website_url'
-                    placeholder="https://google.com"
-                    @change="handleInputsUpdate"
-                /> -->
+
                 <!-- Website URL -->
                 <label for="website" class="custom-input__label tagline--bold">Website</label>
                 <input 
@@ -205,6 +135,7 @@
                     @change="handleInputsUpdate"
                 >
 
+                <!-- Skills/Interests -->
                 <label class="custom-input__label tagline--bold">{{ helper.skillsLabel }}</label>
                 <div class= "tagline skills__tagline">You can enter values that aren't listed</div>
                 <Multiselect 
@@ -219,6 +150,8 @@
                     @select = handleInputsUpdate
                     @deselect = handleInputsUpdate
                 />
+                
+                <!-- Experience -->
                 <label class="custom-input__label tagline--bold">Experience*</label>
                 <Multiselect
                     class="mar__b--2 body user-profile__multiselect mar__b--2"
@@ -234,18 +167,6 @@
                     @select = handleInputsUpdate
                     @deselect = handleInputsUpdate
                 />
-
-                <!-- <ProfileInputField 
-                    class="mar__b--2" 
-                    id="experience_level" 
-                    label="Experience Level" 
-                    type="number" 
-                    :value='user?.experience_level'
-                    placeholder="Beginner"
-                    min = "0"
-                    max = "2"
-                    @change="handleInputsUpdate"
-                /> -->
 
             </div>
             <div class="text--center">
