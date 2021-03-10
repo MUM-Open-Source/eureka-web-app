@@ -13,6 +13,7 @@
           class="mar--auto mar__t--3 mar__b--1"
           @click="handleLogin"
         />
+        <div class="tagline">*Use your Monash account if you're a current student</div>
       </div>
     </div>
   </div>

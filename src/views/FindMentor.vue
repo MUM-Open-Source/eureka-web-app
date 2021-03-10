@@ -6,7 +6,7 @@
         />    
         <div class="find-mentor__content">
             <div class="find-mentor__content--title mar__b--3 text--center">
-                <div class="tagline">Monash Alumni</div>
+                <div class="tagline">Monash Seniors & Alumni</div>
                 <div class="heading">Mentors</div>
             </div>
             <div class="mentor">
