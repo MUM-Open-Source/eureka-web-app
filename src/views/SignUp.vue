@@ -21,9 +21,9 @@
           class="mar__b--2"
         />
         <label class="tagline--bold">Who are you?</label>
-        <br>
+        <div class="pad__t--1"></div>
         <label class="tagline role__helper"><u>Talent</u> aim to network to find teammates, mentors & events.</label>
-        <br>
+        <div class="pad__t--1"></div>
         <label class="tagline role__helper"><u>Mentors</u> are experienced and here to guide the juniors.</label>
         <Multiselect
           class="mar__t--1 mar__b--2"
@@ -39,6 +39,7 @@
           class="mar--auto mar__t--3 mar__b--1"
           @click="handleSignUp"
         />
+        <div class="tagline">*Use your Monash account if you're a current student</div>
       </div>
     </div>
   </div>

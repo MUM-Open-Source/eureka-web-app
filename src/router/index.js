@@ -26,7 +26,10 @@ const routes = [
   }, {
     path: '/admin',
     name: 'Admin',
-    component: Admin
+    component: Admin,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/signup',

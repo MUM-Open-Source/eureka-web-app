@@ -89,6 +89,7 @@
 
                 <!-- Bio -->
                 <label for="bio" class="custom-input__label tagline--bold">Bio*</label>
+                <div class= "tagline skills__tagline">Use this space to sell yourself</div>
                 <input 
                     id="bio" 
                     class="custom-input mar__b--2"
@@ -100,7 +101,7 @@
                 >
 
                 <!-- GitHub URL -->
-                <label for="github" class="custom-input__label tagline--bold">Github</label>
+                <label for="github" class="custom-input__label tagline--bold">Github Link</label>
                 <input 
                     id="github" 
                     class="custom-input mar__b--2"
@@ -112,7 +113,7 @@
                 >
                 
                 <!-- Linkedin URL -->
-                <label for="linkedin" class="custom-input__label tagline--bold">Linkedin</label>
+                <label for="linkedin" class="custom-input__label tagline--bold">Linkedin Link</label>
                 <input 
                     id="linkedin" 
                     class="custom-input mar__b--2"
@@ -124,7 +125,7 @@
                 >
 
                 <!-- Website URL -->
-                <label for="website" class="custom-input__label tagline--bold">Website</label>
+                <label for="website" class="custom-input__label tagline--bold">Website Link</label>
                 <input 
                     id="website" 
                     class="custom-input mar__b--2"
@@ -143,7 +144,7 @@
                     mode="tags"
                     :searchable="true"
                     :options="interestMenu.options"
-                    :max="5"
+                    :max="7"
                     :placeholder="helper.skillsPlaceholder"
                     class="body user-profile__multiselect mar__b--2"
                     :createTag = "true"
@@ -281,10 +282,10 @@ export default {
 
     const isUserTalent = computed(() => user?.roles.includes('talent'));
     const helper = {
-        backgroundLabel: isUserTalent.value ? 'Current Degree*' : 'Job Title*',
+        backgroundLabel: isUserTalent.value ? 'Current Degree*' : 'Degree / Job Title*',
         backgroundPlaceholder: isUserTalent.value ? 'Computer Science' : 'Software Engineer',
         skillsLabel: isUserTalent.value ? 'Interests*' : 'Skills*',
-        skillsPlaceholder: "Enter upto 5 " + (isUserTalent.value ? 'interests' : 'skills')
+        skillsPlaceholder: "Enter upto 7 " + (isUserTalent.value ? 'interests' : 'skills')
     }
     const interest_value = computed(() => store.state.user_data.interests);
     const hasDefaultImage = computed(() =>  
