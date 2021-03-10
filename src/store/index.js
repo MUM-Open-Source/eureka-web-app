@@ -15,6 +15,7 @@ export default createStore({
     isLoading: true,                      // bool to keep track whether user is being retreived from the DB
     user_data: null,                      // user data pulled from db
     user_image: null,
+    is_new: false,                        // used to ensure all mandatory details are filled after signup
     events: [],
     talent: [],
     mentors: [],
@@ -80,7 +81,7 @@ export default createStore({
         Swal.fire({ icon: 'error', title: error.message });
       });
     },
-    SIGNUP_USER(_, signUpUser) {
+    SIGNUP_USER(state, signUpUser) {
       const DOMAIN_NAMES = ['@student.monash.edu', '@monash.edu']
       var provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('email');
@@ -115,7 +116,8 @@ export default createStore({
             website_url: "",
           }
         });
-        router.push({ name: 'Home' });
+        state.is_new = true;
+        router.push({ name: 'Profile' });
       }
       function whenReject(user, errorMessage) {
         // If it doesn't match, deletes the user from authentication
