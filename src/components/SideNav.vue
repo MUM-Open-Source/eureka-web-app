@@ -20,7 +20,7 @@
     </router-link>
     <router-link
       :to="{ name: 'Admin' }"
-      v-if="store.state.user_data?.roles.includes('admin')"
+      v-if="userIsAdmin"
     >
       <div class="side-nav__group">
         <img class="side-nav__icon" src="@/assets/info-icon.svg" />
@@ -46,11 +46,13 @@ export default {
     const showOrHide = computed(() =>
       store.state.isSideNavCollapsed ? "side-nav__hide" : "side-nav__show"
     );
-    if (!store.state.user_data) {
-      store.dispatch("fetchCurrentUserFromDB");
-    }
+    const userIsAdmin = computed(() => 
+        store.state.user_data 
+        ? store.state.user_data.roles.includes('admin') 
+        : false
+    );
     return {
-      store,
+      userIsAdmin,
       showOrHide,
     };
   },

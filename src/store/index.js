@@ -62,9 +62,9 @@ export default createStore({
           this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
           state.isLoading = false;
           // save the last login in the db
-          db.collection("users").doc(auth.currentUser.uid).set({
+          db.collection("users").doc(auth.currentUser.uid).update({
             last_login: firebaseApp.firestore.FieldValue.serverTimestamp()
-          }, { merge: true });
+          });
         } else {
           // resetting the user's details
           state.user = null;
@@ -157,6 +157,7 @@ export default createStore({
             router.push({ name: 'Home' });
         });
     },
+
     FETCH_CURRENT_USER_DATA_FROM_DB(state) {
       db.collection("users").doc(auth.currentUser.uid)
         .get()
