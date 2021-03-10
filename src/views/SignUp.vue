@@ -20,7 +20,11 @@
           id="last_name"
           class="mar__b--2"
         />
-        <label class="tagline">Who are you?</label>
+        <label class="tagline--bold">Who are you?</label>
+        <br>
+        <label class="tagline role__helper"><u>Talent</u> aim to network to find teammates, mentors & events.</label>
+        <br>
+        <label class="tagline role__helper"><u>Mentors</u> are experienced and here to guide the juniors.</label>
         <Multiselect
           class="mar__t--1 mar__b--2"
           v-model="role"
@@ -97,6 +101,9 @@ export default {
 }
 .signUp__wrapper {
   width: 350px;
+}
+.role__helper {
+  text-align: left !important;
 }
 .signUp__form {
   @include shadow;

@@ -2,8 +2,8 @@ import { createStore } from 'vuex';
 import firebase from 'firebase';
 import firebaseApp from 'firebase/app';
 import 'firebase/auth'
-import router from '@/router';
 import { db, auth } from "@/firebase";
+import router from '@/router';
 import Swal from 'sweetalert2';
 
 
@@ -80,8 +80,8 @@ export default createStore({
         Swal.fire({ icon: 'error', title: error.message });
       });
     },
-    SIGNUP_USER(state, signUpUser) {
-      const DOMAIN_NAMES = ['@student.monash.edu']
+    SIGNUP_USER(_, signUpUser) {
+      const DOMAIN_NAMES = ['@student.monash.edu', '@monash.edu']
       var provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('email');
 
