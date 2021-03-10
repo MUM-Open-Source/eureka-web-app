@@ -2,7 +2,7 @@ import { createStore } from 'vuex';
 import firebase from 'firebase';
 import firebaseApp from 'firebase/app';
 import 'firebase/auth'
-import { db, auth } from "@/firebase";
+import { db, auth, storage } from "@/firebase";
 import router from '@/router';
 import Swal from 'sweetalert2';
 
@@ -15,11 +15,12 @@ export default createStore({
     isLoading: true,                      // bool to keep track whether user is being retreived from the DB
     user_data: null,                      // user data pulled from db
     user_image: null,
+    upload_image: {url:'', fileName:''},  // to help with the upload of profile image
     is_new: false,                        // used to ensure all mandatory details are filled after signup
     events: [],
     talent: [],
     mentors: [],
-    feedback: [],
+    feedback: [], 
     liked_events: [],                     // list of events liked by the user
     user_waves: [],                       // list of users waved at by the auth user
     waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -508,6 +509,84 @@ export default createStore({
         });
     },
 
+    UPDATE_USER_PROFILE(state, user) {
+      // updating user profile
+      db.collection("users").doc(auth.currentUser.uid).update({
+        background: user.background,
+        bio: user.bio,
+        interests: user.interests,
+        experience_level: parseInt(user.experience_level),
+        social_links: {
+          ...state.user_data.social_links,
+          github_url: user.github_url,
+          linkedin_url: user.linkedin_url,
+          website_url: user.website_url,
+        }
+      })
+      .then(() => {
+        this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
+        Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile is updated!"});
+      })
+      .catch((error) => {
+        Swal.fire({icon: 'error', title: error});
+      });      
+    },
+
+    //set user image url only in db
+    SET_USER_IMAGE_URL(_,url) {
+      db.collection("users").doc(auth.currentUser.uid).update({
+        image_url: url
+      })
+      .then(() => {
+        this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
+        Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile picture is updated!"});
+        router.push({ path: '/profile'});
+      })
+      .catch((error) => {
+        Swal.fire({icon: 'error', title: error});
+      });
+    },
+
+    DELETE_PROFILE_IMAGE_FROM_STORAGE(_, fileName) {
+      storage.ref().child(fileName)
+      .delete()
+      .catch((error) => {
+        console.log(error)
+      });
+    },
+
+    UPLOAD_USER_IMAGE(_, user) {
+      const task = storage.ref().child(user.fileName).put(user.file,user.metadata)
+      task
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(url => {
+        this.commit('SET_USER_IMAGE_URL',url)
+      })
+    },
+
+    SET_DEFAULT_USER_IMAGE(state) {
+      const defaultImageURL = "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b";
+      db.collection("users").doc(auth.currentUser.uid).update({
+        image_url: defaultImageURL
+      })
+      .then(() => {
+        state.user_data.image_url=defaultImageURL;
+        Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile picture has been reset!"});
+      })
+      .catch((error) => {
+        Swal.fire({icon: 'error', title: error});
+      });
+    },
+    
+    UPLOAD_USER_CROPPED_IMAGE(state, file) {
+      const task = storage.ref().child(file.fileName).put(file.file,file.metadata)
+      task
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(url => {
+        state.upload_image = {url: url, fileName: file.fileName};
+      })
+    },
+
     GET_WAVES_FROM_OTHER_USERS(state) {
       db.collection("user_waves")
         .where("to_user_id", "==", auth.currentUser.uid)
@@ -579,6 +658,30 @@ export default createStore({
 
     sendFeedback({ commit }, feedback) {
       commit('SEND_FEEDBACK', feedback);
+    },
+
+    updateUserProfile({ commit }, user) {
+      commit('UPDATE_USER_PROFILE', user);
+    },
+
+    uploadUserImage({ commit }, user) {
+      commit('UPLOAD_USER_IMAGE',user);
+    },
+
+    setDefaultUserImage({ commit }) {
+      commit('SET_DEFAULT_USER_IMAGE');
+    },
+
+    uploadUserCroppedImage({commit}, file) {
+      commit('UPLOAD_USER_CROPPED_IMAGE', file)
+    },
+
+    setUserImageURL({commit},image_url) {
+      commit('SET_USER_IMAGE_URL', image_url)
+    },
+
+    deleteProfileImageFromStorage({commit}, fileName) {
+      commit('DELETE_PROFILE_IMAGE_FROM_STORAGE', fileName)
     },
 
     getFeedback({ commit }) {
