@@ -16,6 +16,7 @@ export default createStore({
     user_data: null,                      // user data pulled from db
     user_image: null,
     upload_image: {url:'', fileName:''},  // to help with the upload of profile image
+    is_new: false,                        // used to ensure all mandatory details are filled after signup
     events: [],
     talent: [],
     mentors: [],
@@ -82,7 +83,7 @@ export default createStore({
         Swal.fire({ icon: 'error', title: error.message });
       });
     },
-    SIGNUP_USER(_, signUpUser) {
+    SIGNUP_USER(state, signUpUser) {
       const DOMAIN_NAMES = ['@student.monash.edu', '@monash.edu']
       var provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('email');
@@ -117,7 +118,18 @@ export default createStore({
             website_url: "",
           }
         });
+        state.is_new = true;
         router.push({ name: 'Home' });
+        Swal.fire({ 
+          icon: 'warning', 
+          title: "Complete Your Profile Setup",
+          confirmButtonText: 'Let\'s Go' 
+        }).then((result) => {
+          // Prompting users to complete their profile
+          if (result.isConfirmed) {
+            router.push({ name: 'Profile' })
+          }
+        })
       }
       function whenReject(user, errorMessage) {
         // If it doesn't match, deletes the user from authentication
@@ -523,6 +535,7 @@ export default createStore({
         }
       })
       .then(() => {
+        state.is_new = false;
         this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
         Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile is updated!"});
       })
