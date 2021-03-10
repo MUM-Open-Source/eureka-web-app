@@ -2,8 +2,8 @@ import { createStore } from 'vuex';
 import firebase from 'firebase';
 import firebaseApp from 'firebase/app';
 import 'firebase/auth'
-import router from '@/router';
 import { db, auth, storage } from "@/firebase";
+import router from '@/router';
 import Swal from 'sweetalert2';
 
 
@@ -82,8 +82,8 @@ export default createStore({
         Swal.fire({ icon: 'error', title: error.message });
       });
     },
-    SIGNUP_USER(state, signUpUser) {
-      const DOMAIN_NAMES = ['@student.monash.edu']
+    SIGNUP_USER(_, signUpUser) {
+      const DOMAIN_NAMES = ['@student.monash.edu', '@monash.edu']
       var provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('email');
 
@@ -123,21 +123,22 @@ export default createStore({
         // If it doesn't match, deletes the user from authentication
         auth.signOut().then(() => {
           user.delete();
-          errorMessage()          
+          errorMessage()
         }).catch((error) => {
           Swal.fire({ icon: 'error', title: error.message });
-        });        
+        });
       }
 
       firebase.auth()
         .signInWithPopup(provider)
         .then((result) => {
-          var user = result.user;
-          var isNewUser = result.additionalUserInfo.isNewUser
-          if (isNewUser) {
-            if (signUpUser)
+          var user = result.user;          
+          if (result.additionalUserInfo.isNewUser) {
+            if (signUpUser && signUpUser.role === 'talent')
               evaluatesUserMail(user.email, DOMAIN_NAMES, () => whenAccept(user),
                 () => whenReject(user, () => Swal.fire({ icon: 'error', title: 'You need a Monash student account' })));
+            else if (signUpUser && signUpUser.role === 'mentor')
+              whenAccept(user)
             else
               whenReject(user, () => Swal.fire({ icon: 'error', title: 'Please Sign Up Your Account' }))
           }
