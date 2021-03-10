@@ -118,7 +118,17 @@ export default createStore({
           }
         });
         state.is_new = true;
-        router.push({ name: 'Profile' });
+        router.push({ name: 'Home' });
+        Swal.fire({ 
+          icon: 'warning', 
+          title: "Complete Your Profile Setup",
+          confirmButtonText: 'Let\'s Go' 
+        }).then((result) => {
+          // Prompting users to complete their profile
+          if (result.isConfirmed) {
+            router.push({ name: 'Profile' })
+          }
+        })
       }
       function whenReject(user, errorMessage) {
         // If it doesn't match, deletes the user from authentication
@@ -524,6 +534,7 @@ export default createStore({
         }
       })
       .then(() => {
+        state.is_new = false;
         this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
         Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile is updated!"});
       })
