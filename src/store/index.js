@@ -18,7 +18,7 @@ export default createStore({
     events: [],
     talent: [],
     mentors: [],
-    feedbacks: [],
+    feedback: [],
     liked_events: [],                     // list of events liked by the user
     user_waves: [],                       // list of users waved at by the auth user
     waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -34,9 +34,9 @@ export default createStore({
         background: [],
         full_name: [],
       },
-      mentor: {
+      mentors: {
         skill: [],
-        experience_level: [],
+        experience_level: ['Beginner', 'Intermediate', 'Advanced'],
         background: [],
         full_name: [],
       }
@@ -251,10 +251,13 @@ export default createStore({
           querySnapshot.forEach((doc) => {
 
             // populating the respective filter array
-            if (!state.filters.talent.interests.includes(doc.data().interests)) {
-              state.filters.talent.interests.push(doc.data().interests)
-            }
-            if (!state.filters.talent.background.includes(doc.data().background)) {
+            doc.data().interests.forEach((interest)=>{
+              if (!state.filters.talent.interests.includes(interest)) {
+                state.filters.talent.interests.push(interest)
+              }
+            })
+            
+            if (!state.filters.talent.background.includes(doc.data().background) && doc.data().background != '') {
               state.filters.talent.background.push(doc.data().background)
             }
             if (!state.filters.talent.full_name.includes(doc.data().full_name)) {
@@ -281,14 +284,16 @@ export default createStore({
           querySnapshot.forEach((doc) => {
 
             // populating the respective filter array
-            if (!state.filters.mentor.skill.includes(doc.data().skill)) {
-              state.filters.mentor.skill.push(doc.data().skill)
+            doc.data().interests.forEach((interest)=>{
+              if (!state.filters.mentors.skill.includes(interest)) {
+                state.filters.mentors.skill.push(interest)
+              }
+            })
+            if (!state.filters.mentors.background.includes(doc.data().background) && doc.data().background != '') {
+              state.filters.mentors.background.push(doc.data().background)
             }
-            if (!state.filters.mentor.background.includes(doc.data().background)) {
-              state.filters.mentor.background.push(doc.data().background)
-            }
-            if (!state.filters.mentor.full_name.includes(doc.data().full_name)) {
-              state.filters.mentor.full_name.push(doc.data().full_name)
+            if (!state.filters.mentors.full_name.includes(doc.data().full_name)) {
+              state.filters.mentors.full_name.push(doc.data().full_name)
             }
 
             // populating the mentors array
@@ -300,11 +305,11 @@ export default createStore({
         });
     },
     GET_FEEDBACK(state) {
-      db.collection("feedbacks")
+      db.collection("feedback")
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            state.feedbacks.push(doc.data());
+            state.feedback.push(doc.data());
           });
         })
         .catch(function (error) {
@@ -473,7 +478,7 @@ export default createStore({
 
     SEND_FEEDBACK(state, feedback) {
       // writing feedback to db
-      db.collection("feedbacks").add({
+      db.collection("feedback").add({
         user_id: auth.currentUser.uid,
         user_name: state.user_data.full_name,
         created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
@@ -574,7 +579,7 @@ export default createStore({
       commit('SEND_FEEDBACK', feedback);
     },
 
-    getFeedbacks({ commit }) {
+    getFeedback({ commit }) {
       commit('GET_FEEDBACK');
     },
 
