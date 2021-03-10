@@ -23,18 +23,17 @@
         </div> -->
         <div class="heading mar__b--3 text--center">User Profile</div>
         <div class="profile__content">
-            <div class="profile__img text--center">
-                <RoundImage :src="user?.image_url" alt="" class="profile__img--roundImage" id="user-image"/>
+            <div class="profile__img text--center pad--4">
+                <RoundImage :src="user_image" alt="" class="profile__img--roundImage" id="user-image"/>
                 <div class="profile__img--upload mar__t--1">
-                    <form class="btn-chooseFile">
-                        <label for="imageUpload" class="custom-file-upload">lol</label>
-                        <input type="file" id="imageUpload" class="inputfile">
+                    <form class="btn-chooseFile mar--2">
+                        <label for="imageUpload" class="body custom-file-upload text--capsule cursor__pointer">Update</label>
+                        <input type="file" id="imageUpload" class="inputfile" accept=".png, .jpg, .jpeg"
+                        @change="handleImageUpload">
                     </form>
                     <div class = "image-button-wrapper">
-                        <Button class="btn-upload" text="Upload" @click='handleImageUpload' />
-                        <div v-if="!hasDefaultImage">
-                            <Button class="btn-setDefaultImage" text="set Default Image" @click='setDefaultImage' /> 
-                        </div>
+                        <!-- <Button class="btn-upload" text="Upload" @click='handleImageUpload' /> -->
+                        <Button v-if="!hasDefaultImage" class="btn-setDefaultImage" text="Remove Image" @click='setDefaultImage' /> 
                     </div>
                     <div class="tagline mar__t--1">Acceptable formats: jpg, png</div>
                 </div>
@@ -215,14 +214,14 @@
                     :options="interestMenu.options"
                     :max="5"
                     :placeholder="helper.skillsPlaceholder"
-                    class="body user-profile__multiselect"
+                    class="body user-profile__multiselect mar__b--2"
                     :createTag = "true"
                     @select = handleInputsUpdate
                     @deselect = handleInputsUpdate
                 />
                 <label class="custom-input__label tagline--bold">Experience*</label>
                 <Multiselect
-                    class="mar__b--2 body user-profile__multiselect"
+                    class="mar__b--2 body user-profile__multiselect mar__b--2"
                     :searchable="false"
                     :caret="true"
                     placeholder="Beginner"
@@ -262,9 +261,9 @@
 <script>
 import { reactive, computed } from 'vue';
 import store from '@/store';
+import router from '@/router';
 import RoundImage from '@/components/RoundImage';
 import Button from '@/components/Button';
-// import ProfileInputField from '@/components/ProfileInputField';
 import Multiselect from '@vueform/multiselect';
 import Swal from "sweetalert2";
 
@@ -277,6 +276,11 @@ export default {
   setup() {
 
     // fetching the user details with default data provided
+    const user_image = computed(() =>
+            store.state.user_data
+            ? store.state.user_data.image_url
+            : require('@/assets/default-user-image.png')
+        );
     const user = store.state.user_data;
     //recommended interests to pick from
     const interestMenu = reactive({
@@ -353,6 +357,7 @@ export default {
         interests: userInerestsIndices.value,
         experience_level: user.experience_level,
     });
+
     const isUserTalent = computed(() => user?.roles.includes('talent'));
     const helper = {
         backgroundLabel: isUserTalent.value ? 'Current Degree*' : 'Job Title*',
@@ -371,16 +376,6 @@ export default {
         hasUnsavedChanges: false
     })
 
-
-    // const userInputs = reactive({
-    //     background: "",
-    //     bio: "",
-    //     github_url: "",
-    //     website_url: "",
-    //     experience_level: "",
-    //     interests:[]
-    // })
-
     function handleInputsUpdate() {
         state.hasUnsavedChanges = 
             inputValues.background !== user.background || 
@@ -390,8 +385,6 @@ export default {
             inputValues.website_url !== user.social_links.website_url || 
             parseInt(inputValues.experience_level) !== user.experience_level
     }
-
-
   
   //Stores the list of selected interests
     //Initial value is the existing/past selected interests from user's db
@@ -414,14 +407,17 @@ export default {
     
     function handleImageUpload(){
         //handles image upload
-        const file = document.querySelector("#imageUpload").files[0]
-        console.log(file)
-        console.log(document.querySelector("#imageUpload").files)
+        const file = document.querySelector("#imageUpload").files[0];
+        const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
         if (file){
-            const fileName = new Date() + '-' + file.name;
-            const metadata = {contentType:file.type}
-            store.dispatch('uploadUserCroppedImage', {file:file, fileName:fileName, metadata:metadata});
-
+            if (validFileTypes.includes(file.type)) {
+                const fileName = new Date() + '-' + file.name;
+                const metadata = {contentType:file.type}
+                store.dispatch('uploadUserCroppedImage', {file:file, fileName:fileName, metadata:metadata})
+                .then(router.push({name:'CropImage'}));
+            } else {
+                Swal.fire({icon: 'warning', title: "We can't use this file", text: "Please select an image with the right format"});
+            }
 
             ////normal image upload
             //Swal.fire({icon: 'success', title: "Buffering", text: "The process takes a bit of time"});
@@ -509,6 +505,7 @@ export default {
         state,
         inputValues,
         user,
+        user_image,
         helper,
         interest_value,
         handleInputsUpdate,
@@ -539,7 +536,6 @@ export default {
   border-radius: 4px;
   &__label {
       color: $color-brand;
-    //   padding-left: 8px;;
   }
   &--disabled {
       background-color: $color-bg-hover;
@@ -549,69 +545,22 @@ export default {
   }
 }
 
-input[type=file]::-webkit-file-upload-button {
-    // background-image: linear-gradient(to right, #5986E1, #7450CB);
-    // font-family: inherit;
-    // color: white;
-    // font-size: 110%;
-    // padding: 14px 28px;
-    // text-transform: uppercase;
-    // border: none;
-    // border-radius: $btn-border-radius;
-    // z-index: 0;
-    // &:focus {
-    //     outline: 0;
-    // }
-    // &:hover {
-    //     cursor: pointer;
-    // }
-    // display: inline-block;
-    // width: 50px;
-    // margin-left: auto;
-    // margin-right: auto;
-    // text-align: center !important;
-}
 .custom-file-upload {
     // display: inline-block;
+    text-transform: uppercase;
+    padding: 5px 30px;
+}
+#imageUpload {
+    display: none;
 }
 .image-button-wrapper{
     display: flex;
-    flex-direction: row;
-}
-
-.btn {
-    &-upload {
-        // font-size: 12px;
-        // padding: 5px 10px;
-        // margin-left:180px;
-    }
-    &-setDefaultImage{
-        // font-size: 12px;
-        // padding: 5px 10px;
-        // margin-left:4px;
-
-    }
-}
-
-.body{
-    // font-size: 95%;
+    flex-direction: column;
+    align-items: center;
 }
 .user-profile {
     display: flex;
     flex-direction: row;
-    &__multiselect{
-        margin-top: 10px;
-        margin-bottom: 18px;
-        &--tagline{
-            margin-bottom: -6px;
-            margin-left: 6px;
-            font-size: 110%;
-            font-family:'Trebuchet MS';
-            font-weight: bold;
-            color: #346ee0;
-
-        }
-    }
 }
 
 .profile {
@@ -653,24 +602,9 @@ input[type=file]::-webkit-file-upload-button {
     &__img {
         display: flex;
         flex-direction: column;
-        // margin-left: 10%;
-        //align-items: center;
-        //justify-content: center;
-        &--upload {
-            // margin-top: 20%;
-            // margin-left: 0;
-            width:max-content;
-            height: max-content;
-        }
-        &--roundImage{
-            // margin-top: 20%;
-            // margin-left: 15%;
-        }
     }
     &__inputs {
         display: flex;
-        // margin-left: 20%;
-       // margin-right: 0;
         flex-direction: column;
         flex-wrap: wrap;
         justify-content: space-evenly;
@@ -683,15 +617,10 @@ input[type=file]::-webkit-file-upload-button {
             margin-left: 6px;
             margin-top: 5px;
         }
-        &--interests{
-            // margin-top:8px;
-            // margin-bottom:24px;
-        }
         &--wrapper{
             display: flex;
             flex-direction: column;
             align-items: center;
-            // margin-left: 60px;
         }
     }
 }
@@ -704,9 +633,11 @@ input[type=file]::-webkit-file-upload-button {
         &__img {
             flex-direction: column;
         }
+        &__content {
+            flex-direction: column;
+        }
         &__inputs {
             display: flex;
-            align-items: center;
             justify-content: center;   
         }
     }

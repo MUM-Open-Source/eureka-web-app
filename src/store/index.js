@@ -13,7 +13,7 @@ export default createStore({
     isLoading: true,                      // bool to keep track whether user is being retreived from the DB
     user_data: null,                      // user data pulled from db
     user_image: null,
-    upload_image_url:"",
+    upload_image: {url:'', fileName:''},  // to help with the upload of profile image
     events: [],
     talent: [],
     mentors: [],
@@ -528,6 +528,14 @@ export default createStore({
       });
     },
 
+    DELETE_PROFILE_IMAGE_FROM_STORAGE(_, fileName) {
+      storage.ref().child(fileName)
+      .delete()
+      .catch((error) => {
+        console.log(error)
+      });
+    },
+
     UPLOAD_USER_IMAGE(_, user) {
       const task = storage.ref().child(user.fileName).put(user.file,user.metadata)
       task
@@ -537,26 +545,26 @@ export default createStore({
       })
     },
 
-    SET_DEFAULT_USER_IMAGE() {
+    SET_DEFAULT_USER_IMAGE(state) {
+      const defaultImageURL = "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b";
       db.collection("users").doc(auth.currentUser.uid).update({
-        image_url: "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b"
+        image_url: defaultImageURL
       })
       .then(() => {
-        this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
-        Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile picture is set to default!"});
+        state.user_data.image_url=defaultImageURL;
+        Swal.fire({icon: 'success', title: "Thank you!", text: "Your profile picture has been reset!"});
       })
       .catch((error) => {
         Swal.fire({icon: 'error', title: error});
       });
     },
     
-    UPLOAD_USER_CROPPED_IMAGE(state,user) {
-      const task = storage.ref().child(user.fileName).put(user.file,user.metadata)
+    UPLOAD_USER_CROPPED_IMAGE(state, file) {
+      const task = storage.ref().child(file.fileName).put(file.file,file.metadata)
       task
       .then(snapshot => snapshot.ref.getDownloadURL())
       .then(url => {
-        state.upload_image_url = url;
-        router.push({ path: '/profile/crop-image'});
+        state.upload_image = {url: url, fileName: file.fileName};
       })
     },
 
@@ -648,12 +656,16 @@ export default createStore({
       commit('SET_DEFAULT_USER_IMAGE');
     },
 
-    uploadUserCroppedImage({commit},user) {
-      commit('UPLOAD_USER_CROPPED_IMAGE',user);
+    uploadUserCroppedImage({commit}, file) {
+      commit('UPLOAD_USER_CROPPED_IMAGE', file)
     },
 
     setUserImageURL({commit},image_url) {
       commit('SET_USER_IMAGE_URL', image_url)
+    },
+
+    deleteProfileImageFromStorage({commit}, fileName) {
+      commit('DELETE_PROFILE_IMAGE_FROM_STORAGE', fileName)
     },
 
     getFeedback({ commit }) {
