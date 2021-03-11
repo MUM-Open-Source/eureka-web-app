@@ -73,10 +73,10 @@
   <div class="home__footer pad--3 text--white">
     <div class="home__footer--left">
       <router-link :to="{ name: 'Privacy'}">
-        <div class="tagline cursor__pointer margin text--white">Privacy</div>
+        <div class="tagline cursor__pointer margin text--white"><u>Privacy</u></div>
       </router-link>
       <router-link :to="{ name: 'Terms'}">
-        <div class="tagline cursor__pointer margin text--white">Terms & Conditions</div>
+        <div class="tagline cursor__pointer margin text--white"><u>Terms & Conditions</u></div>
       </router-link>
     </div>
     <div>
