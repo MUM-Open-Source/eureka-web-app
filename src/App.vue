@@ -2,7 +2,7 @@
   <div>
     <SideNav v-if="isLoggedIn" />
     <div class="main" :class="marginLeft">
-      <TopNav />
+      <TopNav v-if="!isNewUser"/>
       <!-- routing -->
       <Loader v-if="isLoading"/>
       <router-view v-else/>
@@ -31,6 +31,7 @@ export default {
 
     // computed properties
     const isLoggedIn = computed(() => store.state.user !== null);
+    const isNewUser = computed(() => store.state.is_new);
     const isLoading = computed(() => store.state.isLoading === true);
     const marginLeft = computed(() =>
       store.state.isSideNavCollapsed
@@ -41,6 +42,7 @@ export default {
     // return everything that needs to be referenced in the template
     return {
       isLoggedIn,
+      isNewUser,
       isLoading,
       marginLeft,
     };
@@ -69,3 +71,4 @@ export default {
   }
 }
 </style>
+

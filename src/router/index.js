@@ -12,7 +12,10 @@ import WavesFromTalent from '@/views/WavesFromTalent.vue';
 import WavesFromMentors from '@/views/WavesFromMentors.vue';
 import BrowseEvents from '@/views/BrowseEvents.vue';
 import NotFound from '@/views/NotFound.vue';
+import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue'
+import Terms from '@/views/Terms.vue'
+import Privacy from '@/views/Privacy.vue'
 
 // all the different paths for the SPA
 const routes = [
@@ -23,7 +26,10 @@ const routes = [
   }, {
     path: '/admin',
     name: 'Admin',
-    component: Admin
+    component: Admin,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/signup',
@@ -72,6 +78,13 @@ const routes = [
       requiresAuth: true
     }
   }, {
+    path: '/profile/crop-image',
+    name: 'CropImage',
+    component: CropImage,
+    meta: {
+      requiresAuth: true
+    }
+  }, {
     path: '/profile/waves-from-talent',
     name: 'WavesFromTalent',
     component: WavesFromTalent,
@@ -96,8 +109,16 @@ const routes = [
     meta: {
       requiresAuth: false
     }
-  },
-  
+  }, {
+    path: '/terms-and-conditions',
+    name: 'Terms',
+    component: Terms,
+  }, {
+    path: '/privacy-policy',
+    name: 'Privacy',
+    component: Privacy,
+  }
+
   // {
   //   path: '/about',
   //   name: 'About',
@@ -113,7 +134,7 @@ const router = createRouter({
   routes
 })
 
-// router guards 
+// router guards
 router.beforeEach(async (to, from, next) => {
   const isLoggedIn = (store.state.user !== null);
   const isLoading = store.state.isLoading;

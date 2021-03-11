@@ -1,4 +1,4 @@
-button {
+button, input[type=file]::-webkit-file-upload-button {
     @include gradientAnimation($color-brand , $color-brand-alt);
     @include shadow;
     font-family: inherit;
