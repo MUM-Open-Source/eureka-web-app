@@ -39,7 +39,8 @@
           class="mar--auto mar__t--3 mar__b--1"
           @click="handleSignUp"
         />
-        <div class="tagline">*Use your Monash account if you're a current student</div>
+        <div class="tagline mar__b--1">*Use your Monash account if you're a current student</div>
+        <div class="tagline">By signing up, you agree to our <router-link :to="{ name: 'Privacy'}"><u>Privacy Policy</u></router-link> and <router-link :to="{ name: 'Terms'}"><u>Terms & Conditions</u></router-link></div>
       </div>
     </div>
   </div>

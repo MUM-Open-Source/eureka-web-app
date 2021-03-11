@@ -53,7 +53,7 @@
     </div>
   </div>
   <div class="home__develop text--center text--white page-pad">
-      <div class="heading mar__b--3">Come Develop This Platform</div>
+      <div class="heading mar__b--3">Contribute to This Platform</div>
       <div class="body mar__b--3">
         We're going Open Source soon and you'll be able to help build and add features
         to make this platform better! Built by the student community for the community.
@@ -73,10 +73,10 @@
   <div class="home__footer pad--3 text--white">
     <div class="home__footer--left">
       <router-link :to="{ name: 'Privacy'}">
-        <div class="tagline cursor__pointer margin text--white">Privacy</div>
+        <div class="tagline cursor__pointer margin text--white"><u>Privacy</u></div>
       </router-link>
       <router-link :to="{ name: 'Terms'}">
-        <div class="tagline cursor__pointer margin text--white">Terms & Conditions</div>
+        <div class="tagline cursor__pointer margin text--white"><u>Terms & Conditions</u></div>
       </router-link>
     </div>
     <div>
