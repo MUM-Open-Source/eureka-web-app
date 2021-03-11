@@ -53,7 +53,7 @@
     </div>
   </div>
   <div class="home__develop text--center text--white page-pad">
-      <div class="heading mar__b--3">Come Develop This Platform</div>
+      <div class="heading mar__b--3">Contribute to This Platform</div>
       <div class="body mar__b--3">
         We're going Open Source soon and you'll be able to help build and add features
         to make this platform better! Built by the student community for the community.

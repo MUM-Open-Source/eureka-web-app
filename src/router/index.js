@@ -12,6 +12,7 @@ import WavesFromTalent from '@/views/WavesFromTalent.vue';
 import WavesFromMentors from '@/views/WavesFromMentors.vue';
 import BrowseEvents from '@/views/BrowseEvents.vue';
 import NotFound from '@/views/NotFound.vue';
+import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue'
 import Terms from '@/views/Terms.vue'
 import Privacy from '@/views/Privacy.vue'
@@ -25,7 +26,10 @@ const routes = [
   }, {
     path: '/admin',
     name: 'Admin',
-    component: Admin
+    component: Admin,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/signup',
@@ -70,6 +74,13 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: UserProfile,
+    meta: {
+      requiresAuth: true
+    }
+  }, {
+    path: '/profile/crop-image',
+    name: 'CropImage',
+    component: CropImage,
     meta: {
       requiresAuth: true
     }
