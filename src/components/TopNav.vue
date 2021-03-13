@@ -14,7 +14,7 @@
         <div class="top-nav__right mar--2" @click='toggleUserMenuState'>
             <!-- <img id="bell" class="top-nav__icon" src="@/assets/notification-icon.svg" v-if="isLoggedIn" /> -->
             <div class="top-nav__right--user cursor__pointer">
-                <div id="top-nav__name" class="body mar--1">{{ displayName }}</div>
+                <div id="top-nav__name" class="body mar--1">{{ displayName }} Rocks</div>
                 <img class="top-nav__profile-img" :src='displayPic' />
             </div>
             <UserMenu v-if="isUserMenuShown" />
