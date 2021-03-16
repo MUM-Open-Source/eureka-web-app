@@ -85,5 +85,64 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '@/styles/components/top_nav';
+.top-nav {
+    @include shadow--small;
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    height: $top-nav-height;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $color-white;
+    &__full {
+        width: 100%;
+    }
+    &__reduced {
+        width: calc(100% - 100px);
+    }
+    &__left, &__right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    &__icon {
+        width: $top-nav-icon-width;
+        margin-left: $top-nav-elem-margin;
+    }
+    &__logo, &__profile-img {
+        height: $top-nav-img-height;
+        margin-right: $top-nav-elem-margin;
+    }
+    &__logo {
+        margin-left: $top-nav-elem-margin;
+    }
+    &__right--user {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    &__profile-img{
+        border-radius: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    #top-nav__name {
+        display: none;
+    }
+
+    #bell {
+        margin-left: 0;
+        margin-right: $top-nav-bell-margin;
+    }
+}
+
+@media (max-width: 326px) {
+    .top-nav__logo {
+        display: none;
+    }
+}
+
 </style>

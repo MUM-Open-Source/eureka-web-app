@@ -108,5 +108,47 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '@/styles/components/profile_card';
+.profile-card {
+    @include shadow;
+    position: relative;
+    width: 100%;
+    max-width: $profile-card-width;
+    border-radius: $app-border-radius;
+    display: flex;
+    flex-direction: column;
+    &__top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    &__particulars {
+        &--background {
+            text-transform: uppercase;
+        }
+    }
+    &__interests {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    &__socials {
+        display: flex;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        &--icon {
+            width: $social-icon-width;
+            margin: $social-icon-margin;
+        }
+
+    }
+}
+
+.star__icon {
+    width: $star-icon-width;
+    margin-right: $star-icon-margin-right;
+}
+.wave__icon {
+    width: $hand-icon-width;
+}
 </style>

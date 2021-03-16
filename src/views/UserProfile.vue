@@ -447,9 +447,6 @@ export default {
 
 <style src="@vueform/multiselect/themes/default.css"></style>
 <style lang="scss" scoped>
-@import '@/styles/components/multiselect';
-@import '@/styles/components/button';
-
 .custom-input {
   width: 100%;
   padding: 10px 15px;
@@ -545,6 +542,22 @@ export default {
             align-items: center;
         }
     }
+}
+.user-profile__multiselect {
+    width: $multiselect-width;
+    &-tag {
+        background-color: $color-brand;
+    }
+}
+@media (max-width: 954px) {
+    .user-profile__multiselect {
+        width: $multiselect-width-sm;
+    }   
+}
+@media (max-width: 425px) {
+    .user-profile__multiselect {
+        width: 100%;
+    }   
 }
 @media (max-width: 736px) {
     .user-profile {

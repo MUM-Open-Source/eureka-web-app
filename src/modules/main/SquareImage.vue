@@ -19,5 +19,10 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '@/styles/components/squared_img';
+.square-img {
+    @include shadow;
+    width: $square-img-width;
+    height: auto;
+    border-radius: $app-border-radius;    
+}
 </style>

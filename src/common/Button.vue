@@ -15,5 +15,22 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '@/styles/components/button';
+button, input[type=file]::-webkit-file-upload-button {
+    @include gradientAnimation($color-brand , $color-brand-alt);
+    @include shadow;
+    font-family: inherit;
+    display: block;
+    padding: $btn-padding;
+    color: $color-white;
+    text-transform: uppercase;
+    border: none;
+    border-radius: $btn-border-radius;
+    z-index: 0;
+    &:focus {
+        outline: 0;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}
 </style>

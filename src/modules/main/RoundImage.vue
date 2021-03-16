@@ -19,5 +19,10 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '@/styles/components/rounded_img';
+.round-img {
+    @include shadow;
+    width: $round-img-width;
+    height: auto;
+    border-radius: 50%;
+}
 </style>
