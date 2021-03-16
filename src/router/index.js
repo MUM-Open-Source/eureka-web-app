@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import store from '@/store';
+import { createRouter, createWebHistory } from 'vue-router';
+import checkAuth from '@/middleware/checkAuth.js';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Admin from '@/views/Admin.vue';
@@ -136,15 +136,7 @@ const router = createRouter({
 
 // router guards
 router.beforeEach(async (to, from, next) => {
-  const isLoggedIn = (store.state.user !== null);
-  const isLoading = store.state.isLoading;
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-  // to redirect users who aren't logged in
-  if (requiresAuth && !isLoggedIn && isLoading) next({ name: 'Home' })
-  // to redirect users accessing login and signup pages before they are authenticated
-  else if (['Login', 'SignUp'].includes(to.name) && isLoading) next({ name: 'Home' })
-  else next();
+  checkAuth(to, next);
 })
 
 export default router

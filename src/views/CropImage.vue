@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import Button from '@/components/Button';
-import { Cropper } from 'vue-advanced-cropper'
-import 'vue-advanced-cropper/dist/style.css';
+import { ref, computed } from 'vue';
 import store from '@/store';
 import router from '@/router';
-import { ref, computed } from 'vue';
 import Swal from 'sweetalert2';
+import { Cropper } from 'vue-advanced-cropper'
+import 'vue-advanced-cropper/dist/style.css';
+import Button from '@/common/Button';
 export default {
     name: 'CropImage',
     components: {

@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import AdminButtonBar from "../components/AdminPanelComponent/AdminButtonBar.vue";
-import EventsPanel from "../components/AdminViews/EventsPanel.vue";
-import FeedbackPanel from "../components/AdminViews/FeedbackPanel.vue";
-import OverviewPanel from "../components/AdminViews/OverviewPanel.vue";
-import UserPanel from "../components/AdminViews/UserPanel.vue";
+import AdminButtonBar from "@/modules/admin/AdminPanelComponent/AdminButtonBar.vue";
+import EventsPanel from "@/modules/admin/AdminViews/EventsPanel.vue";
+import FeedbackPanel from "@/modules/admin/AdminViews/FeedbackPanel.vue";
+import OverviewPanel from "@/modules/admin/AdminViews/OverviewPanel.vue";
+import UserPanel from "@/modules/admin/AdminViews/UserPanel.vue";
 import NotFound from "@/views/NotFound.vue";
 import store from "@/store";
 import { computed, ref } from "vue";

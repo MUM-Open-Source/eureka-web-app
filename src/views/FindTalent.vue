@@ -24,8 +24,8 @@
 <script>
 import { onMounted, ref } from 'vue';
 import store from '@/store';
-import ProfileCard from '@/components/ProfileCard';
-import Filter from '@/components/Filter';
+import ProfileCard from '@/modules/main/ProfileCard';
+import Filter from '@/modules/main/Filter';
 
 export default {
     name: 'FindTalent',
