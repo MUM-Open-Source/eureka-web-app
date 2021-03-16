@@ -4,17 +4,62 @@
         <hr>
         <div class="filter__inputs">
             <Multiselect
-                v-for="filter in filters" 
-                :key="filter.key"
                 class="mar__t--2 mar__b--2"
                 v-model="filter.interests"
                 :searchable="true"
                 :caret="false"
-                :placeholder="filter.placeholder"
-                :options='filter.value'
-                @select="filter.onChange"
-                @deselect="filter.onChange"
+                placeholder="Interest"
+                :options='filterOptions.interests'
+                @select="updateFilter"
+                @deselect="updateFilter"
             />
+            <Multiselect
+                class="mar__t--2 mar__b--2"
+                v-model="filter.experience_level"
+                :searchable="true"
+                :caret="false"
+                placeholder="Experience"
+                :options="filterOptions.experience_level"
+                @select="updateFilter"
+                @deselect="updateFilter"
+            />
+            <Multiselect
+                class="mar__t--2 mar__b--2"
+                v-model="filter.background"
+                :searchable="true"
+                :caret="false"
+                placeholder="Degree"
+                :options="filterOptions.background"
+                @select="updateFilter"
+                @deselect="updateFilter"
+            />
+            <!-- <Multiselect
+                class="mar__t--2 mar__b--2"
+                v-model="filter.event"
+                :searchable="true"
+                :caret="false"
+                placeholder="Event"
+                :options="{
+                    event: 'QuickHack'
+                }"
+                @select="updateFilter"
+                @deselect="updateFilter"
+            /> -->
+            <Multiselect
+                class="mar__t--2 mar__b--2"
+                v-model="filter.full_name"
+                :searchable="true"
+                :caret="false"
+                placeholder="Name"
+                :options="filterOptions.full_name"
+                @select="updateFilter"
+                @deselect="updateFilter"
+            />
+            <!-- <Toggle 
+                label='Waved at' 
+                id="waved-at" 
+                class="mar__b--2"
+            /> -->
         </div>
     </div>
 </template>
@@ -22,6 +67,7 @@ s
 <script>
 import { reactive } from 'vue';
 import Multiselect from '@vueform/multiselect';
+// import Toggle from '@/components/Toggle';
 
 export default {
     name: 'Filter',

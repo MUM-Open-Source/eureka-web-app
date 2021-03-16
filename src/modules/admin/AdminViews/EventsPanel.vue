@@ -40,11 +40,11 @@
 </template>
 
 <script>
-import EventsListTile from "../AdminPanelComponent/EventsListTile.vue";
-import Button from "../Button.vue";
-import store from "@/store";
 import { onMounted, ref } from "vue";
+import store from "@/store";
 import Swal from "sweetalert2";
+import EventsListTile from "@/modules/admin/AdminPanelComponent/EventsListTile.vue";
+import Button from "@/common/Button.vue";
 export default {
   components: { EventsListTile, Button },
   name: "EventsPanel",

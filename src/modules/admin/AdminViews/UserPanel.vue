@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import UserListTile from "../../components/AdminPanelComponent/UserListTile.vue";
+import UserListTile from "@/modules/admin/AdminPanelComponent/UserListTile.vue";
 
 export default {
   name: "UserPanel",

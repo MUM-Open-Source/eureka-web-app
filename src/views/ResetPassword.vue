@@ -20,8 +20,8 @@
 
 <script>
 import store from '@/store';
-import Button from '@/components/Button';
-import InputField from '@/components/InputField';
+import Button from '@/common/Button';
+import InputField from '@/common/InputField';
 import Swal from 'sweetalert2';
 
 export default {

@@ -21,7 +21,7 @@
 
 <script>
 import store from "@/store";
-import Button from "@/components/Button";
+import Button from "@/common/Button";
 
 export default {
   name: "Login",

@@ -23,8 +23,8 @@
 <script>
 import { onMounted, ref } from 'vue';
 import store from '@/store';
-import ProfileCard from '@/components/ProfileCard';
-import MentorFilter from '@/components/MentorFilter';
+import ProfileCard from '@/modules/main/ProfileCard';
+import MentorFilter from '@/modules/main/MentorFilter';
 
 export default {
     name: 'FindMentor',

@@ -40,7 +40,7 @@
 import { reactive } from 'vue';
 import store from '@/store';
 import Multiselect from '@vueform/multiselect';
-import Button from '@/components/Button';
+import Button from '@/common/Button';
 import Swal from 'sweetalert2';
 
 

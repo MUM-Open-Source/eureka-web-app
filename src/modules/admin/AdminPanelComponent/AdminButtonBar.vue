@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import FlatButton from '../../components/FlatButton.vue';
+import FlatButton from '@/modules/admin/FlatButton.vue';
 export default {
   name:'AdminButtonBar',
   components:{FlatButton},

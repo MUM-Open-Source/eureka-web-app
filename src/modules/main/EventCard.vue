@@ -30,7 +30,7 @@
 <script>
 import { computed } from 'vue';
 import store from '@/store';
-import SquareImage from '@/components/SquareImage';
+import SquareImage from '@/modules/main/SquareImage';
 
 export default {
     name: 'EventCard',

@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import IconButton from "../IconButton.vue";
-import Button from "../Button.vue";
 import store from "@/store";
 import Swal from "sweetalert2";
+import IconButton from "@/modules/admin/IconButton.vue";
+import Button from "@/common/Button.vue";
 export default {
   components: { IconButton, Button },
   name: "EventsListTile",

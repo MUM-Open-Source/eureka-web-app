@@ -13,9 +13,9 @@
 <script>
 import { onMounted, computed } from 'vue';
 import store from '@/store';
-import Loader from '@/components/Loader';
-import SideNav from '@/components/SideNav';
-import TopNav from '@/components/TopNav';
+import Loader from '@/common/Loader';
+import SideNav from '@/modules/navigation/SideNav';
+import TopNav from '@/modules/navigation/TopNav';
 
 export default {
   name: "App", // name of the component
