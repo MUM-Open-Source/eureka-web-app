@@ -60,6 +60,43 @@
       </div>
       <div class="body">Stay tuned for more.</div>
   </div>
+  <div class="home__cta page-pad text--center home__team">
+    <div class="heading mar__b--5 text--center">Meet the Eureka Team</div>
+    <div class="mar__b--5 row">
+      <div>
+        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/nitin.jpg">
+        <div class="heading mar__b--1">Nitin Matthew</div>
+        <div class="subheading mar__b--1">Core Lead</div>
+        <div class="tagging mar__b--5">Leader forever :D</div>
+      </div>
+      <div>
+        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/blaise.jpg">
+        <div class="heading mar__b--1">Blaise Tiong</div>
+        <div class="subheading mar__b--1">Core Team</div>
+        <div class="tagging mar__b--5">Kokodai :O</div>
+      </div>
+      <div>
+        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/julian.jpg">
+        <div class="heading mar__b--1">Julian Khong</div>
+        <div class="subheading mar__b--1">Core Team</div>
+        <div class="tagging">Always rushing assignments :')</div>
+      </div>
+    </div>
+    <div class="mar__b--3 row--second-row">
+      <div>
+        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/chantelle.jpeg">
+        <div class="heading mar__b--1">Chantelle Loh</div>
+        <div class="subheading mar__b--1">Support Team</div>
+        <div class="tagging mar__b--5">A random potato :3</div>
+      </div>
+      <div>
+        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/minhao.jpeg">
+        <div class="heading mar__b--1">Chee Min Hao</div>
+        <div class="subheading mar__b--1">Support Team</div>
+        <div class="tagging mar__b--1">Har, semester start ady ah .-.</div>
+      </div>
+    </div>
+  </div>
   <div class="home__cta page-pad text--center">
       <div class="heading mar__b--2">Ready to Form Your Ultimate Team?</div>
       <div class="body mar__b--3">You solution is just a click away.</div>
@@ -129,6 +166,27 @@ export default {
       max-width: 100%;
     }
   }
+  &__team {
+    .row {
+      display: flex;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: space-between;
+      &--second-row {
+        display: flex;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+        justify-content: space-evenly;
+      }
+    }
+    &--img {
+      width: 200px;
+      max-width: 100%;
+      border-radius: 50%;
+    }
+  }
   &__develop {
     background-color: $color-brand;
   }
@@ -177,6 +235,17 @@ export default {
   }
   .margin {
     margin-bottom: $spacer * 1.5;
+  }
+}
+
+@media (max-width: 821px) {
+  .home__team {
+    .row{
+      flex-direction: column;
+      &--second-row {
+        flex-direction: column;
+      }
+    }
   }
 }
 </style>
