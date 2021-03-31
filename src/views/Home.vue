@@ -82,7 +82,7 @@
         <div class="tagging">Always rushing assignments :')</div>
       </div>
     </div>
-    <div class="mar__b--3 row--second-row">
+    <div class="row--second-row">
       <div>
         <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/chantelle.jpeg">
         <div class="heading mar__b--1">Chantelle Loh</div>
@@ -93,18 +93,18 @@
         <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/minhao.jpeg">
         <div class="heading mar__b--1">Chee Min Hao</div>
         <div class="subheading mar__b--1">Support Team</div>
-        <div class="tagging mar__b--1">Har, semester start ady ah .-.</div>
+        <div class="tagging">Har, semester start ady ah .-.</div>
       </div>
     </div>
   </div>
-  <div class="home__cta page-pad text--center">
+  <div class="home__form page-pad text--center text--white">
       <div class="heading mar__b--2">Ready to Form Your Ultimate Team?</div>
       <div class="body mar__b--3">You solution is just a click away.</div>
       <router-link :to="{ name: 'SignUp'}" v-if="isLoggedIn">
-        <Button text="Signup" class="mar--auto mar__t--2 mar__b--2" />
+        <Button text="Signup" class="mar--auto mar__t--2 mar__b--2 button__form" />
       </router-link>
       <router-link :to="{ name: 'FindTalent'}" v-else>
-        <Button text="Find Talent" class="mar--auto mar__t--2 mar__b--2" />
+        <Button text="Find Talent" class="mar--auto mar__t--2 mar__b--2 button__form" />
       </router-link>
   </div>
   <div class="home__footer pad--3 text--white">
@@ -203,8 +203,32 @@ export default {
       }
     }
   }
+  &__form {
+    background-color: $color-brand;
+  }
   &__subtitle {
     max-width: 800px;
+  }
+}
+
+.button {
+  &__form {
+    @include gradientAnimation($color-white , $color-white);
+    @include shadow;
+    font-family: inherit;
+    display: block;
+    padding: $btn-padding;
+    color: $color-dark;
+    text-transform: uppercase;
+    border: none;
+    border-radius: $btn-border-radius;
+    z-index: 0;
+    &:focus {
+        outline: 0;
+    }
+    &:hover {
+        cursor: pointer;
+    }
   }
 }
 
