@@ -33,55 +33,55 @@
                     </form>
                     <div class = "image-button-wrapper">
                         <!-- <Button class="btn-upload" text="Upload" @click='handleImageUpload' /> -->
-                        <Button v-if="!hasDefaultImage" class="btn-setDefaultImage" text="Remove Image" @click='setDefaultImage' /> 
+                        <Button v-if="!hasDefaultImage" class="btn-setDefaultImage" text="Remove Image" @click='setDefaultImage' />
                     </div>
                     <div class="tagline mar__t--1">Acceptable formats: jpg, png</div>
                 </div>
             </div>
           <div class="profile__inputs--wrapper">
             <div class="profile__inputs mar__t--3 mar__b--3">
-                
+
                 <!-- First Name -->
                 <label for="firstName" class="custom-input__label tagline--bold">First Name</label>
-                <input 
-                    id="firstName" 
+                <input
+                    id="firstName"
                     class="custom-input custom-input--disabled mar__b--2"
                     name="firstName"
-                    type="text" 
+                    type="text"
                     :value="user?.first_name"
                     @change="todo"
                     disabled
                 >
                 <!-- Last Name -->
                 <label for="lastName" class="custom-input__label tagline--bold">Last Name</label>
-                <input 
-                    id="lastName" 
+                <input
+                    id="lastName"
                     class="custom-input custom-input--disabled mar__b--2"
                     name="lastName"
-                    type="text" 
+                    type="text"
                     :value="user?.last_name"
                     @change="todo"
                     disabled
                 >
                 <!-- Email -->
                 <label for="email" class="custom-input__label tagline--bold">Email</label>
-                <input 
-                    id="email" 
+                <input
+                    id="email"
                     class="custom-input custom-input--disabled mar__b--2"
                     name="email"
-                    type="email" 
+                    type="email"
                     :value="user?.social_links.email_id"
                     @change="todo"
                     disabled
                 >
-                
+
                 <!-- Background -->
                 <label for="background" class="custom-input__label tagline--bold">{{ helper.backgroundLabel }}</label>
-                <input 
-                    id="background" 
+                <input
+                    id="background"
                     class="custom-input mar__b--2"
                     name="background"
-                    type="text" 
+                    type="text"
                     v-model="inputValues.background"
                     :placeholder="helper.backgroundPlaceholder"
                     @change="handleInputsUpdate"
@@ -90,11 +90,11 @@
                 <!-- Bio -->
                 <label for="bio" class="custom-input__label tagline--bold">Bio*</label>
                 <div class= "tagline skills__tagline">Use this space to sell yourself</div>
-                <input 
-                    id="bio" 
+                <input
+                    id="bio"
                     class="custom-input mar__b--2"
                     name="bio"
-                    type="text" 
+                    type="text"
                     v-model="inputValues.bio"
                     placeholder="I am.."
                     @change="handleInputsUpdate"
@@ -102,23 +102,23 @@
 
                 <!-- GitHub URL -->
                 <label for="github" class="custom-input__label tagline--bold">Github Link</label>
-                <input 
-                    id="github" 
+                <input
+                    id="github"
                     class="custom-input mar__b--2"
                     name="github"
-                    type="url" 
+                    type="url"
                     v-model="inputValues.github_url"
                     placeholder="https://www.github.com/username"
                     @change="handleInputsUpdate"
                 >
-                
+
                 <!-- Linkedin URL -->
                 <label for="linkedin" class="custom-input__label tagline--bold">Linkedin Link</label>
-                <input 
-                    id="linkedin" 
+                <input
+                    id="linkedin"
                     class="custom-input mar__b--2"
                     name="linkedin"
-                    type="url" 
+                    type="url"
                     v-model="inputValues.linkedin_url"
                     placeholder="https://www.linkedin.com/in/username"
                     @change="handleInputsUpdate"
@@ -126,11 +126,11 @@
 
                 <!-- Website URL -->
                 <label for="website" class="custom-input__label tagline--bold">Website Link</label>
-                <input 
-                    id="website" 
+                <input
+                    id="website"
                     class="custom-input mar__b--2"
                     name="website"
-                    type="url" 
+                    type="url"
                     v-model="inputValues.website_url"
                     placeholder="https://www.your-awesome-site.com"
                     @change="handleInputsUpdate"
@@ -139,7 +139,7 @@
                 <!-- Skills/Interests -->
                 <label class="custom-input__label tagline--bold">{{ helper.skillsLabel }}</label>
                 <div class= "tagline skills__tagline">You can enter values that aren't listed</div>
-                <Multiselect 
+                <Multiselect
                     v-model="inputValues.interests"
                     mode="tags"
                     :searchable="true"
@@ -151,7 +151,7 @@
                     @select = handleInputsUpdate
                     @deselect = handleInputsUpdate
                 />
-                
+
                 <!-- Experience -->
                 <label class="custom-input__label tagline--bold">Experience*</label>
                 <Multiselect
@@ -177,7 +177,7 @@
           </div>
         </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -206,60 +206,61 @@ export default {
     const user = store.state.user_data;
     //recommended interests to pick from
     const interestMenu = reactive({
-        options: [ 
-            'Python', 
-            'JavaScript', 
+        options: [
+            'Python',
+            'JavaScript',
             'TypeScript',
-            'C', 
-            'C++', 
-            'Java', 
-            'Ruby', 
-            'Go',  
-            'HTML', 
-            'CSS', 
-            'Tensorflow', 
-            'Machine Learning', 
+            'C',
+            'C++',
+            'Java',
+            'Ruby',
+            'Go',
+            'HTML',
+            'CSS',
+            'Tensorflow',
+            'Machine Learning',
             'Frontend',
-            'Backend', 
-            'Fullstack', 
-            'DevOps', 
-            'MERN', 
-            'MEAN', 
-            'Data Science', 
+            'Backend',
+            'Fullstack',
+            'DevOps',
+            'MERN',
+            'MEAN',
+            'Data Science',
             'Machine Learning',
             'Artificial Intelligence',
-            'Data Analytics', 
-            'NextJS', 
-            'ReactJS', 
+            'Data Analytics',
+            'NextJS',
+            'ReactJS',
             'React Native',
-            'Angular', 
-            'NodeJS', 
-            'VueJS', 
-            'MySQL', 
-            'PostgreSQL', 
-            'MongoDB', 
-            'Microsoft Azure', 
-            'AWS', 
-            'GCP', 
-            'Kotlin', 
-            'Android', 
-            'iOS', 
-            'Swift', 
-            'Flutter', 
-            'IoT', 
+            'Angular',
+            'NodeJS',
+            'VueJS',
+            'MySQL',
+            'PostgreSQL',
+            'MongoDB',
+            'Microsoft Azure',
+            'AWS',
+            'GCP',
+            'Kotlin',
+            'Android',
+            'iOS',
+            'Swift',
+            'Flutter',
+            'IoT',
             'Cyber Security',
-            'Database Design', 
-            'PHP', 
-            'SQL', 
-            'NoSQL', 
-            'Ruby on Rails', 
-            'Computer Vision', 
+            'Database Design',
+            'PHP',
+            'SQL',
+            'NoSQL',
+            'Ruby on Rails',
+            'Computer Vision',
             'NLP',
-            'Docker',  
-            'Github', 
+            'Docker',
+            'Github',
             'UI/UX',
-            'Unit Testing'
-        ] 
+            'Unit Testing',
+            'Open Source'
+        ]
     })
     const userInerestsIndices = computed(() => {
         let indices = []
@@ -288,10 +289,10 @@ export default {
         skillsPlaceholder: "Enter upto 7 " + (isUserTalent.value ? 'interests' : 'skills')
     }
     const interest_value = computed(() => store.state.user_data.interests);
-    const hasDefaultImage = computed(() =>  
-    store.state.user_data.image_url == 
+    const hasDefaultImage = computed(() =>
+    store.state.user_data.image_url ==
     "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b");
-    
+
 
     // to check if changes were made
     const state = reactive({
@@ -299,15 +300,15 @@ export default {
     })
 
     function handleInputsUpdate() {
-        state.hasUnsavedChanges = 
-            inputValues.background !== user.background || 
-            inputValues.bio !== user.bio || 
-            inputValues.github_url !== user.social_links.github_url || 
-            inputValues.linkedin_url !== user.social_links.linkedin_url || 
-            inputValues.website_url !== user.social_links.website_url || 
+        state.hasUnsavedChanges =
+            inputValues.background !== user.background ||
+            inputValues.bio !== user.bio ||
+            inputValues.github_url !== user.social_links.github_url ||
+            inputValues.linkedin_url !== user.social_links.linkedin_url ||
+            inputValues.website_url !== user.social_links.website_url ||
             parseInt(inputValues.experience_level) !== user.experience_level
     }
-  
+
   //Stores the list of selected interests
     //Initial value is the existing/past selected interests from user's db
     const selectedInterests = computed(() => JSON.parse(JSON.stringify(store.state.user_data.interests)));
@@ -326,7 +327,7 @@ export default {
         handleInputsUpdate();
 
     }
-    
+
     function handleImageUpload(){
         //handles image upload
         const file = document.querySelector("#imageUpload").files[0];
@@ -355,10 +356,10 @@ export default {
     }
 
     // checks if mandatory fields are filled
-    const allMandatoryFieldsFilled = () => 
-            inputValues.background.length === 0 || 
-            inputValues.bio.length === 0 || 
-            inputValues.interests.length === 0 || 
+    const allMandatoryFieldsFilled = () =>
+            inputValues.background.length === 0 ||
+            inputValues.bio.length === 0 ||
+            inputValues.interests.length === 0 ||
             inputValues.experience_level === 0;
 
     // a very novice validator -> needs improvement
@@ -367,21 +368,21 @@ export default {
         if (inputValues.github_url.length != 0) {
             if (!(inputValues.github_url.startsWith("https://www.github.com/") ||
             inputValues.github_url.startsWith("https://github.com/") ||
-            inputValues.github_url.startsWith("http://www.github.com/") || 
+            inputValues.github_url.startsWith("http://www.github.com/") ||
             inputValues.github_url.startsWith("http://github.com/"))) return false
         }
         // linkedin
         if (inputValues.linkedin_url.length != 0) {
             if (!(inputValues.linkedin_url.startsWith("https://www.linkedin.com/in/") ||
             inputValues.linkedin_url.startsWith("https://linkedin.com/in/") ||
-            inputValues.linkedin_url.startsWith("http://www.linkedin.com/in/") || 
+            inputValues.linkedin_url.startsWith("http://www.linkedin.com/in/") ||
             inputValues.linkedin_url.startsWith("http://linkedin.com/in/"))) return false
         }
         // website
         if (inputValues.website_url.length != 0) {
             if (!(inputValues.website_url.startsWith("https://www.") ||
             inputValues.website_url.startsWith("https://") ||
-            inputValues.website_url.startsWith("http://www.") || 
+            inputValues.website_url.startsWith("http://www.") ||
             inputValues.website_url.startsWith("http://"))) return false
         }
         return true
@@ -390,15 +391,15 @@ export default {
     function handleInfoUpdate() {
         if (allMandatoryFieldsFilled()) {
             Swal.fire({
-                icon: 'error', 
-                title: "Please fill all the mandatory fields", 
+                icon: 'error',
+                title: "Please fill all the mandatory fields",
                 text: "They are marked with an asterisk (*) for your convenience"
             })
         }
         else if (!isInputValid()) {
             Swal.fire({
-                icon: 'error', 
-                title: "Something looks fishy about the URL(s)!", 
+                icon: 'error',
+                title: "Something looks fishy about the URL(s)!",
                 text: "Please follow the format https://www.______.com/_______"
             })
         } else {
@@ -418,8 +419,8 @@ export default {
 
             //writes to db and updates store
             store.dispatch('updateUserProfile', updatedValues);
-            state.hasUnsavedChanges = false;       
-        }     
+            state.hasUnsavedChanges = false;
+        }
     }
 
 
@@ -506,7 +507,7 @@ export default {
 
         }
         &--option:hover{
-            background: rgba(228, 227, 227, 0.5); 
+            background: rgba(228, 227, 227, 0.5);
             border-top: 6px solid;
             border-color:rgba(84, 47, 187, 0.5);  ;
             position:static;
@@ -528,7 +529,7 @@ export default {
         flex-wrap: wrap;
         justify-content: space-evenly;
         .form__group {
-            max-width: 300px; 
+            max-width: 300px;
             width: 100%;
             margin-right: 0px;
         }
@@ -552,12 +553,12 @@ export default {
 @media (max-width: 954px) {
     .user-profile__multiselect {
         width: $multiselect-width-sm;
-    }   
+    }
 }
 @media (max-width: 425px) {
     .user-profile__multiselect {
         width: 100%;
-    }   
+    }
 }
 @media (max-width: 736px) {
     .user-profile {
@@ -573,7 +574,7 @@ export default {
         }
         &__inputs {
             display: flex;
-            justify-content: center;   
+            justify-content: center;
         }
     }
 }
