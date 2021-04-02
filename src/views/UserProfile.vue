@@ -258,8 +258,7 @@ export default {
             'Docker',
             'Github',
             'UI/UX',
-            'Unit Testing',
-            'Open Source'
+            'Unit Testing'
         ]
     })
     const userInerestsIndices = computed(() => {
