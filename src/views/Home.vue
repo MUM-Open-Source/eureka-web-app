@@ -6,7 +6,7 @@
       <div class="heading mar__b--2">Network with Monash Talent</div>
       <div class="body home__subtitle mar__t--2 mar__b--2">
         LOOK no further if you need to find others within the Monash SOIT Community with whom you can team up,
-        seek guidance or JUST simply say hi. We aim to make it easier to find people to join you on your unique
+        seek guidance or JUST simply say HI. We aim to make it easier to find people to join you on your unique
         adventures.
       </div>
       <router-link :to="{ name: 'SignUp'}" v-if="isLoggedIn">
