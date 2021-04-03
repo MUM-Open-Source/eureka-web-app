@@ -11,9 +11,9 @@
                         :searchable="false"
                         placeholder="Subject"
                         :options="{
-                            feature_request: 'Feature Request', 
-                            bug: 'Bug', 
-                            general: 'General'
+                            suggestion: 'Suggestion', 
+                            bug: 'Something\'s not quite right', 
+                            compliment: 'Compliment'
                         }"
                         :canDeselect="false"
                     />
