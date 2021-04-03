@@ -3,7 +3,7 @@
         <EventFilter @update-filter="updateFilter" />    
         <div class="browse-events__content">
             <div class="browse-events__content--title mar__b--3 text--center">
-                <div class="tagline">Competition and others</div>
+                <div class="tagline">Competition and more stuff</div>
                 <div class="heading">Events</div>
             </div>
             <div class="events">
