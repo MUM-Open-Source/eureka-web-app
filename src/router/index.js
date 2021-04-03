@@ -12,6 +12,7 @@ import WavesFromTalent from '@/views/WavesFromTalent.vue';
 import WavesFromMentors from '@/views/WavesFromMentors.vue';
 import BrowseEvents from '@/views/BrowseEvents.vue';
 import NotFound from '@/views/NotFound.vue';
+import Maintenance from '@/views/Maintenance.vue';
 import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue'
 import Terms from '@/views/Terms.vue'
@@ -102,6 +103,10 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
+  }, {
+    path: '/maintenance',
+    name: 'Maintenance',
+    component: Maintenance,
   }, {
     path: '/reset-password',
     name: 'ResetPassword',
