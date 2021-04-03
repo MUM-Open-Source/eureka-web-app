@@ -90,15 +90,13 @@
                 <!-- Bio -->
                 <label for="bio" class="custom-input__label tagline--bold">Bio*</label>
                 <div class= "tagline skills__tagline">Use this space to sell yourself</div>
-                <input
+                <textarea
                     id="bio"
-                    class="custom-input mar__b--2"
-                    name="bio"
-                    type="text"
-                    v-model="inputValues.bio"
+                    class="body"
                     placeholder="I am.."
-                    @change="handleInputsUpdate"
-                >
+                    v-model="inputValues.bio"
+                    required
+                />
 
                 <!-- GitHub URL -->
                 <label for="github" class="custom-input__label tagline--bold">Github Link</label>
