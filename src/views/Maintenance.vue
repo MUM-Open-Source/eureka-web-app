@@ -1,15 +1,13 @@
 
 
 <template>
-    <div class = "body">
-        <div class="under-maintenance">
-            <div class="">
-                <img src="@/assets/under_maintenance_illustration.svg" class="pad__b--1"/>
-                <div class="bodytext">
-                    Flushing bugs out of the system!
-                <br>
-                    Website under maintenance
-                </div>
+    <div class="under-maintenance">
+        <div class="">
+            <img src="@/assets/under_maintenance_illustration.svg" class="pad__b--1"/>
+            <div class="body">
+                Flushing bugs out of the system!
+            <br>
+                Website under maintenance
             </div>
         </div>
     </div>
@@ -38,17 +36,11 @@ export default {
     }
 }
 
-div {
-  background-image: url("../assets/warning_sign.svg");
-  background-repeat: repeat-x; 
-}
-
-.bodytext {
+.body {
     font-size: 25px;
-    color: rgb(253, 0, 0);
+    color: #6B61FF;
     text-align: center;
     font-weight: bold;
-    background-image: url("../assets/warning_sign.svg");
 }
 
 @media (max-width: 765px) {
