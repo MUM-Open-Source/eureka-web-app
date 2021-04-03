@@ -358,6 +358,7 @@ export default {
     const allMandatoryFieldsFilled = () =>
             inputValues.background.length === 0 ||
             inputValues.bio.length === 0 ||
+	    inputValues.bio.length > 400 ||
             inputValues.interests.length === 0 ||
             inputValues.experience_level === 0;
 
