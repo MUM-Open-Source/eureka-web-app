@@ -4,7 +4,7 @@
       <div class="heading text--white">Create Your Eureka Account</div>
       <router-link :to="{ name: 'Login' }">
         <div class="tagline text--white mar__b--1">
-          Already have an account &#11166;
+          Already have an account
         </div>
       </router-link>
       <div class="signUp__form pad--4 pad__t--3 pad__b--4">
@@ -22,9 +22,14 @@
         />
         <label class="tagline--bold">Who are you?</label>
         <div class="pad__t--1"></div>
-        <label class="tagline role__helper"><u>Talent</u> aim to network to find teammates, mentors & events.</label>
+        <label class="tagline role__helper"
+          ><u>Talent</u> aim to network to find teammates, mentors &
+          events.</label
+        >
         <div class="pad__t--1"></div>
-        <label class="tagline role__helper"><u>Mentors</u> are experienced and here to guide the juniors.</label>
+        <label class="tagline role__helper"
+          ><u>Mentors</u> are experienced and here to guide the juniors.</label
+        >
         <Multiselect
           class="mar__t--1 mar__b--2"
           v-model="role"
@@ -39,8 +44,19 @@
           class="mar--auto mar__t--3 mar__b--1"
           @click="handleSignUp"
         />
-        <div class="tagline mar__b--1">*Use your Monash account if you're a current student</div>
-        <div class="tagline">By signing up, you agree to our <router-link :to="{ name: 'Privacy'}"><u>Privacy Policy</u></router-link> and <router-link :to="{ name: 'Terms'}"><u>Terms & Conditions</u></router-link></div>
+        <div class="tagline mar__b--1">
+          *Use your Monash account if you're a current student
+        </div>
+        <div class="tagline">
+          By signing up, you agree to our
+          <router-link :to="{ name: 'Privacy' }"
+            ><u>Privacy Policy</u></router-link
+          >
+          and
+          <router-link :to="{ name: 'Terms' }"
+            ><u>Terms & Conditions</u></router-link
+          >
+        </div>
       </div>
     </div>
   </div>
