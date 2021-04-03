@@ -362,7 +362,7 @@ export default {
             inputValues.experience_level === 0;
 
     // Check bio length
-    const isBioLengthValid = () => inputValues.bio.length <= 200;
+    const isBioLengthValid = () => inputValues.bio.length <= 400;
 
     // a very novice validator -> needs improvement
     const isInputValid = () => {
