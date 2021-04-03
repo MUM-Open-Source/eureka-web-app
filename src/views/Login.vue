@@ -4,7 +4,7 @@
       <div class="heading text--white">Login Now To Start</div>
       <router-link :to="{ name: 'SignUp' }">
         <div class="tagline text--white mar__b--1">
-          Create a new account
+          Create a new account.
         </div>
       </router-link>
       <div class="login__form pad--4 pad__t--3 pad__b--4">
