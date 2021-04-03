@@ -3,7 +3,7 @@
   <!-- Terms & Conditions -->
     <div class="mar__b--3">
       <h2 class="mar__b--1"><strong>Terms and Conditions</strong></h2>
-      <div class="mar__b--1">Welcome to Eureka!</div>
+      <div class="mar__b--1">Welcome to Eureka</div>
       <div class="mar__b--1">These terms and conditions outline the rules and regulations for the use of Eureka's Website, located at www.eureka-monash.com.</div>
       <div class="mar__b--1">By accessing this website we assume you accept these terms and conditions. Do not continue to use Eureka if you do not agree to take 
       all of the terms and conditions stated on this page.</div>
