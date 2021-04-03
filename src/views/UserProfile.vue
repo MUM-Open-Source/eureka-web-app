@@ -86,19 +86,20 @@
                     :placeholder="helper.backgroundPlaceholder"
                     @change="handleInputsUpdate"
                 >
-
+                   
                 <!-- Bio -->
                 <label for="bio" class="custom-input__label tagline--bold">Bio*</label>
                 <div class= "tagline skills__tagline">Use this space to sell yourself</div>
-                <input
-                    id="bio"
-                    class="custom-input mar__b--2"
-                    name="bio"
-                    type="text"
+                 <textarea 
+                    id="bio" 
+                    class="custom-input mar__b--2" 
+                    name = "bio"
+                    placeholder="I am.." 
+                    type = "text"
                     v-model="inputValues.bio"
-                    placeholder="I am.."
+                    required
                     @change="handleInputsUpdate"
-                >
+                />
 
                 <!-- GitHub URL -->
                 <label for="github" class="custom-input__label tagline--bold">Github Link</label>
@@ -576,5 +577,11 @@ export default {
             justify-content: center;
         }
     }
+}
+
+#feedback__message {
+    width: $feedback-message-width;
+    height: $feedback-message-height;
+    padding: $feedback-message-padding;
 }
 </style>
