@@ -1,6 +1,6 @@
 // CSS declarations that you can reuse throughout your site
 
-@mixin gradientAnimation( $start, $end ){
+@mixin gradientAnimation( $start, $end, $non-white: false){
     // Source: https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759
     background-size: 100%;
     background-image: linear-gradient(to right, $start, $end);
@@ -25,6 +25,8 @@
         }
     }
 }
+
+
 
 // general shadow
 @mixin shadow {
