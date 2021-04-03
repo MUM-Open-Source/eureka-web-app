@@ -99,6 +99,7 @@
                     v-model="inputValues.bio"
                     required
                     @change="handleInputsUpdate"
+                    
                 />
 
                 <!-- GitHub URL -->
