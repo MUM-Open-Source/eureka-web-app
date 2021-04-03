@@ -3,7 +3,7 @@
         <img src="@/assets/not-found-icon.svg" class="pad__b--1"/>
         <div class="">
             <div class="heading pad__b--1">Eu-rrer 404: Not Found</div>
-            <div class="body">Eure- wait. Something went wrong! Try another way, for the Eureka path is not easy.</div>
+            <div class="body">Everything is wrong, ur life is a disaster. Go back to home page.</div>
         </div>
     </div>
 </template>
