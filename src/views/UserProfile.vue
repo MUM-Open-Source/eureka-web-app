@@ -402,7 +402,7 @@ export default {
             Swal.fire({
                 icon: 'error',
                 title: "Please give a shorter bio",
-                text: "The bio should be at most 200 characters"
+                text: "The bio should be at most 400 characters"
             })
         }
         else if (!isInputValid()) {
