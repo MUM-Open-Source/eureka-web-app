@@ -1,11 +1,16 @@
 
 
 <template>
-    <div class="not-found">
-        <img src="@/assets/not-found-icon.svg" class="pad__b--1"/>
-        <div class="">
-            <div class="heading pad__b--1">Flushing bugs out of the system!</div>
-            <div class="body">Website under maintenance</div>
+    <div class = "body">
+        <div class="under-maintenance">
+            <div class="">
+                <img src="@/assets/under_maintenance_illustration.svg" class="pad__b--1"/>
+                <div class="bodytext">
+                    Flushing bugs out of the system!
+                <br>
+                    Website under maintenance
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -17,26 +22,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.not-found {
+.under-maintenance {
     display: flex;
     align-items: center;
     position: fixed;
-    top: $not-found-position-ratio;
-    left: $not-found-position-ratio;
-    transform: translate(-$not-found-position-ratio,-$not-found-position-ratio);
+    top: $under-maintenance-position-ratio;
+    left: $under-maintenance-position-ratio;
+    transform: translate(-$under-maintenance-position-ratio,-$under-maintenance-position-ratio);
     img {
-        width: $not-found-img-width;
-        padding-right: $not-found-img-padding-right;
+        width: $under-maintenance-img-width;
+        padding-right: $under-maintenance-img-padding-right;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
+div {
+  background-image: url("../assets/warning_sign.svg");
+  background-repeat: repeat-x; 
+}
+
+.bodytext {
+    font-size: 25px;
+    color: rgb(253, 0, 0);
+    text-align: center;
+    font-weight: bold;
+    background-image: url("../assets/warning_sign.svg");
+}
+
 @media (max-width: 765px) {
-    .not-found {
+    .under-maintenance {
         justify-content: center;
         flex-direction: column;
         text-align: center;
         img {
-            width: $not-found-img-width-sm;
+            width: $under-maintenance-img-width-sm;
             padding-right: 0;
         }
     }
