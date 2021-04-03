@@ -358,9 +358,11 @@ export default {
     const allMandatoryFieldsFilled = () =>
             inputValues.background.length === 0 ||
             inputValues.bio.length === 0 ||
-	    inputValues.bio.length > 400 ||
             inputValues.interests.length === 0 ||
             inputValues.experience_level === 0;
+
+    // Check bio length
+    const isBioLengthValid = () => inputValues.bio.length <= 200;
 
     // a very novice validator -> needs improvement
     const isInputValid = () => {
@@ -394,6 +396,13 @@ export default {
                 icon: 'error',
                 title: "Please fill all the mandatory fields",
                 text: "They are marked with an asterisk (*) for your convenience"
+            })
+        }
+        else if (!isBioLengthValid()) {
+            Swal.fire({
+                icon: 'error',
+                title: "Please give a shorter bio",
+                text: "The bio should be at most 200 characters"
             })
         }
         else if (!isInputValid()) {
