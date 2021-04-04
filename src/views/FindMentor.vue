@@ -10,6 +10,10 @@
                 <div class="heading">Mentors</div>
             </div>
             <div class="mentor">
+                <div class="result-not-found">
+                <img v-if="!filteredMentors.length" class="img_not_found" src="@/assets/search-result-not-found.png"><br>
+                <span v-if="!filteredMentors.length" class="not-found-caption">No Mentors Found...</span>
+                </div>
                 <ProfileCard 
                     v-for="user in filteredMentors" 
                     :key="user.key"
@@ -91,6 +95,13 @@ export default {
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+
+.result-not-found{
+    text-align:center;
+    font-size: 30px;
+}
+
+
 @media (max-width: 736px) {
     .find-mentor {
         flex-direction: column;
