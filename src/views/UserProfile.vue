@@ -258,7 +258,22 @@ export default {
             'Docker',
             'Github',
             'UI/UX',
-            'Unit Testing'
+            'Unit Testing',
+            'Computer Graphics',
+            'C#',
+            'Hadoop',
+            'Kafka',
+            'Open Source',
+            'Kaggle',
+            'Bioinformatics',
+            'Ethical Hacking',
+            'Game Development',
+            'Virtual Reality',
+            'Augmented Reality',
+            'Lua',
+            'Elm',
+            'MATLAB',
+            'Scala'
         ]
     })
     const userInerestsIndices = computed(() => {
