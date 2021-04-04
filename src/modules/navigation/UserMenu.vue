@@ -32,7 +32,7 @@ export default {
         // list of menu items to be displayed
         const menu_items = [
             {
-                title: 'User Info',
+                title: 'User Profile',
                 component_name:'Profile',
                 icon_src: require("@/assets/profile-user-icon.svg")
             },
