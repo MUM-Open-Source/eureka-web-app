@@ -20,7 +20,7 @@
                 <div class="tagline">Experience Level</div>
             </div>
             <!-- Wave -->
-            <div class="profile-card__wave" @click="toggleWave">
+            <div class="profile-card__wave cursor__pointer" @click="toggleWave">
                 <img 
                     v-if="isWaved" 
                     class="wave__icon" 
