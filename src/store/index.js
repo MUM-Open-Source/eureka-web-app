@@ -10,20 +10,21 @@ import Swal from 'sweetalert2';
 export default createStore({
     // application-level data
     state: {
-        user: auth.currentUser, // firebase auth user
-        isSideNavCollapsed: true, // bool to check if sidenav is showing
-        isLoading: true, // bool to keep track whether user is being retreived from the DB
-        user_data: null, // user data pulled from db
+        user: auth.currentUser,               // firebase auth user
+        isSideNavCollapsed: true,             // bool to check if sidenav is showing
+        isLoading: true,                      // bool to keep track whether user is being retreived from the DB
+        is_under_maintenance: false,          // bool to know whether website is under maintenance
+        user_data: null,                      // user data pulled from db
         user_image: null,
-        upload_image: { url: '', fileName: '' }, // to help with the upload of profile image
-        is_new: false, // used to ensure all mandatory details are filled after signup
+        upload_image: {url:'', fileName:''},  // to help with the upload of profile image
+        is_new: false,                        // used to ensure all mandatory details are filled after signup
         events: [],
         talent: [],
         mentors: [],
-        feedback: [],
-        liked_events: [], // list of events liked by the user
-        user_waves: [], // list of users waved at by the auth user
-        waves_from_other_users: [], // list of user ids who waved at the auth user
+        feedback: [], 
+        liked_events: [],                     // list of events liked by the user
+        user_waves: [],                       // list of users waved at by the auth user
+        waves_from_other_users: [],           // list of user ids who waved at the auth user
         filters: {
             event: {
                 type: [],
