@@ -1,10 +1,8 @@
-
-
 <template>
     <div class="under-maintenance">
         <div class="">
             <img src="@/assets/under_maintenance_illustration.svg" class="pad__b--1"/>
-            <div class="body">
+            <div class="subheading text--primary text--center">
                 Flushing bugs out of the system!
             <br>
                 Website under maintenance
@@ -36,12 +34,6 @@ export default {
     }
 }
 
-.body {
-    font-size: 25px;
-    color: #6B61FF;
-    text-align: center;
-    font-weight: bold;
-}
 
 @media (max-width: 765px) {
     .under-maintenance {
