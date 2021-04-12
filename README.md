@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/MUM-Open-Source/eureka-web-app">
-    <img src="src/assets/logo.svg" alt="Logo" width="80">
+    <img src="src/assets/logo.svg" alt="Logo" width="200">
   </a>
 
   <h3 align="center">Eureka Web App</h3>
@@ -49,11 +49,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
-
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`MUM-Open-Source`, `eureka-web-app`, `twitter_handle`, `email`, `project_title`, `project_description`
+<!-- ## About The Project -->
 
 
 ### Built With
@@ -111,7 +107,7 @@ Here are some useful resources that will help you in contributing to this projec
 
 * [What is Git, GitHub & version control?](https://youtu.be/r50BKIFGCI0)
 * [Creating forks and pull requests](https://youtu.be/nT8KGYVurIU)
-* [Git and GitHub playlist for Beginners](https://youtube.com/playlist?list=PLB5jA40tNf3v1wdyYfxQXgdjPgQvP7Xzg)
+* [Git and GitHub playlist for beginners](https://youtube.com/playlist?list=PLB5jA40tNf3v1wdyYfxQXgdjPgQvP7Xzg)
 * [Commit message conventions suggested for Eureka](https://github.com/vuejs/vue-next/blob/master/.github/commit-convention.md)
 
 #### Frontend Development
@@ -121,7 +117,7 @@ Here are some useful resources that will help you in contributing to this projec
 
 #### Eureka Project-Related (IMPORTANT FOR CONTRIBUTORS)
 
-* [Project setup (video tutorial)](https://youtu.be/XNotTHShgS8)
+* [Project setup video tutorial](https://youtu.be/XNotTHShgS8)
 * [Code structure walthrough video](https://youtu.be/ja5hhgeDNiw)
 
  
@@ -135,9 +131,9 @@ You can see the [open issues](https://github.com/MUM-Open-Source/eureka-web-app/
 
 1. After identifying the [issue]((https://github.com/MUM-Open-Source/eureka-web-app/issues)) you would like to work on, comment on the it and wait for our team to assign the issue to you.
 2. Ensure that you have followed the [installation](#installation) steps mentioned above and gone through the [project-related resources](#eureka-project-related-important-for-contributors).
-3. Create your Feature Branch (`git checkout -b feature/your-amazing-feature`).
-4. Commit your Changes (`git commit -am 'adding my amazing feature'`).
-5. Push to the Branch (`git push origin feature/your-amazing-feature`).
+3. Create your feature branch (`git checkout -b feature/your-amazing-feature`).
+4. Commit your changes (`git commit -am 'adding my amazing feature'`).
+5. Push to the branch (`git push origin feature/your-amazing-feature`).
 6. Open a Pull Request on GitHub from your fork to our repo.
 
 
