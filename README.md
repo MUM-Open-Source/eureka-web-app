@@ -49,7 +49,16 @@
 
 
 <!-- ABOUT THE PROJECT -->
-<!-- ## About The Project -->
+## About The Project
+
+Our vision is to be the go-to platform for the academic community to discover collaborative opportunities by fostering a sense of communal growth. Eureka is still in its early stages and with your help, we can make it a great community-centric platform!
+
+Some of our current core features include:
+
+* a page to browse through relevant tech events happening 
+* a page to find other talent within the community to team up with
+* a page to find mentors who provide guidance to the talent
+* an admin dashboard 
 
 
 ### Built With
