@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/MUM-Open-Source/eureka-web-app">
-    <img src="src/assets/logo.svg" alt="Logo" width="200">
+    <img src="src/assets/logo.png" alt="Logo" width="200">
   </a>
 
   <h3 align="center">Eureka Web App</h3>
