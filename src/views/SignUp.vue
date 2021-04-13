@@ -4,7 +4,7 @@
       <div class="heading text--white">Create Your Eureka Account</div>
       <router-link :to="{ name: 'Login' }">
         <div class="tagline text--white mar__b--1">
-          Already have an account &#11166;
+          Already have an account
         </div>
       </router-link>
       <div class="signUp__form pad--4 pad__t--3 pad__b--4">

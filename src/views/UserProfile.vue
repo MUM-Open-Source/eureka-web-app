@@ -90,15 +90,13 @@
                 <!-- Bio -->
                 <label for="bio" class="custom-input__label tagline--bold">Bio*</label>
                 <div class= "tagline skills__tagline">Use this space to sell yourself</div>
-                <input
+                <textarea
                     id="bio"
-                    class="custom-input mar__b--2"
-                    name="bio"
-                    type="text"
-                    v-model="inputValues.bio"
+                    class="body"
                     placeholder="I am.."
-                    @change="handleInputsUpdate"
-                >
+                    v-model="inputValues.bio"
+                    required
+                />
 
                 <!-- GitHub URL -->
                 <label for="github" class="custom-input__label tagline--bold">Github Link</label>
@@ -259,7 +257,21 @@ export default {
             'Github',
             'UI/UX',
             'Unit Testing',
-            'Open Source'
+            'Computer Graphics',
+            'C#',
+            'Hadoop',
+            'Kafka',
+            'Open Source',
+            'Kaggle',
+            'Bioinformatics',
+            'Ethical Hacking',
+            'Game Development',
+            'Virtual Reality',
+            'Augmented Reality',
+            'Lua',
+            'Elm',
+            'MATLAB',
+            'Scala'
         ]
     })
     const userInerestsIndices = computed(() => {
@@ -362,6 +374,9 @@ export default {
             inputValues.interests.length === 0 ||
             inputValues.experience_level === 0;
 
+    // Check bio length
+    const isBioLengthValid = () => inputValues.bio.length <= 400;
+
     // a very novice validator -> needs improvement
     const isInputValid = () => {
         // github
@@ -394,6 +409,13 @@ export default {
                 icon: 'error',
                 title: "Please fill all the mandatory fields",
                 text: "They are marked with an asterisk (*) for your convenience"
+            })
+        }
+        else if (!isBioLengthValid()) {
+            Swal.fire({
+                icon: 'error',
+                title: "Please give a shorter bio",
+                text: "The bio should be at most 400 characters"
             })
         }
         else if (!isInputValid()) {
