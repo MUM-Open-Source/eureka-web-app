@@ -65,35 +65,30 @@
     <div class="mar__b--5 row">
       <div>
         <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/nitin.jpg">
-        <div class="heading mar__b--1">Nitin Matthew</div>
-        <div class="subheading mar__b--1">Founder/Technical Lead</div>
-        <div class="tagging mar__b--5">Bachelor of Computer Science</div>
-      </div>
-      <div>
-        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/blaise.jpg">
-        <div class="heading mar__b--1">Blaise Tiong</div>
-        <div class="subheading mar__b--1">Frontend Lead</div>
-        <div class="tagging mar__b--5">Bachelor of Computer Science</div>
+        <div class="subheading">Nitin Mathew</div>
+        <div class="body mar__b--5">Technical Project Manager</div>
       </div>
       <div>
         <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/julian.jpg">
-        <div class="heading mar__b--1">Julian Khong</div>
-        <div class="subheading mar__b--1">Head of People</div>
-        <div class="tagging">Bachelor of Computer Science</div>
+        <div class="subheading">Julian Khong</div>
+        <div class="body mar__b--5">Head of People</div>
+      </div>
+      <div>
+        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/blaise.jpg">
+        <div class="subheading">Blaise Tiong</div>
+        <div class="body mar__b--5">Frontend Lead</div>
       </div>
     </div>
     <div class="row--second-row">
       <div>
         <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/chantelle.jpeg">
-        <div class="heading mar__b--1">Chantelle Loh</div>
-        <div class="subheading mar__b--1">Community Manager</div>
-        <div class="tagging mar__b--5">Bachelor of Computer Science</div>
+        <div class="subheading">Chantelle Loh</div>
+        <div class="body mar__b--5">Community Manager</div>
       </div>
       <div>
         <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/minhao.jpeg">
-        <div class="heading mar__b--1">Chee Min Hao</div>
-        <div class="subheading mar__b--1">Community Manager</div>
-        <div class="tagging">Bachelor of Computer Science</div>
+        <div class="subheading">Chee Min Hao</div>
+        <div class="body mar__b--5">Community Manager</div>
       </div>
     </div>
   </div>
