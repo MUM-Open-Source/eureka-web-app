@@ -116,6 +116,8 @@ export default {
     border-radius: $app-border-radius;
     display: flex;
     flex-direction: column;
+    margin-left: 5px;
+    margin-right: 5px;
     &__top {
         display: flex;
         flex-direction: row;
