@@ -116,6 +116,8 @@ export default {
     border-radius: $app-border-radius;
     display: flex;
     flex-direction: column;
+    margin-left: $profile-card-left-right-margin;
+    margin-right: $profile-card-left-right-margin;
     &__top {
         display: flex;
         flex-direction: row;

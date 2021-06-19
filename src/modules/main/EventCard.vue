@@ -73,6 +73,8 @@ export default {
     border-radius: $app-border-radius;
     display: flex;
     flex-direction: column;
+    margin-left: $event-card-left-right-margin;
+    margin-right: $event-card-left-right-margin;
     &__img {        
         margin-top: $event-card-margin-top;
     }
