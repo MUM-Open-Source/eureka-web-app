@@ -3,9 +3,9 @@
         <div class="">
             <img src="@/assets/under_maintenance_illustration.svg" class="pad__b--1"/>
             <div class="subheading text--primary text--center">
-                Flushing bugs out of the system!
+                New features coming your way!
             <br>
-                Website under maintenance
+                Website under maintenance.. STAY TUNED
             </div>
         </div>
     </div>
