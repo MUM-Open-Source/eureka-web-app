@@ -184,7 +184,7 @@ export default createStore({
             });
         },
 
-        SIGNUP_USER(state, signUpUser: NewUser) {
+        SIGNUP_USER(state, signUpUser: Pick<User, 'first_name' | 'last_name' | 'roles'>) {
             const DOMAIN_NAMES = ['@student.monash.edu', '@monash.edu']
             var provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope('email');
@@ -212,7 +212,7 @@ export default createStore({
                     bio: "",
                     interests: [],
                     experience_level: 0,
-                    roles: [signUpUser.role as UserRoles], // TODO: retrieve this from the signup form
+                    roles: signUpUser.roles, // TODO: retrieve this from the signup form
                     social_links: {
                         email_id: authUser?.email ?? "",
                         github_url: "",
@@ -261,10 +261,10 @@ export default createStore({
                 .then((result) => {
                     const user: firebase.User | any = result.user;
                     if (result.additionalUserInfo!.isNewUser) {
-                        if (signUpUser && signUpUser.role === 'talent')
+                        if (signUpUser && signUpUser.roles.includes('talent'))
                             evaluatesUserMail(user!.email ?? '', DOMAIN_NAMES, () => whenAccept(user),
                                 () => whenReject(user, 'You need a Monash student account, or are you a spy?'));
-                        else if (signUpUser && signUpUser.role === 'mentor')
+                        else if (signUpUser && signUpUser.roles.includes('mentor'))
                             whenAccept(user)
                         else
                             whenReject(user, 'Please Sign Up An Account First.')
@@ -674,15 +674,15 @@ export default createStore({
                 });
         },
 
-        SEND_FEEDBACK(state, feedback: Feedback) {
+        SEND_FEEDBACK(state, newFeedback: Pick<Feedback, 'message' | 'subject'>) {
             // old code
-            // {
-            //     user_id: auth.currentUser!.uid,
-            //     user_name: state.user_data!.full_name,
-            //     created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
-            //     subject: feedback.subject,
-            //     message: feedback.message
-            // }
+            const feedback: Feedback = {
+                user_id: auth.currentUser!.uid,
+                user_name: state.user_data!.full_name,
+                created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
+                subject: newFeedback.subject,
+                message: newFeedback.message
+            }
             
             // writing feedback to db
             db.collection("feedback").add(feedback)
@@ -822,7 +822,7 @@ export default createStore({
         fetchCurrentUserFromDB({ commit }) {
             commit('FETCH_CURRENT_USER_DATA_FROM_DB')
         },
-        signUpUser({ commit }, user: NewUser) {
+        signUpUser({ commit }, user: Pick<User, 'first_name' | 'last_name' | 'roles'>) {
             commit('SIGNUP_USER', user);
         },
         setEvents({ commit }, eventObj: Event) {
@@ -864,7 +864,7 @@ export default createStore({
             commit('UNWAVE_AT_USER', toUserId);
         },
 
-        sendFeedback({ commit }, feedback: Feedback) {
+        sendFeedback({ commit }, feedback: Pick<Feedback, 'message' | 'subject'>) {
             commit('SEND_FEEDBACK', feedback);
         },
 

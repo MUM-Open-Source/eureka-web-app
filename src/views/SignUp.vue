@@ -81,7 +81,7 @@ export default {
         store.dispatch("signUpUser", {
           first_name: first_name,
           last_name: last_name,
-          role: role.value,
+          roles: [role.value],
         });
       }
     }
