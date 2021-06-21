@@ -377,31 +377,29 @@ export default {
     // Check bio length
     const isBioLengthValid = () => inputValues.bio.length <= 400;
 
-    // a very novice validator -> needs improvement
     const isInputValid = () => {
-        // github
-        if (inputValues.github_url.length != 0) {
-            if (!(inputValues.github_url.startsWith("https://www.github.com/") ||
-            inputValues.github_url.startsWith("https://github.com/") ||
-            inputValues.github_url.startsWith("http://www.github.com/") ||
-            inputValues.github_url.startsWith("http://github.com/"))) return false
-        }
-        // linkedin
-        if (inputValues.linkedin_url.length != 0) {
-            if (!(inputValues.linkedin_url.startsWith("https://www.linkedin.com/in/") ||
-            inputValues.linkedin_url.startsWith("https://linkedin.com/in/") ||
-            inputValues.linkedin_url.startsWith("http://www.linkedin.com/in/") ||
-            inputValues.linkedin_url.startsWith("http://linkedin.com/in/"))) return false
-        }
-        // website
-        if (inputValues.website_url.length != 0) {
-            if (!(inputValues.website_url.startsWith("https://www.") ||
-            inputValues.website_url.startsWith("https://") ||
-            inputValues.website_url.startsWith("http://www.") ||
-            inputValues.website_url.startsWith("http://"))) return false
-        }
-        return true
-    }
+      const { github_url, linkedin_url, website_url } = inputValues;
+
+      if (
+        github_url.length > 0 &&
+        !/^(https:\/\/)(www\.?)?github\.com\//.test(github_url)
+      ) {
+        return false;
+      }
+
+      if (
+        linkedin_url.length > 0 &&
+        !/^(https:\/\/)(www\.?)?linkedin\.com\/in\//.test(linkedin_url)
+      ) {
+        return false;
+      }
+
+      if (website_url.length > 0 && !/^(https?:\/\/)/.test(website_url)) {
+        return false;
+      }
+
+      return true;
+    };
 
     function handleInfoUpdate() {
         if (allMandatoryFieldsFilled()) {
