@@ -103,48 +103,50 @@ interface AppState {
     };
 }
 
-const state: AppState = {
-    user: auth.currentUser,               // firebase auth user
-    isSideNavCollapsed: true,             // bool to check if sidenav is showing
-    isLoading: true,                      // bool to keep track whether user is being retreived from the DB
-    is_under_maintenance: false,          // bool to know whether website is under maintenance and display maintenance screen
-    user_data: null,                      // user data pulled from db
-    is_new_user_data_available: false,    // to identify if updated data is available to fetch
-    user_image: '',
-    upload_image: {url:'', fileName:''},  // to help with the upload of profile image
-    new_img_url: '',
-    is_new: false,                        // used to ensure all mandatory details are filled after signup
-    events: [],
-    talent: [],
-    mentors: [],
-    feedback: [], 
-    liked_events: [],                     // list of events liked by the user
-    user_waves: [],                       // list of users waved at by the auth user
-    waves_from_other_users: [],           // list of user ids who waved at the auth user
-    filters: {
-        event: {
-            type: [],
-            organizer: [],
-            name: [],
+const getInitState = (): AppState => {
+    return {        
+        user: auth.currentUser,               // firebase auth user
+        isSideNavCollapsed: true,             // bool to check if sidenav is showing
+        isLoading: true,                      // bool to keep track whether user is being retreived from the DB
+        is_under_maintenance: false,          // bool to know whether website is under maintenance and display maintenance screen
+        user_data: null,                      // user data pulled from db
+        is_new_user_data_available: false,    // to identify if updated data is available to fetch
+        user_image: '',
+        upload_image: {url:'', fileName:''},  // to help with the upload of profile image
+        new_img_url: '',
+        is_new: false,                        // used to ensure all mandatory details are filled after signup
+        events: [],
+        talent: [],
+        mentors: [],
+        feedback: [], 
+        liked_events: [],                     // list of events liked by the user
+        user_waves: [],                       // list of users waved at by the auth user
+        waves_from_other_users: [],           // list of user ids who waved at the auth user
+        filters: {
+            event: {
+                type: [],
+                organizer: [],
+                name: [],
+            },
+            talent: {
+                interests: [],
+                experience_level: ['Beginner', 'Intermediate', 'Advanced'],
+                background: [],
+                full_name: [],
+            },
+            mentors: {
+                skill: [],
+                experience_level: ['Beginner', 'Intermediate', 'Advanced'],
+                background: [],
+                full_name: [],
+            }
         },
-        talent: {
-            interests: [],
-            experience_level: ['Beginner', 'Intermediate', 'Advanced'],
-            background: [],
-            full_name: [],
-        },
-        mentors: {
-            skill: [],
-            experience_level: ['Beginner', 'Intermediate', 'Advanced'],
-            background: [],
-            full_name: [],
-        }
-    },
+    }
 }
 
 export default createStore({
     // application-level data
-    state,
+    state: getInitState(),
 
     // functions that affect the state
     mutations: {
@@ -178,6 +180,7 @@ export default createStore({
         SIGNOUT_USER(state) {
             state.isLoading = true;
             auth.signOut().then(() => {
+                Object.assign(state, getInitState());
                 Swal.fire({ icon: 'success', title: "You have logged out" });
             }).catch((error) => {
                 Swal.fire({ icon: 'error', title: error.message });
@@ -735,7 +738,7 @@ export default createStore({
         },
 
         //set user image url only in db
-        SET_USER_IMAGE_URL(_, url: string) {
+        SET_USER_IMAGE_URL(state, url: string) {
             db.collection("users").doc(auth.currentUser!.uid).update({
                     image_url: url
                 })
@@ -758,7 +761,7 @@ export default createStore({
                 });
         },
 
-        UPLOAD_USER_IMAGE(_, user) {
+        UPLOAD_USER_IMAGE(state, user) {
             const task = storage.ref().child(user.fileName).put(user.file, user.metadata)
             task
                 .then(snapshot => snapshot.ref.getDownloadURL())
