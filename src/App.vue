@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { onMounted, computed } from 'vue';
+import { onMounted, onUpdated, computed } from 'vue';
 import store from '@/store';
 import Loader from '@/common/Loader';
 import SideNav from '@/modules/navigation/SideNav';
@@ -33,8 +33,18 @@ export default {
       store.dispatch("setAuthUser");
     });
 
+    // updated
+    onUpdated(() => {
+      if (isNewUserDataAvailable.value) {
+        store.dispatch("fetchCurrentUserFromDB");
+      }
+    })
+
     // computed properties
     const isLoggedIn = computed(() => store.state.user !== null);
+    // let isNewUserDataAvailable = ref(store.state.is_new_user_data_available);
+    let isNewUserDataAvailable = computed(() => store.state.is_new_user_data_available);
+    
     const isNewUser = computed(() => store.state.is_new);
     const isLoading = computed(() => store.state.isLoading === true);
     const isUnderMaintenance = computed(() => store.state.is_under_maintenance === true);
@@ -50,7 +60,7 @@ export default {
       isNewUser,
       isLoading,
       isUnderMaintenance,
-      marginLeft,
+      marginLeft
     };
   },
 };

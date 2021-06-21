@@ -1,5 +1,4 @@
-// import store from '@/store';
-const store = require('@/store')
+import store from '@/store';
 import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
 
 export default function checkAuth(to: RouteLocationNormalized, next: NavigationGuardNext): void {
