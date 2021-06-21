@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import checkAuth from '@/middleware/checkAuth.js';
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
+import checkAuth from '@/middleware/checkAuth';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Admin from '@/views/Admin.vue';
@@ -19,7 +19,7 @@ import Terms from '@/views/Terms.vue'
 import Privacy from '@/views/Privacy.vue'
 
 // all the different paths for the SPA
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'Login',
@@ -61,10 +61,12 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
-  }, {
-    path: '/profile/info',
+  }, 
+  // {
+  //   path: '/profile/info',
 
-  }, {
+  // }, 
+  {
     path: '/browse-events',
     name: 'BrowseEvents',
     component: BrowseEvents,
