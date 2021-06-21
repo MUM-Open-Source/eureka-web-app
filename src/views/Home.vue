@@ -3,9 +3,9 @@
   <div class="page-pad">
     <div class="home__hero text--center">
       <div class="heading heading--normal">Your Go-To Platform to</div>
-      <div class="heading mar__b--2">Network with Monash Talent</div>
+      <div class="heading mar__b--2">Network with MUMTEC Talent</div>
       <div class="body home__subtitle mar__t--2 mar__b--2">
-        Look no further if you need to find others within the Monash SOIT Community with whom you can team up,
+        Look no further if you need to find others within the Monash University Malaysia Tech Club (MUMTEC) Community with whom you can team up,
         seek guidance or just simply say hi. We aim to make it easier to find people to join you on your unique
         adventures.
       </div>
