@@ -143,6 +143,7 @@ const router = createRouter({
 
 // router guards
 router.beforeEach(async (to, from, next) => {
+  window.scrollTo(0, 0);
   checkAuth(to, next);
 })
 
