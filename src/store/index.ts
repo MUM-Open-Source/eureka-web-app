@@ -108,7 +108,7 @@ const getInitState = (): AppState => {
         user: auth.currentUser,               // firebase auth user
         isSideNavCollapsed: true,             // bool to check if sidenav is showing
         isLoading: true,                      // bool to keep track whether user is being retreived from the DB
-        is_under_maintenance: false,          // bool to know whether website is under maintenance and display maintenance screen
+        is_under_maintenance: true,           // bool to know whether website is under maintenance and display maintenance screen
         user_data: null,                      // user data pulled from db
         is_new_user_data_available: false,    // to identify if updated data is available to fetch
         user_image: '',
