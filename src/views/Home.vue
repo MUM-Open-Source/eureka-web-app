@@ -120,7 +120,7 @@
 <script>
 import { computed } from 'vue';
 import store from '@/store';
-import Button from '@/common/Button';
+import Button from '@/common/Button.vue';
 export default {
   name: 'Home',
   components: { Button },

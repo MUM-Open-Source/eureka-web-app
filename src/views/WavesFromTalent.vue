@@ -19,7 +19,7 @@
 <script>
 import { onMounted, computed } from 'vue';
 import store from '@/store';
-import ProfileCard from '@/modules/main/ProfileCard';
+import ProfileCard from '@/modules/main/ProfileCard.vue';
 
 export default {
     name: 'WavesFromTalent',

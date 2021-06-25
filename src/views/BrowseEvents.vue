@@ -20,8 +20,8 @@
 <script>
 import { ref, onMounted } from 'vue';
 import store from '@/store';
-import EventCard from '@/modules/main/EventCard';
-import EventFilter from '@/modules/main/EventFilter';
+import EventCard from '@/modules/main/EventCard.vue';
+import EventFilter from '@/modules/main/EventFilter.vue';
 
 export default {
     name: 'BrowseEvents',

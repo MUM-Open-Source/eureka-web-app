@@ -22,7 +22,7 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css';
-import Button from '@/common/Button';
+import Button from '@/common/Button.vue';
 export default {
     name: 'CropImage',
     components: {
