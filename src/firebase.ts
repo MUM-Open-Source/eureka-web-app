@@ -2,8 +2,19 @@ import firebase from "firebase/app";
 import "firebase/analytics";
 import 'firebase/firestore';
 import 'firebase/storage';
+
+interface ConfigVars {
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+  storageBucket: string;
+  messagingSenderId: string;
+  appId: string;
+  measurementId: string;
+}
+
 // development config
-const firebaseConfig = {
+const firebaseConfig: ConfigVars = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
   authDomain: process.env.VUE_APP_FIREBASE_PROJECT_ID + ".firebaseapp.com",
   projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
@@ -21,7 +32,7 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 
-export {analytics, db,auth, storage};
+export {analytics, db, auth, storage};
 
 
 

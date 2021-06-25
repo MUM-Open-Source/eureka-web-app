@@ -121,7 +121,6 @@
 import { computed } from 'vue';
 import store from '@/store';
 import Button from '@/common/Button';
-
 export default {
   name: 'Home',
   components: { Button },
@@ -205,7 +204,6 @@ export default {
     max-width: 800px;
   }
 }
-
 .button {
   &__form {
     @include gradientAnimation($color-white , $color-white);
@@ -226,8 +224,6 @@ export default {
     }
   }
 }
-
-
 @media (max-width: 903px) {
   .home__features {
     .row {
@@ -256,7 +252,6 @@ export default {
     margin-bottom: $spacer * 1.5;
   }
 }
-
 @media (max-width: 821px) {
   .home__team {
     .row{
@@ -268,3 +263,25 @@ export default {
   }
 }
 </style>
+
+
+<!--
+<template>
+  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  </div>
+</template>
+
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
+import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+
+@Options({
+  components: {
+    HelloWorld,
+  },
+})
+export default class Home extends Vue {}
+</script>
+-->
