@@ -1,4 +1,4 @@
-import { createStore } from 'vuex';
+import { createStore, Store } from 'vuex';
 import firebase from 'firebase';
 import firebaseApp from 'firebase/app';
 import 'firebase/auth'
@@ -6,17 +6,114 @@ import { db, auth, storage } from "@/firebase";
 import router from '@/router';
 import Swal from 'sweetalert2';
 
+type UserRoles = 'talent' | 'mentor' | 'admin';
 
-export default createStore({
-    // application-level data
-    state: {
+interface User {
+    background: string;
+    bio: string;
+    created_at: firebase.firestore.FieldValue;
+    experience_level: number;
+    first_name: string;
+    full_name: string;
+    id: string;
+    image_url: string;
+    interests: string[];
+    last_login: firebase.firestore.FieldValue;
+    last_name: string;
+    roles: UserRoles[];
+    social_links: {
+        email_id: string;
+        github_url: string;
+        linkedin_url: string;
+        website_url: string;
+    }
+}
+
+interface NewUser {
+    first_name: string;
+    last_name: string;
+    role: string;
+}
+
+interface ImageToUpload {
+    url: string;
+    fileName: string;
+}
+
+interface Event {
+    dates: string;
+    description: string;
+    id: string;
+    image_url: string;
+    name: string;
+    organizer: string;
+    type: string;
+}
+
+interface Feedback {
+    created_at: firebase.firestore.FieldValue,
+    message: string;
+    subject: string;
+    user_id: string;
+    user_name: string;
+}
+
+interface EventFilter {
+    type: string[];
+    organizer: string[];
+    name: string[];
+}
+
+interface TalentFilter {
+    interests: string[];
+    experience_level: string[];
+    background: string[];
+    full_name: string[];
+}
+
+interface MentorFilter {
+    skill: string[];
+    experience_level: string[];
+    background: string[];
+    full_name: string[];
+}
+
+interface AppState {
+    user: firebase.User | null;
+    isSideNavCollapsed: boolean;
+    isLoading: boolean;
+    is_under_maintenance: boolean;
+    user_data: User | null;
+    is_new_user_data_available: boolean;
+    user_image: string;
+    upload_image: ImageToUpload;
+    new_img_url: string;
+    is_new: boolean;
+    events: Event[];
+    talent: User[];
+    mentors: User[];
+    feedback: Feedback[];
+    liked_events: string[];
+    user_waves: string[];
+    waves_from_other_users: string[];
+    filters: {
+        event: EventFilter;
+        talent: TalentFilter;
+        mentors: MentorFilter;
+    };
+}
+
+const getInitState = (): AppState => {
+    return {        
         user: auth.currentUser,               // firebase auth user
         isSideNavCollapsed: true,             // bool to check if sidenav is showing
         isLoading: true,                      // bool to keep track whether user is being retreived from the DB
-        is_under_maintenance: true,           // bool to know whether website is under maintenance and display maintenance screen
+        is_under_maintenance: false,          // bool to know whether website is under maintenance and display maintenance screen
         user_data: null,                      // user data pulled from db
-        user_image: null,
+        is_new_user_data_available: false,    // to identify if updated data is available to fetch
+        user_image: '',
         upload_image: {url:'', fileName:''},  // to help with the upload of profile image
+        new_img_url: '',
         is_new: false,                        // used to ensure all mandatory details are filled after signup
         events: [],
         talent: [],
@@ -44,7 +141,12 @@ export default createStore({
                 full_name: [],
             }
         },
-    },
+    }
+}
+
+export default createStore({
+    // application-level data
+    state: getInitState(),
 
     // functions that affect the state
     mutations: {
@@ -59,13 +161,12 @@ export default createStore({
             auth.onAuthStateChanged(user => {
                 if (user) {
                     state.user = user;
-                    // fetch the user data
-                    this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
                     state.isLoading = false;
                     // save the last login in the db
-                    db.collection("users").doc(auth.currentUser.uid).update({
+                    db.collection("users").doc(auth.currentUser!.uid).update({
                         last_login: firebaseApp.firestore.FieldValue.serverTimestamp()
                     });
+                    state.is_new_user_data_available = true;
                 } else {
                     // resetting the user's details
                     state.user = null;
@@ -75,35 +176,37 @@ export default createStore({
                 }
             })
         },
+
         SIGNOUT_USER(state) {
             state.isLoading = true;
             auth.signOut().then(() => {
+                Object.assign(state, getInitState());
                 Swal.fire({ icon: 'success', title: "You have logged out" });
             }).catch((error) => {
                 Swal.fire({ icon: 'error', title: error.message });
             });
         },
-        SIGNUP_USER(state, signUpUser) {
+
+        SIGNUP_USER(state, signUpUser: Pick<User, 'first_name' | 'last_name' | 'roles'>) {
             const DOMAIN_NAMES = ['@student.monash.edu', '@monash.edu']
             var provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope('email');
 
-            function checksEmailMatchesDomains(arrayOfAcceptableDomainNames, userEmail) {
-                return arrayOfAcceptableDomainNames
+            const checksEmailMatchesDomains = (arrayOfAcceptableDomainNames: string[], userEmail: string): boolean => 
+                arrayOfAcceptableDomainNames
                     .map((domain_name) => userEmail.toLowerCase().endsWith(domain_name))
-                    .includes(true)
-            }
+                    .includes(true);
 
-            function evaluatesUserMail(userEmail, arrayOfAcceptableDomainNames, onAccepted, onRejected) {
+            const evaluatesUserMail = (userEmail: string, arrayOfAcceptableDomainNames: string[], onAccepted: Function, onRejected: Function): void => 
                 checksEmailMatchesDomains(arrayOfAcceptableDomainNames, userEmail) ?
                     onAccepted() :
-                    onRejected()
-            }
+                    onRejected();
 
-            function whenAccept(authUser) {
-                db.collection("users").doc(auth.currentUser.uid).set({
+            const whenAccept = (authUser: firebase.User): void => {
+                const userObj: User = {
                     created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
-                    id: auth.currentUser.uid,
+                    last_login: firebaseApp.firestore.FieldValue.serverTimestamp(),
+                    id: auth.currentUser!.uid,
                     first_name: signUpUser.first_name,
                     last_name: signUpUser.last_name,
                     full_name: signUpUser.first_name + " " + signUpUser.last_name,
@@ -112,16 +215,22 @@ export default createStore({
                     bio: "",
                     interests: [],
                     experience_level: 0,
-                    roles: [signUpUser.role], // TODO: retrieve this from the signup form
+                    roles: signUpUser.roles, // TODO: retrieve this from the signup form
                     social_links: {
-                        email_id: authUser.email,
+                        email_id: authUser?.email ?? "",
                         github_url: "",
                         linkedin_url: "",
                         website_url: "",
                     }
-                });
+                };
+
+                // write to db
+                db.collection("users").doc(auth.currentUser!.uid).set(userObj);
+
+                // handle the next steps
                 state.is_new = true;
                 router.push({ name: 'Home' });
+
                 Swal.fire({
                     icon: 'warning',
                     title: "Complete Your Profile Setup",
@@ -134,54 +243,79 @@ export default createStore({
                 })
             }
 
-            function whenReject(user, errorMessage) {
+            const whenReject = (user: firebase.User, errorMessage: string) => {
                 // If it doesn't match, deletes the user from authentication
                 auth.signOut().then(() => {
                     user.delete();
-                    errorMessage()
+                    Swal.fire({ 
+                        icon: 'error', 
+                        title: errorMessage
+                    })
                 }).catch((error) => {
-                    Swal.fire({ icon: 'error', title: error.message });
+                    Swal.fire({ 
+                        icon: 'error', 
+                        title: error.message 
+                    });
                 });
             }
 
             firebase.auth()
                 .signInWithPopup(provider)
                 .then((result) => {
-                    var user = result.user;
-                    if (result.additionalUserInfo.isNewUser) {
-                        if (signUpUser && signUpUser.role === 'talent')
-                            evaluatesUserMail(user.email, DOMAIN_NAMES, () => whenAccept(user),
-                                () => whenReject(user, () => Swal.fire({ icon: 'error', title: 'You need a Monash student account, or are you a spy?' })));
-                        else if (signUpUser && signUpUser.role === 'mentor')
+                    const user: firebase.User | any = result.user;
+                    if (result.additionalUserInfo!.isNewUser) {
+                        if (signUpUser && signUpUser.roles.includes('talent'))
+                            evaluatesUserMail(user!.email ?? '', DOMAIN_NAMES, () => whenAccept(user),
+                                () => whenReject(user, 'You need a Monash student account, or are you a spy?'));
+                        else if (signUpUser && signUpUser.roles.includes('mentor'))
                             whenAccept(user)
                         else
-                            whenReject(user, () => Swal.fire({ icon: 'error', title: 'Please Sign Up An Account First.' }))
+                            whenReject(user, 'Please Sign Up An Account First.')
                     } else
                         router.push({ name: 'Home' });
                 });
         },
 
         FETCH_CURRENT_USER_DATA_FROM_DB(state) {
-            db.collection("users").doc(auth.currentUser.uid)
+            console.log('Fetch user details')
+            if (auth.currentUser && state.is_new_user_data_available){
+                db.collection("users").doc(auth.currentUser!.uid)
                 .get()
-                .then(function(doc) {
+                .then(doc => {
                     if (doc.exists) {
-                        state.user_data = doc.data();
+                        const user: User = {
+                            background: doc.data()!.background, 
+                            bio: doc.data()!.bio, 
+                            created_at: doc.data()!.created_at, 
+                            experience_level: doc.data()!.experience_level, 
+                            first_name: doc.data()!.first_name, 
+                            full_name: doc.data()!.full_name, 
+                            id: doc.data()!.id, 
+                            image_url: doc.data()!.image_url, 
+                            interests: doc.data()!.interests, 
+                            last_login: doc.data()!.last_login, 
+                            last_name: doc.data()!.last_name, 
+                            roles: doc.data()!.roles, 
+                            social_links: doc.data()!.social_links
+                        }
+
+                        state.user_data = user;
                     } else {
                         console.log('User not found')
                     }
+                    state.is_new_user_data_available = false;
                 })
                 .catch(function(error) {
                     console.log("Error getting document:", error);
+                    state.is_new_user_data_available = false;
                 });
+            }
         },
 
         GET_EVENTS(state) {
             db.collection("events")
                 .get()
                 .then((querySnapshot) => {
-                    // fetch liked events
-                    this.commit('GET_LIKED_EVENTS');
                     // update state
                     querySnapshot.forEach((doc) => {
                         // populating the respective filter array
@@ -195,46 +329,59 @@ export default createStore({
                             state.filters.event.name.push(doc.data().name)
                         }
 
+                        const event: Event = {
+                            dates: doc.data().dates, 
+                            description: doc.data().description, 
+                            id: doc.data().id, 
+                            image_url: doc.data().image_url,
+                            name: doc.data().name, 
+                            organizer: doc.data().organizer, 
+                            type: doc.data().type
+                        }
+
                         // populating the event array 
-                        state.events.push(doc.data());
+                        state.events.push(event);
                     });
                 })
                 .catch(function(error) {
                     console.log("Error getting document:" + error)
                 });
         },
-        SET_EVENTS(state, eventObj) {
+
+        SET_EVENT(state, event: Event) {
             db.collection("events")
-                .doc(eventObj.id)
-                .set(eventObj).catch(function(error) {
+                .doc(event.id)
+                .set(event)
+                .catch(function(error) {
                     console.log("Error getting document:" + error)
                 });
         },
-        ADD_EVENTS(state, eventObj) {
+
+        ADD_EVENT(state, event: Event) {
             db.collection("events")
-                .doc(eventObj.id)
-                .set(eventObj).then(() =>
-                    state.events.push(eventObj)
+                .doc(event.id)
+                .set(event).then(() =>
+                    state.events.push(event)
                 ).catch(function(error) {
                     console.log("Error getting document:" + error)
                 });
         },
-        DELETE_EVENTS(state, eventObj) {
+        
+        DELETE_EVENT(state, event: Event) {
             db.collection("events")
-                .doc(eventObj.id)
+                .doc(event.id)
                 .delete().then(
                     () => {
-                        const index = state.events.findIndex((e) => e.id === eventObj.id)
+                        const index = state.events.findIndex((e) => e.id === event.id)
                         if (index >= 0)
                             state.events.splice(index, 1)
                     }
                 );
         },
 
-
         GET_LIKED_EVENTS(state) {
             db.collection("event_likes")
-                .where("user_id", "==", auth.currentUser.uid)
+                .where("user_id", "==", auth.currentUser!.uid)
                 // listening for realtime updates
                 .onSnapshot((snapshot) => {
                     // only working with the changes and not entire collection
@@ -257,18 +404,17 @@ export default createStore({
                     });
                 });
         },
+
         GET_TALENT(state) {
             db.collection("users")
-                .where("id", "!=", auth.currentUser.uid)
+                .where("id", "!=", auth.currentUser!.uid)
                 .where("roles", "array-contains", "talent")
                 .get()
                 .then((querySnapshot) => {
-                    // fetch users that auth user waved at
-                    this.commit('GET_USER_WAVES');
                     querySnapshot.forEach((doc) => {
 
                         // populating the respective filter array
-                        doc.data().interests.forEach((interest) => {
+                        doc.data().interests.forEach((interest: string) => {
                             if (!state.filters.talent.interests.includes(interest)) {
                                 state.filters.talent.interests.push(interest)
                             }
@@ -281,8 +427,24 @@ export default createStore({
                             state.filters.talent.full_name.push(doc.data().full_name)
                         }
 
+                        const talent: User = {
+                            background: doc.data().background, 
+                            bio: doc.data().bio, 
+                            created_at: doc.data().created_at, 
+                            experience_level: doc.data().experience_level, 
+                            first_name: doc.data().first_name, 
+                            full_name: doc.data().full_name, 
+                            id: doc.data().id, 
+                            image_url: doc.data().image_url, 
+                            interests: doc.data().interests, 
+                            last_login: doc.data().last_login, 
+                            last_name: doc.data().last_name, 
+                            roles: doc.data().roles, 
+                            social_links: doc.data().social_links
+                        }
+
                         // populating the talent array
-                        state.talent.push(doc.data());
+                        state.talent.push(talent);
                     });
                 })
                 .catch(function(error) {
@@ -292,16 +454,14 @@ export default createStore({
 
         GET_MENTORS(state) {
             db.collection("users")
-                .where("id", "!=", auth.currentUser.uid)
+                .where("id", "!=", auth.currentUser!.uid)
                 .where("roles", "array-contains", "mentor")
                 .get()
                 .then((querySnapshot) => {
-                    // fetch users that auth user waved at
-                    this.commit('GET_USER_WAVES');
                     querySnapshot.forEach((doc) => {
 
                         // populating the respective filter array
-                        doc.data().interests.forEach((interest) => {
+                        doc.data().interests.forEach((interest: string) => {
                             if (!state.filters.mentors.skill.includes(interest)) {
                                 state.filters.mentors.skill.push(interest)
                             }
@@ -313,20 +473,44 @@ export default createStore({
                             state.filters.mentors.full_name.push(doc.data().full_name)
                         }
 
+                        const mentor: User = {
+                            background: doc.data().background, 
+                            bio: doc.data().bio, 
+                            created_at: doc.data().created_at, 
+                            experience_level: doc.data().experience_level, 
+                            first_name: doc.data().first_name, 
+                            full_name: doc.data().full_name, 
+                            id: doc.data().id, 
+                            image_url: doc.data().image_url, 
+                            interests: doc.data().interests, 
+                            last_login: doc.data().last_login, 
+                            last_name: doc.data().last_name, 
+                            roles: doc.data().roles, 
+                            social_links: doc.data().social_links
+                        }
+
                         // populating the mentors array
-                        state.mentors.push(doc.data());
+                        state.mentors.push(mentor);
                     });
                 })
                 .catch(function(error) {
                     console.log("Error getting document:", error);
                 });
         },
+
         GET_FEEDBACK(state) {
             db.collection("feedback")
                 .get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
-                        state.feedback.push(doc.data());
+                        const feedback: Feedback = {
+                            created_at: doc.data().created_at, 
+                            message: doc.data().message, 
+                            subject: doc.data().subject, 
+                            user_id: doc.data().user_id, 
+                            user_name: doc.data().user_name
+                        }
+                        state.feedback.push(feedback);
                     });
                 })
                 .catch(function(error) {
@@ -338,7 +522,7 @@ export default createStore({
             // if it is not already populated
             if (!state.user_waves.length) {
                 db.collection("user_waves")
-                    .where("from_user_id", "==", auth.currentUser.uid)
+                    .where("from_user_id", "==", auth.currentUser!.uid)
                     // listening for realtime updates
                     .onSnapshot((snapshot) => {
                         // only working with the changes and not entire collection
@@ -363,7 +547,7 @@ export default createStore({
             }
         },
 
-        LIKE_EVENT(_, eventId) {
+        LIKE_EVENT(_, eventId: string) {
             // SweetAlert config
             const likeToast = Swal.mixin({
                 toast: true,
@@ -376,10 +560,10 @@ export default createStore({
             // writing event like to DB
             db.collection("event_likes")
                 // from_to -> userId_eventId
-                .doc(auth.currentUser.uid + '_' + eventId)
+                .doc(auth.currentUser!.uid + '_' + eventId)
                 .set({
                     event_id: eventId,
-                    user_id: auth.currentUser.uid
+                    user_id: auth.currentUser!.uid
                 })
                 // Alert with SweetAlert2
                 .then(() => {
@@ -397,7 +581,7 @@ export default createStore({
                 });
         },
 
-        UNLIKE_EVENT(_, eventId) {
+        UNLIKE_EVENT(_, eventId: string) {
             // SweetAlert config
             const likeToast = Swal.mixin({
                 toast: true,
@@ -410,7 +594,7 @@ export default createStore({
             // writing event like to DB
             db.collection("event_likes")
                 // from_to -> userId_eventId
-                .doc(auth.currentUser.uid + '_' + eventId)
+                .doc(auth.currentUser!.uid + '_' + eventId)
                 .delete()
                 // Alert with SweetAlert2
                 .then(() => {
@@ -428,7 +612,7 @@ export default createStore({
                 });
         },
 
-        WAVE_AT_USER(_, toUserId) {
+        WAVE_AT_USER(_, toUserId: string) {
             // SweetAlert config
             const waveToast = Swal.mixin({
                 toast: true,
@@ -441,9 +625,9 @@ export default createStore({
             // writing event like to DB
             db.collection("user_waves")
                 // from_to -> fromUserId_toUserId
-                .doc(auth.currentUser.uid + '_' + toUserId)
+                .doc(auth.currentUser!.uid + '_' + toUserId)
                 .set({
-                    from_user_id: auth.currentUser.uid,
+                    from_user_id: auth.currentUser!.uid,
                     to_user_id: toUserId
                 })
                 // Alert with SweetAlert2
@@ -462,7 +646,7 @@ export default createStore({
                 });
         },
 
-        UNWAVE_AT_USER(_, toUserId) {
+        UNWAVE_AT_USER(_, toUserId: string) {
             // SweetAlert config
             const waveToast = Swal.mixin({
                 toast: true,
@@ -475,7 +659,7 @@ export default createStore({
             // writing event like to DB
             db.collection("user_waves")
                 // from_to -> userId_eventId
-                .doc(auth.currentUser.uid + '_' + toUserId)
+                .doc(auth.currentUser!.uid + '_' + toUserId)
                 .delete()
                 // Alert with SweetAlert2
                 .then(() => {
@@ -493,15 +677,18 @@ export default createStore({
                 });
         },
 
-        SEND_FEEDBACK(state, feedback) {
+        SEND_FEEDBACK(state, newFeedback: Pick<Feedback, 'message' | 'subject'>) {
+            // old code
+            const feedback: Feedback = {
+                user_id: auth.currentUser!.uid,
+                user_name: state.user_data!.full_name,
+                created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
+                subject: newFeedback.subject,
+                message: newFeedback.message
+            }
+            
             // writing feedback to db
-            db.collection("feedback").add({
-                    user_id: auth.currentUser.uid,
-                    user_name: state.user_data.full_name,
-                    created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
-                    subject: feedback.subject,
-                    message: feedback.message
-                })
+            db.collection("feedback").add(feedback)
                 .then(() => {
                     Swal.fire({ icon: 'success', title: "Thank you!", text: "Your feedback is well received!" });
                 })
@@ -510,7 +697,7 @@ export default createStore({
                 });
         },
 
-        RESET_PASSWORD(_, emailId) {
+        RESET_PASSWORD(_, emailId: string) {
             auth.sendPasswordResetEmail(emailId)
                 .then(() => {
                     // Email sent.
@@ -523,24 +710,27 @@ export default createStore({
                 });
         },
 
-        UPDATE_USER_PROFILE(state, user) {
+        UPDATE_USER_PROFILE(state, user: User) {
+            // old code
+            // const updatedAttributes = {
+            //     background: user.background,
+            //     bio: user.bio,
+            //     interests: user.interests,
+            //     experience_level: parseInt(user.experience_level),
+            //     social_links: {
+            //         ...state.user_data.social_links,
+            //         github_url: user.github_url,
+            //         linkedin_url: user.linkedin_url,
+            //         website_url: user.website_url,
+            //     }
+            // }
+
             // updating user profile
-            db.collection("users").doc(auth.currentUser.uid).update({
-                    background: user.background,
-                    bio: user.bio,
-                    interests: user.interests,
-                    experience_level: parseInt(user.experience_level),
-                    social_links: {
-                        ...state.user_data.social_links,
-                        github_url: user.github_url,
-                        linkedin_url: user.linkedin_url,
-                        website_url: user.website_url,
-                    }
-                })
+            db.collection("users").doc(auth.currentUser!.uid).update(user)
                 .then(() => {
                     state.is_new = false;
-                    this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
                     Swal.fire({ icon: 'success', title: "Thank you!", text: "Your profile is updated!" });
+                    state.is_new_user_data_available = true;
                 })
                 .catch((error) => {
                     Swal.fire({ icon: 'error', title: error });
@@ -548,14 +738,15 @@ export default createStore({
         },
 
         //set user image url only in db
-        SET_USER_IMAGE_URL(_, url) {
-            db.collection("users").doc(auth.currentUser.uid).update({
+        SET_USER_IMAGE_URL(state, url: string) {
+            db.collection("users").doc(auth.currentUser!.uid).update({
                     image_url: url
                 })
                 .then(() => {
-                    this.commit('FETCH_CURRENT_USER_DATA_FROM_DB');
+                    state.new_img_url = '';
                     Swal.fire({ icon: 'success', title: "Thank you!", text: "Your profile picture is updated!" });
                     router.push({ path: '/profile' });
+                    state.is_new_user_data_available = true;
                 })
                 .catch((error) => {
                     Swal.fire({ icon: 'error', title: error });
@@ -570,22 +761,20 @@ export default createStore({
                 });
         },
 
-        UPLOAD_USER_IMAGE(_, user) {
+        UPLOAD_USER_IMAGE(state, user) {
             const task = storage.ref().child(user.fileName).put(user.file, user.metadata)
             task
                 .then(snapshot => snapshot.ref.getDownloadURL())
-                .then(url => {
-                    this.commit('SET_USER_IMAGE_URL', url)
-                })
+                .then(url => state.new_img_url = url)
         },
 
         SET_DEFAULT_USER_IMAGE(state) {
             const defaultImageURL = "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b";
-            db.collection("users").doc(auth.currentUser.uid).update({
+            db.collection("users").doc(auth.currentUser!.uid).update({
                     image_url: defaultImageURL
                 })
                 .then(() => {
-                    state.user_data.image_url = defaultImageURL;
+                    state.user_data!.image_url = defaultImageURL;
                     Swal.fire({ icon: 'success', title: "Thank you!", text: "Your profile picture has been reset!" });
                 })
                 .catch((error) => {
@@ -604,7 +793,7 @@ export default createStore({
 
         GET_WAVES_FROM_OTHER_USERS(state) {
             db.collection("user_waves")
-                .where("to_user_id", "==", auth.currentUser.uid)
+                .where("to_user_id", "==", auth.currentUser!.uid)
                 .get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
@@ -627,6 +816,8 @@ export default createStore({
         },
         setAuthUser({ commit }) {
             commit('SET_AUTH_USER');
+            // fetch the user data
+            commit('FETCH_CURRENT_USER_DATA_FROM_DB');
         },
         signoutUser({ commit }) {
             commit('SIGNOUT_USER');
@@ -634,53 +825,61 @@ export default createStore({
         fetchCurrentUserFromDB({ commit }) {
             commit('FETCH_CURRENT_USER_DATA_FROM_DB')
         },
-        signUpUser({ commit }, user) {
+        signUpUser({ commit }, user: Pick<User, 'first_name' | 'last_name' | 'roles'>) {
             commit('SIGNUP_USER', user);
         },
-        setEvents({ commit }, eventObj) {
-            commit('SET_EVENTS', eventObj);
+        setEvents({ commit }, eventObj: Event) {
+            commit('SET_EVENT', eventObj);
         },
         getEvents({ commit }) {
             commit('GET_EVENTS');
+            commit('GET_LIKED_EVENTS');
         },
-        deleteEvents({ commit }, obj) {
-            commit('DELETE_EVENTS', obj);
+        deleteEvents({ commit }, obj: Event) {
+            commit('DELETE_EVENT', obj);
         },
         getTalent({ commit }) {
             commit('GET_TALENT');
+            // fetch users that auth user waved at
+            commit('GET_USER_WAVES');
         },
-        addEvents({ commit }, obj) {
-            commit('ADD_EVENTS', obj)
+        addEvents({ commit }, obj: Event) {
+            commit('ADD_EVENT', obj)
         },
         getMentors({ commit }) {
             commit('GET_MENTORS');
+            // fetch users that auth user waved at
+            commit('GET_USER_WAVES');
         },
-        likeEvent({ commit }, eventId) {
+        likeEvent({ commit }, eventId: string) {
             commit('LIKE_EVENT', eventId);
         },
 
-        unlikeEvent({ commit }, eventId) {
+        unlikeEvent({ commit }, eventId: string) {
             commit('UNLIKE_EVENT', eventId);
         },
 
-        waveAtUser({ commit }, toUserId) {
+        waveAtUser({ commit }, toUserId: string) {
             commit('WAVE_AT_USER', toUserId);
         },
 
-        unwaveAtUser({ commit }, toUserId) {
+        unwaveAtUser({ commit }, toUserId: string) {
             commit('UNWAVE_AT_USER', toUserId);
         },
 
-        sendFeedback({ commit }, feedback) {
+        sendFeedback({ commit }, feedback: Pick<Feedback, 'message' | 'subject'>) {
             commit('SEND_FEEDBACK', feedback);
         },
 
-        updateUserProfile({ commit }, user) {
+        updateUserProfile({ commit }, user: User) {
             commit('UPDATE_USER_PROFILE', user);
+            // fetch the user data
+            commit('FETCH_CURRENT_USER_DATA_FROM_DB');
         },
 
         uploadUserImage({ commit }, user) {
             commit('UPLOAD_USER_IMAGE', user);
+            commit('SET_USER_IMAGE_URL');
         },
 
         setDefaultUserImage({ commit }) {
@@ -691,8 +890,10 @@ export default createStore({
             commit('UPLOAD_USER_CROPPED_IMAGE', file)
         },
 
-        setUserImageURL({ commit }, image_url) {
+        setUserImageURL({ commit }, image_url: string) {
             commit('SET_USER_IMAGE_URL', image_url)
+            // fetch the user data
+            commit('FETCH_CURRENT_USER_DATA_FROM_DB');
         },
 
         deleteProfileImageFromStorage({ commit }, fileName) {
@@ -703,7 +904,7 @@ export default createStore({
             commit('GET_FEEDBACK');
         },
 
-        resetPassword({ commit }, emailId) {
+        resetPassword({ commit }, emailId: string) {
             commit('RESET_PASSWORD', emailId);
         },
 

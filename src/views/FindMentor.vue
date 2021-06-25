@@ -10,9 +10,9 @@
                 <div class="heading">Mentors</div>
             </div>
             <div class="mentor">
-                <div class="result-not-found">
-                <img v-if="!filteredMentors.length" class="img_not_found" src="@/assets/search-result-not-found.png"><br>
-                <span v-if="!filteredMentors.length" class="not-found-caption">No Mentors Found...</span>
+                <div v-if="!filteredMentors.length" class="result-not-found">
+                    <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
+                    <span class="not-found-caption">No Mentors Found...</span>
                 </div>
                 <ProfileCard 
                     v-for="user in filteredMentors" 
