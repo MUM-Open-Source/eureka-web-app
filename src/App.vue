@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-if="isUnderMaintenance">
+    <Maintenance />
+  </div>
+  <div v-else>
     <SideNav v-if="isLoggedIn" />
     <div class="main" :class="marginLeft">
       <TopNav v-if="!isNewUser"/>
@@ -11,16 +14,17 @@
 </template>
 
 <script>
-import { onMounted, computed } from 'vue';
+import { onMounted, onUpdated, computed } from 'vue';
 import store from '@/store';
 import Loader from '@/common/Loader';
 import SideNav from '@/modules/navigation/SideNav';
 import TopNav from '@/modules/navigation/TopNav';
+import Maintenance from '@/views/Maintenance';
 
 export default {
   name: "App", // name of the component
 
-  components: { Loader, SideNav, TopNav },  // imported components
+  components: { Loader, SideNav, TopNav, Maintenance },  // imported components
   
   // Vue 3 Composition API
   setup() {
@@ -29,10 +33,21 @@ export default {
       store.dispatch("setAuthUser");
     });
 
+    // updated
+    onUpdated(() => {
+      if (isNewUserDataAvailable.value) {
+        store.dispatch("fetchCurrentUserFromDB");
+      }
+    })
+
     // computed properties
     const isLoggedIn = computed(() => store.state.user !== null);
+    // let isNewUserDataAvailable = ref(store.state.is_new_user_data_available);
+    let isNewUserDataAvailable = computed(() => store.state.is_new_user_data_available);
+    
     const isNewUser = computed(() => store.state.is_new);
     const isLoading = computed(() => store.state.isLoading === true);
+    const isUnderMaintenance = computed(() => store.state.is_under_maintenance === true);
     const marginLeft = computed(() =>
       store.state.isSideNavCollapsed
         ? "main__width--full"
@@ -44,7 +59,8 @@ export default {
       isLoggedIn,
       isNewUser,
       isLoading,
-      marginLeft,
+      isUnderMaintenance,
+      marginLeft
     };
   },
 };

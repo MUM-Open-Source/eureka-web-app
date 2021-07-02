@@ -11,9 +11,9 @@
                         :searchable="false"
                         placeholder="Subject"
                         :options="{
-                            feature_request: 'Feature Request', 
-                            bug: 'Bug', 
-                            general: 'General'
+                            suggestion: 'Suggestion', 
+                            bug: 'Something\'s not quite right', 
+                            compliment: 'Compliment'
                         }"
                         :canDeselect="false"
                     />
@@ -40,7 +40,7 @@
 import { reactive } from 'vue';
 import store from '@/store';
 import Multiselect from '@vueform/multiselect';
-import Button from '@/common/Button';
+import Button from '@/common/Button.vue';
 import Swal from 'sweetalert2';
 
 

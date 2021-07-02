@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import checkAuth from '@/middleware/checkAuth.js';
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
+import checkAuth from '@/middleware/checkAuth';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Admin from '@/views/Admin.vue';
@@ -12,13 +12,14 @@ import WavesFromTalent from '@/views/WavesFromTalent.vue';
 import WavesFromMentors from '@/views/WavesFromMentors.vue';
 import BrowseEvents from '@/views/BrowseEvents.vue';
 import NotFound from '@/views/NotFound.vue';
+import Maintenance from '@/views/Maintenance.vue';
 import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue'
 import Terms from '@/views/Terms.vue'
 import Privacy from '@/views/Privacy.vue'
 
 // all the different paths for the SPA
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'Login',
@@ -60,10 +61,12 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
-  }, {
-    path: '/profile/info',
+  }, 
+  // {
+  //   path: '/profile/info',
 
-  }, {
+  // }, 
+  {
     path: '/browse-events',
     name: 'BrowseEvents',
     component: BrowseEvents,
@@ -103,6 +106,10 @@ const routes = [
     name: 'NotFound',
     component: NotFound,
   }, {
+    path: '/maintenance',
+    name: 'Maintenance',
+    component: Maintenance,
+  }, {
     path: '/reset-password',
     name: 'ResetPassword',
     component: ResetPassword,
@@ -136,6 +143,7 @@ const router = createRouter({
 
 // router guards
 router.beforeEach(async (to, from, next) => {
+  window.scrollTo(0, 0);
   checkAuth(to, next);
 })
 

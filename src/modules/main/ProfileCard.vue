@@ -20,7 +20,7 @@
                 <div class="tagline">Experience Level</div>
             </div>
             <!-- Wave -->
-            <div class="profile-card__wave" @click="toggleWave">
+            <div class="profile-card__wave cursor__pointer" @click="toggleWave">
                 <img 
                     v-if="isWaved" 
                     class="wave__icon" 
@@ -73,7 +73,7 @@
 <script>
 import { computed } from 'vue';
 import store from '@/store';
-import RoundImage from '@/modules/main/RoundImage';
+import RoundImage from '@/modules/main/RoundImage.vue';
 
 export default {
     name: 'ProfileCard',
@@ -116,6 +116,8 @@ export default {
     border-radius: $app-border-radius;
     display: flex;
     flex-direction: column;
+    margin-left: $profile-card-left-right-margin;
+    margin-right: $profile-card-left-right-margin;
     &__top {
         display: flex;
         flex-direction: row;

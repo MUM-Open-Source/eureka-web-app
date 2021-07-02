@@ -10,6 +10,10 @@
                 <div class="heading">Mentors</div>
             </div>
             <div class="mentor">
+                <div v-if="!filteredMentors.length" class="result-not-found">
+                    <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
+                    <span class="not-found-caption">No Mentors Found...</span>
+                </div>
                 <ProfileCard 
                     v-for="user in filteredMentors" 
                     :key="user.key"
@@ -23,8 +27,8 @@
 <script>
 import { onMounted, ref } from 'vue';
 import store from '@/store';
-import ProfileCard from '@/modules/main/ProfileCard';
-import MentorFilter from '@/modules/main/MentorFilter';
+import ProfileCard from '@/modules/main/ProfileCard.vue';
+import MentorFilter from '@/modules/main/MentorFilter.vue';
 
 export default {
     name: 'FindMentor',
@@ -91,6 +95,13 @@ export default {
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+
+.result-not-found{
+    text-align:center;
+    font-size: 30px;
+}
+
+
 @media (max-width: 736px) {
     .find-mentor {
         flex-direction: column;

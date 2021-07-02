@@ -8,7 +8,7 @@
                 v-if="isLoggedIn"
             />
             <router-link :to="{ name: 'Home'}">
-                <img class="top-nav__logo" src="@/assets/logo.svg"/>
+                <img class="top-nav__logo" src="@/assets/logo.png"/>
             </router-link>
         </div>
         <div class="top-nav__right mar--2" @click='toggleUserMenuState'>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import UserMenu from '@/modules/navigation/UserMenu';
+import UserMenu from '@/modules/navigation/UserMenu.vue';
 import store from '@/store';
 import router from '@/router';
 import { computed, ref } from 'vue';

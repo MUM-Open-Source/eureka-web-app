@@ -4,7 +4,7 @@
       <div class="heading text--white">Create Your Eureka Account</div>
       <router-link :to="{ name: 'Login' }">
         <div class="tagline text--white mar__b--1">
-          Already have an account &#11166;
+          Already have an account
         </div>
       </router-link>
       <div class="signUp__form pad--4 pad__t--3 pad__b--4">
@@ -49,8 +49,8 @@
 <script>
 import { ref } from "vue";
 import store from "@/store";
-import Button from "@/common/Button";
-import InputField from "@/common/InputField";
+import Button from "@/common/Button.vue";
+import InputField from "@/common/InputField.vue";
 import Multiselect from "@vueform/multiselect";
 import "firebase/auth";
 import Swal from "sweetalert2";
@@ -81,7 +81,7 @@ export default {
         store.dispatch("signUpUser", {
           first_name: first_name,
           last_name: last_name,
-          role: role.value,
+          roles: [role.value],
         });
       }
     }

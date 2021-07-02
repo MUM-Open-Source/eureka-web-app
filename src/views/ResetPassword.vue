@@ -20,8 +20,8 @@
 
 <script>
 import store from '@/store';
-import Button from '@/common/Button';
-import InputField from '@/common/InputField';
+import Button from '@/common/Button.vue';
+import InputField from '@/common/InputField.vue';
 import Swal from 'sweetalert2';
 
 export default {

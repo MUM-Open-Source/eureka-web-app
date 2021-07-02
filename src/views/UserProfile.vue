@@ -90,15 +90,13 @@
                 <!-- Bio -->
                 <label for="bio" class="custom-input__label tagline--bold">Bio*</label>
                 <div class= "tagline skills__tagline">Use this space to sell yourself</div>
-                <input
+                <textarea
                     id="bio"
-                    class="custom-input mar__b--2"
-                    name="bio"
-                    type="text"
-                    v-model="inputValues.bio"
+                    class="body"
                     placeholder="I am.."
-                    @change="handleInputsUpdate"
-                >
+                    v-model="inputValues.bio"
+                    required
+                />
 
                 <!-- GitHub URL -->
                 <label for="github" class="custom-input__label tagline--bold">Github Link</label>
@@ -184,8 +182,8 @@
 import { reactive, computed } from 'vue';
 import store from '@/store';
 import router from '@/router';
-import RoundImage from '@/modules/main/RoundImage';
-import Button from '@/common/Button';
+import RoundImage from '@/modules/main/RoundImage.vue';
+import Button from '@/common/Button.vue';
 import Multiselect from '@vueform/multiselect';
 import Swal from "sweetalert2";
 
@@ -259,7 +257,21 @@ export default {
             'Github',
             'UI/UX',
             'Unit Testing',
-            'Open Source'
+            'Computer Graphics',
+            'C#',
+            'Hadoop',
+            'Kafka',
+            'Open Source',
+            'Kaggle',
+            'Bioinformatics',
+            'Ethical Hacking',
+            'Game Development',
+            'Virtual Reality',
+            'Augmented Reality',
+            'Lua',
+            'Elm',
+            'MATLAB',
+            'Scala'
         ]
     })
     const userInerestsIndices = computed(() => {
@@ -362,31 +374,32 @@ export default {
             inputValues.interests.length === 0 ||
             inputValues.experience_level === 0;
 
-    // a very novice validator -> needs improvement
+    // Check bio length
+    const isBioLengthValid = () => inputValues.bio.length <= 400;
+
     const isInputValid = () => {
-        // github
-        if (inputValues.github_url.length != 0) {
-            if (!(inputValues.github_url.startsWith("https://www.github.com/") ||
-            inputValues.github_url.startsWith("https://github.com/") ||
-            inputValues.github_url.startsWith("http://www.github.com/") ||
-            inputValues.github_url.startsWith("http://github.com/"))) return false
-        }
-        // linkedin
-        if (inputValues.linkedin_url.length != 0) {
-            if (!(inputValues.linkedin_url.startsWith("https://www.linkedin.com/in/") ||
-            inputValues.linkedin_url.startsWith("https://linkedin.com/in/") ||
-            inputValues.linkedin_url.startsWith("http://www.linkedin.com/in/") ||
-            inputValues.linkedin_url.startsWith("http://linkedin.com/in/"))) return false
-        }
-        // website
-        if (inputValues.website_url.length != 0) {
-            if (!(inputValues.website_url.startsWith("https://www.") ||
-            inputValues.website_url.startsWith("https://") ||
-            inputValues.website_url.startsWith("http://www.") ||
-            inputValues.website_url.startsWith("http://"))) return false
-        }
-        return true
-    }
+      const { github_url, linkedin_url, website_url } = inputValues;
+
+      if (
+        github_url.length > 0 &&
+        !/^(https:\/\/)(www\.?)?github\.com\//.test(github_url)
+      ) {
+        return false;
+      }
+
+      if (
+        linkedin_url.length > 0 &&
+        !/^(https:\/\/)(www\.?)?linkedin\.com\/in\//.test(linkedin_url)
+      ) {
+        return false;
+      }
+
+      if (website_url.length > 0 && !/^(https?:\/\/)/.test(website_url)) {
+        return false;
+      }
+
+      return true;
+    };
 
     function handleInfoUpdate() {
         if (allMandatoryFieldsFilled()) {
@@ -394,6 +407,13 @@ export default {
                 icon: 'error',
                 title: "Please fill all the mandatory fields",
                 text: "They are marked with an asterisk (*) for your convenience"
+            })
+        }
+        else if (!isBioLengthValid()) {
+            Swal.fire({
+                icon: 'error',
+                title: "Please give a shorter bio",
+                text: "The bio should be at most 400 characters"
             })
         }
         else if (!isInputValid()) {
