@@ -161,13 +161,13 @@ export default {
       max-width: 1000px;
       margin-left: auto;
       margin-right: auto;
-      justify-content: space-between;
+      justify-content: space-evenly;
       &--second-row {
         display: flex;
         max-width: 1000px;
         margin-left: auto;
         margin-right: auto;
-        justify-content: space-between;
+        justify-content: space-evenly;
       }
     }
     &--img {
