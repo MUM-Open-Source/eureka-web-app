@@ -69,11 +69,6 @@
         <div class="body mar__b--5">Technical Project Manager</div>
       </div>
       <div>
-        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/julian.jpg">
-        <div class="subheading">Julian Khong</div>
-        <div class="body mar__b--5">Head of People</div>
-      </div>
-      <div>
         <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/blaise.jpg">
         <div class="subheading">Blaise Tiong</div>
         <div class="body mar__b--5">Frontend Lead</div>
@@ -166,7 +161,7 @@ export default {
       max-width: 1000px;
       margin-left: auto;
       margin-right: auto;
-      justify-content: space-between;
+      justify-content: space-evenly;
       &--second-row {
         display: flex;
         max-width: 1000px;

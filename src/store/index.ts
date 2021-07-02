@@ -45,6 +45,7 @@ interface Event {
     description: string;
     id: string;
     image_url: string;
+    link: string;
     name: string;
     organizer: string;
     type: string;
@@ -104,7 +105,7 @@ interface AppState {
 }
 
 const getInitState = (): AppState => {
-    return {        
+    return {
         user: auth.currentUser,               // firebase auth user
         isSideNavCollapsed: true,             // bool to check if sidenav is showing
         isLoading: true,                      // bool to keep track whether user is being retreived from the DB
@@ -118,7 +119,7 @@ const getInitState = (): AppState => {
         events: [],
         talent: [],
         mentors: [],
-        feedback: [], 
+        feedback: [],
         liked_events: [],                     // list of events liked by the user
         user_waves: [],                       // list of users waved at by the auth user
         waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -192,12 +193,12 @@ export default createStore({
             var provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope('email');
 
-            const checksEmailMatchesDomains = (arrayOfAcceptableDomainNames: string[], userEmail: string): boolean => 
+            const checksEmailMatchesDomains = (arrayOfAcceptableDomainNames: string[], userEmail: string): boolean =>
                 arrayOfAcceptableDomainNames
                     .map((domain_name) => userEmail.toLowerCase().endsWith(domain_name))
                     .includes(true);
 
-            const evaluatesUserMail = (userEmail: string, arrayOfAcceptableDomainNames: string[], onAccepted: Function, onRejected: Function): void => 
+            const evaluatesUserMail = (userEmail: string, arrayOfAcceptableDomainNames: string[], onAccepted: Function, onRejected: Function): void =>
                 checksEmailMatchesDomains(arrayOfAcceptableDomainNames, userEmail) ?
                     onAccepted() :
                     onRejected();
@@ -247,14 +248,14 @@ export default createStore({
                 // If it doesn't match, deletes the user from authentication
                 auth.signOut().then(() => {
                     user.delete();
-                    Swal.fire({ 
-                        icon: 'error', 
+                    Swal.fire({
+                        icon: 'error',
                         title: errorMessage
                     })
                 }).catch((error) => {
-                    Swal.fire({ 
-                        icon: 'error', 
-                        title: error.message 
+                    Swal.fire({
+                        icon: 'error',
+                        title: error.message
                     });
                 });
             }
@@ -284,18 +285,18 @@ export default createStore({
                 .then(doc => {
                     if (doc.exists) {
                         const user: User = {
-                            background: doc.data()!.background, 
-                            bio: doc.data()!.bio, 
-                            created_at: doc.data()!.created_at, 
-                            experience_level: doc.data()!.experience_level, 
-                            first_name: doc.data()!.first_name, 
-                            full_name: doc.data()!.full_name, 
-                            id: doc.data()!.id, 
-                            image_url: doc.data()!.image_url, 
-                            interests: doc.data()!.interests, 
-                            last_login: doc.data()!.last_login, 
-                            last_name: doc.data()!.last_name, 
-                            roles: doc.data()!.roles, 
+                            background: doc.data()!.background,
+                            bio: doc.data()!.bio,
+                            created_at: doc.data()!.created_at,
+                            experience_level: doc.data()!.experience_level,
+                            first_name: doc.data()!.first_name,
+                            full_name: doc.data()!.full_name,
+                            id: doc.data()!.id,
+                            image_url: doc.data()!.image_url,
+                            interests: doc.data()!.interests,
+                            last_login: doc.data()!.last_login,
+                            last_name: doc.data()!.last_name,
+                            roles: doc.data()!.roles,
                             social_links: doc.data()!.social_links
                         }
 
@@ -330,16 +331,17 @@ export default createStore({
                         }
 
                         const event: Event = {
-                            dates: doc.data().dates, 
-                            description: doc.data().description, 
-                            id: doc.data().id, 
+                            dates: doc.data().dates,
+                            description: doc.data().description,
+                            id: doc.data().id,
                             image_url: doc.data().image_url,
-                            name: doc.data().name, 
-                            organizer: doc.data().organizer, 
+                            link: doc.data().link,
+                            name: doc.data().name,
+                            organizer: doc.data().organizer,
                             type: doc.data().type
                         }
 
-                        // populating the event array 
+                        // populating the event array
                         state.events.push(event);
                     });
                 })
@@ -366,7 +368,7 @@ export default createStore({
                     console.log("Error getting document:" + error)
                 });
         },
-        
+
         DELETE_EVENT(state, event: Event) {
             db.collection("events")
                 .doc(event.id)
@@ -395,7 +397,7 @@ export default createStore({
                             console.log("Modified liked event: ", change.doc.data());
                         }
                         if (change.type === "removed") {
-                            // remove the event like from the state 
+                            // remove the event like from the state
                             const index = state.liked_events.indexOf(change.doc.data().event_id);
                             if (index > -1) {
                                 state.liked_events.splice(index, 1);
@@ -428,18 +430,18 @@ export default createStore({
                         }
 
                         const talent: User = {
-                            background: doc.data().background, 
-                            bio: doc.data().bio, 
-                            created_at: doc.data().created_at, 
-                            experience_level: doc.data().experience_level, 
-                            first_name: doc.data().first_name, 
-                            full_name: doc.data().full_name, 
-                            id: doc.data().id, 
-                            image_url: doc.data().image_url, 
-                            interests: doc.data().interests, 
-                            last_login: doc.data().last_login, 
-                            last_name: doc.data().last_name, 
-                            roles: doc.data().roles, 
+                            background: doc.data().background,
+                            bio: doc.data().bio,
+                            created_at: doc.data().created_at,
+                            experience_level: doc.data().experience_level,
+                            first_name: doc.data().first_name,
+                            full_name: doc.data().full_name,
+                            id: doc.data().id,
+                            image_url: doc.data().image_url,
+                            interests: doc.data().interests,
+                            last_login: doc.data().last_login,
+                            last_name: doc.data().last_name,
+                            roles: doc.data().roles,
                             social_links: doc.data().social_links
                         }
 
@@ -474,18 +476,18 @@ export default createStore({
                         }
 
                         const mentor: User = {
-                            background: doc.data().background, 
-                            bio: doc.data().bio, 
-                            created_at: doc.data().created_at, 
-                            experience_level: doc.data().experience_level, 
-                            first_name: doc.data().first_name, 
-                            full_name: doc.data().full_name, 
-                            id: doc.data().id, 
-                            image_url: doc.data().image_url, 
-                            interests: doc.data().interests, 
-                            last_login: doc.data().last_login, 
-                            last_name: doc.data().last_name, 
-                            roles: doc.data().roles, 
+                            background: doc.data().background,
+                            bio: doc.data().bio,
+                            created_at: doc.data().created_at,
+                            experience_level: doc.data().experience_level,
+                            first_name: doc.data().first_name,
+                            full_name: doc.data().full_name,
+                            id: doc.data().id,
+                            image_url: doc.data().image_url,
+                            interests: doc.data().interests,
+                            last_login: doc.data().last_login,
+                            last_name: doc.data().last_name,
+                            roles: doc.data().roles,
                             social_links: doc.data().social_links
                         }
 
@@ -504,10 +506,10 @@ export default createStore({
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         const feedback: Feedback = {
-                            created_at: doc.data().created_at, 
-                            message: doc.data().message, 
-                            subject: doc.data().subject, 
-                            user_id: doc.data().user_id, 
+                            created_at: doc.data().created_at,
+                            message: doc.data().message,
+                            subject: doc.data().subject,
+                            user_id: doc.data().user_id,
                             user_name: doc.data().user_name
                         }
                         state.feedback.push(feedback);
@@ -536,7 +538,7 @@ export default createStore({
                                 console.log("Modified user wave: ", change.doc.data());
                             }
                             if (change.type === "removed") {
-                                // remove the user wave from the state 
+                                // remove the user wave from the state
                                 const index = state.user_waves.indexOf(change.doc.data().to_user_id);
                                 if (index > -1) {
                                     state.user_waves.splice(index, 1);
@@ -686,7 +688,7 @@ export default createStore({
                 subject: newFeedback.subject,
                 message: newFeedback.message
             }
-            
+
             // writing feedback to db
             db.collection("feedback").add(feedback)
                 .then(() => {
