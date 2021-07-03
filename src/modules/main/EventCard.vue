@@ -4,15 +4,15 @@
         <SquareImage :imgName="event.image_url" alt="User" class="event-card__img text--center " />
         <!-- Like event -->
         <div class="event-card__heart mar__t--1" @click="toggleLike">
-            <img 
-                v-if="isLiked" 
-                class="heart__icon" 
+            <img
+                v-if="isLiked"
+                class="heart__icon"
                 src="@/assets/heart-filled.svg"
             />
-            <img 
-                v-else 
-                class="heart__icon" 
-                src="@/assets/heart-empty.svg" 
+            <img
+                v-else
+                class="heart__icon"
+                src="@/assets/heart-empty.svg"
             />
         </div>
         <!-- Event particulars -->
@@ -20,10 +20,11 @@
             <div class="tagline event-card__particulars--type mar__b--1 text--capsule cursor__default">{{ event.type }}</div>
             <div class="subheading">{{ event.name }}</div>
             <div class="tagline event-card__particulars--organizer mar__b--2">{{ event.organizer }}</div>
-            <div class="body event-card__particulars--bio">{{ event.description }}</div>
+            <div class="body event-card__particulars--bio mar__b--4">{{ event.description }}</div>
+            <div class="event-card__particulars--link">{{ event.link ? event.link : "No Link Provided" }}</div>
             <div class="tagline--bold  event-card__particulars--date">{{ event.dates }}</div>
         </div>
-        
+
     </div>
 </template>
 
@@ -43,7 +44,7 @@ export default {
     },
     setup(props) {
 
-        // getting the like value from store.state 
+        // getting the like value from store.state
         const isLiked = computed(() => {
             return store.state.liked_events.includes(props.event.id);
         })
@@ -75,7 +76,7 @@ export default {
     flex-direction: column;
     margin-left: $event-card-left-right-margin;
     margin-right: $event-card-left-right-margin;
-    &__img {        
+    &__img {
         margin-top: $event-card-margin-top;
     }
     &__heart {
@@ -98,8 +99,14 @@ export default {
             left: 50%;
             transform: translateX(-50%);
         }
+        &--link{
+            position: absolute;
+            bottom: $event-card-link-bottom;
+            left: 50%;
+            transform: translateX(-50%);
+        }
     }
-    
+
 }
 
 </style>

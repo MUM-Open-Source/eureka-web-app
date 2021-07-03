@@ -182,8 +182,8 @@
 import { reactive, computed } from 'vue';
 import store from '@/store';
 import router from '@/router';
-import RoundImage from '@/modules/main/RoundImage';
-import Button from '@/common/Button';
+import RoundImage from '@/modules/main/RoundImage.vue';
+import Button from '@/common/Button.vue';
 import Multiselect from '@vueform/multiselect';
 import Swal from "sweetalert2";
 

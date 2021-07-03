@@ -21,7 +21,7 @@
 
 <script>
 import store from "@/store";
-import Button from "@/common/Button";
+import Button from "@/common/Button.vue";
 
 export default {
   name: "Login",

@@ -5,110 +5,16 @@ import 'firebase/auth'
 import { db, auth, storage } from "@/firebase";
 import router from '@/router';
 import Swal from 'sweetalert2';
-
-type UserRoles = 'talent' | 'mentor' | 'admin';
-
-interface User {
-    background: string;
-    bio: string;
-    created_at: firebase.firestore.FieldValue;
-    experience_level: number;
-    first_name: string;
-    full_name: string;
-    id: string;
-    image_url: string;
-    interests: string[];
-    last_login: firebase.firestore.FieldValue;
-    last_name: string;
-    roles: UserRoles[];
-    social_links: {
-        email_id: string;
-        github_url: string;
-        linkedin_url: string;
-        website_url: string;
-    }
-}
-
-interface NewUser {
-    first_name: string;
-    last_name: string;
-    role: string;
-}
-
-interface ImageToUpload {
-    url: string;
-    fileName: string;
-}
-
-interface Event {
-    dates: string;
-    description: string;
-    id: string;
-    image_url: string;
-    name: string;
-    organizer: string;
-    type: string;
-}
-
-interface Feedback {
-    created_at: firebase.firestore.FieldValue,
-    message: string;
-    subject: string;
-    user_id: string;
-    user_name: string;
-}
-
-interface EventFilter {
-    type: string[];
-    organizer: string[];
-    name: string[];
-}
-
-interface TalentFilter {
-    interests: string[];
-    experience_level: string[];
-    background: string[];
-    full_name: string[];
-}
-
-interface MentorFilter {
-    skill: string[];
-    experience_level: string[];
-    background: string[];
-    full_name: string[];
-}
-
-interface AppState {
-    user: firebase.User | null;
-    isSideNavCollapsed: boolean;
-    isLoading: boolean;
-    is_under_maintenance: boolean;
-    user_data: User | null;
-    is_new_user_data_available: boolean;
-    user_image: string;
-    upload_image: ImageToUpload;
-    new_img_url: string;
-    is_new: boolean;
-    events: Event[];
-    talent: User[];
-    mentors: User[];
-    feedback: Feedback[];
-    liked_events: string[];
-    user_waves: string[];
-    waves_from_other_users: string[];
-    filters: {
-        event: EventFilter;
-        talent: TalentFilter;
-        mentors: MentorFilter;
-    };
-}
+// types
+import { AppState } from '@/types/AppTypes.interface';
+import { User, Event, Feedback } from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
-    return {        
+    return {
         user: auth.currentUser,               // firebase auth user
         isSideNavCollapsed: true,             // bool to check if sidenav is showing
         isLoading: true,                      // bool to keep track whether user is being retreived from the DB
-        is_under_maintenance: false,          // bool to know whether website is under maintenance and display maintenance screen
+        is_under_maintenance: true,           // bool to know whether website is under maintenance and display maintenance screen
         user_data: null,                      // user data pulled from db
         is_new_user_data_available: false,    // to identify if updated data is available to fetch
         user_image: '',
@@ -118,7 +24,7 @@ const getInitState = (): AppState => {
         events: [],
         talent: [],
         mentors: [],
-        feedback: [], 
+        feedback: [],
         liked_events: [],                     // list of events liked by the user
         user_waves: [],                       // list of users waved at by the auth user
         waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -192,12 +98,12 @@ export default createStore({
             var provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope('email');
 
-            const checksEmailMatchesDomains = (arrayOfAcceptableDomainNames: string[], userEmail: string): boolean => 
+            const checksEmailMatchesDomains = (arrayOfAcceptableDomainNames: string[], userEmail: string): boolean =>
                 arrayOfAcceptableDomainNames
                     .map((domain_name) => userEmail.toLowerCase().endsWith(domain_name))
                     .includes(true);
 
-            const evaluatesUserMail = (userEmail: string, arrayOfAcceptableDomainNames: string[], onAccepted: Function, onRejected: Function): void => 
+            const evaluatesUserMail = (userEmail: string, arrayOfAcceptableDomainNames: string[], onAccepted: Function, onRejected: Function): void =>
                 checksEmailMatchesDomains(arrayOfAcceptableDomainNames, userEmail) ?
                     onAccepted() :
                     onRejected();
@@ -247,14 +153,14 @@ export default createStore({
                 // If it doesn't match, deletes the user from authentication
                 auth.signOut().then(() => {
                     user.delete();
-                    Swal.fire({ 
-                        icon: 'error', 
+                    Swal.fire({
+                        icon: 'error',
                         title: errorMessage
                     })
                 }).catch((error) => {
-                    Swal.fire({ 
-                        icon: 'error', 
-                        title: error.message 
+                    Swal.fire({
+                        icon: 'error',
+                        title: error.message
                     });
                 });
             }
@@ -284,18 +190,18 @@ export default createStore({
                 .then(doc => {
                     if (doc.exists) {
                         const user: User = {
-                            background: doc.data()!.background, 
-                            bio: doc.data()!.bio, 
-                            created_at: doc.data()!.created_at, 
-                            experience_level: doc.data()!.experience_level, 
-                            first_name: doc.data()!.first_name, 
-                            full_name: doc.data()!.full_name, 
-                            id: doc.data()!.id, 
-                            image_url: doc.data()!.image_url, 
-                            interests: doc.data()!.interests, 
-                            last_login: doc.data()!.last_login, 
-                            last_name: doc.data()!.last_name, 
-                            roles: doc.data()!.roles, 
+                            background: doc.data()!.background,
+                            bio: doc.data()!.bio,
+                            created_at: doc.data()!.created_at,
+                            experience_level: doc.data()!.experience_level,
+                            first_name: doc.data()!.first_name,
+                            full_name: doc.data()!.full_name,
+                            id: doc.data()!.id,
+                            image_url: doc.data()!.image_url,
+                            interests: doc.data()!.interests,
+                            last_login: doc.data()!.last_login,
+                            last_name: doc.data()!.last_name,
+                            roles: doc.data()!.roles,
                             social_links: doc.data()!.social_links
                         }
 
@@ -330,16 +236,17 @@ export default createStore({
                         }
 
                         const event: Event = {
-                            dates: doc.data().dates, 
-                            description: doc.data().description, 
-                            id: doc.data().id, 
+                            dates: doc.data().dates,
+                            description: doc.data().description,
+                            id: doc.data().id,
                             image_url: doc.data().image_url,
-                            name: doc.data().name, 
-                            organizer: doc.data().organizer, 
+                            link: doc.data().link,
+                            name: doc.data().name,
+                            organizer: doc.data().organizer,
                             type: doc.data().type
                         }
 
-                        // populating the event array 
+                        // populating the event array
                         state.events.push(event);
                     });
                 })
@@ -366,7 +273,7 @@ export default createStore({
                     console.log("Error getting document:" + error)
                 });
         },
-        
+
         DELETE_EVENT(state, event: Event) {
             db.collection("events")
                 .doc(event.id)
@@ -395,7 +302,7 @@ export default createStore({
                             console.log("Modified liked event: ", change.doc.data());
                         }
                         if (change.type === "removed") {
-                            // remove the event like from the state 
+                            // remove the event like from the state
                             const index = state.liked_events.indexOf(change.doc.data().event_id);
                             if (index > -1) {
                                 state.liked_events.splice(index, 1);
@@ -428,18 +335,18 @@ export default createStore({
                         }
 
                         const talent: User = {
-                            background: doc.data().background, 
-                            bio: doc.data().bio, 
-                            created_at: doc.data().created_at, 
-                            experience_level: doc.data().experience_level, 
-                            first_name: doc.data().first_name, 
-                            full_name: doc.data().full_name, 
-                            id: doc.data().id, 
-                            image_url: doc.data().image_url, 
-                            interests: doc.data().interests, 
-                            last_login: doc.data().last_login, 
-                            last_name: doc.data().last_name, 
-                            roles: doc.data().roles, 
+                            background: doc.data().background,
+                            bio: doc.data().bio,
+                            created_at: doc.data().created_at,
+                            experience_level: doc.data().experience_level,
+                            first_name: doc.data().first_name,
+                            full_name: doc.data().full_name,
+                            id: doc.data().id,
+                            image_url: doc.data().image_url,
+                            interests: doc.data().interests,
+                            last_login: doc.data().last_login,
+                            last_name: doc.data().last_name,
+                            roles: doc.data().roles,
                             social_links: doc.data().social_links
                         }
 
@@ -474,18 +381,18 @@ export default createStore({
                         }
 
                         const mentor: User = {
-                            background: doc.data().background, 
-                            bio: doc.data().bio, 
-                            created_at: doc.data().created_at, 
-                            experience_level: doc.data().experience_level, 
-                            first_name: doc.data().first_name, 
-                            full_name: doc.data().full_name, 
-                            id: doc.data().id, 
-                            image_url: doc.data().image_url, 
-                            interests: doc.data().interests, 
-                            last_login: doc.data().last_login, 
-                            last_name: doc.data().last_name, 
-                            roles: doc.data().roles, 
+                            background: doc.data().background,
+                            bio: doc.data().bio,
+                            created_at: doc.data().created_at,
+                            experience_level: doc.data().experience_level,
+                            first_name: doc.data().first_name,
+                            full_name: doc.data().full_name,
+                            id: doc.data().id,
+                            image_url: doc.data().image_url,
+                            interests: doc.data().interests,
+                            last_login: doc.data().last_login,
+                            last_name: doc.data().last_name,
+                            roles: doc.data().roles,
                             social_links: doc.data().social_links
                         }
 
@@ -504,10 +411,10 @@ export default createStore({
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         const feedback: Feedback = {
-                            created_at: doc.data().created_at, 
-                            message: doc.data().message, 
-                            subject: doc.data().subject, 
-                            user_id: doc.data().user_id, 
+                            created_at: doc.data().created_at,
+                            message: doc.data().message,
+                            subject: doc.data().subject,
+                            user_id: doc.data().user_id,
                             user_name: doc.data().user_name
                         }
                         state.feedback.push(feedback);
@@ -536,7 +443,7 @@ export default createStore({
                                 console.log("Modified user wave: ", change.doc.data());
                             }
                             if (change.type === "removed") {
-                                // remove the user wave from the state 
+                                // remove the user wave from the state
                                 const index = state.user_waves.indexOf(change.doc.data().to_user_id);
                                 if (index > -1) {
                                     state.user_waves.splice(index, 1);
@@ -686,7 +593,7 @@ export default createStore({
                 subject: newFeedback.subject,
                 message: newFeedback.message
             }
-            
+
             // writing feedback to db
             db.collection("feedback").add(feedback)
                 .then(() => {

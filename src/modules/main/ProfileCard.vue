@@ -73,7 +73,7 @@
 <script>
 import { computed } from 'vue';
 import store from '@/store';
-import RoundImage from '@/modules/main/RoundImage';
+import RoundImage from '@/modules/main/RoundImage.vue';
 
 export default {
     name: 'ProfileCard',

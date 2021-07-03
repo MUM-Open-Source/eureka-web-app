@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import UserMenu from '@/modules/navigation/UserMenu';
+import UserMenu from '@/modules/navigation/UserMenu.vue';
 import store from '@/store';
 import router from '@/router';
 import { computed, ref } from 'vue';

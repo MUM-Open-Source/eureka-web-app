@@ -49,8 +49,8 @@
 <script>
 import { ref } from "vue";
 import store from "@/store";
-import Button from "@/common/Button";
-import InputField from "@/common/InputField";
+import Button from "@/common/Button.vue";
+import InputField from "@/common/InputField.vue";
 import Multiselect from "@vueform/multiselect";
 import "firebase/auth";
 import Swal from "sweetalert2";
