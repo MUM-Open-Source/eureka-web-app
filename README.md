@@ -66,6 +66,7 @@ Some of our current core features include:
 * [Vue 3](https://v3.vuejs.org/)
 * [Firebase](https://firebase.google.com/)
 * [Netlify](https://www.netlify.com/)
+* [TypeScript](https://www.typescriptlang.org/docs/)
 
 
 
@@ -104,6 +105,10 @@ VUE_APP_FIREBASE_API_KEY=AIzaSyBtNOw1Jf-4gOtmoHvz9qjmEp_DvVzerLA
 VUE_APP_FIREBASE_PROJECT_ID=eureka-development-860d4
 VUE_APP_FIREBASE_MESSAGING_SENDER_ID=352539377412
 VUE_APP_FIREBASE_APP_ID=1:352539377412:web:a9c49cb6afce7aa082da51
+```
+6. To run the app through localhost:
+```sh
+npm run serve
 ```
 
 ### Learning Resources
