@@ -1,27 +1,29 @@
 <template>
   <div class='tag-input'>
-    <div v-for='(tag, index) in tags' :key='tag' class='tag-input__tag'>
-      <span @click="removeTag(index)">x</span>
+    <div v-for='(tag, index) in tags' :key='tag' class='tag-input__tag mar__t--1 text--white'>
+      <span @click="removeTag(index)" class="cursor__pointer">x</span>
       {{ tag }}
     </div>
     <input type='text' placeholder="Enter a Tag" class='tag-input__text' @keydown="addTag" @keydown.delete="removeLastTag"/>
   </div>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
+
   data() {
     return {
-      tags: ['HTML', 'CSS']
+      tags: ['HTML', 'CSS'] as Array<string>
 
     }
   },
   methods: {
-      addTag(event) {        
+      addTag(event:any) {        
         if(event.code == 'Comma' || event.code == 'Enter'){
             event.preventDefault();
             var val = event.target.value.trim() 
 
-            if(val.length > 0 && ! this.tags.includes(val.toUpperCase())){
+            if(this.tags.length < 5 && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
                 this.tags.push(val.toUpperCase())
                 event.target.value = ''
 
@@ -29,51 +31,48 @@ export default {
         }
 
       },
-      removeTag(index) {
+      removeTag(index:number) {
           this.tags.splice(index,1)
       },
-      removeLastTag(event){
+      removeLastTag(event:any){
           if(event.target.value.length === 0) {
               this.removeTag(this.tags.length - 1)
           }
       }
 
   }
-}
+})
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .tag-input {
-  width: 100%;
-  border: 1px solid #eee;
-  font-size: 0.9em;
-  height: 50px;
-  box-sizing: border-box;
-  padding: 0 10px;
-  display:table;
-}
-
-.tag-input__tag {
-  height: 30px;
-  float: left;
-  margin-right: 10px;
-  background-color: #eee;
-  margin-top: 10px;
-  line-height: 30px;
-  padding: 0 5px;
-  border-radius: 5px;
-
-}
-
-.tag-input__tag > span {
-  cursor: pointer;
-  opacity: 0.75;
-}
-
-.tag-input__text {
-  border: none;
-  outline: none;
-  font-size: 1em;
-  line-height: 50px;
-  background: none;
+    width: 100%;
+    border: 1px solid #eee;
+    //font-size: 0.9em;
+    height: 50px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    display:table;
+    &__tag {
+        height: 30px;
+        float: left;
+        margin-right: 10px;
+        background-color: $color-brand;
+        //margin-top: 10px;
+        line-height: 30px;
+        padding: 0 5px;
+        border-radius: $app-border-radius-sm;
+;
+        & > span {
+            //cursor: pointer;
+            opacity: 0.75;
+        }
+    }
+    &__text {
+        border: none;
+        outline: none;
+        //font-size: 1em;
+        line-height: 50px;
+        background: none;
+    }
 }
 </style>

@@ -7,13 +7,18 @@
             <br>
                 Website under maintenance.. STAY TUNED
             </div>
+            <TagInput />
         </div>
     </div>
 </template>
 
 <script>
+import TagInput from '@/common/TagInput.vue';
+
 export default {
-    name: 'Maintenance'
+    name: 'Maintenance',
+    components: { TagInput},
+
 }
 </script>
 
