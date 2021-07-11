@@ -43,35 +43,33 @@ export default defineComponent({
   }
 })
 </script>
+
+
 <style lang="scss" scoped>
 .tag-input {
-    width: 100%;
-    border: 1px solid #eee;
-    //font-size: 0.9em;
-    height: 50px;
+    width: $tag-input-width;
+    border: $tag-input-border-radius solid #eee;
+    height: $tag-input-height;
     box-sizing: border-box;
-    padding: 0 10px;
+    padding: $tag-input-padding;
     display:table;
     &__tag {
-        height: 30px;
+        height: $tag-input-tag-height;
         float: left;
-        margin-right: 10px;
+        margin-right: $tag-input-tag-margin-right;
         background-color: $color-brand;
-        //margin-top: 10px;
-        line-height: 30px;
-        padding: 0 5px;
+        line-height: $tag-input-tag-line-height;
+        padding: $tag-input-tag-padding;
         border-radius: $app-border-radius-sm;
 ;
         & > span {
-            //cursor: pointer;
-            opacity: 0.75;
+            opacity: $tag-input-tag-span-opacity;
         }
     }
     &__text {
         border: none;
         outline: none;
-        //font-size: 1em;
-        line-height: 50px;
+        line-height: $tag-input-text-line-height;
         background: none;
     }
 }
