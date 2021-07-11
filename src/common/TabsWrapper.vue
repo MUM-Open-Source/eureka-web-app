@@ -14,14 +14,15 @@
   </div>
 </template>
 
-<script>
-import { ref, provide } from 'vue';
-export default {
+<script lang="ts">
+import { defineComponent, ref, provide } from 'vue';
+export default defineComponent({
     setup(_, { slots }) {
         // array of all nodes inside Tab component slot
-        const tabTitles = ref(slots.default().map((tab) => tab.props.title))
+        const tabTitles = ref(slots.default().map((tab) => tab.props!.title))
         const selectedTitle = ref(tabTitles.value[0])
 
+        // to provide title to children slots
         provide("selectedTitle", selectedTitle)
 
         return {
@@ -29,10 +30,10 @@ export default {
             selectedTitle
         }
     }
-}
+})
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .tabs {
     width: 100%;
     margin: 0 auto;
@@ -45,9 +46,6 @@ export default {
             width: 80px;
             text-align: center;
             padding: 10px 20px;
-            // margin-right: 10px;
-            // background-color: #ddd;
-            // border-radius: 5px;
             border-bottom: solid 2px white;
             cursor: pointer;
             transition: 0.5s all;
@@ -56,7 +54,6 @@ export default {
             }
             &.selected {
                 border-bottom: solid 2px $color-brand;
-                // background-color: #0984e3;
                 color: $color-brand;
                 font-weight: $semibold;
             }

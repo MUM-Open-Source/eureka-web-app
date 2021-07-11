@@ -4,19 +4,20 @@
     </div>
 </template>
 
-<script>
-import { inject } from 'vue';
+<script lang="ts">
+import { defineComponent, inject } from 'vue';
 
-export default {
+export default defineComponent({
     props: ['title'],
     setup() {
+        // receive title from TabsWrapper
         const selectedTitle = inject("selectedTitle")
 
         return {
             selectedTitle
         }
     }
-}
+})
 </script>
 
 <style lang='scss' scoped>
