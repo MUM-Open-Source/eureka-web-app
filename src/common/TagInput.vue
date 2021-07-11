@@ -23,7 +23,7 @@ export default defineComponent({
             event.preventDefault();
             var val = event.target.value.trim() 
 
-            if(this.tags.length < 5 && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
+            if(val.length > 0 && ! this.tags.includes(val.toUpperCase())){
                 this.tags.push(val.toUpperCase())
                 event.target.value = ''
 
