@@ -18,6 +18,7 @@
     "vue": "^3.0.0",
     "vue-advanced-cropper": "^2.2.0",
     "vue-router": "^4.0.3",
+    "vuelidate": "^0.7.6",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
