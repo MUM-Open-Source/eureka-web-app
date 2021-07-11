@@ -101,7 +101,6 @@ export default {
     font-size: 30px;
 }
 
-
 @media (max-width: 736px) {
     .find-mentor {
         flex-direction: column;
