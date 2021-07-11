@@ -8,9 +8,13 @@
         <div class="find-talent__content">
             <div class="find-talent__content--title mar__b--3 text--center">
                 <div class="tagline">Current Students</div>
-                <div class="heading">Talent</div>
+                <div class="heading">Talents</div>
             </div>
             <div class="talents">
+                <div v-if="!filteredTalent.length" class="result-not-found">
+                    <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
+                    <span class="not-found-caption">No Talents Found...</span>
+                </div>
                 <ProfileCard 
                     v-for="user in filteredTalent" 
                     :key="user.key"
@@ -91,6 +95,12 @@ export default {
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+
+.result-not-found{
+    text-align:center;
+    font-size: 30px;
+}
+
 @media (max-width: 736px) {
     .find-talent {
         flex-direction: column;
