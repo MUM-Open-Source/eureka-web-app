@@ -32,6 +32,7 @@ $bold: 900;
 
 /********** COMPONENTS **********/
 $app-border-radius: 18px;
+$app-border-radius-sm: 9px;
 
 // button
 $btn-padding: 8px 45px;
@@ -145,3 +146,10 @@ $under-maintenance-position-ratio: 50%;
 $under-maintenance-img-width: 50%;
 $under-maintenance-img-width-sm: 250px;
 $under-maintenance-img-padding-right: 40px;
+
+// tabs
+$tab-wrapper-width: 100%;
+$tab-wrapper-margin: 0 auto;
+$tab-title-width: 80px;
+$tab-title-padding: 10px 20px;
+$tab-content-min-height: 300px;

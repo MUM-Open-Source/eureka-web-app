@@ -1,10 +1,11 @@
 <template>
   <div class="tabs">
-      <ul class="tabs__header">
+      <ul class="tabs__header mar__b--1 pad--0">
             <li 
                 v-for="title in tabTitles" 
                 :key="title"
                 :class="{ selected: title == selectedTitle}"
+                class='cursor__pointer'
                 @click="selectedTitle=title"
             >
                 {{title}}
@@ -35,22 +36,19 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .tabs {
-    width: 100%;
-    margin: 0 auto;
+    width: $tab-wrapper-width;
+    margin: $tab-wrapper-margin;
     &__header {
-        margin-bottom: 10px;
         list-style: none;
-        padding: 0;
         display: flex;
         li {
-            width: 80px;
+            width: $tab-title-width;
             text-align: center;
-            padding: 10px 20px;
-            border-bottom: solid 2px white;
-            cursor: pointer;
-            transition: 0.5s all;
+            padding: $tab-title-padding;
+            border-bottom: solid 2px $color-white;
+            transition: $transition-duration all;
             &:hover {
-                background-color: rgb(240, 240, 240);
+                background-color: $color-side-nav-bg;
             }
             &.selected {
                 border-bottom: solid 2px $color-brand;

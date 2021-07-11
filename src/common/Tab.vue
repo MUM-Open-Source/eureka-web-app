@@ -1,5 +1,5 @@
 <template>
-    <div class="tab-content" v-show="title == selectedTitle">
+    <div class="tab-content pad--3" v-show="title == selectedTitle">
         <slot />
     </div>
 </template>
@@ -22,9 +22,8 @@ export default defineComponent({
 
 <style lang='scss' scoped>
 .tab-content {
-    min-height: 400px;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 3px 5px 5px rgba(0,0,0,0.05);
+    @include shadow--subtle;
+    min-height: $tab-content-min-height;
+    border-radius: $app-border-radius-sm;
 }
 </style>
