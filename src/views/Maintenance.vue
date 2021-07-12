@@ -7,18 +7,13 @@
             <br>
                 Website under maintenance.. STAY TUNED
             </div>
-            <TagInput maxTag = '8'/>
         </div>
     </div>
 </template>
 
 <script>
-import TagInput from '@/common/TagInput.vue';
-
 export default {
-    name: 'Maintenance',
-    components: { TagInput},
-
+    name: 'Maintenance'
 }
 </script>
 
