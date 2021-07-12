@@ -8,7 +8,7 @@
         <div class="find-talent__content">
             <div class="find-talent__content--title mar__b--3 text--center">
                 <div class="tagline">Current Students</div>
-                <div class="heading">Talents</div>
+                <div class="heading">Talent</div>
             </div>
             <div class="talents">
                 <div v-if="!filteredTalent.length" class="heading text--center">
