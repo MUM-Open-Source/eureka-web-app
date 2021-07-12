@@ -12,7 +12,7 @@ export default defineComponent({
     setup() {
         // receive title from TabsWrapper
         const selectedTitle = inject("selectedTitle")
-
+        
         return {
             selectedTitle
         }
