@@ -5,27 +5,27 @@
   <div v-else>
     <SideNav v-if="isLoggedIn" />
     <div class="main" :class="marginLeft">
-      <TopNav v-if="!isNewUser"/>
+      <TopNav v-if="!isNewUser" />
       <!-- routing -->
-      <Loader v-if="isLoading"/>
-      <router-view v-else/>
+      <Loader v-if="isLoading" />
+      <router-view v-else />
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, onUpdated, computed } from 'vue';
-import store from '@/store';
-import Loader from '@/common/Loader';
-import SideNav from '@/modules/navigation/SideNav';
-import TopNav from '@/modules/navigation/TopNav';
-import Maintenance from '@/views/Maintenance';
+import { onMounted, onUpdated, computed } from "vue";
+import store from "@/store";
+import Loader from "@/common/Loader";
+import SideNav from "@/modules/navigation/SideNav";
+import TopNav from "@/modules/navigation/TopNav";
+import Maintenance from "@/views/Maintenance";
 
 export default {
   name: "App", // name of the component
 
-  components: { Loader, SideNav, TopNav, Maintenance },  // imported components
-  
+  components: { Loader, SideNav, TopNav, Maintenance }, // imported components
+
   // Vue 3 Composition API
   setup() {
     // mounted
@@ -38,16 +38,20 @@ export default {
       if (isNewUserDataAvailable.value) {
         store.dispatch("fetchCurrentUserFromDB");
       }
-    })
+    });
 
     // computed properties
     const isLoggedIn = computed(() => store.state.user !== null);
     // let isNewUserDataAvailable = ref(store.state.is_new_user_data_available);
-    let isNewUserDataAvailable = computed(() => store.state.is_new_user_data_available);
-    
+    let isNewUserDataAvailable = computed(
+      () => store.state.is_new_user_data_available
+    );
+
     const isNewUser = computed(() => store.state.is_new);
     const isLoading = computed(() => store.state.isLoading === true);
-    const isUnderMaintenance = computed(() => store.state.is_under_maintenance === true);
+    const isUnderMaintenance = computed(
+      () => store.state.is_under_maintenance === false
+    );
     const marginLeft = computed(() =>
       store.state.isSideNavCollapsed
         ? "main__width--full"
@@ -60,7 +64,7 @@ export default {
       isNewUser,
       isLoading,
       isUnderMaintenance,
-      marginLeft
+      marginLeft,
     };
   },
 };
