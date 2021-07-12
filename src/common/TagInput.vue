@@ -11,28 +11,24 @@
 import { defineComponent } from 'vue';
 export default defineComponent({
   props: {
-      maxTag : {
+      limit : {
           type: Number,
-          default: 5
+          default: 10 // default limit is 10 tags
       }
-
   },
   data() {
     return {
       tags: ['HTML', 'CSS'] as Array<string>
-
     }
   },
   methods: {
       addTag(event:any) {        
         if(event.code == 'Comma' || event.code == 'Enter'){
             event.preventDefault();
-            var val = event.target.value.trim() 
-
-            if(this.tags.length + 1 <= this.maxTag && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
+            var val = event.target.value.trim()
+            if(this.tags.length < this.limit && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
                 this.tags.push(val.toUpperCase())
                 event.target.value = ''
-
             }
         }
 
@@ -54,7 +50,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .tag-input {
     width: $tag-input-width;
-    border: $tag-input-border-radius solid #eee;
+    border: $tag-input-border-radius solid $color-bg-hover;
     height: $tag-input-height;
     box-sizing: border-box;
     padding: $tag-input-padding;
@@ -67,7 +63,6 @@ export default defineComponent({
         line-height: $tag-input-tag-line-height;
         padding: $tag-input-tag-padding;
         border-radius: $app-border-radius-sm;
-;
         & > span {
             opacity: $tag-input-tag-span-opacity;
         }
