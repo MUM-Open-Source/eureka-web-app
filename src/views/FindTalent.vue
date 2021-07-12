@@ -13,7 +13,7 @@
             <div class="talents">
                 <div v-if="!filteredTalent.length" class="heading text--center">
                     <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
-                    <div class="not-found-caption">No Talents Found...</div>
+                    <div class="not-found-caption">No Talent Found...</div>
                 </div>
                 <ProfileCard 
                     v-for="user in filteredTalent" 
