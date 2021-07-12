@@ -60,33 +60,46 @@
       </div>
       <div class="body">Stay tuned for more.</div>
   </div>
-  <div class="home__cta page-pad text--center home__team">
-    <div class="heading mar__b--5 text--center">Meet the Eureka Team</div>
-    <div class="mar__b--5 row">
+  <section class="home__cta page-pad text--center home__team">
+    <div class="heading mar__b--2">Meet the Eureka Team</div>
+    <div class="team-wrapper">
       <div>
-        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/nitin.jpg">
+        <img class="home__team--img" src="@/assets/nitin.jpg">
         <div class="subheading">Nitin Mathew</div>
-        <div class="body mar__b--5">Technical Project Manager</div>
+        <div class="body ">Technical Project Manager</div>
       </div>
       <div>
-        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/blaise.jpg">
+        <img class="home__team--img" src="@/assets/blaise.jpg">
         <div class="subheading">Blaise Tiong</div>
-        <div class="body mar__b--5">Frontend Lead</div>
+        <div class="body">Frontend Lead</div>
       </div>
-    </div>
-    <div class="row--second-row">
       <div>
-        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/chantelle.jpeg">
+        <img class="home__team--img" src="@/assets/chantelle.jpeg">
         <div class="subheading">Chantelle Loh</div>
-        <div class="body mar__b--5">Community Manager</div>
+        <div class="body">Community Manager</div>
       </div>
       <div>
-        <img class="home__team--img mar__b--2 mar__t--5" src="@/assets/minhao.jpeg">
+        <img class="home__team--img" src="@/assets/minhao.jpeg">
         <div class="subheading">Chee Min Hao</div>
-        <div class="body mar__b--5">Community Manager</div>
+        <div class="body">Community Manager</div>
+      </div>
+      <div>
+        <img class="home__team--img" src="@/assets/weichun.png">
+        <div class="subheading">Tan Wei Chun</div>
+        <div class="body">Junior Developer</div>
+      </div>
+      <div> 
+        <img class="home__team--img" src="@/assets/sean.jpg">
+        <div class="subheading">Sean Leong</div>
+        <div class="body">Junior Developer</div>
+      </div>
+      <div>
+        <img class="home__team--img" src="@/assets/sauce.jpeg">
+        <div class="subheading">Foong Shee Yao</div>
+        <div class="body">Junior Developer</div>
       </div>
     </div>
-  </div>
+  </section>
   <div class="home__form page-pad text--center text--white">
       <div class="heading mar__b--2">Ready to Form Your Ultimate Team?</div>
       <div class="body mar__b--3">You solution is just a click away.</div>
@@ -156,24 +169,25 @@ export default {
     }
   }
   &__team {
-    .row {
+    .team-wrapper {
+      max-width: 1250px;
+      width: 100%;
+      margin: 0 auto;
       display: flex;
-      max-width: 1000px;
-      margin-left: auto;
-      margin-right: auto;
+      flex-wrap: wrap;
       justify-content: space-evenly;
-      &--second-row {
-        display: flex;
-        max-width: 1000px;
-        margin-left: auto;
-        margin-right: auto;
-        justify-content: space-evenly;
-      }
+    }
+    .team-wrapper > div{
+      margin: 30px;
     }
     &--img {
       width: 200px;
-      max-width: 100%;
+      height: 200px;
       border-radius: 50%;
+      margin-bottom: 20px;
+      &:hover {
+        transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+      }
     }
   }
   &__develop {
@@ -245,16 +259,6 @@ export default {
   }
   .margin {
     margin-bottom: $spacer * 1.5;
-  }
-}
-@media (max-width: 821px) {
-  .home__team {
-    .row{
-      flex-direction: column;
-      &--second-row {
-        flex-direction: column;
-      }
-    }
   }
 }
 </style>

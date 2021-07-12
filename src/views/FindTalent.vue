@@ -11,6 +11,10 @@
                 <div class="heading">Talent</div>
             </div>
             <div class="talents">
+                <div v-if="!filteredTalent.length" class="heading text--center">
+                    <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
+                    <div class="not-found-caption">No Talent Found...</div>
+                </div>
                 <ProfileCard 
                     v-for="user in filteredTalent" 
                     :key="user.key"
@@ -91,6 +95,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+
 @media (max-width: 736px) {
     .find-talent {
         flex-direction: column;
