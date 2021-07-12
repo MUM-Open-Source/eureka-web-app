@@ -10,9 +10,9 @@
                 <div class="heading">Mentors</div>
             </div>
             <div class="mentor">
-                <div v-if="!filteredMentors.length" class="result-not-found">
+                <div v-if="!filteredMentors.length" class="heading text--center">
                     <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
-                    <span class="not-found-caption">No Mentors Found...</span>
+                    <div class="not-found-caption">No Mentors Found...</div>
                 </div>
                 <ProfileCard 
                     v-for="user in filteredMentors" 
@@ -94,11 +94,6 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-}
-
-.result-not-found{
-    text-align:center;
-    font-size: 30px;
 }
 
 @media (max-width: 736px) {
