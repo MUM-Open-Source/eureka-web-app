@@ -7,7 +7,7 @@
             <br>
                 Website under maintenance.. STAY TUNED
             </div>
-            <TagInput />
+            <TagInput maxTag = '8'/>
         </div>
     </div>
 </template>

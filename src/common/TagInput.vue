@@ -10,7 +10,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 export default defineComponent({
+  props: {
+      maxTag : {
+          type: Number,
+          default: 5
+      }
 
+  },
   data() {
     return {
       tags: ['HTML', 'CSS'] as Array<string>
@@ -23,7 +29,7 @@ export default defineComponent({
             event.preventDefault();
             var val = event.target.value.trim() 
 
-            if(val.length > 0 && ! this.tags.includes(val.toUpperCase())){
+            if(this.tags.length + 1 <= this.maxTag && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
                 this.tags.push(val.toUpperCase())
                 event.target.value = ''
 
