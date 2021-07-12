@@ -11,7 +11,9 @@
                 {{title}}
             </li>
       </ul>
-      <slot />
+      <div id="tabs__content" class="tabs__content">
+        <slot />
+      </div>
   </div>
 </template>
 
@@ -20,7 +22,7 @@ import { defineComponent, ref, provide } from 'vue';
 export default defineComponent({
     setup(_, { slots }) {
         // array of all nodes inside Tab component slot
-        const tabTitles = ref(slots.default().map((tab) => tab.props!.title))
+        const tabTitles = ref(slots.default!().map((tab) => tab.props!.title))
         const selectedTitle = ref(tabTitles.value[0])
 
         // to provide title to children slots
@@ -42,7 +44,7 @@ export default defineComponent({
         list-style: none;
         display: flex;
         li {
-            width: $tab-title-width;
+            min-width: $tab-title-min-width;
             text-align: center;
             padding: $tab-title-padding;
             border-bottom: solid 2px $color-white;
@@ -56,6 +58,8 @@ export default defineComponent({
                 font-weight: $semibold;
             }
         }
+    }
+    &__content {
     }
 }
 </style>

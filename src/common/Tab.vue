@@ -23,7 +23,7 @@ export default defineComponent({
 <style lang='scss' scoped>
 .tab-content {
     @include shadow--subtle;
-    min-height: $tab-content-min-height;
+    // max-height: $tab-content-min-height;
     border-radius: $app-border-radius-sm;
 }
 </style>

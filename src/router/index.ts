@@ -17,7 +17,7 @@ import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue';
 import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
-import Incubator from '@/views/Incubator.vue';
+import IncubatorNitin from '@/views/IncubatorNitin.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -127,8 +127,8 @@ const routes: RouteRecordRaw[] = [
     component: Privacy,
   }, {
     path: '/incubator-nitin',
-    name: 'Incubator',
-    component: Incubator,
+    name: 'IncubatorNitin',
+    component: IncubatorNitin,
     meta: {
       requiresAuth: true
     }
