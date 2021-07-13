@@ -8,8 +8,6 @@ import Swal from "sweetalert2";
 // types
 import {AppState} from "@/types/AppTypes.interface";
 import {User, Event, Feedback} from "@/types/FirebaseTypes.interface";
-import {Incubator} from "@/types/Incubator";
-import {createWorkSpace} from "@/api/IncubatorApi";
 
 const getInitState = (): AppState => {
   return {
@@ -795,9 +793,6 @@ export default createStore({
           console.log("Error getting document:", error);
         });
     },
-    SET_WORKSPACE(_, workspaceSettings: Incubator) {
-      createWorkSpace(workspaceSettings);
-    },
   },
   // functions to be called throughout the app that, in turn, call mutations
   actions: {
@@ -903,9 +898,6 @@ export default createStore({
 
     getWavesFromOtherUsers({commit}) {
       commit("GET_WAVES_FROM_OTHER_USERS");
-    },
-    setWorkspace({commit}, workspace: Incubator) {
-      commit("SET_WORKSPACE", workspace);
     },
   },
 });

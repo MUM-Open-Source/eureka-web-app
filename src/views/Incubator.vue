@@ -46,10 +46,10 @@
 
 <script lang="ts">
 import { onMounted, ref } from "vue";
-import store from "../store/index";
 import Loader from "../common/Loader.vue";
 import InputField from "../common/InputField.vue";
 import Button from "../common/Button.vue";
+import { createWorkSpace } from "../api/IncubatorApi";
 
 export default {
   name: "Incubator",
@@ -61,8 +61,7 @@ export default {
     const isEmpty = ref(false);
     const showStudentJoin = ref(false);
     const showSettingsPage = ref(false);
-
-    var lecturerSettings = ref([
+    const lecturerSettings = ref([
       {
         title: "Workspace name",
         type: "text",
@@ -95,7 +94,7 @@ export default {
       const incubator = {
         code: "",
         name: "First Workshop",
-        workspaceOwnerId: "OwnerId",
+        workspaceOwnerId: "",
         maxNumberOfTeams: 1,
         maxMemberPerTeam: 2,
         teamCreationDeadline: new Date(),
@@ -106,7 +105,7 @@ export default {
         groups: [],
         tags: [],
       };
-      store.dispatch("setWorkspace", incubator);
+      createWorkSpace(incubator, console.log, console.log);
     };
 
     const showAddWorkspace = () => {
