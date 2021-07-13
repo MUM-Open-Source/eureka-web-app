@@ -7,6 +7,10 @@
                 <div class="heading">Events</div>
             </div>
             <div class="events">
+                <div v-if="!filteredEvents.length" class="heading text--center">
+                    <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
+                    <div class="not-found-caption">No Events Found...</div>
+                </div>
                 <EventCard 
                     v-for="event in filteredEvents" 
                     :key="event.key"
@@ -83,6 +87,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+
 @media (max-width: 736px) {
     .browse-events {
         flex-direction: column;
