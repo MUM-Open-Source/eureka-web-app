@@ -28,22 +28,36 @@
         <Button class="button" :text="'Join'" />
       </div>
 
-      <div class="settings-page" v-if="showSettingsPage">
-        <InputField
-          v-for="(field, index) in lecturerSettings"
-          class="input"
-          :key="index"
-          :id="`${index} ${field.title}`"
-          :label="field.title"
-          :type="field.type"
-        />
-        <Button
-          class="button"
-          style="margin: 10px"
-          :text="'Create'"
-          v-on:click="addWorkspace"
-        />
-      </div>
+      <form class="settings-page" v-if="showSettingsPage">
+        <div>
+          <div class="form-group">
+            <label class="form__label">Password</label>
+            <input
+              class="form__input"
+              @input="$v.password.$touch()"
+              v-model="password"
+            />
+          </div>
+          <div class="error" v-if="$v.password.required.$invalid">
+            Password is required.
+          </div>
+          <div class="error" v-if="$v.password.minLength.$invalid">
+            {{ $v.password.minLength.$message }}
+          </div>
+          <div class="form-group">
+            <label class="form__label">Repeat password</label>
+            <input
+              class="form__input"
+              @input="$v.repeatPassword.$touch()"
+              v-model="repeatPassword"
+            />
+          </div>
+          <div class="error" v-if="$v.repeatPassword.sameAsPassword.$invalid">
+            Password must be equal
+          </div>
+        </div>
+        <div v-on:click="submit">click me</div>
+      </form>
 
       <button class="floating-action-button" v-on:click="showAddWorkspace">
         <p v-if="showList">+</p>
@@ -61,7 +75,9 @@ import Button from "../common/Button.vue";
 import store from "../store";
 // eslint-disable-next-line no-unused-vars
 import { Incubator } from "../types/Incubator";
-import { createWorkSpace, getAllWorkspace } from "../api/IncubatorApi";
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, minLength, sameAs } from "@vuelidate/validators";
+import { createWorkSpace, getAllWorkspace } from "@/api/IncubatorApi";
 
 export default {
   name: "Incubator",
@@ -74,6 +90,16 @@ export default {
     const showStudentJoin = ref(false);
     const showSettingsPage = ref(false);
     const workspace = ref<Incubator[]>([]);
+    const mail = ref("");
+    const password = ref("");
+    const repeatPassword = ref("");
+    const rules = {
+      mail: { required, email },
+      password: { required, minLength: minLength(6) },
+      repeatPassword: {
+        sameAsPassword: sameAs(password),
+      },
+    };
     const lecturerSettings = ref([
       {
         title: "Workspace name",
@@ -97,6 +123,8 @@ export default {
       },
     ]);
 
+    const $v = useVuelidate(rules as any, { mail, password, repeatPassword });
+
     onMounted(() => {
       getWorkspace();
       setTimeout(() => {
@@ -106,7 +134,7 @@ export default {
 
     const getWorkspace = () => {
       getAllWorkspace(
-        store.state.workspace,
+        store.state.workspace.length === 0 ? ["none"] : store.state.workspace,
         (data) => {
           const arrayData: Incubator[] = [];
           data.forEach((res: any) => {
@@ -143,6 +171,15 @@ export default {
       showList.value = !showList.value;
     };
 
+    const submit = () => {
+      $v.value.$touch();
+      if ($v.value.$invalid) {
+        console.log("Eror");
+      } else {
+        console.log("Submitted");
+      }
+    };
+
     return {
       isLoading,
       lecturerSettings,
@@ -150,10 +187,15 @@ export default {
       workspace,
       addWorkspace,
       showAddWorkspace,
+      submit,
       showSettingsPage,
       showStudentJoin,
       showList,
       isEmpty,
+      mail,
+      password,
+      repeatPassword,
+      $v,
     };
   },
 };
