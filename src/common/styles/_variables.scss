@@ -9,6 +9,7 @@ $color-white: #ffffff;
 $color-side-nav-bg: #f1f1f1;
 $color-bg-hover: #dddbdb;
 $color-disabled: #f1f1f1;
+$color-ghost: #f0f0f0;
 
 // behaviour
 $transition-duration: 0.5s;
@@ -106,8 +107,7 @@ $signup-radio-clip: rect(0, 0, 0, 0);
 $signup-radio-label-height: 1;
 $signup-radio-label-padding: 8px 16px;
 $signup-radio-label-border: 1px solid rgba(0, 0, 0, 0.2);
-$signup-radio-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3),
-  0 1px rgba(255, 255, 255, 0.1);
+$signup-radio-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
 $signup-radio-label-first-border-radius: 4px 0 0 4px;
 $signup-radio-label-last-border-radius: 0 4px 4px 0;
 $signup-radio-label-first-border-radius-sm: 4px 4px 0 0;
@@ -147,16 +147,15 @@ $under-maintenance-img-width: 50%;
 $under-maintenance-img-width-sm: 250px;
 $under-maintenance-img-padding-right: 40px;
 
-
 // Tag Input Styling
-$tag-input-width: 100% ; 
-$tag-input-border-radius: 1px ; 
+$tag-input-width: 100%;
+$tag-input-border-radius: 1px;
 $tag-input-height: 50px;
 $tag-input-padding: 0 10px;
 
 $tag-input-tag-height: 30px;
-$tag-input-tag-margin-right:10px;
+$tag-input-tag-margin-right: 10px;
 $tag-input-tag-line-height: 30px;
-$tag-input-tag-padding: 0 5px; 
+$tag-input-tag-padding: 0 5px;
 $tag-input-tag-span-opacity: 0.75;
 $tag-input-text-line-height: 50px;
