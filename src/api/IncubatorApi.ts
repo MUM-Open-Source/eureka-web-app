@@ -29,16 +29,16 @@ export const createWorkSpace = (
     });
 };
 
-export const getWorkspace = (
+export const getLiveWorkspace = (
   workspaceCode: string,
   onSuccess: (data: any) => void,
   onError: () => void
 ) => {
   db.collection(INCUBATOR_PATH)
     .doc(workspaceCode)
-    .get()
-    .then(onSuccess)
-    .catch(onError);
+    .onSnapshot((doc) => {
+      onSuccess(doc.data());
+    });
 };
 
 export const updateWorkspace = (
@@ -74,9 +74,9 @@ export const deleteWorkspace = (
     .catch(onError);
 };
 
-export const getPersonalWorkspace = (
+export const getAllWorkspace = (
   userWorkspaceArray: string[],
-  onSuccess: (data: any) => void,
+  onSuccess: (data: firebase.firestore.QuerySnapshot) => void,
   onError: () => void
 ) => {
   db.collection(INCUBATOR_PATH)

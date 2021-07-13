@@ -10,9 +10,13 @@
       </div>
 
       <div class="workspace-list" v-if="!isEmpty && showList">
-        <div class="workspace-card">Workspace 1</div>
-        <div class="workspace-card">Workspace 2</div>
-        <div class="workspace-card">Workspace 3</div>
+        <div
+          v-for="(data, index) in workspace"
+          class="workspace-card"
+          :key="index"
+        >
+          {{ data.name }}
+        </div>
       </div>
 
       <div class="student-join" v-if="showStudentJoin">
@@ -33,7 +37,12 @@
           :label="field.title"
           :type="field.type"
         />
-        <Button class="button" :text="'Create'" v-on:click="addWorkspace" />
+        <Button
+          class="button"
+          style="margin: 10px"
+          :text="'Create'"
+          v-on:click="addWorkspace"
+        />
       </div>
 
       <button class="floating-action-button" v-on:click="showAddWorkspace">
@@ -49,7 +58,10 @@ import { onMounted, ref } from "vue";
 import Loader from "../common/Loader.vue";
 import InputField from "../common/InputField.vue";
 import Button from "../common/Button.vue";
-import { createWorkSpace } from "../api/IncubatorApi";
+import store from "../store";
+// eslint-disable-next-line no-unused-vars
+import { Incubator } from "../types/Incubator";
+import { createWorkSpace, getAllWorkspace } from "../api/IncubatorApi";
 
 export default {
   name: "Incubator",
@@ -61,6 +73,7 @@ export default {
     const isEmpty = ref(false);
     const showStudentJoin = ref(false);
     const showSettingsPage = ref(false);
+    const workspace = ref<Incubator[]>([]);
     const lecturerSettings = ref([
       {
         title: "Workspace name",
@@ -85,13 +98,28 @@ export default {
     ]);
 
     onMounted(() => {
+      getWorkspace();
       setTimeout(() => {
         isLoading.value = false;
       }, 2000);
     });
 
+    const getWorkspace = () => {
+      getAllWorkspace(
+        store.state.workspace,
+        (data) => {
+          const arrayData: Incubator[] = [];
+          data.forEach((res: any) => {
+            arrayData.push(res.data() as Incubator);
+          });
+          workspace.value = arrayData;
+        },
+        console.log
+      );
+    };
+
     const addWorkspace = () => {
-      const incubator = {
+      const incubator: Incubator = {
         code: "",
         name: "First Workshop",
         workspaceOwnerId: "",
@@ -119,6 +147,7 @@ export default {
       isLoading,
       lecturerSettings,
       canCreateRooms,
+      workspace,
       addWorkspace,
       showAddWorkspace,
       showSettingsPage,

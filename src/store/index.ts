@@ -22,6 +22,8 @@ const getInitState = (): AppState => {
     new_img_url: "",
     is_new: false, // used to ensure all mandatory details are filled after signup
     events: [],
+    workspace: [],
+    can_create_workspace: false,
     talent: [],
     mentors: [],
     feedback: [],
@@ -212,12 +214,14 @@ export default createStore({
 
     FETCH_CURRENT_USER_DATA_FROM_DB(state) {
       console.log("Fetch user details");
-      if (auth.currentUser && state.is_new_user_data_available) {
+      if (auth.currentUser) {
         db.collection("users")
           .doc(auth.currentUser!.uid)
           .get()
           .then((doc) => {
             if (doc.exists) {
+              state.can_create_workspace = doc.data()!.can_create_workspace;
+              state.workspace = Array.from(doc.data()!.workspace);
               const user: User = {
                 background: doc.data()!.background,
                 bio: doc.data()!.bio,
@@ -233,12 +237,10 @@ export default createStore({
                 roles: doc.data()!.roles,
                 social_links: doc.data()!.social_links,
               };
-
               state.user_data = user;
             } else {
               console.log("User not found");
             }
-            state.is_new_user_data_available = false;
           })
           .catch(function(error) {
             console.log("Error getting document:", error);
