@@ -35,7 +35,6 @@ export default {
     name: 'FindTalent',
     components: { ProfileCard, Filter },
     setup() {
-
         // mounted
         onMounted(() => {
             // fetch the data if there is nothing to display
