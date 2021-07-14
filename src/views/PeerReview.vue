@@ -1,0 +1,94 @@
+<template>
+  <div class="page-pad">
+    <div class="peer-review-content text--center">
+      <div class="heading">Peer Review</div>
+      <table>
+          <QuestionCard
+            v-for="question in questions"
+            :key="question.id"
+            :question="question.value"
+          />
+
+        <tr>
+          <ReviewCommentCard
+            class="mar__b--2"
+            label="Short Review"
+            id="short_review"
+          />
+        </tr>
+      </table>
+
+      <div>
+        <Button
+          text="Submit"
+          class="mar--auto mar__t--3 mar__b--1"
+          @click="handlePeerReview"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+// import { ref, onMounted } from 'vue';
+// import store from '@/store';
+import QuestionCard from "@/modules/peer_review/QuestionCard.vue";
+import ReviewCommentCard from "@/modules/peer_review/ReviewCommentCard.vue";
+import Button from "@/common/Button.vue";
+import { reactive } from "@vue/reactivity";
+import Swal from "sweetalert2";
+
+export default {
+  name: "PeerReview",
+  components: { QuestionCard, ReviewCommentCard, Button },
+  setup() {
+    const questions = [
+      {id: 1, value: "Is he/she a good teammate?"},
+      {id: 2, value: "Is he/she a freeloader?"},
+      {id: 3, value: "Do you like he/she?"},
+    ]
+
+    function handlePeerReview() {
+      let inputValues = reactive({
+        question1: 1,
+        question2: 3,
+        question3: 2,
+        shortSummary: document.getElementById("short_review").value,
+      });
+
+      const allMandatoryFieldsFilled = () =>
+        inputValues.shortSummary.length === 0;
+
+      if (allMandatoryFieldsFilled()) {
+        Swal.fire({
+          icon: "error",
+          title: "Please fill all the mandatory fields",
+          text: "Fill up please",
+          // text: "They are marked with an asterisk (*) for your convenience",
+        });
+      } else {
+        console.log(inputValues.question1);
+        console.log(inputValues.question2);
+        console.log(inputValues.question3);
+        console.log(inputValues.shortSummary);
+      }
+    }
+
+    return {
+      handlePeerReview,
+      questions
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.peer-review-content {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table {
+  width: 100%;
+}
+</style>

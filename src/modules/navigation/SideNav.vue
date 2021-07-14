@@ -18,6 +18,12 @@
         <div class="side-nav__text">Find Mentors</div>
       </div>
     </router-link>
+    <router-link :to="{ name: 'PeerReview' }">
+      <div class="side-nav__group">
+        <img class="side-nav__icon" src="@/assets/mentor-icon.svg" />
+        <div class="side-nav__text">Peer Review</div>
+      </div>
+    </router-link>
     <router-link
       :to="{ name: 'Admin' }"
       v-if="userIsAdmin"

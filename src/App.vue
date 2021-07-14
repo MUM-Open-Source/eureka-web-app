@@ -47,7 +47,7 @@ export default {
     
     const isNewUser = computed(() => store.state.is_new);
     const isLoading = computed(() => store.state.isLoading === true);
-    const isUnderMaintenance = computed(() => store.state.is_under_maintenance === true);
+    const isUnderMaintenance = computed(() => store.state.is_under_maintenance === false);
     const marginLeft = computed(() =>
       store.state.isSideNavCollapsed
         ? "main__width--full"

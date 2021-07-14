@@ -17,6 +17,7 @@ import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue'
 import Terms from '@/views/Terms.vue'
 import Privacy from '@/views/Privacy.vue'
+import PeerReview from '@/views/PeerReview.vue'
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -47,6 +48,13 @@ const routes: RouteRecordRaw[] = [
     path: '/find-mentor',
     name: 'FindMentor',
     component: FindMentor,
+    meta: {
+      requiresAuth: true
+    }
+  }, {
+    path: '/peer-review',
+    name: 'PeerReview',
+    component: PeerReview,
     meta: {
       requiresAuth: true
     }
