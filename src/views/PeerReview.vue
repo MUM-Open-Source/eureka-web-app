@@ -3,11 +3,11 @@
     <div class="peer-review-content text--center">
       <div class="heading">Peer Review</div>
       <table>
-          <QuestionCard
-            v-for="question in questions"
-            :key="question.id"
-            :question="question.value"
-          />
+        <QuestionCard
+          v-for="question in questions"
+          :key="question.id"
+          :question="question.value"
+        />
 
         <tr>
           <ReviewCommentCard
@@ -43,10 +43,14 @@ export default {
   components: { QuestionCard, ReviewCommentCard, Button },
   setup() {
     const questions = [
-      {id: 1, value: "Is he/she a good teammate?"},
-      {id: 2, value: "Is he/she a freeloader?"},
-      {id: 3, value: "Do you like he/she?"},
-    ]
+      {
+        id: 1,
+        value:
+          "lorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit amet",
+      },
+      { id: 2, value: "Is he/she a freeloader?" },
+      { id: 3, value: "Do you like he/she?" },
+    ];
 
     function handlePeerReview() {
       let inputValues = reactive({
@@ -76,7 +80,7 @@ export default {
 
     return {
       handlePeerReview,
-      questions
+      questions,
     };
   },
 };
