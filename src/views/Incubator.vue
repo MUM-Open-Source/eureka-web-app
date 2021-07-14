@@ -19,14 +19,7 @@
         </div>
       </div>
 
-      <div class="student-join" v-if="showStudentJoin">
-        <InputField
-          :id="'workspace-code'"
-          :label="'Workspace Code'"
-          :type="'text'"
-        />
-        <Button class="button" :text="'Join'" />
-      </div>
+      <StudentJoinForm v-if="showStudentJoin" />
 
       <form class="settings-page" v-if="showSettingsPage">
         <div>
@@ -56,6 +49,7 @@
             Password must be equal
           </div>
         </div>
+        {{ $v }}
         <div v-on:click="submit">click me</div>
       </form>
 
@@ -70,60 +64,37 @@
 <script lang="ts">
 import { onMounted, ref } from "vue";
 import Loader from "../common/Loader.vue";
-import InputField from "../common/InputField.vue";
-import Button from "../common/Button.vue";
+// import InputField from "../common/InputField.vue";
 import store from "../store";
 // eslint-disable-next-line no-unused-vars
 import { Incubator } from "../types/Incubator";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength, sameAs } from "@vuelidate/validators";
+import { required, minLength, sameAs } from "@vuelidate/validators";
 import { createWorkSpace, getAllWorkspace } from "@/api/IncubatorApi";
+import StudentJoinForm from "@/modules/incubator/StudentJoinForm.vue";
 
 export default {
   name: "Incubator",
-  components: { Loader, InputField, Button },
+  components: { Loader, StudentJoinForm },
   setup() {
     const isLoading = ref(true);
-    const canCreateRooms = ref(true);
+    const canCreateRooms = ref(false);
     const showList = ref(true);
     const isEmpty = ref(false);
     const showStudentJoin = ref(false);
     const showSettingsPage = ref(false);
     const workspace = ref<Incubator[]>([]);
-    const mail = ref("");
     const password = ref("");
     const repeatPassword = ref("");
+
     const rules = {
-      mail: { required, email },
       password: { required, minLength: minLength(6) },
       repeatPassword: {
         sameAsPassword: sameAs(password),
       },
     };
-    const lecturerSettings = ref([
-      {
-        title: "Workspace name",
-        type: "text",
-      },
-      {
-        title: "Max Members Per Team",
-        type: "number",
-      },
-      {
-        title: "Max Number Of Teams",
-        type: "number",
-      },
-      {
-        title: "Team Creation Deadline",
-        type: "date",
-      },
-      {
-        title: "Team Adjourning Date",
-        type: "date",
-      },
-    ]);
 
-    const $v = useVuelidate(rules as any, { mail, password, repeatPassword });
+    const $v = useVuelidate(rules as any, { password, repeatPassword });
 
     onMounted(() => {
       getWorkspace();
@@ -182,7 +153,6 @@ export default {
 
     return {
       isLoading,
-      lecturerSettings,
       canCreateRooms,
       workspace,
       addWorkspace,
@@ -192,7 +162,6 @@ export default {
       showStudentJoin,
       showList,
       isEmpty,
-      mail,
       password,
       repeatPassword,
       $v,
@@ -234,17 +203,7 @@ export default {
       height: 100px;
     }
   }
-  .student-join {
-    margin: 50px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 
-    .button {
-      margin-top: 10px;
-    }
-  }
   .settings-page {
     display: flex;
     flex-direction: column;

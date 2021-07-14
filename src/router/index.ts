@@ -21,6 +21,7 @@ import Incubator from "@/views/Incubator.vue";
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
+  {path: "/incubator/:code", name: "Workspace", component: Incubator},
   {
     path: "/incubator",
     name: "Incubator",
