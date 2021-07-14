@@ -293,7 +293,7 @@ export default createStore({
                 .set(project).then(() => {
                     state.projects.push(project)
                 }).catch(function(error) {
-                    console.log("Error getting document: " + error)
+                    console.log("Error getting document")
                 })
         },
 

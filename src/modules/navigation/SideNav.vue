@@ -59,9 +59,10 @@ export default {
       store.state.isSideNavCollapsed ? "side-nav__hide" : "side-nav__show"
     );
     const userIsAdmin = computed(() =>
-        store.state.user_data
-        ? store.state.user_data.roles.includes('admin')
-        : false
+        // store.state.user_data
+        // ? store.state.user_data.roles.includes('admin')
+        // : false
+        store.state.user_data?.roles?.includes('admin')
     );
     return {
       userIsAdmin,
