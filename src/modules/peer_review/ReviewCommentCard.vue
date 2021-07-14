@@ -11,6 +11,7 @@
         :placeholder="placeholder ? placeholder : label"
         :id="id"
         :disabled="disabled"
+        @input="$emit('update:value', $event.target.value)"
         required
       />
       <label :for="id" class="form__label">{{ label }}</label>
@@ -35,7 +36,10 @@ export default {
       type: String,
       required: true,
     },
-    value: String,
+    value: {
+      type: String,
+      default: "",
+    },
     placeholder: String,
     id: {
       type: String,

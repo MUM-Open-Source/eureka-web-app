@@ -1,23 +1,27 @@
 <template>
   <tr>
     <div class="question-card pad--2 mar__b--2 mar__t--2">
-      <span class="body">{{ question }}</span>
+      <span class="body">{{ question.id }}. {{ question.value }}</span>
 
       <br />
-
+      <!-- https://github.com/craigh411/vue-star-rating -->
+      <!-- <star-rating /> -->
     </div>
   </tr>
 </template>
 
 <script>
+// import StarRating from "vue-star-rating"
 // import { computed } from 'vue';
 // import store from '@/store';
 
 export default {
   name: "QuestionCard",
+  // components: { StarRating },
+  components: {},
   props: {
     question: {
-      type: String,
+      type: Object,
       required: true,
     },
   },

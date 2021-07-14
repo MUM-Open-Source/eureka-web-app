@@ -6,17 +6,22 @@
         <QuestionCard
           v-for="question in questions"
           :key="question.id"
-          :question="question.value"
+          :question="question"
         />
 
         <tr>
           <ReviewCommentCard
+            v-model:value="inputValues.shortSummary"
             class="mar__b--2"
             label="Short Review"
             id="short_review"
           />
         </tr>
       </table>
+
+      <!-- <pre :style="{ 'text-align': 'left' }">{{
+        JSON.stringify(inputValues, null, 2)
+      }}</pre> -->
 
       <div>
         <Button
@@ -29,7 +34,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // import { ref, onMounted } from 'vue';
 // import store from '@/store';
 import QuestionCard from "@/modules/peer_review/QuestionCard.vue";
@@ -52,14 +57,14 @@ export default {
       { id: 3, value: "Do you like he/she?" },
     ];
 
-    function handlePeerReview() {
-      let inputValues = reactive({
-        question1: 1,
-        question2: 3,
-        question3: 2,
-        shortSummary: document.getElementById("short_review").value,
-      });
+    const inputValues = reactive({
+      question1: 1,
+      question2: 3,
+      question3: 2,
+      shortSummary: "",
+    });
 
+    function handlePeerReview() {
       const allMandatoryFieldsFilled = () =>
         inputValues.shortSummary.length === 0;
 
@@ -81,6 +86,7 @@ export default {
     return {
       handlePeerReview,
       questions,
+      inputValues,
     };
   },
 };
