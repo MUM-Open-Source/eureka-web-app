@@ -40,7 +40,7 @@
 import Multiselect from '@vueform/multiselect';
 import Button from '@/common/Button.vue';
 import store from '@/store'
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 
 export default {
   name: 'NewProject',
@@ -79,6 +79,7 @@ export default {
         project_duration: this.project_duration,
         project_fields: this.project_fields
       });
+      Swal.fire("Added!", "A new project has been added", "success")
       this.project_name = "",
       this.project_duration = "",
       this.project_fields = [];
