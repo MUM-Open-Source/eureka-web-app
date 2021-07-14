@@ -2,9 +2,9 @@
     <div class="user__card pad--2 mar__b--1">
         <div class="user__card--details">
             <!-- Details -->
-            <div class="user__card--row">
+            <div class="user__card--row mar__b--1">
                 <!-- name -->
-                <div class="subheading user__card--name">Nitin Mathew</div>
+                <div class="subheading user__card--project">Project 1</div><span class="user__card--name">(Dr Lillian)</span>
                 <!-- tags -->
                 <div class="user__card--tags">
                     <div
@@ -15,21 +15,6 @@
                     </div>
                 </div>
             </div>
-            <!-- rating -->
-            <div class="user__card--rating mar__b--1">
-                <img
-                    class="star__icon"
-                    v-for="index in [1,2,3]"
-                    :key="index"
-                    src="@/assets/star-filled.svg"
-                />
-                <img
-                    class="star__icon"
-                    v-for="index in [4,5]"
-                    :key="index"
-                    src="@/assets/star-empty.svg"
-                />
-            </div>
             <!-- bio -->
             <div class="body">
                 A hardworking individual with passions rising in the east and setting in the west.
@@ -38,27 +23,16 @@
                 A hardworking individual with passions rising in the east and setting in the west.
             </div>
         </div>
-        <!-- Action items -->
+        <!-- Status -->
         <div class="user__card--actions">
-            <img
-                class="user__card--icon"
-                src="@/assets/hand-empty.svg"
-            />
-            <img
-                class="user__card--icon"
-                src="@/assets/hand-empty.svg"
-            />
-            <img
-                class="user__card--icon"
-                src="@/assets/hand-empty.svg"
-            />
+            <div class="tagline text--capsule cursor__default">Approved</div>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-export default {
+<script>
 
+export default {
 }
 </script>
 
@@ -67,11 +41,12 @@ export default {
     @include shadow--small;
     display: flex;
     border-radius: $app-border-radius;
-    &--name {
+    &--project {
         margin-right: 15px;
     }
-    // &--details {
-    // }
+    &--name {
+        margin-right: 12px;
+    }
     &--row {
         display: flex;
         align-items: center;
@@ -90,6 +65,8 @@ export default {
     }
     &--actions {
         display: flex;
+        height: 2.5rem;
+        align-self: center;
     }
     &--icon {
         width: 30px;

@@ -18,6 +18,7 @@ import ResetPassword from '@/views/ResetPassword.vue';
 import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
 import IncubatorNitin from '@/views/IncubatorNitin.vue';
+import AcademicRecruit from '@/views/AcademicRecruit.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -62,11 +63,11 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'Home',
     component: Home
-  }, 
+  },
   // {
   //   path: '/profile/info',
 
-  // }, 
+  // },
   {
     path: '/browse-events',
     name: 'BrowseEvents',
@@ -129,6 +130,13 @@ const routes: RouteRecordRaw[] = [
     path: '/incubator-nitin',
     name: 'IncubatorNitin',
     component: IncubatorNitin,
+    meta: {
+      requiresAuth: true
+    }
+  }, {
+    path: '/academic-recruitment',
+    name: 'AcademicRecruit',
+    component: AcademicRecruit,
     meta: {
       requiresAuth: true
     }

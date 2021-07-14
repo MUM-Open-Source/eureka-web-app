@@ -274,7 +274,7 @@ export default {
             'Scala'
         ]
     })
-    const userInerestsIndices = computed(() => {
+    const userInterestsIndices = computed(() => {
         let indices = []
         user?.interests.forEach((interest) => {
             const index = interestMenu.options.indexOf(interest);
@@ -289,7 +289,7 @@ export default {
         github_url: user.social_links.github_url,
         linkedin_url: user.social_links.linkedin_url,
         website_url: user.social_links.website_url,
-        interests: userInerestsIndices.value,
+        interests: userInterestsIndices.value,
         experience_level: user.experience_level,
     });
 
@@ -425,7 +425,7 @@ export default {
         } else {
             // sending the right format of interests, i.e, converting from integer to string values
             // using a deep copy to not mess with the fields in the UI
-            let updatedValues = { ...inputValues};
+            let updatedValues = { ...inputValues };
             updatedValues.interests = []
             inputValues.interests.forEach((interestIndex) => {
                 const value = interestMenu.options[interestIndex];
@@ -535,9 +535,9 @@ export default {
         &--icon {
             height: 20px;
         }
-        .active {
-            //border-right: 3px solid $color-brand;
-        }
+        // .active {
+        //     //border-right: 3px solid $color-brand;
+        // }
     }
     &__img {
         display: flex;
