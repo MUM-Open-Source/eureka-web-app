@@ -35,8 +35,6 @@
 </template>
 
 <script>
-// import {defineComponent, reactive, computed} from 'vue'
-// import { reactive } from 'vue';
 import Multiselect from '@vueform/multiselect';
 import Button from '@/common/Button.vue';
 import store from '@/store'
