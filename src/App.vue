@@ -25,7 +25,7 @@ export default {
   name: "App", // name of the component
 
   components: { Loader, SideNav, TopNav, Maintenance },  // imported components
-  
+
   // Vue 3 Composition API
   setup() {
     // mounted
@@ -44,7 +44,7 @@ export default {
     const isLoggedIn = computed(() => store.state.user !== null);
     // let isNewUserDataAvailable = ref(store.state.is_new_user_data_available);
     let isNewUserDataAvailable = computed(() => store.state.is_new_user_data_available);
-    
+
     const isNewUser = computed(() => store.state.is_new);
     const isLoading = computed(() => store.state.isLoading === true);
     const isUnderMaintenance = computed(() => store.state.is_under_maintenance === true);

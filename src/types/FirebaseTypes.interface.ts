@@ -34,6 +34,13 @@ export interface Event {
     type: string;
 }
 
+export interface Project {
+    id: string;
+    project_name: string;
+    project_duration: string;
+    project_fields: string[];
+}
+
 export interface Feedback {
     created_at: firebase.firestore.FieldValue,
     message: string;

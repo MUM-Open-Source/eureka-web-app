@@ -7,14 +7,14 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 // types
 import { AppState } from '@/types/AppTypes.interface';
-import { User, Event, Feedback } from '@/types/FirebaseTypes.interface';
+import { User, Event, Feedback, Project } from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
     return {
         user: auth.currentUser,               // firebase auth user
         isSideNavCollapsed: true,             // bool to check if sidenav is showing
         isLoading: true,                      // bool to keep track whether user is being retreived from the DB
-        is_under_maintenance: true,           // bool to know whether website is under maintenance and display maintenance screen
+        is_under_maintenance: false,          // bool to know whether website is under maintenance and display maintenance screen
         user_data: null,                      // user data pulled from db
         is_new_user_data_available: false,    // to identify if updated data is available to fetch
         user_image: '',
@@ -22,6 +22,7 @@ const getInitState = (): AppState => {
         new_img_url: '',
         is_new: false,                        // used to ensure all mandatory details are filled after signup
         events: [],
+        projects: [],
         talent: [],
         mentors: [],
         feedback: [],
@@ -284,6 +285,16 @@ export default createStore({
                             state.events.splice(index, 1)
                     }
                 );
+        },
+
+        ADD_PROJECT(state, project: Project) {
+            db.collection("projects")
+                .doc(project.id)
+                .set(project).then(() => {
+                    state.projects.push(project)
+                }).catch(function(error) {
+                    console.log("Error getting document: " + error)
+                })
         },
 
         GET_LIKED_EVENTS(state) {
@@ -752,6 +763,9 @@ export default createStore({
         },
         addEvents({ commit }, obj: Event) {
             commit('ADD_EVENT', obj)
+        },
+        addProjects({ commit }, obj: Project) {
+            commit('ADD_PROJECT', obj)
         },
         getMentors({ commit }) {
             commit('GET_MENTORS');
