@@ -7,9 +7,9 @@
                 <div class="heading">Events</div>
             </div>
             <div class="events">
-                <div v-if="!filteredEvents.length" class="result-not-found">
+                <div v-if="!filteredEvents.length" class="heading text--center">
                     <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
-                    <span class="not-found-caption">No Events Found...</span>
+                    <div class="not-found-caption">No Events Found...</div>
                 </div>
                 <EventCard 
                     v-for="event in filteredEvents" 
@@ -86,11 +86,6 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-}
-
-.result-not-found{
-    text-align:center;
-    font-size: 30px;
 }
 
 @media (max-width: 736px) {

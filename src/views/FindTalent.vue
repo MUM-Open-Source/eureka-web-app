@@ -8,12 +8,12 @@
         <div class="find-talent__content">
             <div class="find-talent__content--title mar__b--3 text--center">
                 <div class="tagline">Current Students</div>
-                <div class="heading">Talents</div>
+                <div class="heading">Talent</div>
             </div>
             <div class="talents">
-                <div v-if="!filteredTalent.length" class="result-not-found">
+                <div v-if="!filteredTalent.length" class="heading text--center">
                     <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
-                    <span class="not-found-caption">No Talents Found...</span>
+                    <div class="not-found-caption">No Talent Found...</div>
                 </div>
                 <ProfileCard 
                     v-for="user in filteredTalent" 
@@ -35,7 +35,6 @@ export default {
     name: 'FindTalent',
     components: { ProfileCard, Filter },
     setup() {
-
         // mounted
         onMounted(() => {
             // fetch the data if there is nothing to display
@@ -94,11 +93,6 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-}
-
-.result-not-found{
-    text-align:center;
-    font-size: 30px;
 }
 
 @media (max-width: 736px) {

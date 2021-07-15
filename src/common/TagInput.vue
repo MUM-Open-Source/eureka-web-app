@@ -1,79 +1,90 @@
 <template>
   <div class='tag-input'>
-    <div v-for='(tag, index) in tags' :key='tag' class='tag-input__tag'>
-      <span @click="removeTag(index)">x</span>
+    <div v-for='(tag, index) in tags' :key='tag' class='tag-input__tag mar__t--1 text--white'>
+      <span @click="removeTag(index)" class="cursor__pointer">x</span>
       {{ tag }}
     </div>
-    <input type='text' placeholder="Enter a Tag" class='tag-input__text' @keydown="addTag" @keydown.delete="removeLastTag"/>
+    <input 
+      type='text' 
+      :placeholder="placeholder" 
+      class='tag-input__text' 
+      @keydown="addTag" 
+      @keydown.delete="removeLastTag"
+    />
   </div>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
+  props: {
+      limit: {
+          type: Number,
+          default: 10 // default limit is 10 tags
+      },
+      placeholder: {
+        type: String,
+        default: "Enter a Tag"
+      }
+  },
   data() {
     return {
-      tags: ['HTML', 'CSS']
-
+      tags: [] as Array<string>
     }
   },
   methods: {
-      addTag(event) {        
-        if(event.code == 'Comma' || event.code == 'Enter'){
+      addTag(event:any) {        
+        if(event.code === 'Comma' || event.code === 'Enter'){
             event.preventDefault();
-            var val = event.target.value.trim() 
-
-            if(val.length > 0 && ! this.tags.includes(val.toUpperCase())){
+            var val = event.target.value.trim()
+            if(this.tags.length < this.limit && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
                 this.tags.push(val.toUpperCase())
+                this.$emit("update-tags", this.tags)
                 event.target.value = ''
-
             }
         }
-
       },
-      removeTag(index) {
+      removeTag(index:number) {
           this.tags.splice(index,1)
+          this.$emit("update-tags", this.tags)
       },
-      removeLastTag(event){
+      removeLastTag(event:any){
           if(event.target.value.length === 0) {
               this.removeTag(this.tags.length - 1)
+              this.$emit("update-tags", this.tags)
           }
       }
 
   }
-}
+})
 </script>
-<style scoped>
+
+<style lang="scss" scoped>
 .tag-input {
-  width: 100%;
-  border: 1px solid #eee;
-  font-size: 0.9em;
-  height: 50px;
-  box-sizing: border-box;
-  padding: 0 10px;
-  display:table;
-}
-
-.tag-input__tag {
-  height: 30px;
-  float: left;
-  margin-right: 10px;
-  background-color: #eee;
-  margin-top: 10px;
-  line-height: 30px;
-  padding: 0 5px;
-  border-radius: 5px;
-
-}
-
-.tag-input__tag > span {
-  cursor: pointer;
-  opacity: 0.75;
-}
-
-.tag-input__text {
-  border: none;
-  outline: none;
-  font-size: 1em;
-  line-height: 50px;
-  background: none;
+    width: $tag-input-width;
+    border: $tag-input-border-radius solid $color-bg-hover;
+    min-height: $tag-input-min-height;
+    box-sizing: border-box;
+    padding: $tag-input-padding;
+    display: flex;
+    flex-wrap: wrap;
+    &__tag {
+        height: $tag-input-tag-height;
+        float: left;
+        margin-right: $tag-input-tag-margin-right;
+        background-color: $color-brand;
+        line-height: $tag-input-tag-line-height;
+        padding: $tag-input-tag-padding;
+        border-radius: $app-border-radius-sm;
+        & > span {
+            opacity: $tag-input-tag-span-opacity;
+        }
+    }
+    &__text {
+        border: none;
+        outline: none;
+        line-height: $tag-input-text-line-height;
+        background: none;
+        flex-grow: 100;
+    }
 }
 </style>

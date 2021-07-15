@@ -14,9 +14,11 @@ import BrowseEvents from '@/views/BrowseEvents.vue';
 import NotFound from '@/views/NotFound.vue';
 import Maintenance from '@/views/Maintenance.vue';
 import CropImage from '@/views/CropImage.vue';
-import ResetPassword from '@/views/ResetPassword.vue'
-import Terms from '@/views/Terms.vue'
-import Privacy from '@/views/Privacy.vue'
+import ResetPassword from '@/views/ResetPassword.vue';
+import Terms from '@/views/Terms.vue';
+import Privacy from '@/views/Privacy.vue';
+import IncubatorNitin from '@/views/IncubatorNitin.vue';
+import AcademicRecruit from '@/views/AcademicRecruit.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -61,11 +63,11 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'Home',
     component: Home
-  }, 
+  },
   // {
   //   path: '/profile/info',
 
-  // }, 
+  // },
   {
     path: '/browse-events',
     name: 'BrowseEvents',
@@ -124,6 +126,20 @@ const routes: RouteRecordRaw[] = [
     path: '/privacy-policy',
     name: 'Privacy',
     component: Privacy,
+  }, {
+    path: '/incubator-nitin',
+    name: 'IncubatorNitin',
+    component: IncubatorNitin,
+    meta: {
+      requiresAuth: true
+    }
+  }, {
+    path: '/academic-recruitment',
+    name: 'AcademicRecruit',
+    component: AcademicRecruit,
+    meta: {
+      requiresAuth: true
+    }
   }
 
   // {
