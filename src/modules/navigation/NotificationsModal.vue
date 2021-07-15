@@ -1,25 +1,51 @@
 <template>
     <div class="modal">
         <div class="modal__header">
-            <h1 class="subheading">Notifications</h1>
+            <h1 class="subheading">Your Notifications</h1>
             <button class="text--primary cta">Mark all as read</button>
         </div>
         <hr class="divider" />
-        <NotificationsItem
-            icon="celebration"
-            title="An event was added"
-            bodyText="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus vel officia ipsum harum architecto pariatur, voluptatem porro deleniti impedit optio, "
-            moment="5 mins ago"
-        />
+        <div v-for="noti in notifications" :key="noti">
+            <NotificationsItem
+                v-if="noti.type == 'waves'"
+                icon="celebration"
+                title="Someone waved at you"
+                :bodyText="`${noti.user} just waved at you. Say hi to them back by giving a friendly wave back!`"
+                :moment="getMoment(noti.timeStamp)"
+                :readStatus="noti.readStatus"
+            />
+            <NotificationsItem
+                v-if="noti.type == 'projects'"
+                icon="celebration"
+                title="A new project was created"
+                :bodyText="`Check out ${noti.name} now`"
+                :moment="getMoment(noti.timeStamp)"
+                :readStatus="noti.readStatus"
+            />
+        </div>
     </div>
 </template>
 
 <script>
+import moment from 'moment';
+import { ref } from '@vue/runtime-core';
+
+import store from '@/store';
 import NotificationsItem from './NotificationsItem.vue';
 
 export default {
     name: 'NotificationsModal',
-    components: { NotificationsItem }
+    components: { NotificationsItem },
+    setup() {
+        const notifications = ref(store.state.notifications);
+        const getMoment = timeStamp => {
+            return moment(timeStamp)
+                .fromNow()
+                .toString();
+        };
+
+        return { notifications, getMoment };
+    }
 };
 </script>
 
@@ -59,7 +85,6 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 10px;
     }
 }
 </style>

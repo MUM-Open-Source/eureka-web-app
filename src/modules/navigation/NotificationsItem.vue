@@ -1,7 +1,7 @@
 <template>
-    <div class="noti-item">
+    <div class="noti-item" :class="{ unread: !readStatus }">
         <div :style="{ display: 'flex' }">
-            <div class="noti-item-icon">
+            <div class="noti-item-icon " :class="{ badge: !readStatus }" data-count="">
                 <i class="material-icons-outlined">
                     {{ icon }}
                 </i>
@@ -9,9 +9,9 @@
             <div :style="{ flex: '1' }">
                 <div class="content-title">
                     <h2 :style="{ fontSize: '16px' }">{{ title }}</h2>
-                    <p class=" moment-text">
+                    <span class="moment-text">
                         {{ moment }}
-                    </p>
+                    </span>
                 </div>
                 <p :style="{ fontSize: '14px' }">
                     {{ bodyText }}
@@ -29,7 +29,8 @@ export default {
         icon: { type: String, required: true },
         title: { type: String, required: true },
         bodyText: { type: String, required: true },
-        moment: { type: String, required: true }
+        moment: { type: String, required: true },
+        readStatus: { type: Boolean, required: true }
     }
 };
 </script>
@@ -51,19 +52,34 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
+    align-items: center;
 }
 .moment-text {
-    font-size: 14px;
+    font-size: 12px;
     color: $color-light;
 }
 .noti-item-icon {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     margin-right: 15px;
     background: #71c9a2;
+}
+.unread {
+    background: $color-ghost;
+}
+.badge[data-count]:after {
+    position: absolute;
+    right: 0%;
+    top: 5%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ff0000;
+    content: attr(data-count);
 }
 </style>

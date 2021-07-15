@@ -2,12 +2,7 @@
     <div class="top-nav" :class="topNavWidth">
         <div class="top-nav__wrapper">
             <div class="top-nav__left">
-                <img
-                    class="top-nav__icon cursor__pointer"
-                    @click="toggleSideNavState"
-                    src="@/assets/menu-icon.svg"
-                    v-if="isLoggedIn"
-                />
+                <img class="top-nav__icon cursor__pointer" @click="toggleSideNavState" src="@/assets/menu-icon.svg" v-if="isLoggedIn" />
                 <router-link :to="{ name: 'Home' }">
                     <img class="top-nav__logo" src="@/assets/logo.png" />
                 </router-link>
@@ -47,7 +42,6 @@ export default {
         const isLoggedIn = computed(() => store.state.user !== null);
 
         // control individual modal opening
-
         const modalController = currentTab => {
             if (!isLoggedIn.value) {
                 router.push({ name: 'Login' });
@@ -74,9 +68,7 @@ export default {
         const displayName = computed(() => (store.state.user_data ? store.state.user_data.full_name : 'Login'));
 
         // display the logged in user's profile pic
-        const displayPic = computed(() =>
-            store.state.user_data ? store.state.user_data.image_url : require('@/assets/default-user-image.png')
-        );
+        const displayPic = computed(() => (store.state.user_data ? store.state.user_data.image_url : require('@/assets/default-user-image.png')));
 
         // identify nav width
         const topNavWidth = computed(() => (store.state.isSideNavCollapsed ? 'top-nav__full' : 'top-nav__reduced'));
@@ -99,7 +91,7 @@ export default {
 .noti-icon {
     margin-right: 10px;
     padding: 5px;
-    border-radius: 25%;
+    border-radius: 10px;
     cursor: pointer;
     &:hover {
         background: $color-ghost;

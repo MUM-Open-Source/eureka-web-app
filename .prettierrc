@@ -1,6 +1,6 @@
 {
     "editor.formatOnSave": true,
-    "printWidth": 120,
+    "printWidth": 160,
     "singleQuote": true,
     "tabWidth": 4,
     "trailingComma": "none",

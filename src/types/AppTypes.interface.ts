@@ -36,4 +36,5 @@ export interface AppState {
         talent: TalentFilter;
         mentors: MentorFilter;
     };
+    notifications: object[];
 }
