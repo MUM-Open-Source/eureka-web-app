@@ -3,55 +3,26 @@
     <h2>The Incubator</h2>
     <Loader v-if="isLoading" />
     <div class="workspace-body" v-else>
-      <div class="empty-state" v-if="isEmpty">
-        <img class="empty-image" src="@/assets/not-found-icon.svg" />
-        <p>Seems like you don't have any workspace now</p>
-        <p>Create One !</p>
-      </div>
+      <div v-if="showList">
+        <div class="empty-state" v-if="isEmpty">
+          <img class="empty-image" src="@/assets/not-found-icon.svg" />
+          <p>Seems like you don't have any workspace now</p>
+          <p>Create One !</p>
+        </div>
 
-      <div class="workspace-list" v-if="!isEmpty && showList">
-        <div
-          v-for="(data, index) in workspace"
-          class="workspace-card"
-          :key="index"
-        >
-          {{ data.name }}
+        <div class="workspace-list" v-if="!isEmpty">
+          <div
+            v-for="(data, index) in workspace"
+            class="workspace-card"
+            :key="index"
+          >
+            {{ data.name }}
+          </div>
         </div>
       </div>
 
       <StudentJoinForm v-if="showStudentJoin" />
-
-      <form class="settings-page" v-if="showSettingsPage">
-        <div>
-          <div class="form-group">
-            <label class="form__label">Password</label>
-            <input
-              class="form__input"
-              @input="$v.password.$touch()"
-              v-model="password"
-            />
-          </div>
-          <div class="error" v-if="$v.password.required.$invalid">
-            Password is required.
-          </div>
-          <div class="error" v-if="$v.password.minLength.$invalid">
-            {{ $v.password.minLength.$message }}
-          </div>
-          <div class="form-group">
-            <label class="form__label">Repeat password</label>
-            <input
-              class="form__input"
-              @input="$v.repeatPassword.$touch()"
-              v-model="repeatPassword"
-            />
-          </div>
-          <div class="error" v-if="$v.repeatPassword.sameAsPassword.$invalid">
-            Password must be equal
-          </div>
-        </div>
-        {{ $v }}
-        <div v-on:click="submit">click me</div>
-      </form>
+      <LecturerSettingsPage v-if="showSettingsPage" />
 
       <button class="floating-action-button" v-on:click="showAddWorkspace">
         <p v-if="showList">+</p>
@@ -70,12 +41,13 @@ import store from "../store";
 import { Incubator } from "../types/Incubator";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, sameAs } from "@vuelidate/validators";
-import { createWorkSpace, getAllWorkspace } from "@/api/IncubatorApi";
+import { getAllWorkspace } from "@/api/IncubatorApi";
 import StudentJoinForm from "@/modules/incubator/StudentJoinForm.vue";
+import LecturerSettingsPage from "@/modules/incubator/LecturerSettingsPage.vue";
 
 export default {
   name: "Incubator",
-  components: { Loader, StudentJoinForm },
+  components: { Loader, StudentJoinForm, LecturerSettingsPage },
   setup() {
     const isLoading = ref(true);
     const canCreateRooms = ref(false);
@@ -98,9 +70,6 @@ export default {
 
     onMounted(() => {
       getWorkspace();
-      setTimeout(() => {
-        isLoading.value = false;
-      }, 2000);
     });
 
     const getWorkspace = () => {
@@ -112,27 +81,11 @@ export default {
             arrayData.push(res.data() as Incubator);
           });
           workspace.value = arrayData;
+          isEmpty.value = workspace.value.length === 0;
+          isLoading.value = false;
         },
         console.log
       );
-    };
-
-    const addWorkspace = () => {
-      const incubator: Incubator = {
-        code: "",
-        name: "First Workshop",
-        workspaceOwnerId: "",
-        maxNumberOfTeams: 1,
-        maxMemberPerTeam: 2,
-        teamCreationDeadline: new Date(),
-        teamAdjourningDate: new Date(),
-        peerReviewDurationInDays: 2,
-        workspaceMembers: [],
-        tutorialSlots: [],
-        groups: [],
-        tags: [],
-      };
-      createWorkSpace(incubator, console.log, console.log);
     };
 
     const showAddWorkspace = () => {
@@ -155,7 +108,6 @@ export default {
       isLoading,
       canCreateRooms,
       workspace,
-      addWorkspace,
       showAddWorkspace,
       submit,
       showSettingsPage,
@@ -218,7 +170,7 @@ export default {
   .floating-action-button {
     @include shadow;
     margin: 50px;
-    position: absolute;
+    position: fixed;
     right: 0;
     bottom: 0;
     height: 50px;

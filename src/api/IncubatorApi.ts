@@ -11,11 +11,15 @@ const workspaceCodeGenerator = () => {
   return code.toString(36);
 };
 
-export const createWorkSpace = (
-  workshopSettings: Incubator,
-  onSuccess: (data: any) => void,
-  onError: () => void
-) => {
+export const createWorkSpace = ({
+  workshopSettings,
+  onError,
+  onSuccess,
+}: {
+  workshopSettings: Incubator;
+  onSuccess: (data: any) => void;
+  onError?: () => void;
+}) => {
   const code = workspaceCodeGenerator();
   db.collection(INCUBATOR_PATH)
     .doc(code)
@@ -80,7 +84,13 @@ export const getAllWorkspace = (
   onError: () => void
 ) => {
   db.collection(INCUBATOR_PATH)
-    .where("code", "in", userWorkspaceArray)
+    .where(
+      "code",
+      "in",
+      userWorkspaceArray.length > 10
+        ? userWorkspaceArray.slice(-10)
+        : userWorkspaceArray
+    )
     .get()
     .then(onSuccess)
     .catch(onError);

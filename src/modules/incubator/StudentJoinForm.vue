@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+  <div class="form" v-if="!state.showJoinWorkspaceForm">
     <input
       v-model="state.workspace"
       class="text-input"
@@ -11,9 +11,9 @@
     >
       <div class="error-msg">{{ error.$message }}</div>
     </div>
-
-    <Button class="submit-button" text="Join" @click="joinWorkspace" />
+    <Button class="submit-button" text="Join" @click="setShowJoinWorkspace" />
   </div>
+  <StudentJoinWorkshopForm v-else />
 </template>
 
 <script lang='ts'>
@@ -21,25 +21,27 @@ import Button from "@/common/Button.vue";
 import { reactive } from "vue-demi";
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, minLength, required } from "@vuelidate/validators";
-import router from "@/router";
+import StudentJoinWorkshopForm from "./StudentJoinWorkshopForm.vue";
 
 export default {
   name: "StudentJoinForm",
-  components: { Button },
+  components: { Button, StudentJoinWorkshopForm },
   setup() {
     const state = reactive({
       workspace: "",
+      showJoinWorkspaceForm: false,
     });
     const rules = {
-      workspace: { required, minLength: minLength(4), maxLength: maxLength(4) },
+      workspace: { required, minLength: minLength(6), maxLength: maxLength(6) },
     };
     const v$ = useVuelidate(rules, state);
 
-    const joinWorkspace = () => {
+    const setShowJoinWorkspace = () => {
       if (!v$.value.$invalid)
-        router.push({ path: `/incubator/${state.workspace}` });
+        state.showJoinWorkspaceForm = !state.showJoinWorkspaceForm;
     };
-    return { v$, state, joinWorkspace };
+
+    return { v$, state, setShowJoinWorkspace };
   },
 };
 </script>

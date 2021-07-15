@@ -1,16 +1,25 @@
 export type Incubator = {
-  code: string;
-  name: string;
-  workspaceOwnerId: string;
+  code?: string;
+  name?: string;
+  groups?: string[];
+  workspaceOwnerId?: string;
   maxMemberPerTeam: number;
   maxNumberOfTeams?: number;
   teamCreationDeadline: Date;
   teamAdjourningDate?: Date;
-  peerReviewDurationInDays: number;
-  workspaceMembers: string[];
-  groups: string[];
   tags: IncubatorArray[];
+  workspaceMembers?: string[];
+  peerReviewDurationInDays: number;
   tutorialSlots: IncubatorArray[];
+};
+
+export type WorkspaceMember = {
+  id: string;
+  group: string;
+  workspace: string;
+  memberSince: Date;
+  tags: IncubatorArray[];
+  tutorialSlots: string[];
 };
 
 export type Group = {
