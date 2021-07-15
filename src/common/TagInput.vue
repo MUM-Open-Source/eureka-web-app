@@ -4,21 +4,31 @@
       <span @click="removeTag(index)" class="cursor__pointer">x</span>
       {{ tag }}
     </div>
-    <input type='text' placeholder="Enter a Tag" class='tag-input__text' @keydown="addTag" @keydown.delete="removeLastTag"/>
+    <input 
+      type='text' 
+      :placeholder="placeholder" 
+      class='tag-input__text' 
+      @keydown="addTag" 
+      @keydown.delete="removeLastTag"
+    />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
 export default defineComponent({
   props: {
-      limit : {
+      limit: {
           type: Number,
           default: 10 // default limit is 10 tags
+      },
+      placeholder: {
+        type: String,
+        default: "Enter a Tag"
       }
   },
   data() {
     return {
-      tags: ['HTML', 'CSS'] as Array<string>
+      tags: [] as Array<string>
     }
   },
   methods: {
@@ -28,17 +38,19 @@ export default defineComponent({
             var val = event.target.value.trim()
             if(this.tags.length < this.limit && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
                 this.tags.push(val.toUpperCase())
+                this.$emit("update-tags", this.tags)
                 event.target.value = ''
             }
         }
-
       },
       removeTag(index:number) {
           this.tags.splice(index,1)
+          this.$emit("update-tags", this.tags)
       },
       removeLastTag(event:any){
           if(event.target.value.length === 0) {
               this.removeTag(this.tags.length - 1)
+              this.$emit("update-tags", this.tags)
           }
       }
 
@@ -50,10 +62,11 @@ export default defineComponent({
 .tag-input {
     width: $tag-input-width;
     border: $tag-input-border-radius solid $color-bg-hover;
-    height: $tag-input-height;
+    min-height: $tag-input-min-height;
     box-sizing: border-box;
     padding: $tag-input-padding;
-    display:table;
+    display: flex;
+    flex-wrap: wrap;
     &__tag {
         height: $tag-input-tag-height;
         float: left;
@@ -71,6 +84,7 @@ export default defineComponent({
         outline: none;
         line-height: $tag-input-text-line-height;
         background: none;
+        flex-grow: 100;
     }
 }
 </style>
