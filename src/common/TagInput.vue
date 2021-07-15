@@ -33,7 +33,7 @@ export default defineComponent({
   },
   methods: {
       addTag(event:any) {        
-        if(event.code == 'Comma' || event.code == 'Enter'){
+        if(event.code === 'Comma' || event.code === 'Enter'){
             event.preventDefault();
             var val = event.target.value.trim()
             if(this.tags.length < this.limit && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
