@@ -35,12 +35,9 @@
 <script lang="ts">
 import { onMounted, ref } from "vue";
 import Loader from "../common/Loader.vue";
-// import InputField from "../common/InputField.vue";
 import store from "../store";
 // eslint-disable-next-line no-unused-vars
 import { Incubator } from "../types/Incubator";
-import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, sameAs } from "@vuelidate/validators";
 import { getAllWorkspace } from "@/api/IncubatorApi";
 import StudentJoinForm from "@/modules/incubator/StudentJoinForm.vue";
 import LecturerSettingsPage from "@/modules/incubator/LecturerSettingsPage.vue";
@@ -56,17 +53,6 @@ export default {
     const showStudentJoin = ref(false);
     const showSettingsPage = ref(false);
     const workspace = ref<Incubator[]>([]);
-    const password = ref("");
-    const repeatPassword = ref("");
-
-    const rules = {
-      password: { required, minLength: minLength(6) },
-      repeatPassword: {
-        sameAsPassword: sameAs(password),
-      },
-    };
-
-    const $v = useVuelidate(rules as any, { password, repeatPassword });
 
     onMounted(() => {
       getWorkspace();
@@ -95,28 +81,15 @@ export default {
       showList.value = !showList.value;
     };
 
-    const submit = () => {
-      $v.value.$touch();
-      if ($v.value.$invalid) {
-        console.log("Eror");
-      } else {
-        console.log("Submitted");
-      }
-    };
-
     return {
       isLoading,
       canCreateRooms,
       workspace,
       showAddWorkspace,
-      submit,
       showSettingsPage,
       showStudentJoin,
       showList,
       isEmpty,
-      password,
-      repeatPassword,
-      $v,
     };
   },
 };
