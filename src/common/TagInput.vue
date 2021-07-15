@@ -6,7 +6,7 @@
     </div>
     <input 
       type='text' 
-      placeholder="Enter a Tag" 
+      :placeholder="placeholder" 
       class='tag-input__text' 
       @keydown="addTag" 
       @keydown.delete="removeLastTag"
@@ -17,9 +17,13 @@
 import { defineComponent } from 'vue';
 export default defineComponent({
   props: {
-      limit : {
+      limit: {
           type: Number,
           default: 10 // default limit is 10 tags
+      },
+      placeholder: {
+        type: String,
+        default: "Enter a Tag"
       }
   },
   data() {
@@ -58,10 +62,11 @@ export default defineComponent({
 .tag-input {
     width: $tag-input-width;
     border: $tag-input-border-radius solid $color-bg-hover;
-    height: $tag-input-height;
+    min-height: $tag-input-min-height;
     box-sizing: border-box;
     padding: $tag-input-padding;
-    display:table;
+    display: flex;
+    flex-wrap: wrap;
     &__tag {
         height: $tag-input-tag-height;
         float: left;
@@ -79,6 +84,7 @@ export default defineComponent({
         outline: none;
         line-height: $tag-input-text-line-height;
         background: none;
+        flex-grow: 100;
     }
 }
 </style>
