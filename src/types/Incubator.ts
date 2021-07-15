@@ -15,11 +15,13 @@ export type Incubator = {
 
 export type WorkspaceMember = {
   id: string;
-  group: string;
+  userId: string;
+  group?: string;
   workspace: string;
   memberSince: Date;
   tags: IncubatorArray[];
   tutorialSlots: string[];
+  sellYourself: string;
 };
 
 export type Group = {

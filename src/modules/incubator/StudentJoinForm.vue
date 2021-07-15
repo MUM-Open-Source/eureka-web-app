@@ -13,7 +13,7 @@
     </div>
     <Button class="submit-button" text="Join" @click="setShowJoinWorkspace" />
   </div>
-  <StudentJoinWorkshopForm v-else />
+  <StudentJoinWorkshopForm :workspaceData="state.workspaceData" v-else />
 </template>
 
 <script lang='ts'>
@@ -22,6 +22,8 @@ import { reactive } from "vue-demi";
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, minLength, required } from "@vuelidate/validators";
 import StudentJoinWorkshopForm from "./StudentJoinWorkshopForm.vue";
+import { getWorkspace } from "@/api/IncubatorApi";
+import Swal from "sweetalert2";
 
 export default {
   name: "StudentJoinForm",
@@ -30,6 +32,7 @@ export default {
     const state = reactive({
       workspace: "",
       showJoinWorkspaceForm: false,
+      workspaceData: null,
     });
     const rules = {
       workspace: { required, minLength: minLength(6), maxLength: maxLength(6) },
@@ -37,8 +40,26 @@ export default {
     const v$ = useVuelidate(rules, state);
 
     const setShowJoinWorkspace = () => {
-      if (!v$.value.$invalid)
-        state.showJoinWorkspaceForm = !state.showJoinWorkspaceForm;
+      if (!v$.value.$invalid) {
+        getWorkspace(
+          state.workspace,
+          (data) => {
+            if (data.exists) {
+              state.showJoinWorkspaceForm = !state.showJoinWorkspaceForm;
+              state.workspaceData = data.data();
+            } else {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "No workshop Found !",
+                showConfirmButton: false,
+                timer: 2000,
+              });
+            }
+          },
+          () => {}
+        );
+      }
     };
 
     return { v$, state, setShowJoinWorkspace };
