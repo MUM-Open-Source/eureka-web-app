@@ -711,6 +711,38 @@ export default createStore({
                 .catch(function(error) {
                     console.log("Error getting document:", error);
                 });
+        },
+        SEND_MESSAGE(state, message: Message) {
+            db.collection("messages")
+                .doc(message.id)
+                .set(message).then(() =>
+                    state.messages.push(message)
+                ).catch(function(error) {
+                    console.log("Message " + error)
+                });
+        },
+
+        GET_MESSAGES(state, sender: User) {
+            db.collection("messages")
+                .where("sendBy", "==", sender)
+                .where("sendTo", "==", auth.currentUser!.uid)
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        const message: Message = {
+                            id: doc.data().id,
+                            send_at: doc.data().send_at,
+                            text: doc.data().text,
+                            sendBy: doc.data().send_by,
+                            sendTo: doc.data().send_to,
+                            type: doc.data().type
+                        }
+                        state.messages.push(message);
+                    });
+                })
+                .catch(function(error) {
+                    console.log("Error retrieving messages:", error);
+                });
         }
 
     },
@@ -817,7 +849,16 @@ export default createStore({
 
         getWavesFromOtherUsers({ commit }) {
             commit('GET_WAVES_FROM_OTHER_USERS');
+        },
+
+        sendMessage({ commit }, message) {
+            commit('SEND_MESSAGE');
+        },
+
+        getMessageFromUser({commit}, user: User) {
+            commit('GET_MESSAGES');
         }
+
     }
 
 });
