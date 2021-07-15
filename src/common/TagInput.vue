@@ -4,7 +4,13 @@
       <span @click="removeTag(index)" class="cursor__pointer">x</span>
       {{ tag }}
     </div>
-    <input type='text' placeholder="Enter a Tag" class='tag-input__text' @keydown="addTag" @keydown.delete="removeLastTag"/>
+    <input 
+      type='text' 
+      placeholder="Enter a Tag" 
+      class='tag-input__text' 
+      @keydown="addTag" 
+      @keydown.delete="removeLastTag"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -18,7 +24,7 @@ export default defineComponent({
   },
   data() {
     return {
-      tags: ['HTML', 'CSS'] as Array<string>
+      tags: [] as Array<string>
     }
   },
   methods: {
@@ -28,17 +34,19 @@ export default defineComponent({
             var val = event.target.value.trim()
             if(this.tags.length < this.limit && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
                 this.tags.push(val.toUpperCase())
+                this.$emit("update-tags", this.tags)
                 event.target.value = ''
             }
         }
-
       },
       removeTag(index:number) {
           this.tags.splice(index,1)
+          this.$emit("update-tags", this.tags)
       },
       removeLastTag(event:any){
           if(event.target.value.length === 0) {
               this.removeTag(this.tags.length - 1)
+              this.$emit("update-tags", this.tags)
           }
       }
 
