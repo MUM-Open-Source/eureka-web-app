@@ -24,8 +24,8 @@
         :options="state.tutorial"
       />
       <ErrorMessageComponent
-        :error="v$.tutorial.$errors"
-        :silentError="v$.tutorial.$silentErrors"
+        :error="v$.selectedTutorial.$errors"
+        :silentError="v$.selectedTutorial.$silentErrors"
       />
     </div>
     <div class="section">
@@ -39,8 +39,9 @@
       <ErrorMessageComponent
         :error="v$.sellYourself.$errors"
         :silentError="v$.sellYourself.$silentErrors"
-      />      
-    <Button class="submit-button" text="Join" @click="joinWorkspace" />
+      />
+      <Button class="submit-button" text="Join" @click="joinWorkspace" />
+    </div>
   </div>
 </template>
 
@@ -110,7 +111,7 @@ export default {
   height: 100%;
   text-align: start;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex-direction: column;
 
   .section {
@@ -125,7 +126,7 @@ export default {
   }
 
   .submit-button {
-    margin: 1rem;
+    margin-top: 1rem;
   }
 
   .multiselect {
