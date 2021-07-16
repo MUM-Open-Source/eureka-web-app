@@ -4,6 +4,7 @@ import store from "@/store";
 
 const INCUBATOR_PATH = "incubator";
 const WORKSPACE_MEMBER_PATH = "workspace_member";
+const REPORT_PATH = "workspace_member";
 
 const workspaceCodeGenerator = () => {
   const code = Math.floor(new Date().getTime() / 1000);
@@ -70,7 +71,6 @@ export const getAllStudentWorkspace = async (
       onSuccess(allWorkspace as Incubator[]);
     } else onSuccess([]);
   } catch (e) {
-    console.log(e);
     onError("Error Fetching Student Workspace");
   }
 };
@@ -118,6 +118,37 @@ export const studentJoinWorkspace = async ({
   } else {
     onError("You have already joined this workspace");
   }
+};
+
+export const reportFunction = ({
+  workshopId,
+  reporterId,
+  targetId,
+  onSuccess,
+  onError,
+  subject,
+  message,
+}: {
+  workshopId: string;
+  reporterId: string;
+  targetId: string;
+  subject: string;
+  message: string;
+  onSuccess: () => void;
+  onError: () => void;
+}) => {
+  db.collection(REPORT_PATH)
+    .doc(`${workshopId}${reporterId}${targetId}`)
+    .set({
+      workshopId,
+      reporterId,
+      targetId,
+      subject,
+      message,
+      date: new Date(),
+    })
+    .then(onSuccess)
+    .catch(onError);
 };
 
 export const getWorkspace = (
