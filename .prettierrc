@@ -1,8 +1,8 @@
 {
-    "editor.formatOnSave": true,
-    "printWidth": 160,
-    "singleQuote": true,
-    "tabWidth": 4,
-    "trailingComma": "none",
-    "htmlWhitespaceSensitivity": "ignore"
+  "editor.formatOnSave": true,
+  "printWidth": 160,
+  "singleQuote": true,
+  "tabWidth": 4,
+  "trailingComma": "none",
+  "htmlWhitespaceSensitivity": "ignore"
 }

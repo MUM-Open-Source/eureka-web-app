@@ -30,7 +30,7 @@
             />
         </div>
         <div class="modal__footer">
-            <button class="text--primary cta" :style="{ padding: '10px' }">
+            <button class="text--primary cta" :style="{ padding: '10px' }" @click="toNotificationsPage">
                 View All Notifications
             </button>
         </div>
@@ -40,6 +40,7 @@
 <script>
 import moment from 'moment';
 import { ref, computed } from '@vue/runtime-core';
+import router from '@/router';
 
 import store from '@/store';
 import NotificationsItem from './NotificationsItem.vue';
@@ -47,7 +48,7 @@ import NotificationsItem from './NotificationsItem.vue';
 export default {
     name: 'NotificationsModal',
     components: { NotificationsItem },
-    setup() {
+    setup(props, { emit }) {
         const notifications = ref(store.state.notifications);
         const displaytNotifications = computed(() => notifications.value.slice(0, 3));
         const getMoment = timeStamp => {
@@ -56,9 +57,14 @@ export default {
                 .toString();
         };
 
+        const toNotificationsPage = () => {
+            router.push({ path: '/notifications' });
+            emit('viewAllClicked');
+        };
+
         const readAll = () => store.dispatch('readAllNotifications');
 
-        return { notifications, getMoment, readAll, displaytNotifications };
+        return { notifications, getMoment, readAll, displaytNotifications, toNotificationsPage };
     }
 };
 </script>

@@ -17,7 +17,7 @@
                     <img class="top-nav__profile-img" :src="displayPic" />
                 </div>
             </div>
-            <NotificationsModal v-if="notiState" />
+            <NotificationsModal @viewAllClicked="viewAllClicked" v-if="notiState" />
             <UserMenu v-if="isUserMenuShown" />
         </div>
     </div>
@@ -35,6 +35,7 @@ export default {
     components: { UserMenu, NotificationsModal },
     setup() {
         const unreadNotifications = computed(() => store.state.notifications.some(noti => noti.readStatus == false));
+
         // controls notification click state
         const notiState = ref(false);
         // to help display user menu
@@ -59,6 +60,7 @@ export default {
                     break;
             }
         };
+        const viewAllClicked = () => (notiState.value = false);
 
         // open and close side nav
         const toggleSideNavState = () => {
@@ -82,7 +84,8 @@ export default {
             modalController,
             topNavWidth,
             notiState,
-            unreadNotifications
+            unreadNotifications,
+            viewAllClicked
         };
     }
 };
