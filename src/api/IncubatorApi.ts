@@ -1,7 +1,6 @@
 import {db} from "../firebase";
-import {Incubator, WorkspaceMember} from "../types/Incubator";
+import {Incubator} from "../types/Incubator";
 import store from "@/store";
-import firebase from "firebase";
 
 const INCUBATOR_PATH = "incubator";
 const WORKSPACE_MEMBER_PATH = "workspace_member";

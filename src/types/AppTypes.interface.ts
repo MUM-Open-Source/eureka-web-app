@@ -25,12 +25,10 @@ export interface AppState {
   user_data: User | null;
   is_new_user_data_available: boolean;
   user_image: string;
-  can_create_workspace: boolean;
   upload_image: ImageToUpload;
   new_img_url: string;
   is_new: boolean;
   events: Event[];
-  workspace: string[];
   talent: User[];
   mentors: User[];
   feedback: Feedback[];
