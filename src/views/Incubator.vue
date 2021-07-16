@@ -96,14 +96,14 @@ export default {
 
 <style lang="scss" scoped>
 .frame {
-  max-width: 60vw;
+  width: 60vw;
   margin: auto;
   display: flex;
   padding: 10px 15px;
   flex-direction: column;
   align-items: center;
 
-  @media (min-width: 428px) {
+  @media (max-width: 428px) {
     max-width: 100vw;
   }
 
@@ -117,7 +117,7 @@ export default {
     height: 100%;
 
     p {
-      @media (min-width: 428px) {
+      @media (max-width: 428px) {
         font-size: 14px;
       }
     }
