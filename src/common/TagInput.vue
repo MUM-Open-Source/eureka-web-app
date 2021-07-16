@@ -102,10 +102,4 @@ export default defineComponent({
     flex-grow: 100;
   }
 }
-&__text {
-  border: none;
-  outline: none;
-  line-height: $tag-input-text-line-height;
-  background: none;
-}
 </style>
