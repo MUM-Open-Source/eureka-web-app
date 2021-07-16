@@ -75,7 +75,7 @@
       v-model="state.peerReviewDurationInDays"
     />
 
-    <div style="margin-bottom: 10px">
+    <div class="tags-container">
       <label for="tags" style="margin-bottom: 4px">Tags</label>
       <ErrorMessageComponent
         :error="v$.tags.$errors"
@@ -84,7 +84,7 @@
       <TagInput id="tags" placeholder="Enter A tag" @update-tags="onAddTags" />
     </div>
 
-    <div style="margin-bottom: 10px">
+    <div class="tags-container">
       <label for="tutorial-slots" style="margin-bottom: 4px"
         >Tutorial Slots</label
       >
@@ -99,7 +99,11 @@
       />
     </div>
 
-    <Button :text="'Create Workspace'" v-on:click="submitSettings($event)" />
+    <Button
+      class="submit-button"
+      :text="'Create Workspace'"
+      v-on:click="submitSettings($event)"
+    />
   </div>
 </template>
 
@@ -201,6 +205,14 @@ export default {
     height: $tag-input-height;
     box-sizing: border-box;
     padding: $tag-input-padding;
+  }
+
+  .tags-container {
+    margin-bottom: 1rem;
+  }
+
+  .submit-button {
+    margin: 1rem 0;
   }
 
   @media (max-width: 428px) {
