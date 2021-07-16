@@ -25,31 +25,36 @@ export const createWorkSpace = ({
   db.collection(INCUBATOR_PATH)
     .doc(code)
     .set({...workshopSettings, code, workspaceOwnerId: store.state.user?.uid})
-    .then(() => {
-      db.collection(USER_PATH)
-        .doc(store.state.user?.uid)
-        .update({workspace: firebase.firestore.FieldValue.arrayUnion(code)})
-        .then(onSuccess)
-        .catch(onError);
-    });
-};
-
-export const getAllWorkspace = (
-  userWorkspaceArray: string[],
-  onSuccess: (data: firebase.firestore.QuerySnapshot) => void,
-  onError: () => void
-) => {
-  db.collection(INCUBATOR_PATH)
-    .where(
-      "code",
-      "in",
-      userWorkspaceArray.length > 10
-        ? userWorkspaceArray.slice(-10)
-        : userWorkspaceArray
-    )
-    .get()
     .then(onSuccess)
     .catch(onError);
+};
+
+export const getAllStudentWorkspace = async (
+  userId: string,
+  onSuccess: (data: Incubator[]) => void,
+  onError: () => void
+) => {
+  try {
+    const workspaceArray = (
+      await db
+        .collection(WORKSPACE_MEMBER_PATH)
+        .where("userId", "==", userId)
+        .get()
+    ).docs
+      .map((data) => data.data().workspace)
+      .slice(0, 10);
+
+    const allWorkspace = (
+      await db
+        .collection(INCUBATOR_PATH)
+        .where("code", "in", workspaceArray)
+        .get()
+    ).docs.map((data) => data.data());
+
+    onSuccess(allWorkspace as Incubator[]);
+  } catch (e) {
+    onError();
+  }
 };
 
 export const studentJoinWorkspace = async ({

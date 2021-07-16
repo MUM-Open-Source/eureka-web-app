@@ -38,7 +38,7 @@ import Loader from "../common/Loader.vue";
 import store from "../store";
 // eslint-disable-next-line no-unused-vars
 import { Incubator } from "../types/Incubator";
-import { getAllWorkspace } from "@/api/IncubatorApi";
+import { getAllStudentWorkspace } from "@/api/IncubatorApi";
 import StudentJoinForm from "@/modules/incubator/StudentJoinForm.vue";
 import LecturerSettingsPage from "@/modules/incubator/LecturerSettingsPage.vue";
 
@@ -56,7 +56,7 @@ export default {
       workspace: Incubator[];
     }>({
       isLoading: true,
-      canCreateRooms: true,
+      canCreateRooms: false,
       showList: true,
       isEmpty: false,
       showStudentJoin: false,
@@ -69,14 +69,10 @@ export default {
     });
 
     const getWorkspace = () => {
-      getAllWorkspace(
-        store.state.workspace.length === 0 ? ["none"] : store.state.workspace,
+      getAllStudentWorkspace(
+        store.state.user?.uid || "",
         (data) => {
-          const arrayData: Incubator[] = [];
-          data.forEach((res: any) => {
-            arrayData.push(res.data() as Incubator);
-          });
-          state.workspace = arrayData;
+          state.workspace = data;
           state.isEmpty = state.workspace.length === 0;
           state.isLoading = false;
         },
