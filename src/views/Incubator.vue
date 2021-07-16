@@ -15,6 +15,7 @@
             v-for="(data, index) in state.workspace"
             class="workspace-card"
             :key="index"
+            v-on:click="() => router"
           >
             {{ data.name }}
           </div>
@@ -36,6 +37,7 @@
 import { onMounted, reactive } from "vue";
 import Loader from "../common/Loader.vue";
 import store from "../store";
+import router from "../router/index";
 // eslint-disable-next-line no-unused-vars
 import { Incubator } from "../types/Incubator";
 import { getAllStudentWorkspace } from "@/api/IncubatorApi";
@@ -89,6 +91,7 @@ export default {
     return {
       state,
       showAddWorkspace,
+      router,
     };
   },
 };

@@ -104,18 +104,6 @@ export const studentJoinWorkspace = async ({
     .catch(() => onError("Error Joining Workspace"));
 };
 
-export const getLiveWorkspace = (
-  workspaceCode: string,
-  onSuccess: (data: any) => void,
-  onError: () => void
-) => {
-  db.collection(INCUBATOR_PATH)
-    .doc(workspaceCode)
-    .onSnapshot((doc) => {
-      onSuccess(doc.data());
-    });
-};
-
 export const getWorkspace = (
   workspaceCode: string,
   onSuccess: (data: any) => void,
@@ -124,31 +112,6 @@ export const getWorkspace = (
   db.collection(INCUBATOR_PATH)
     .doc(workspaceCode)
     .get()
-    .then(onSuccess)
-    .catch(onError);
-};
-export const updateWorkspace = (
-  workspaceCode: string,
-  updatedData: {[key: string]: any},
-  onSuccess: (data: any) => void,
-  onError: () => void
-) => {
-  db.collection(INCUBATOR_PATH)
-    .doc(workspaceCode)
-    .update(updatedData)
-    .then(onSuccess)
-    .catch(onError);
-};
-
-export const deleteWorkspace = async (
-  workspaceCode: string,
-  onSuccess: (data: any) => void,
-  onError: () => void
-) => {
-  await db
-    .collection(INCUBATOR_PATH)
-    .doc(workspaceCode)
-    .delete()
     .then(onSuccess)
     .catch(onError);
 };
