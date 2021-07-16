@@ -1,7 +1,7 @@
 import { createStore, Store } from 'vuex';
 import firebase from 'firebase';
 import firebaseApp from 'firebase/app';
-import 'firebase/auth'
+import 'firebase/auth';
 import { db, auth, storage } from "@/firebase";
 import router from '@/router';
 import Swal from 'sweetalert2';
