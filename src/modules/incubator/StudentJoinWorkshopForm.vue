@@ -10,14 +10,10 @@
         :options="state.tags"
         :createTag="true"
       />
-      <div
-        v-for="error of v$.selectedTags.$errors.concat(
-          v$.selectedTags.$silentErrors
-        )"
-        :key="error.$uid"
-      >
-        <div class="error-msg">{{ error.$message }}</div>
-      </div>
+      <ErrorMessageComponent
+        :error="v$.selectedTags.$errors"
+        :silentError="v$.selectedTags.$silentErrors"
+      />
     </div>
     <div class="section">
       <label for="tutorial-slot">Tutorial</label>
@@ -27,14 +23,10 @@
         placeholder="Tutorial"
         :options="state.tutorial"
       />
-      <div
-        v-for="error of v$.selectedTutorial.$errors.concat(
-          v$.selectedTutorial.$silentErrors
-        )"
-        :key="error.$uid"
-      >
-        <div class="error-msg">{{ error.$message }}</div>
-      </div>
+      <ErrorMessageComponent
+        :error="v$.tutorial.$errors"
+        :silentError="v$.tutorial.$silentErrors"
+      />
     </div>
     <div class="section">
       <label for="sell-yourself">Sell Yourself</label>
@@ -44,16 +36,10 @@
         v-model="state.sellYourself"
         placeholder="Sell Yourself"
       ></textarea>
-      <div
-        v-for="error of v$.sellYourself.$errors.concat(
-          v$.sellYourself.$silentErrors
-        )"
-        :key="error.$uid"
-      >
-        <div class="error-msg">{{ error.$message }}</div>
-      </div>
-    </div>
-
+      <ErrorMessageComponent
+        :error="v$.sellYourself.$errors"
+        :silentError="v$.sellYourself.$silentErrors"
+      />      
     <Button class="submit-button" text="Join" @click="joinWorkspace" />
   </div>
 </template>
@@ -65,11 +51,12 @@ import { useVuelidate } from "@vuelidate/core";
 import { minLength, required } from "@vuelidate/validators";
 import Multiselect from "@vueform/multiselect";
 import { studentJoinWorkspace } from "@/api/IncubatorApi";
+import ErrorMessageComponent from "./ErrorMessageComponent.vue";
 import router from "@/router";
 
 export default {
   name: "StudentJoinForm",
-  components: { Button, Multiselect },
+  components: { Button, Multiselect, ErrorMessageComponent },
   props: {
     workspaceData: Object,
   },

@@ -5,12 +5,10 @@
       class="text-input"
       placeholder="Workspace Code"
     />
-    <div
-      v-for="error of v$.workspace.$errors.concat(v$.workspace.$silentErrors)"
-      :key="error.$uid"
-    >
-      <div class="error-msg">{{ error.$message }}</div>
-    </div>
+    <ErrorMessageComponent
+      :error="v$.workspace.$errors"
+      :silentError="v$.workspace.$silentErrors"
+    />
     <Button class="submit-button" text="Join" @click="setShowJoinWorkspace" />
   </div>
   <StudentJoinWorkshopForm :workspaceData="state.workspaceData" v-else />
@@ -22,12 +20,13 @@ import { reactive } from "vue-demi";
 import { useVuelidate } from "@vuelidate/core";
 import { maxLength, minLength, required } from "@vuelidate/validators";
 import StudentJoinWorkshopForm from "./StudentJoinWorkshopForm.vue";
+import ErrorMessageComponent from "./ErrorMessageComponent.vue";
 import { getWorkspace } from "@/api/IncubatorApi";
 import Swal from "sweetalert2";
 
 export default {
   name: "StudentJoinForm",
-  components: { Button, StudentJoinWorkshopForm },
+  components: { Button, StudentJoinWorkshopForm, ErrorMessageComponent },
   setup() {
     const state = reactive({
       workspace: "",
