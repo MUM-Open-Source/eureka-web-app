@@ -743,12 +743,60 @@ export default createStore({
                     const snapshot = doc.data() ?? {};
                     Object.keys(snapshot).forEach(category => {
                         snapshot[category].forEach((notif: object) => {
-                            notifications.push({ id: doc.id, type: category, ...notif });
+                            notifications.push({ type: category, ...notif });
                         });
                     });
                     notifications.sort((a: any, b: any) => compareDesc(parseISO(a.timeStamp), parseISO(b.timeStamp)));
                     state.notifications = notifications;
                 });
+        },
+
+        READ_ALL_NOTIFICATIONS(state) {
+            const data = state.notifications;
+            const uniqueCategories = [...new Set(data.map((noti: any) => noti.type))];
+            let readAllNoti: any = {};
+            uniqueCategories.forEach((category: string) => {
+                const filter = data.filter(noti => noti.type == category);
+                const cleanedNotifications: any = filter.map(noti => {
+                    if (noti.type == category) {
+                        const { type, ...dataWithoutType } = noti;
+                        return { ...dataWithoutType, readStatus: true };
+                    }
+                });
+                readAllNoti[category] = cleanedNotifications;
+            });
+            state.notifications = state.notifications.map(noti => (noti.readStatus = true));
+
+            db.collection('notifications')
+                .doc(auth.currentUser?.uid)
+                .update(readAllNoti);
+        },
+
+        async READ_INDIVIDUAL_NOTIFICATION(state, notiId: string) {
+            const data = state.notifications;
+            const uniqueCategories = [...new Set(data.map((noti: any) => noti.type))];
+            let readOneNoti: any = {};
+            uniqueCategories.forEach((category: string) => {
+                const filter = data.filter(noti => noti.type == category);
+                const cleanedNotifications: any = filter.map(noti => {
+                    if (noti.type == category) {
+                        const { type, ...dataWithoutType } = noti;
+                        if (noti.id == notiId) {
+                            return { ...dataWithoutType, readStatus: true };
+                        } else {
+                            return { ...dataWithoutType };
+                        }
+                    }
+                });
+                readOneNoti[category] = cleanedNotifications;
+            });
+            state.notifications = state.notifications.map(noti => {
+                noti.id == notiId ? (noti.readStatus = true) : noti;
+            });
+
+            db.collection('notifications')
+                .doc(auth.currentUser?.uid)
+                .update(readOneNoti);
         }
     },
 
@@ -857,6 +905,14 @@ export default createStore({
 
         getUserNotifications({ commit }) {
             commit('GET_USER_NOTIFICATIONS');
+        },
+
+        readAllNotifications({ commit }) {
+            commit('READ_ALL_NOTIFICATIONS');
+        },
+
+        readIndividualNotification({ commit }, notiId: string) {
+            commit('READ_INDIVIDUAL_NOTIFICATION', notiId);
         }
     }
 });

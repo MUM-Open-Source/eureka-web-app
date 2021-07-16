@@ -1,7 +1,7 @@
 <template>
     <div class="noti-item" :class="{ unread: !readStatus }">
         <div :style="{ display: 'flex' }">
-            <div class="noti-item-icon " :class="{ badge: !readStatus }" data-count="">
+            <div class="noti-item-icon " :class="{ badge: !readStatus }" :style="{ backgroundColor: iconColor }" data-count="">
                 <i class="material-icons-outlined">
                     {{ icon }}
                 </i>
@@ -13,9 +13,14 @@
                         {{ moment }}
                     </span>
                 </div>
-                <p :style="{ fontSize: '14px' }">
-                    {{ bodyText }}
-                </p>
+                <div class="content-body">
+                    <p :style="{ fontSize: '14px' }">
+                        {{ bodyText }}
+                    </p>
+                    <i class="material-icons-outlined" @click="readIndividual">
+                        {{ icon }}
+                    </i>
+                </div>
             </div>
         </div>
     </div>
@@ -23,14 +28,21 @@
 </template>
 
 <script>
+import store from '@/store';
 export default {
     name: 'NotificationsItem',
     props: {
+        id: { type: String, required: true },
         icon: { type: String, required: true },
         title: { type: String, required: true },
         bodyText: { type: String, required: true },
         moment: { type: String, required: true },
-        readStatus: { type: Boolean, required: true }
+        readStatus: { type: Boolean, required: true },
+        iconColor: { type: String, required: true }
+    },
+    setup(props) {
+        const readIndividual = () => store.dispatch('readIndividualNotification', props.id);
+        return { readIndividual };
     }
 };
 </script>
@@ -39,6 +51,7 @@ export default {
 .noti-item {
     padding: 10px;
     border-radius: 10px;
+    cursor: pointer;
     &:hover {
         background: $color-ghost;
     }
@@ -54,6 +67,11 @@ export default {
     margin-bottom: 5px;
     align-items: center;
 }
+.content-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .moment-text {
     font-size: 12px;
     color: $color-light;
@@ -67,10 +85,9 @@ export default {
     height: 40px;
     border-radius: 50%;
     margin-right: 15px;
-    background: #71c9a2;
 }
 .unread {
-    background: $color-ghost;
+    background: #e5f4fd;
 }
 .badge[data-count]:after {
     position: absolute;

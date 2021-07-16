@@ -2,25 +2,29 @@
     <div class="modal">
         <div class="modal__header">
             <h1 class="subheading">Your Notifications</h1>
-            <button class="text--primary cta">Mark all as read</button>
+            <button class="text--primary cta" @click="readAll">Mark all as read</button>
         </div>
         <hr class="divider" />
-        <div v-for="noti in notifications" :key="noti">
+        <div v-for="noti in notifications" :key="noti.id">
             <NotificationsItem
                 v-if="noti.type == 'waves'"
+                :id="noti.id"
                 icon="celebration"
                 title="Someone waved at you"
                 :bodyText="`${noti.user} just waved at you. Say hi to them back by giving a friendly wave back!`"
                 :moment="getMoment(noti.timeStamp)"
                 :readStatus="noti.readStatus"
+                iconColor="#71c9a2"
             />
             <NotificationsItem
                 v-if="noti.type == 'projects'"
-                icon="celebration"
+                :id="noti.id"
+                icon="book_online"
                 title="A new project was created"
                 :bodyText="`Check out ${noti.name} now`"
                 :moment="getMoment(noti.timeStamp)"
                 :readStatus="noti.readStatus"
+                iconColor="#FFFF00"
             />
         </div>
     </div>
@@ -38,13 +42,16 @@ export default {
     components: { NotificationsItem },
     setup() {
         const notifications = ref(store.state.notifications);
+        console.log(notifications.value);
         const getMoment = timeStamp => {
             return moment(timeStamp)
                 .fromNow()
                 .toString();
         };
 
-        return { notifications, getMoment };
+        const readAll = () => store.dispatch('readAllNotifications');
+
+        return { notifications, getMoment, readAll };
     }
 };
 </script>
