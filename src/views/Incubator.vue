@@ -40,7 +40,10 @@ import store from "../store";
 import router from "../router/index";
 // eslint-disable-next-line no-unused-vars
 import { Incubator } from "../types/Incubator";
-import { getAllStudentWorkspace } from "@/api/IncubatorApi";
+import {
+  getAllLecturerWorkspace,
+  getAllStudentWorkspace,
+} from "@/api/IncubatorApi";
 import StudentJoinForm from "@/modules/incubator/StudentJoinForm.vue";
 import LecturerSettingsPage from "@/modules/incubator/LecturerSettingsPage.vue";
 
@@ -58,7 +61,10 @@ export default {
       workspace?: Incubator[];
     }>({
       isLoading: true,
-      canCreateRooms: false,
+      canCreateRooms:
+        (store.state.user?.email?.includes("monash.edu") &&
+          !store.state.user.email.includes("student")) ||
+        false,
       showList: true,
       isEmpty: false,
       showStudentJoin: false,
@@ -70,15 +76,22 @@ export default {
     });
 
     const getWorkspace = () => {
-      getAllStudentWorkspace(
-        store.state.user?.uid || "",
-        (data) => {
-          state.workspace = data;
-          state.isEmpty = state.workspace.length === 0;
-          state.isLoading = false;
-        },
-        console.log
-      );
+      const onSuccess = (data: any) => {
+        state.workspace = data;
+        state.isEmpty = state.workspace?.length === 0;
+        state.isLoading = false;
+      };
+      state.canCreateRooms
+        ? getAllLecturerWorkspace(
+            store.state.user?.uid || "",
+            onSuccess,
+            console.log
+          )
+        : getAllStudentWorkspace(
+            store.state.user?.uid || "",
+            onSuccess,
+            console.log
+          );
     };
 
     const showAddWorkspace = () => {
