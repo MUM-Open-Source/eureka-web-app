@@ -1,7 +1,7 @@
 <template>
   <div class="page-pad">
     <div class="peer-review-content text--center">
-      <div class="heading">Peer Review</div>
+      <div class="heading peer-review-content__title">Peer Review</div>
       <table>
         <QuestionCard
           v-for="question in questions"
@@ -96,6 +96,10 @@ export default {
 .peer-review-content {
   margin-left: auto;
   margin-right: auto;
+
+  &__title {
+    text-decoration: underline;
+  }
 }
 
 table {
