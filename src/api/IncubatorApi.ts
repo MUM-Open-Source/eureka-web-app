@@ -4,7 +4,6 @@ import store from "@/store";
 import firebase from "firebase";
 
 const INCUBATOR_PATH = "incubator";
-const USER_PATH = "users";
 const WORKSPACE_MEMBER_PATH = "workspace_member";
 
 const workspaceCodeGenerator = () => {
@@ -29,10 +28,28 @@ export const createWorkSpace = ({
     .catch(onError);
 };
 
+export const getAllLecturerWorkspace = async (
+  userId: string,
+  onSuccess: (data: Incubator[]) => void,
+  onError: (error: string) => void
+) => {
+  try {
+    const allWorkspace = (
+      await db
+        .collection(INCUBATOR_PATH)
+        .where("workspaceOwnerId", "==", userId)
+        .get()
+    ).docs.map((data) => data.data());
+    onSuccess(allWorkspace as Incubator[]);
+  } catch (error) {
+    onError("Error Fetching Lecturer Endpoint");
+  }
+};
+
 export const getAllStudentWorkspace = async (
   userId: string,
   onSuccess: (data: Incubator[]) => void,
-  onError: () => void
+  onError: (error: string) => void
 ) => {
   try {
     const workspaceArray = (
@@ -53,7 +70,7 @@ export const getAllStudentWorkspace = async (
 
     onSuccess(allWorkspace as Incubator[]);
   } catch (e) {
-    onError();
+    onError("Error Fetching Student Workspace");
   }
 };
 
@@ -63,24 +80,16 @@ export const studentJoinWorkspace = async ({
   sellYourself,
   tags,
   tutorialSlots,
+  onError,
 }: {
   workspaceCode: string;
   onSuccess: (data: any) => void;
+  onError: (error: string) => void;
   sellYourself: string;
   tags: string[];
   tutorialSlots: string[];
 }) => {
-  console.log("Adding workspace to user");
-  await db
-    .collection(USER_PATH)
-    .doc(store.state.user?.uid)
-    .update({
-      workspace: firebase.firestore.FieldValue.arrayUnion(workspaceCode),
-    });
-
-  console.log("Add a new workspace member");
-  await db
-    .collection(WORKSPACE_MEMBER_PATH)
+  db.collection(WORKSPACE_MEMBER_PATH)
     .doc(`${store.state.user?.uid}${workspaceCode}`)
     .set({
       id: `${store.state.user?.uid}${workspaceCode}`,
@@ -91,19 +100,9 @@ export const studentJoinWorkspace = async ({
       tutorialSlots,
       sellYourself,
       tags,
-    });
-
-  console.log("Update the workspace");
-  await db
-    .collection(INCUBATOR_PATH)
-    .doc(workspaceCode)
-    .update({
-      workspaceMembers: firebase.firestore.FieldValue.arrayUnion(
-        `${store.state.user?.uid}${workspaceCode}`
-      ),
-    });
-
-  onSuccess("success");
+    })
+    .then(onSuccess)
+    .catch(() => onError("Error Joining Workspace"));
 };
 
 export const getLiveWorkspace = (
@@ -142,22 +141,15 @@ export const updateWorkspace = (
     .catch(onError);
 };
 
-export const deleteWorkspace = (
+export const deleteWorkspace = async (
   workspaceCode: string,
   onSuccess: (data: any) => void,
   onError: () => void
 ) => {
-  db.collection(INCUBATOR_PATH)
+  await db
+    .collection(INCUBATOR_PATH)
     .doc(workspaceCode)
     .delete()
-    .then(() => {
-      db.collection(USER_PATH)
-        .doc(store.state.user?.uid)
-        .update({
-          workspace: firebase.firestore.FieldValue.arrayRemove(workspaceCode),
-        })
-        .then(onSuccess)
-        .catch(onError);
-    })
+    .then(onSuccess)
     .catch(onError);
 };

@@ -87,12 +87,13 @@ export default {
       if (!v$.value.$invalid) {
         studentJoinWorkspace({
           workspaceCode: props.workspaceData.code || "none",
-          onSuccess: () => {
-            router.push(`/incubator/${props.workspaceData.code}`);
-          },
           sellYourself: state.sellYourself,
           tags: state.selectedTags.map((index: number) => state.tags[index]),
           tutorialSlots: state.tutorial[state.selectedTutorial || 0],
+          onError: console.log,
+          onSuccess: () => {
+            router.push(`/incubator/${props.workspaceData.code}`);
+          },
         });
       }
     };

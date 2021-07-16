@@ -53,7 +53,7 @@ export default {
       isEmpty: Boolean;
       showStudentJoin: Boolean;
       showSettingsPage: Boolean;
-      workspace: Incubator[];
+      workspace?: Incubator[];
     }>({
       isLoading: true,
       canCreateRooms: false,
@@ -61,11 +61,10 @@ export default {
       isEmpty: false,
       showStudentJoin: false,
       showSettingsPage: false,
-      workspace: [],
     });
 
     onMounted(() => {
-      getWorkspace();
+      if (!state.workspace) getWorkspace();
     });
 
     const getWorkspace = () => {
