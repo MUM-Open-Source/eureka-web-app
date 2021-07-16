@@ -90,20 +90,34 @@ export const studentJoinWorkspace = async ({
   tags: string[];
   tutorialSlots: string[];
 }) => {
-  db.collection(WORKSPACE_MEMBER_PATH)
-    .doc(`${store.state.user?.uid}${workspaceCode}`)
-    .set({
-      id: `${store.state.user?.uid}${workspaceCode}`,
-      userId: store.state.user?.uid,
-      group: null,
-      workspace: workspaceCode,
-      memberSince: new Date(),
-      tutorialSlots,
-      sellYourself,
-      tags,
-    })
-    .then(onSuccess)
-    .catch(() => onError("Error Joining Workspace"));
+  const docId = `${store.state.user?.uid}${workspaceCode}`;
+  const hasJoined = (
+    await db
+      .collection(WORKSPACE_MEMBER_PATH)
+      .doc(docId)
+      .get()
+  ).exists;
+
+  console.log(hasJoined);
+
+  if (!hasJoined) {
+    db.collection(WORKSPACE_MEMBER_PATH)
+      .doc(docId)
+      .set({
+        id: docId,
+        userId: store.state.user?.uid,
+        group: null,
+        workspace: workspaceCode,
+        memberSince: new Date(),
+        tutorialSlots,
+        sellYourself,
+        tags,
+      })
+      .then(onSuccess)
+      .catch(() => onError("Error Joining Workspace"));
+  } else {
+    onError("You have already joined this workspace");
+  }
 };
 
 export const getWorkspace = (

@@ -54,6 +54,7 @@ import Multiselect from "@vueform/multiselect";
 import { studentJoinWorkspace } from "@/api/IncubatorApi";
 import ErrorMessageComponent from "./ErrorMessageComponent.vue";
 import router from "@/router";
+import Swal from "sweetalert2";
 
 export default {
   name: "StudentJoinForm",
@@ -90,7 +91,15 @@ export default {
           sellYourself: state.sellYourself,
           tags: state.selectedTags.map((index: number) => state.tags[index]),
           tutorialSlots: state.tutorial[state.selectedTutorial || 0],
-          onError: console.log,
+          onError: (errorMessage: string) => {
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: errorMessage,
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          },
           onSuccess: () => {
             router.push(`/incubator/${props.workspaceData.code}`);
           },
