@@ -1,12 +1,10 @@
 <template>
   <div class="lecturer-settings">
     <label for="name">Workspace Name</label>
-    <div
-      v-for="error of v$.name.$errors.concat(v$.name.$silentErrors)"
-      :key="error.$uid"
-    >
-      <div class="error-msg">{{ error.$message }}</div>
-    </div>
+    <ErrorMessageComponent
+      :error="v$.name.$errors"
+      :silentError="v$.name.$silentErrors"
+    />
     <input
       id="name"
       type="text"
@@ -15,14 +13,10 @@
     />
 
     <label for="max_member">Max Member Per Team</label>
-    <div
-      v-for="error of v$.maxMemberPerTeam.$errors.concat(
-        v$.maxMemberPerTeam.$silentErrors
-      )"
-      :key="error.$uid"
-    >
-      <div class="error-msg">{{ error.$message }}</div>
-    </div>
+    <ErrorMessageComponent
+      :error="v$.maxMemberPerTeam.$errors"
+      :silentError="v$.maxMemberPerTeam.$silentErrors"
+    />
     <input
       id="max_member"
       type="number"
@@ -32,14 +26,10 @@
     />
 
     <label for="max_number_of_teams">Max Number Of Teams</label>
-    <div
-      v-for="error of v$.maxNumberOfTeams.$errors.concat(
-        v$.maxNumberOfTeams.$silentErrors
-      )"
-      :key="error.$uid"
-    >
-      <div class="error-msg">{{ error.$message }}</div>
-    </div>
+    <ErrorMessageComponent
+      :error="v$.maxNumberOfTeams.$errors"
+      :silentError="v$.maxNumberOfTeams.$silentErrors"
+    />
     <input
       id="max_number_of_teams"
       type="number"
@@ -49,14 +39,10 @@
     />
 
     <label for="team_creation_deadline">Team Creation Deadline</label>
-    <div
-      v-for="error of v$.teamCreationDeadline.$errors.concat(
-        v$.teamCreationDeadline.$silentErrors
-      )"
-      :key="error.$uid"
-    >
-      <div class="error-msg">{{ error.$message }}</div>
-    </div>
+    <ErrorMessageComponent
+      :error="v$.teamCreationDeadline.$errors"
+      :silentError="v$.teamCreationDeadline.$silentErrors"
+    />
     <input
       id="team_creation_deadline"
       type="date"
@@ -65,14 +51,10 @@
     />
 
     <label for="team_adjourning_date">Team Adjourning Date</label>
-    <div
-      v-for="error of v$.teamAdjourningDate.$errors.concat(
-        v$.teamAdjourningDate.$silentErrors
-      )"
-      :key="error.$uid"
-    >
-      <div class="error-msg">{{ error.$message }}</div>
-    </div>
+    <ErrorMessageComponent
+      :error="v$.teamAdjourningDate.$errors"
+      :silentError="v$.teamAdjourningDate.$silentErrors"
+    />
     <input
       id="team_adjourning_date"
       type="date"
@@ -81,14 +63,10 @@
     />
 
     <label for="peer_review_day_duration">Peer Review Day Duration</label>
-    <div
-      v-for="error of v$.peerReviewDurationInDays.$errors.concat(
-        v$.peerReviewDurationInDays.$silentErrors
-      )"
-      :key="error.$uid"
-    >
-      <div class="error-msg">{{ error.$message }}</div>
-    </div>
+    <ErrorMessageComponent
+      :error="v$.peerReviewDurationInDays.$errors"
+      :silentError="v$.peerReviewDurationInDays.$silentErrors"
+    />
     <input
       id="peer_review_day_duration"
       type="number"
@@ -119,10 +97,11 @@ import { reactive } from "vue-demi";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import Button from "../../common/Button.vue";
+import ErrorMessageComponent from "../incubator/ErrorMessageComponent.vue";
 import { createWorkSpace } from "@/api/IncubatorApi";
 import Swal from "sweetalert2";
 export default {
-  components: { TagInput, Button },
+  components: { TagInput, Button, ErrorMessageComponent },
   name: "LecturerSettingsPage",
   setup() {
     const state = reactive({
@@ -202,10 +181,6 @@ export default {
   @media (max-width: 428px) {
     width: 100%;
     margin-left: auto;
-  }
-  .error-msg {
-    color: red;
-    padding-left: 5px;
   }
 }
 </style>
