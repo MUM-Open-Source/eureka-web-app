@@ -56,7 +56,7 @@ export default {
       workspace: Incubator[];
     }>({
       isLoading: true,
-      canCreateRooms: false,
+      canCreateRooms: true,
       showList: true,
       isEmpty: false,
       showStudentJoin: false,

@@ -77,14 +77,26 @@
 
     <div style="margin-bottom: 10px">
       <label for="tags" style="margin-bottom: 4px">Tags</label>
-      <TagInput id="tags" placeholder="Enter A tag" />
+      <ErrorMessageComponent
+        :error="v$.tags.$errors"
+        :silentError="v$.tags.$silentErrors"
+      />
+      <TagInput id="tags" placeholder="Enter A tag" @update-tags="onAddTags" />
     </div>
 
     <div style="margin-bottom: 10px">
       <label for="tutorial-slots" style="margin-bottom: 4px"
         >Tutorial Slots</label
       >
-      <TagInput id="tutorial-slots" placeholder="Tutorial Slots" />
+      <ErrorMessageComponent
+        :error="v$.tutorialSlots.$errors"
+        :silentError="v$.tutorialSlots.$silentErrors"
+      />
+      <TagInput
+        id="tutorial-slots"
+        placeholder="Tutorial Slots"
+        @update-tags="onAddTutorial"
+      />
     </div>
 
     <Button :text="'Create Workspace'" v-on:click="submitSettings($event)" />
@@ -104,16 +116,27 @@ export default {
   components: { TagInput, Button, ErrorMessageComponent },
   name: "LecturerSettingsPage",
   setup() {
-    const state = reactive({
+    const state = reactive<{
+      name: string;
+      maxMemberPerTeam?: number;
+      maxNumberOfTeams?: number;
+      teamCreationDeadline?: Date;
+      teamAdjourningDate?: Date;
+      peerReviewDurationInDays?: number;
+      tags?: string[];
+      tutorialSlots?: string[];
+    }>({
       name: "",
-      maxMemberPerTeam: null,
-      maxNumberOfTeams: null,
-      teamCreationDeadline: null,
-      teamAdjourningDate: null,
-      peerReviewDurationInDays: null,
-      tags: [],
-      tutorialSlots: [],
     });
+
+    const onAddTags = (e: string[]) => {
+      state.tags = e;
+    };
+
+    const onAddTutorial = (e: string[]) => {
+      state.tutorialSlots = e;
+    };
+
     const rules = {
       name: { required },
       maxMemberPerTeam: { required },
@@ -121,6 +144,8 @@ export default {
       teamCreationDeadline: { required },
       teamAdjourningDate: { required },
       peerReviewDurationInDays: { required },
+      tutorialSlots: { required },
+      tags: { required },
     };
     const v$ = useVuelidate(rules as any, state);
 
@@ -135,8 +160,8 @@ export default {
             teamAdjourningDate: new Date(state.teamAdjourningDate || ""),
             peerReviewDurationInDays:
               Number(state.peerReviewDurationInDays) || 0,
-            tutorialSlots: [],
-            tags: [],
+            tutorialSlots: state.tutorialSlots || [],
+            tags: state.tags || [],
           },
           onSuccess: () => {
             Swal.fire({
@@ -150,7 +175,7 @@ export default {
         });
       }
     };
-    return { v$, state, submitSettings };
+    return { v$, state, submitSettings, onAddTags, onAddTutorial };
   },
 };
 </script>

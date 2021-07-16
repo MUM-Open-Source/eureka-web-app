@@ -65,6 +65,7 @@ export const studentJoinWorkspace = async ({
   tags: string[];
   tutorialSlots: string[];
 }) => {
+  console.log("Adding workspace to user");
   await db
     .collection(USER_PATH)
     .doc(store.state.user?.uid)
@@ -72,6 +73,7 @@ export const studentJoinWorkspace = async ({
       workspace: firebase.firestore.FieldValue.arrayUnion(workspaceCode),
     });
 
+  console.log("Add a new workspace member");
   await db
     .collection(WORKSPACE_MEMBER_PATH)
     .doc(`${store.state.user?.uid}${workspaceCode}`)
@@ -86,6 +88,7 @@ export const studentJoinWorkspace = async ({
       tags,
     });
 
+  console.log("Update the workspace");
   await db
     .collection(INCUBATOR_PATH)
     .doc(workspaceCode)

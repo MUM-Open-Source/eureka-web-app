@@ -153,3 +153,11 @@ export default {
   }
 }
 </style>
+
+
+userid_timestamp:{
+  timestamp,
+  userid,
+  message, 
+  type,  
+}
