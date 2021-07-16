@@ -23,11 +23,11 @@ export default defineComponent({
   props: {
     limit: {
       type: Number,
-      default: 20, // default limit is 10 tags
+      default: 10, // default limit is 10 tags
     },
     placeholder: {
       type: String,
-      default: "Enter A Tag",
+      default: "Enter a Tag",
     },
   },
   data() {
@@ -37,7 +37,7 @@ export default defineComponent({
   },
   methods: {
     addTag(event: any) {
-      if (event.code == "Comma" || event.code == "Enter") {
+      if (event.code === "Comma" || event.code === "Enter") {
         event.preventDefault();
         var val = event.target.value.trim();
         if (
@@ -46,18 +46,29 @@ export default defineComponent({
           !this.tags.includes(val.toUpperCase())
         ) {
           this.tags.push(val.toUpperCase());
+          this.$emit("update-tags", this.tags);
           event.target.value = "";
         }
       }
     },
     removeTag(index: number) {
       this.tags.splice(index, 1);
+      this.$emit("update-tags", this.tags);
     },
     removeLastTag(event: any) {
       if (event.target.value.length === 0) {
         this.removeTag(this.tags.length - 1);
+        this.$emit("update-tags", this.tags);
       }
     },
+  },
+  removeTag(index: number) {
+    this.tags.splice(index, 1);
+  },
+  removeLastTag(event: any) {
+    if (event.target.value.length === 0) {
+      this.removeTag(this.tags.length - 1);
+    }
   },
 });
 </script>
@@ -66,10 +77,11 @@ export default defineComponent({
 .tag-input {
   width: $tag-input-width;
   border: $tag-input-border-radius solid $color-bg-hover;
-  height: $tag-input-height;
+  min-height: $tag-input-min-height;
   box-sizing: border-box;
   padding: $tag-input-padding;
-  display: table;
+  display: flex;
+  flex-wrap: wrap;
   &__tag {
     height: $tag-input-tag-height;
     float: left;
@@ -87,6 +99,13 @@ export default defineComponent({
     outline: none;
     line-height: $tag-input-text-line-height;
     background: none;
+    flex-grow: 100;
   }
+}
+&__text {
+  border: none;
+  outline: none;
+  line-height: $tag-input-text-line-height;
+  background: none;
 }
 </style>
