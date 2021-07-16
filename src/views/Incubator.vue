@@ -7,7 +7,7 @@
         <div class="empty-state" v-if="state.isEmpty">
           <img class="empty-image" src="@/assets/not-found-icon.svg" />
           <p>Seems like you don't have any workspace now</p>
-          <p>Create One !</p>
+          <p>{{ state.canCreateRooms ? "Create One !" : "Join One !" }}</p>
         </div>
 
         <div class="workspace-list" v-if="!state.isEmpty">
@@ -15,7 +15,7 @@
             v-for="(data, index) in state.workspace"
             class="workspace-card"
             :key="index"
-            v-on:click="() => router"
+            v-on:click="() => router.push(`/incubator/${data.code}`)"
           >
             {{ data.name }}
           </div>

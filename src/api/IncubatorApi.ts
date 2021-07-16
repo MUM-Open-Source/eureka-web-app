@@ -60,15 +60,17 @@ export const getAllStudentWorkspace = async (
       .map((data) => data.data().workspace)
       .slice(0, 10);
 
-    const allWorkspace = (
-      await db
-        .collection(INCUBATOR_PATH)
-        .where("code", "in", workspaceArray)
-        .get()
-    ).docs.map((data) => data.data());
-
-    onSuccess(allWorkspace as Incubator[]);
+    if (workspaceArray.length > 0) {
+      const allWorkspace = (
+        await db
+          .collection(INCUBATOR_PATH)
+          .where("code", "in", workspaceArray)
+          .get()
+      ).docs.map((data) => data.data());
+      onSuccess(allWorkspace as Incubator[]);
+    } else onSuccess([]);
   } catch (e) {
+    console.log(e);
     onError("Error Fetching Student Workspace");
   }
 };

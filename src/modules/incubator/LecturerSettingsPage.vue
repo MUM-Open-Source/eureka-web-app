@@ -188,7 +188,7 @@ export default {
 .lecturer-settings {
   display: flex;
   margin: auto;
-  width: 40%;
+  width: 60%;
   flex-direction: column;
   justify-content: center;
   margin-bottom: 1rem;
