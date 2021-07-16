@@ -34,6 +34,7 @@ export default {
     props: {
         id: { type: String, required: true },
         icon: { type: String, required: true },
+        category: { type: String, required: true },
         title: { type: String, required: true },
         bodyText: { type: String, required: true },
         moment: { type: String, required: true },
@@ -41,7 +42,7 @@ export default {
         iconColor: { type: String, required: true }
     },
     setup(props) {
-        const readIndividual = () => store.dispatch('readIndividualNotification', props.id);
+        const readIndividual = () => store.dispatch('readIndividualNotification', { notiId: props.id, category: props.category });
         return { readIndividual };
     }
 };

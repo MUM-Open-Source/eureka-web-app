@@ -2,12 +2,13 @@
     <div class="modal">
         <div class="modal__header">
             <h1 class="subheading">Your Notifications</h1>
-            <button class="text--primary cta" @click="readAll">Mark all as read</button>
+            <button class="text--primary cta" :style="{ padding: '5px 10px' }" @click="readAll">Mark all as read</button>
         </div>
         <hr class="divider" />
-        <div v-for="noti in notifications" :key="noti.id">
+        <div v-for="noti in displaytNotifications" :key="noti.id">
             <NotificationsItem
-                v-if="noti.type == 'waves'"
+                v-if="noti.category == 'waves'"
+                :category="noti.category"
                 :id="noti.id"
                 icon="celebration"
                 title="Someone waved at you"
@@ -17,8 +18,9 @@
                 iconColor="#71c9a2"
             />
             <NotificationsItem
-                v-if="noti.type == 'projects'"
+                v-if="noti.category == 'projects'"
                 :id="noti.id"
+                :category="noti.category"
                 icon="book_online"
                 title="A new project was created"
                 :bodyText="`Check out ${noti.name} now`"
@@ -27,12 +29,17 @@
                 iconColor="#FFFF00"
             />
         </div>
+        <div class="modal__footer">
+            <button class="text--primary cta" :style="{ padding: '10px' }">
+                View All Notifications
+            </button>
+        </div>
     </div>
 </template>
 
 <script>
 import moment from 'moment';
-import { ref } from '@vue/runtime-core';
+import { ref, computed } from '@vue/runtime-core';
 
 import store from '@/store';
 import NotificationsItem from './NotificationsItem.vue';
@@ -42,16 +49,16 @@ export default {
     components: { NotificationsItem },
     setup() {
         const notifications = ref(store.state.notifications);
-        console.log(notifications.value);
+        const displaytNotifications = computed(() => notifications.value.slice(0, 3));
         const getMoment = timeStamp => {
-            return moment(timeStamp)
+            return moment(new Date(timeStamp.seconds * 1000))
                 .fromNow()
                 .toString();
         };
 
         const readAll = () => store.dispatch('readAllNotifications');
 
-        return { notifications, getMoment, readAll };
+        return { notifications, getMoment, readAll, displaytNotifications };
     }
 };
 </script>
@@ -63,12 +70,11 @@ export default {
     margin: 15px 0;
 }
 .cta {
-    font-size: 12px;
     font-weight: bold;
     cursor: pointer;
     border: 0px;
     border-radius: 5px;
-    padding: 5px 10px;
+    font-size: 12px;
     background-color: transparent;
     &:hover {
         background-color: $color-ghost;
@@ -92,6 +98,12 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+
+    &__footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 </style>

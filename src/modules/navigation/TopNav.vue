@@ -9,7 +9,7 @@
             </div>
             <div class="top-nav__right">
                 <!-- <img id="bell" class="top-nav__icon" src="@/assets/notification-icon.svg" v-if="isLoggedIn" /> -->
-                <i class="material-icons noti-icon" @click="modalController('notification')" v-if="isLoggedIn">
+                <i class="material-icons noti-icon" :class="{ badge: unreadNotifications }" @click="modalController('notification')" v-if="isLoggedIn">
                     notifications
                 </i>
                 <div @click="modalController('userMenu')" class="top-nav__right--user cursor__pointer">
@@ -34,6 +34,7 @@ export default {
     name: 'TopNav',
     components: { UserMenu, NotificationsModal },
     setup() {
+        const unreadNotifications = computed(() => store.state.notifications.some(noti => noti.readStatus == false));
         // controls notification click state
         const notiState = ref(false);
         // to help display user menu
@@ -66,7 +67,6 @@ export default {
 
         // display the logged in user
         const displayName = computed(() => (store.state.user_data ? store.state.user_data.full_name : 'Login'));
-
         // display the logged in user's profile pic
         const displayPic = computed(() => (store.state.user_data ? store.state.user_data.image_url : require('@/assets/default-user-image.png')));
 
@@ -81,7 +81,8 @@ export default {
             isUserMenuShown,
             modalController,
             topNavWidth,
-            notiState
+            notiState,
+            unreadNotifications
         };
     }
 };
@@ -89,13 +90,23 @@ export default {
 
 <style lang="scss" scoped>
 .noti-icon {
+    position: relative;
     margin-right: 10px;
-    padding: 5px;
+    padding: 7px;
     border-radius: 10px;
     cursor: pointer;
     &:hover {
         background: $color-ghost;
     }
+}
+.badge:after {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ff0000;
 }
 
 .top-nav {

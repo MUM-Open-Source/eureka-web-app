@@ -36,8 +36,10 @@ export default {
         onUpdated(() => {
             if (isNewUserDataAvailable.value) {
                 store.dispatch('fetchCurrentUserFromDB');
+                if (!store.state.notifications.length) {
+                    store.dispatch('getUserNotifications');
+                }
             }
-            store.dispatch('getUserNotifications');
         });
 
         // computed properties

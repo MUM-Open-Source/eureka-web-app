@@ -37,4 +37,5 @@ export interface AppState {
         mentors: MentorFilter;
     };
     notifications: any[];
+    defaultNotificationCategories: string[];
 }
