@@ -147,6 +147,7 @@ $under-maintenance-img-width: 50%;
 $under-maintenance-img-width-sm: 250px;
 $under-maintenance-img-padding-right: 40px;
 
+
 // tabs
 $tab-wrapper-width: 100%;
 $tab-wrapper-margin: 0 auto;
@@ -157,9 +158,9 @@ $tab-content-min-height: 300px;
 // Tag Input Styling
 $tag-input-width: 100%;
 $tag-input-border-radius: 1px;
+$tag-input-min-height: 50px;
 $tag-input-height: 50px;
 $tag-input-padding: 0 10px;
-
 $tag-input-tag-height: 30px;
 $tag-input-tag-margin-right: 10px;
 $tag-input-tag-line-height: 30px;
@@ -175,3 +176,6 @@ $user-card-actions-height: 2.5rem;
 $user-card-row-margin-left: 15px;
 $user-card-icon-width: 30px;
 $user-card-icon-margin: 5px;
+
+// Star Rating Icon
+$star-rating-icon-padding: 5px;
