@@ -24,7 +24,7 @@ import AllProjects from '@/modules/recruitment/AllProjects.vue';
 import NewProject from '@/modules/recruitment/NewProject.vue';
 
 export default defineComponent({
-    name: 'ResearchRecruit',
+    name: 'ResearchProjects',
     components: {
         TabsWrapper,
         Tab,

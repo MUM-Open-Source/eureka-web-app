@@ -18,7 +18,7 @@ import ResetPassword from '@/views/ResetPassword.vue';
 import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
 import IncubatorNitin from '@/views/IncubatorNitin.vue';
-import ResearchRecruit from '@/views/ResearchRecruit.vue';
+import ResearchProjects from '@/views/ResearchProjects.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -134,9 +134,9 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true
     }
   }, {
-    path: '/research-recruitment',
-    name: 'ResearchRecruit',
-    component: ResearchRecruit,
+    path: '/research-projects',
+    name: 'ResearchProjects',
+    component: ResearchProjects,
     meta: {
       requiresAuth: true
     }
