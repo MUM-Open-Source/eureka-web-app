@@ -289,12 +289,35 @@ export default createStore({
 
         ADD_PROJECT(state, project: Project) {
             db.collection("projects")
-                .doc(project.id)
+                .doc()
                 .set(project).then(() => {
                     state.projects.push(project)
                 }).catch(function(error) {
                     console.log("Error getting document")
                 })
+        },
+
+        GET_PROJECTS(state) {
+            db.collection("projects")
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+
+                        const project: Project = {
+                            overview: doc.data().overview,
+                            project_duration: doc.data().project_duration,
+                            project_fields: doc.data().project_fields,
+                            project_name: doc.data().project_name
+                        }
+
+                        console.log('added')
+
+                        state.projects.push(project);
+                    })
+                })
+                .catch(function(error) {
+                    console.log("Error getting document")
+                });
         },
 
         GET_LIKED_EVENTS(state) {
@@ -766,6 +789,9 @@ export default createStore({
         },
         addProjects({ commit }, obj: Project) {
             commit('ADD_PROJECT', obj)
+        },
+        getProjects({ commit }) {
+            commit('GET_PROJECTS');
         },
         getMentors({ commit }) {
             commit('GET_MENTORS');

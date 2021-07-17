@@ -4,7 +4,7 @@
             <div class="heading text--center mar__t--3">Incubator</div>
             <TabsWrapper>
                 <Tab title="Your Projects"><YourProject v-for="i in [1,2,3,4,5]" :key="i"/></Tab>
-                <Tab title="All Projects"><AllProjects v-for="i in [1,2,3,4,5]" :key="i"/></Tab>
+                <Tab title="All Projects"><AllProjects /></Tab>
                 <Tab title="New Project"><NewProject /></Tab>
             </TabsWrapper>
         </div>
@@ -24,7 +24,7 @@ import AllProjects from '@/modules/recruitment/AllProjects.vue';
 import NewProject from '@/modules/recruitment/NewProject.vue';
 
 export default defineComponent({
-    name: 'AcademicRecruit',
+    name: 'ResearchRecruit',
     components: {
         TabsWrapper,
         Tab,

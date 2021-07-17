@@ -30,6 +30,15 @@
         class="body new-project__multiselect mar__b--2"
         :createTag="true"
     />
+    <div class="new-project__overview">
+      <label for="overview" class="custom-input__label tagline--bold">Overview/Abstract</label>
+      <textarea
+          id="overview"
+          class="body new-project__textarea"
+          placeholder="Place Overview/Abstract Here"
+          v-model="overview"
+      />
+    </div>
     <Button text="Done" v-on:click="addProject" />
   </div>
 </template>
@@ -50,6 +59,7 @@ export default {
     return {
       project_name: "",
       project_duration: "",
+      overview: "",
       indexes: [],
       project_fields: [],
       options: [
@@ -69,24 +79,27 @@ export default {
       console.log({
         project_name: this.project_name,
         project_duration: this.project_duration,
-        project_fields: this.project_fields
+        project_fields: this.project_fields,
+        overview: this.overview
       });
       store.dispatch("addProjects", {
-        id: Date.now().toString(),
         project_name: this.project_name,
         project_duration: this.project_duration,
-        project_fields: this.project_fields
+        project_fields: this.project_fields,
+        overview: this.overview
       });
       Swal.fire("Added!", "A new project has been added", "success")
       this.project_name = "",
       this.project_duration = "",
       this.project_fields = [];
       this.indexes = [];
+      this.overview = "";
     },
   },
 };
 </script>
 
+<style src="@vueform/multiselect/themes/default.css"></style>
 <style lang="scss" scoped>
 .custom-input {
   width: 100%;
@@ -97,18 +110,25 @@ export default {
   &__label {
     color: $color-brand;
   }
-  &--disabled {
-    background-color: $color-bg-hover;
-  }
   &::placeholder {
     color: $color-bg-hover;
   }
 }
-.new-project__multiselect {
-    width: $multiselect-width;
+.new-project {
+    &__overview {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+    &__textarea {
+      height: 100px;
+    }
+    &__multiselect {
+        width: $multiselect-width;
     &-tag {
         background-color: $color-brand;
     }
+  }
 }
 @media (max-width: 954px) {
     .new-project__multiselect {

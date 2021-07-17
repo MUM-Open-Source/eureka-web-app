@@ -24,7 +24,7 @@
         <div class="side-nav__text">Incubator Nitin</div>
       </div>
     </router-link>
-    <router-link :to="{ name: 'AcademicRecruit' }">
+    <router-link :to="{ name: 'ResearchRecruit' }">
       <div class="side-nav__group">
         <img class="side-nav__icon" src="https://static.thenounproject.com/png/145780-200.png" />
         <div class="side-nav__text">Academic Research Recruitment</div>

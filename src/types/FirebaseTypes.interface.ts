@@ -35,10 +35,10 @@ export interface Event {
 }
 
 export interface Project {
-    id: string;
     project_name: string;
     project_duration: string;
     project_fields: string[];
+    overview: string;
 }
 
 export interface Feedback {
