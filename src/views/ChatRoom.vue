@@ -1,70 +1,257 @@
 <template>
-<div class = "container-sm mt-20">
-    <div class="mx-5">
-        <h2>Welcome to the ChatRoom</h2>
+    <div class = "container-sm mt-20">
+        <div class="side_bar">
+            <h3 class="side-bar-header">Chats</h3>
+            <input type="text" placeholder="Search Messages or users" class="chat-search-field" required />
 
-        <Message 
+            <a href="#" class="">chat 1</a>
+            <a href="#" class="">chat 2</a>
+            <a href="#" class="">chat 3</a>
+        </div>
+
+        <div class="chat_box">
+            <div class="chat_nav_bar">   
+                <h2>Sauce Foong</h2>
+            </div>
+            <hr class="horizontal_divider">
+
+        <div class="message_box">
+        <Message text="SheeYao" sender="" name="sarif"/>
+        <Message :sender="false" name="sarif"/>
+        <Message text="SheeYao" sender="" name="sarif"/>
+        <Message :sender="false" name="sarif"/>
+        <Message sender="" name="sarif"/>
+        <Message text="SheeYao" :sender="false" name="sarif"/>
+
+        <Message text="SheeYao" :sender="false" name="sarif"/>
+        <Message sender="" name="sarif"/>
+        <Message text="SheeYao" :sender="false" name="sarif"/>
+        <Message sender="" name="sarif"/>
+        <Message :sender="false" name="sarif"/>
+        <Message text="SheeYao" sender="" name="sarif"/>
+
+        <Message text="SheeYao" sender="" name="sarif"/>
+        <Message :sender="false" name="sarif"/>
+        <Message text="SheeYao" sender="" name="sarif"/>
+        <Message :sender="false" name="sarif"/>
+        <Message sender="" name="sarif"/>
+        <Message text="SheeYao" :sender="false" name="sarif"/>
+
+        <Message text="SheeYao" :sender="false" name="sarif"/>
+        <Message sender="" name="sarif"/>
+        <Message text="SheeYao" :sender="false" name="sarif"/>
+        <Message sender="" name="sarif"/>
+        <Message :sender="false" name="sarif"/>
+        </div>
+        <div class="bottom-divider">
+
+        </div>
+        <!-- <Message 
         v-for="{id, text, userName, userId} in messages"
         :key="id"
         :name= "userName"
         :sender="userId === user?.uid"
         >
         {{text}}
-        </Message>
+        </Message> -->
+
+         <div class="bottom">
+            <hr class="horizontal_divider">
+            <div class="input-field-wrapper">
+            <form @submit.prevent = "sendMessage">
+                <input type="text" v-model="inputMessage" placeholder="Type Message" class="text_bar" required />
+                <button class="button-send"><span class="button-icon">Send</span></button>
+            </form>
+            </div>
+        </div>
+        </div>
+
+       
+
     </div>
-    <div ref="bottom" class="mt-20" />
-
-  <div class="bottom">
-    <div class="container-sm">
-      <form @submit.prevent = "send">
-        <input v-model="message" placeholder="Message" required />
-        <input type ="submit" value="Send">
-      </form>
-    </div>
-  </div>
-
-</div>
-
-
-
 </template>
 
 
 
-<script>
-import {ref, watch, nextTick} from 'vue';
+// <script>
+import {ref} from 'vue';
 import store from '@/store';
 import Message from '../common/Message.vue';
 
+
 export default {
-  components: { Message },
   name : 'ChatRoom',
+  components: { Message },
 
-  setup(){
-      const sender = '2TGTBJZMrRQfFUl0n5hxfMdTQN53'
-      const messages = store.dispatch('getMessageFromUser', sender)
-      const bottom = ref(null)
-      watch(
-          messages,
-          () =>{
-              nextTick(()=>{
-                  bottom.value?.scrollIntoView({behavior: 'smooth'})
-              })
-          },
-          {deep:true}
-      )
-
-      const message = ref('')
-      const send =() =>{
-          store.dispatch('sendMessage', message)
-          message.value = ''
+  data() {
+      return{
+          message: '',
+          messages: [],
       }
+  },
+  setup() {
+    const inputMessage = ref("");
+    const sendMessage = () =>{
+        //event.preventDefault()
+        //const messagesRef = db.database().ref("messages");
+        
+        if(inputMessage.value === "" || inputMessage.value === null) {
+            return ; 
+        }
 
-      return {messages, bottom, message, send}
+        // const message = {
+        //     id: Date.now.toString,
+        //     text: inputMessage.value,
+        //     type: 1 //1 as direct msg now
+        // }
+        const message = {
+            sent_at: null,
+            sent_by: null,
+            text: inputMessage.value,
+            content_type: "text"
+        }
+        store.dispatch("sendMessage", message);
+        inputMessage.value = "";
+    }
+
+
+    return {inputMessage,sendMessage}
+
   }
 
 
+  }
 
-}
 
 </script>
+
+
+<style scoped>
+
+.bottom-divider {
+    font:white;
+    margin-bottom: 100px;
+    width:100%;
+    height:100px;
+}
+
+
+
+.bottom {
+    margin-top:200px;
+    z-index:1;
+    position: fixed;
+    width: 100%;
+    height: 65px;
+    bottom: 0;
+    background-color: white;
+}
+
+
+.text_bar{
+    padding: 8px 10px;
+    border: none;
+    background: #E0E4EE;
+    outline: none;
+    font-size: 17px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    margin:10px 20px;
+}
+
+.button-send{
+    padding-right:20px;
+    margin-bottom:10px;
+    width:70px;
+    height: 35px;
+    bottom:0;
+    right:0;
+    position:fixed;
+    background-color: #7069E7;
+}
+
+
+.side_bar {
+  margin: 0;
+  padding: 0;
+  width: 310px;
+  background-color: #F4F6FA;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+.side_bar a {
+  display: block;
+  color: black;
+  padding: 40px;
+  text-decoration: none;
+}
+ 
+.side_bar a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.side_bar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+.chat_box {
+  margin-left: 300px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+.chat-search-field {
+    margin:20px;
+    height:5%;
+    width:250px;
+    background: #E0E4EE;
+    font-size:15px;
+}
+
+
+@media screen and (max-width: 700px) {
+  .side_bar {
+    width: 30%;
+  }
+  .chat-search-field{
+      width:80px;
+  }
+  
+  .chat_box{
+      margin-left:110px;
+  }
+
+
+  .side_bar a {float: left;}
+  .chat_room {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .side_bar a {
+    text-align: center;
+    float: none;
+  }
+}
+
+.chat_nav_bar {
+    margin:20px ;
+}
+
+.horizontal_divider {
+    border-top: 2px solid #bbb ; 
+}
+
+.side-bar-header{
+    font-size:30px;
+    margin-left:20px;
+    margin-right:auto;
+}
+
+
+
+</style>

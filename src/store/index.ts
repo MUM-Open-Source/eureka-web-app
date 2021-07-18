@@ -7,7 +7,7 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 // types
 import { AppState } from '@/types/AppTypes.interface';
-import { User, Event, Feedback, Project } from '@/types/FirebaseTypes.interface';
+import { User, Event, Feedback, Project, Message } from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
     return {
@@ -25,6 +25,7 @@ const getInitState = (): AppState => {
         projects: [],
         talent: [],
         mentors: [],
+        messages: [],
         feedback: [],
         liked_events: [],                     // list of events liked by the user
         user_waves: [],                       // list of users waved at by the auth user
@@ -724,11 +725,24 @@ export default createStore({
                 });
         },
         SEND_MESSAGE(state, message: Message) {
-            db.collection("messages")
-                .doc(message.id)
-                .set(message).then(() =>
-                    state.messages.push(message)
-                ).catch(function(error) {
+            // const message: Message = {
+            //     id: newMessage.id,
+            //     sendAt: firebaseApp.firestore.FieldValue.serverTimestamp(),
+            //     sendBy: auth.currentUser!.uid,
+            //     text: newMessage.text,
+            //     type: newMessage.type
+            // }
+            message = {
+                ...message,
+                sent_at : firebaseApp.firestore.FieldValue.serverTimestamp(),
+                sent_by : auth.currentUser!.uid
+            }
+
+            console.log(message); 
+            db.collection("message")
+                .doc("asdfghjkl")
+                .set({"hello": "test"})
+                .catch(function(error) {
                     console.log("Message " + error)
                 });
         },
@@ -741,12 +755,10 @@ export default createStore({
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         const message: Message = {
-                            id: doc.data().id,
-                            send_at: doc.data().send_at,
+                            sent_at: doc.data().send_at,
                             text: doc.data().text,
-                            sendBy: doc.data().send_by,
-                            sendTo: doc.data().send_to,
-                            type: doc.data().type
+                            sent_by: doc.data().send_by,
+                            content_type: doc.data().content_type
                         }
                         state.messages.push(message);
                     });
@@ -866,7 +878,7 @@ export default createStore({
         },
 
         sendMessage({ commit }, message) {
-            commit('SEND_MESSAGE');
+            commit('SEND_MESSAGE', message);
         },
 
         getMessageFromUser({commit}, user: User) {
