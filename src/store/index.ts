@@ -7,14 +7,14 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 // types
 import { AppState } from '@/types/AppTypes.interface';
-import { User, Event, Feedback } from '@/types/FirebaseTypes.interface';
+import { User, Event, Feedback, Message } from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
     return {
         user: auth.currentUser,               // firebase auth user
         isSideNavCollapsed: true,             // bool to check if sidenav is showing
         isLoading: true,                      // bool to keep track whether user is being retreived from the DB
-        is_under_maintenance: true,           // bool to know whether website is under maintenance and display maintenance screen
+        is_under_maintenance: false,           // bool to know whether website is under maintenance and display maintenance screen
         user_data: null,                      // user data pulled from db
         is_new_user_data_available: false,    // to identify if updated data is available to fetch
         user_image: '',
@@ -25,6 +25,7 @@ const getInitState = (): AppState => {
         talent: [],
         mentors: [],
         feedback: [],
+        messages: [],
         liked_events: [],                     // list of events liked by the user
         user_waves: [],                       // list of users waved at by the auth user
         waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -711,7 +712,24 @@ export default createStore({
                 .catch(function(error) {
                     console.log("Error getting document:", error);
                 });
-        }
+        },
+
+        SEND_MESSAGE(state, message: Message) {
+
+            message = {
+                ...message,
+                sent_at : firebaseApp.firestore.FieldValue.serverTimestamp(),
+                sent_by : auth.currentUser!.uid
+            }
+
+            console.log(message); 
+            db.collection("message")
+                .doc("asdfghjkl")
+                .set({"hello": "test"})
+                .catch(function(error) {
+                    console.log("Message " + error)
+                });
+        },
 
     },
 
