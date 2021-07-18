@@ -1,34 +1,62 @@
 <template>
   <div id="sidenav" :class="showOrHide">
-    <router-link :to="{ name: 'BrowseEvents' }">
-      <div class="side-nav__group">
-        <img class="side-nav__icon" src="@/assets/events-icon.svg" />
-        <div class="side-nav__text">Browse Events</div>
+    <router-link :to="{ name: '' }">
+      <div class="side-nav__group--link">
+        <fa
+          icon="border-all"
+          size="md"
+          class="side-nav__icon"
+        />
+        <!-- <img class="side-nav__icon" src="@/assets/events-icon.svg" /> -->
+        <div class="side-nav__text">Dashboard</div>
       </div>
     </router-link>
-    <router-link :to="{ name: 'FindTalent' }">
-      <div class="side-nav__group">
-        <img class="side-nav__icon" src="@/assets/talent-icon.svg" />
-        <div class="side-nav__text">Find Talent</div>
+    <router-link :to="{ name: '' }">
+      <div class="side-nav__group--link">
+        <fa
+          :icon="['far', 'comments']"
+          size="md"
+          class="side-nav__icon"
+        />
+        <!-- <img class="side-nav__icon" src="@/assets/talent-icon.svg" /> -->
+        <div class="side-nav__text">Messages</div>
       </div>
     </router-link>
-    <router-link :to="{ name: 'FindMentor' }">
-      <div class="side-nav__group">
+    <router-link :to="{ name: '' }">
+      <div class="side-nav__group--link">
         <img class="side-nav__icon" src="@/assets/mentor-icon.svg" />
-        <div class="side-nav__text">Find Mentors</div>
+        <div class="side-nav__text">Incubator</div>
+      </div>
+    </router-link>
+    <router-link :to="{ name: '' }">
+      <div class="side-nav__group--link">
+        <img class="side-nav__icon" src="@/assets/mentor-icon.svg" />
+        <div class="side-nav__text">Research</div>
+      </div>
+    </router-link>
+    <router-link :to="{ name: '' }">
+      <div class="side-nav__group--link">
+        <img class="side-nav__icon" src="@/assets/mentor-icon.svg" />
+        <div class="side-nav__text">Events</div>
+      </div>
+    </router-link>
+    <router-link :to="{ name: '' }">
+      <div class="side-nav__group--link">
+        <img class="side-nav__icon" src="@/assets/mentor-icon.svg" />
+        <div class="side-nav__text">Projects</div>
       </div>
     </router-link>
     <router-link
       :to="{ name: 'Admin' }"
       v-if="userIsAdmin"
     >
-      <div class="side-nav__group">
+      <div class="side-nav__group--link">
         <img class="side-nav__icon" src="@/assets/info-icon.svg" />
         <div class="side-nav__text">Mission Control</div>
       </div>
     </router-link>
     <router-link :to="{ name: 'Feedback' }">
-      <div class="side-nav__group side-nav__group--bottom">
+      <div class="side-nav__group--link side-nav__group--bottom">
         <img class="side-nav__icon" src="@/assets/feedback-icon.svg" />
         <div class="side-nav__text">Provide Feedback</div>
       </div>
@@ -80,18 +108,18 @@ export default {
     left: 0;
 }
 .side-nav__group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: $side-nav-group-padding;
-    width: 100%;
-    text-align: center;
-    &:hover {
-        background-color: $color-bg-hover;
-        cursor: pointer;
+    &--link {
+      display: flex;
+      align-items: center;
+      padding: $side-nav-group-padding;
+      width: 100%;
+      &:hover {
+          background-color: $color-bg-hover;
+          cursor: pointer;
+      }
     }
     .side-nav__text {
-        width: $side-nav-text-width;
+        // width: $side-nav-text-width;
     }
     &--bottom {
         position: absolute;
@@ -100,6 +128,7 @@ export default {
 }
 .side-nav__icon {
     width: $side-nav-icon-width;
-    margin-bottom: $side-nav-icon-mar-b;
+    margin-right: $side-nav-icon-mar-r;
+    margin-left: 15px;
 }
 </style>
