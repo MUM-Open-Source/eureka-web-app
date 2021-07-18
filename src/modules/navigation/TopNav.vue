@@ -8,7 +8,6 @@
                 </router-link>
             </div>
             <div class="top-nav__right">
-                <!-- <img id="bell" class="top-nav__icon" src="@/assets/notification-icon.svg" v-if="isLoggedIn" /> -->
                 <i
                     class="material-icons noti-icon"
                     :class="{ badge: unreadNotifications }"
@@ -123,6 +122,7 @@ export default {
     @include shadow--small;
     position: fixed;
     top: 0;
+    right: 0;
     z-index: 1;
     height: $top-nav-height;
     background-color: $color-white;
@@ -137,7 +137,6 @@ export default {
         align-items: center;
         justify-content: space-between;
         height: 100%;
-        margin: 0 10px;
     }
     &__left,
     &__right {
