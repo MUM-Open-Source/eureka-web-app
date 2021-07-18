@@ -136,7 +136,6 @@ const routes: RouteRecordRaw[] = [
     name: 'Privacy',
     component: Privacy,
   }, {
-<<<<<<< HEAD
     path: '/incubator-nitin',
     name: 'IncubatorNitin',
     component: IncubatorNitin,
@@ -151,8 +150,6 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true
     }
   }, {
-=======
->>>>>>> chat-room
     path: '/chat-room',
     name: 'ChatRoom',
     component: ChatRoom,
