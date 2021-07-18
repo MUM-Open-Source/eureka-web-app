@@ -1,5 +1,5 @@
 <template>
-    <div class="noti-item" :class="{ unread: !readStatus }">
+    <div class="noti-item" :class="{ unread: !readStatus, longNotiStyle: longNoti }">
         <div :style="{ display: 'flex' }">
             <div class="noti-item-icon " :class="{ badge: !readStatus }" :style="{ backgroundColor: iconColor }" data-count="">
                 <i class="material-icons-outlined">
@@ -8,7 +8,7 @@
             </div>
             <div :style="{ flex: '1' }">
                 <div class="content-title">
-                    <h2 :style="{ fontSize: '16px' }">{{ title }}</h2>
+                    <h2 class="title-text">{{ title }}</h2>
                     <span class="moment-text">
                         {{ moment }}
                     </span>
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <hr class="divider" />
+    <hr class="divider" v-if="!longNoti" />
 </template>
 
 <script>
@@ -39,7 +39,8 @@ export default {
         bodyText: { type: String, required: true },
         moment: { type: String, required: true },
         readStatus: { type: Boolean, required: true },
-        iconColor: { type: String, required: true }
+        iconColor: { type: String, required: true },
+        longNoti: { type: Boolean }
     },
     setup(props) {
         const readIndividual = () => store.dispatch('readIndividualNotification', { notiId: props.id, category: props.category });
@@ -55,6 +56,16 @@ export default {
     cursor: pointer;
     &:hover {
         background: $color-ghost;
+    }
+}
+.longNotiStyle {
+    border: 2px solid $color-ghost;
+    margin-bottom: 10px;
+    padding: 25px !important;
+    &:hover {
+        transform: scale(1.05);
+        background: none;
+        border-color: $color-brand;
     }
 }
 .divider {
@@ -76,6 +87,12 @@ export default {
 .moment-text {
     font-size: 12px;
     color: $color-light;
+    width: 30%;
+    text-align: end;
+}
+.title-text {
+    font-size: 16px;
+    width: 65%;
 }
 .noti-item-icon {
     position: relative;

@@ -9,7 +9,13 @@
             </div>
             <div class="top-nav__right">
                 <!-- <img id="bell" class="top-nav__icon" src="@/assets/notification-icon.svg" v-if="isLoggedIn" /> -->
-                <i class="material-icons noti-icon" :class="{ badge: unreadNotifications }" @click="modalController('notification')" v-if="isLoggedIn">
+                <i
+                    class="material-icons noti-icon"
+                    :class="{ badge: unreadNotifications }"
+                    data-count=""
+                    @click="modalController('notification')"
+                    v-if="isLoggedIn"
+                >
                     notifications
                 </i>
                 <div @click="modalController('userMenu')" class="top-nav__right--user cursor__pointer">
@@ -102,7 +108,7 @@ export default {
         background: $color-ghost;
     }
 }
-.badge:after {
+.badge[data-count]:after {
     position: absolute;
     top: 5%;
     right: 5%;
@@ -110,6 +116,7 @@ export default {
     height: 10px;
     border-radius: 50%;
     background: #ff0000;
+    content: attr(data-count);
 }
 
 .top-nav {

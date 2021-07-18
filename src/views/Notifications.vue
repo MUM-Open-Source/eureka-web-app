@@ -1,11 +1,101 @@
 <template>
-    <div>Notify me</div>
+    <div class="wrapper-container">
+        <div class="wrapper-container__header">
+            <h1 class="subheading">Your Notifications</h1>
+            <select name="filter" class="selector" @change="onChangeSite($event)">
+                <option value="all">All</option>
+                <option value="unread">Unread</option>
+            </select>
+        </div>
+        <div class="content">
+            <div class="content__content-available" v-if="!notifications.length">
+                <NotificationsCategories :notifications="notifications" :longNoti="true" />
+            </div>
+            <div class="content__empty-content" v-else>
+                <i class="material-icons-outlined no-noti">
+                    notifications
+                </i>
+                <p class="subheading mar__t--1">Notifications Zero</p>
+                <p class="body mar__t--1">Hmm, looks like it's a bit lonely here, come back another time to check.</p>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+import store from '@/store';
+import { ref } from '@vue/reactivity';
+
+import NotificationsCategories from '../modules/navigation/NotificationsCategories.vue';
+
 export default {
-    name: 'Notifications'
+    name: 'Notifications',
+    components: { NotificationsCategories },
+    setup() {
+        const notifications = ref(store.state.notifications);
+
+        const onChangeFilter = e => {
+            var selectedFilter = e.target.options[e.target.options.selectedIndex].value;
+            const storeNotifications = ref(store.state.notifications);
+
+            notifications.value = storeNotifications.value.filter(notification => (selectedFilter == 'all' ? true : notification.readStatus == false));
+        };
+        return { notifications, onChangeFilter };
+    }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.wrapper-container {
+    max-width: 1000px;
+    padding-top: 20px;
+    margin: 0 auto;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.content {
+    height: 550px;
+    margin: 20px auto 0 auto;
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid $color-ghost;
+    overflow: auto;
+    &__content-available {
+        width: 75%;
+        height: 100%;
+        margin: 0 auto;
+    }
+    &__empty-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.no-noti {
+    font-size: 200px;
+    color: $color-brand;
+}
+
+.selector {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    width: 100px;
+    border-radius: 8px;
+}
+
+@media (max-width: 48em) {
+    .content-available {
+        width: 100%;
+    }
+    .wrapper {
+        margin: 20px;
+    }
+}
+</style>
