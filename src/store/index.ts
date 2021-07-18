@@ -27,6 +27,7 @@ const getInitState = (): AppState => {
         mentors: [],
         messages: [],
         feedback: [],
+        messages: [],
         liked_events: [],                     // list of events liked by the user
         user_waves: [],                       // list of users waved at by the auth user
         waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -724,14 +725,9 @@ export default createStore({
                     console.log("Error getting document:", error);
                 });
         },
+
         SEND_MESSAGE(state, message: Message) {
-            // const message: Message = {
-            //     id: newMessage.id,
-            //     sendAt: firebaseApp.firestore.FieldValue.serverTimestamp(),
-            //     sendBy: auth.currentUser!.uid,
-            //     text: newMessage.text,
-            //     type: newMessage.type
-            // }
+
             message = {
                 ...message,
                 sent_at : firebaseApp.firestore.FieldValue.serverTimestamp(),

@@ -30,6 +30,7 @@ export interface AppState {
     projects: Project[];
     messages: Message[];
     feedback: Feedback[];
+    messages: Message[];
     liked_events: string[];
     user_waves: string[];
     waves_from_other_users: string[];

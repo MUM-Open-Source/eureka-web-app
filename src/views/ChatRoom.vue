@@ -4,9 +4,11 @@
             <h3 class="side-bar-header">Chats</h3>
             <input type="text" placeholder="Search Messages or users" class="chat-search-field" required />
 
-            <a href="#" class="">chat 1</a>
-            <a href="#" class="">chat 2</a>
-            <a href="#" class="">chat 3</a>
+            <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+
+
         </div>
 
         <div class="chat_box">
@@ -77,11 +79,20 @@
 import {ref} from 'vue';
 import store from '@/store';
 import Message from '../common/Message.vue';
+<<<<<<< HEAD
+=======
+import ChatContact from '../common/ChatContact.vue';
+
+>>>>>>> chat-room
 
 
 export default {
   name : 'ChatRoom',
+<<<<<<< HEAD
   components: { Message },
+=======
+  components: { Message, ChatContact },
+>>>>>>> chat-room
 
   data() {
       return{
@@ -182,6 +193,7 @@ export default {
   overflow: auto;
 }
 
+<<<<<<< HEAD
 .side_bar a {
   display: block;
   color: black;
@@ -198,6 +210,10 @@ export default {
   background-color: #555;
   color: white;
 }
+=======
+
+
+>>>>>>> chat-room
 
 .chat_box {
   margin-left: 300px;
@@ -226,16 +242,22 @@ export default {
       margin-left:110px;
   }
 
+<<<<<<< HEAD
 
   .side_bar a {float: left;}
+=======
+>>>>>>> chat-room
   .chat_room {margin-left: 0;}
 }
 
 @media screen and (max-width: 400px) {
+<<<<<<< HEAD
   .side_bar a {
     text-align: center;
     float: none;
   }
+=======
+>>>>>>> chat-room
 }
 
 .chat_nav_bar {
