@@ -61,10 +61,10 @@ export default {
       workspace?: Incubator[];
     }>({
       isLoading: true,
-      canCreateRooms:
-        (store.state.user?.email?.includes("monash.edu") &&
-          !store.state.user.email.includes("student")) ||
-        false,
+      canCreateRooms: true,
+      // (store.state.user?.email?.includes("monash.edu") &&
+      //   !store.state.user.email.includes("student")) ||
+      // false,
       showList: true,
       isEmpty: false,
       showStudentJoin: false,

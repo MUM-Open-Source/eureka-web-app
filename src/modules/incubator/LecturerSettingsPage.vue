@@ -116,6 +116,7 @@ import Button from "../../common/Button.vue";
 import ErrorMessageComponent from "../incubator/ErrorMessageComponent.vue";
 import { createWorkSpace } from "@/api/IncubatorApi";
 import Swal from "sweetalert2";
+import router from "@/router";
 export default {
   components: { TagInput, Button, ErrorMessageComponent },
   name: "LecturerSettingsPage",
@@ -167,14 +168,14 @@ export default {
             tutorialSlots: state.tutorialSlots || [],
             tags: state.tags || [],
           },
-          onSuccess: () => {
+          onSuccess: (code) => {
             Swal.fire({
               position: "center",
               icon: "success",
               title: "Workshop Created",
               showConfirmButton: false,
               timer: 2000,
-            });
+            }).then(() => router.push(`/incubator/${code}`));
           },
         });
       }

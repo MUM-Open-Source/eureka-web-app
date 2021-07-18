@@ -24,7 +24,7 @@ export const createWorkSpace = ({
   db.collection(INCUBATOR_PATH)
     .doc(code)
     .set({...workshopSettings, code, workspaceOwnerId: store.state.user?.uid})
-    .then(onSuccess)
+    .then(() => onSuccess(code))
     .catch(onError);
 };
 
@@ -97,8 +97,6 @@ export const studentJoinWorkspace = async ({
       .doc(docId)
       .get()
   ).exists;
-
-  console.log(hasJoined);
 
   if (!hasJoined) {
     db.collection(WORKSPACE_MEMBER_PATH)
