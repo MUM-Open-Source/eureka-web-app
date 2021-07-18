@@ -3,11 +3,20 @@
         <div class="side_bar">
             <h3 class="side-bar-header">Chats</h3>
             <input type="text" placeholder="Search Messages or users" class="chat-search-field" required />
+            <div class= "side_bar_tab_wrapper">
+            <span class="tab">
+                <a href="#">Recent</a>
+                <a href="#">Direct</a>
+                <a href="#">Group</a>
+            </span>
+            <button class="add_button">+</button>
+            </div>
 
+            <div class="contact_list">
             <ChatContact contact_name="Adam" />
             <ChatContact contact_name="Adam" />
             <ChatContact contact_name="Adam" />
-
+            </div>
 
         </div>
 
@@ -75,7 +84,7 @@
 
 
 
-// <script>
+//<script>
 import {ref} from 'vue';
 import store from '@/store';
 import Message from '../common/Message.vue';
@@ -236,6 +245,22 @@ export default {
     margin-right:auto;
 }
 
+.add_button{
+    size: 40px;
+    float:right;
+    margin-right:20px;
+}
 
+.tab {
+    font-size:20px;
+    padding:20px;
+}
 
+a {
+    margin-right:10px;
+}
+
+.side_bar_tab_wrapper{
+    margin-bottom:20px;
+}
 </style>
