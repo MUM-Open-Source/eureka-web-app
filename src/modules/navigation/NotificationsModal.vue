@@ -2,12 +2,12 @@
     <div class="modal">
         <div class="modal__header">
             <h1 class="subheading">Your Notifications</h1>
-            <button class="text--primary cta" :style="{ padding: '5px 10px' }" @click="readAll">Mark all as read</button>
+            <button class="text--primary cta" :style="{ padding: '5px 10px' }" @click="readAll" v-if="displayNotifications.length">Mark all as read</button>
         </div>
         <hr class="divider" />
         <NotificationsCategories :notifications="displayNotifications" :longNoti="false" />
         <div class="modal__footer">
-            <button class="text--primary cta" :style="{ padding: '10px' }" @click="toNotificationsPage" v-if="displayNotifications.length > 0">
+            <button class="text--primary cta" :style="{ padding: '10px' }" @click="toNotificationsPage" v-if="displayNotifications.length">
                 View All Notifications
             </button>
             <div class="no-noti" v-else>

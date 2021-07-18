@@ -2,13 +2,13 @@
     <div class="wrapper-container">
         <div class="wrapper-container__header">
             <h1 class="subheading">Your Notifications</h1>
-            <select name="filter" class="selector" @change="onChangeSite($event)">
+            <select name="filter" class="selector" @change="onChangeFilter($event)">
                 <option value="all">All</option>
                 <option value="unread">Unread</option>
             </select>
         </div>
         <div class="content">
-            <div class="content__content-available" v-if="!notifications.length">
+            <div class="content__content-available" v-if="notifications.length">
                 <NotificationsCategories :notifications="notifications" :longNoti="true" />
             </div>
             <div class="content__empty-content" v-else>
@@ -16,7 +16,7 @@
                     notifications
                 </i>
                 <p class="subheading mar__t--1">Notifications Zero</p>
-                <p class="body mar__t--1">Hmm, looks like it's a bit lonely here, come back another time to check.</p>
+                <p class="body mar__t--1" :style="{ textAlign: 'center' }">Hmm, looks like it's a bit lonely here, come back another time to check.</p>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@ export default {
 <style lang="scss" scoped>
 .wrapper-container {
     max-width: 1000px;
-    padding-top: 20px;
+    padding: 20px;
     margin: 0 auto;
     &__header {
         display: flex;
@@ -91,11 +91,8 @@ export default {
 }
 
 @media (max-width: 48em) {
-    .content-available {
+    .content__content-available {
         width: 100%;
-    }
-    .wrapper {
-        margin: 20px;
     }
 }
 </style>

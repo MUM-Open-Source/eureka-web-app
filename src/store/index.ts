@@ -526,7 +526,7 @@ export default createStore({
                 });
         },
 
-        WAVE_AT_USER(_, toUserId: string) {
+        WAVE_AT_USER(state, toUserId: string) {
             // SweetAlert config
             const waveToast = Swal.mixin({
                 toast: true,
@@ -543,6 +543,17 @@ export default createStore({
                 .set({
                     from_user_id: auth.currentUser!.uid,
                     to_user_id: toUserId
+                })
+                .then(() => {
+                    db.collection('notifications')
+                        .doc(toUserId)
+                        .collection('waves')
+                        .add({
+                            readStatus: false,
+                            timeStamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+                            user: state.user_data!.first_name,
+                            userId: auth.currentUser!.uid
+                        });
                 })
                 // Alert with SweetAlert2
                 .then(() => {
@@ -575,6 +586,18 @@ export default createStore({
                 // from_to -> userId_eventId
                 .doc(auth.currentUser!.uid + '_' + toUserId)
                 .delete()
+                .then(() => {
+                    db.collection('notifications')
+                        .doc(toUserId)
+                        .collection('waves')
+                        .where('userId', '==', auth.currentUser!.uid)
+                        .get()
+                        .then(querySnapshots => {
+                            querySnapshots.forEach(doc => {
+                                doc.ref.delete();
+                            });
+                        });
+                })
                 // Alert with SweetAlert2
                 .then(() => {
                     waveToast.fire({
