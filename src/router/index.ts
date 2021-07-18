@@ -14,20 +14,12 @@ import BrowseEvents from '@/views/BrowseEvents.vue';
 import NotFound from '@/views/NotFound.vue';
 import Maintenance from '@/views/Maintenance.vue';
 import CropImage from '@/views/CropImage.vue';
-<<<<<<< HEAD
 import ResetPassword from '@/views/ResetPassword.vue';
 import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
 import IncubatorNitin from '@/views/IncubatorNitin.vue';
 import AcademicRecruit from '@/views/AcademicRecruit.vue';
 import ChatRoom from '@/views/ChatRoom.vue';
-=======
-import ResetPassword from '@/views/ResetPassword.vue'
-import Terms from '@/views/Terms.vue'
-import Privacy from '@/views/Privacy.vue'
-import ChatRoom from '@/views/ChatRoom.vue';
-
->>>>>>> chat-room
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
