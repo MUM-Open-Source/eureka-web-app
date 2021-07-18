@@ -50,4 +50,11 @@ export interface Feedback {
 }
 
 
+export interface Message {
+    sent_at: firebase.firestore.FieldValue,
+    sent_by: string;
+    text: string;
+    content_type: number;
+}
+
 

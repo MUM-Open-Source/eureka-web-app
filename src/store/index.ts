@@ -7,7 +7,7 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 // types
 import { AppState } from '@/types/AppTypes.interface';
-import { User, Event, Feedback, Project } from '@/types/FirebaseTypes.interface';
+import { User, Event, Feedback, Message, Project } from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
     return {
@@ -26,6 +26,7 @@ const getInitState = (): AppState => {
         talent: [],
         mentors: [],
         feedback: [],
+        messages: [],
         liked_events: [],                     // list of events liked by the user
         user_waves: [],                       // list of users waved at by the auth user
         waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -722,7 +723,24 @@ export default createStore({
                 .catch(function(error) {
                     console.log("Error getting document:", error);
                 });
-        }
+        },
+
+        SEND_MESSAGE(state, message: Message) {
+
+            message = {
+                ...message,
+                sent_at : firebaseApp.firestore.FieldValue.serverTimestamp(),
+                sent_by : auth.currentUser!.uid
+            }
+
+            console.log(message); 
+            db.collection("message")
+                .doc("asdfghjkl")
+                .set({"hello": "test"})
+                .catch(function(error) {
+                    console.log("Message " + error)
+                });
+        },
 
     },
 

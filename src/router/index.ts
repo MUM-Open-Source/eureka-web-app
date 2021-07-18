@@ -19,6 +19,7 @@ import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
 import IncubatorNitin from '@/views/IncubatorNitin.vue';
 import AcademicRecruit from '@/views/AcademicRecruit.vue';
+import ChatRoom from '@/views/ChatRoom.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -140,6 +141,10 @@ const routes: RouteRecordRaw[] = [
     meta: {
       requiresAuth: true
     }
+  }, {
+    path: '/chat-room',
+    name: 'ChatRoom',
+    component: ChatRoom
   }
 
   // {
