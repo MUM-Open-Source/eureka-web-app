@@ -12,16 +12,27 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
     faStar,
     faBorderAll,
-    faComments
+    faProjectDiagram,
+    faBook,
+    faCode,
+    faUserShield,
 } from '@fortawesome/free-solid-svg-icons'
-// import { 
-    // faComments,
-// } from '@fortawesome/free-regular-svg-icons'
+import { 
+    faComments,
+    faCalendarAlt,
+    faCommentAlt,
+} from '@fortawesome/free-regular-svg-icons'
 
 library.add(
     faStar,
     faBorderAll,
-    // faComments,
+    faComments,
+    faProjectDiagram,
+    faBook,
+    faCalendarAlt,
+    faCode,
+    faUserShield,
+    faCommentAlt,
 )
 
 createApp(App)

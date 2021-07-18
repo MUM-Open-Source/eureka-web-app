@@ -39,6 +39,11 @@ button {
   }
 }
 
+.side-nav__group--header {
+  font-size: $side-nav-font-size;
+  font-weight: $semibold;
+  color: $color-brand;
+}
 .side-nav__text {
   font-size: $side-nav-font-size;
   font-weight: $normal;

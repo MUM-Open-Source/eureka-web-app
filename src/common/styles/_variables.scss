@@ -45,11 +45,13 @@ $round-img-width: 120px;
 $square-img-width: 250px;
 
 // side nav
-$side-nav-width: 180px;
-$side-nav-group-padding: 15px 0;
-$side-nav-text-width: 90%;
+$side-nav-width: 190px;
+$side-nav-group-padding: 15px 10px;
+$side-nav-header-pad-l: 15px;
+$side-nav-link-mar: 0 10px;
 $side-nav-icon-width: 20px;
-$side-nav-icon-mar-r: 5px;
+$side-nav-icon-mar-r: 10px;
+$side-nav-group-bottom-mar-b: 10px;
 
 // top nav
 $top-nav-height: 60px;
