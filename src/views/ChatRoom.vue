@@ -79,20 +79,13 @@
 import {ref} from 'vue';
 import store from '@/store';
 import Message from '../common/Message.vue';
-<<<<<<< HEAD
-=======
 import ChatContact from '../common/ChatContact.vue';
 
->>>>>>> chat-room
 
 
 export default {
   name : 'ChatRoom',
-<<<<<<< HEAD
-  components: { Message },
-=======
   components: { Message, ChatContact },
->>>>>>> chat-room
 
   data() {
       return{
@@ -193,27 +186,8 @@ export default {
   overflow: auto;
 }
 
-<<<<<<< HEAD
-.side_bar a {
-  display: block;
-  color: black;
-  padding: 40px;
-  text-decoration: none;
-}
- 
-.side_bar a.active {
-  background-color: #04AA6D;
-  color: white;
-}
-
-.side_bar a:hover:not(.active) {
-  background-color: #555;
-  color: white;
-}
-=======
 
 
->>>>>>> chat-room
 
 .chat_box {
   margin-left: 300px;
@@ -242,22 +216,10 @@ export default {
       margin-left:110px;
   }
 
-<<<<<<< HEAD
-
-  .side_bar a {float: left;}
-=======
->>>>>>> chat-room
   .chat_room {margin-left: 0;}
 }
 
 @media screen and (max-width: 400px) {
-<<<<<<< HEAD
-  .side_bar a {
-    text-align: center;
-    float: none;
-  }
-=======
->>>>>>> chat-room
 }
 
 .chat_nav_bar {

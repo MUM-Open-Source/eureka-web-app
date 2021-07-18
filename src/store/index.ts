@@ -25,7 +25,6 @@ const getInitState = (): AppState => {
         projects: [],
         talent: [],
         mentors: [],
-        messages: [],
         feedback: [],
         messages: [],
         liked_events: [],                     // list of events liked by the user
