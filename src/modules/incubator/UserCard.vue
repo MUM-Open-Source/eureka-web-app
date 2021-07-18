@@ -1,5 +1,5 @@
 <template>
-    <div class="user__card pad--2 mar__b--1">
+    <div class="user__card pad--2">
         <div class="user__card--details">
             <!-- Details -->
             <div class="user__card--row">
@@ -37,20 +37,32 @@
                 A hardworking individual with passions rising in the east and setting in the west.
                 A hardworking individual with passions rising in the east and setting in the west.
             </div>
+            <!-- Team -->
+            <div class="tagline user__card--team mar__t--1">
+                <fa 
+                    icon="users" 
+                    size='md'
+                    class="user__card--team-icon"
+                />
+                No Team
+            </div>
         </div>
         <!-- Action items -->
         <div class="user__card--actions">
-            <img 
-                class="user__card--icon" 
-                src="@/assets/hand-empty.svg" 
+            <fa 
+                :icon="['far', 'flag']" 
+                size='2x'
+                class="user__card--icon cursor__pointer"
             />
-            <img 
-                class="user__card--icon" 
-                src="@/assets/hand-empty.svg" 
+            <fa 
+                :icon="['far', 'envelope']" 
+                size='2x'
+                class="user__card--icon cursor__pointer"
             />
-            <img 
-                class="user__card--icon" 
-                src="@/assets/hand-empty.svg" 
+            <fa 
+                :icon="['far', 'paper-plane']" 
+                size='2x'
+                class="user__card--icon cursor__pointer"
             />
         </div>
     </div>
@@ -66,7 +78,7 @@ export default {
 .user__card {
     @include shadow--small;
     display: flex;
-    border-radius: $app-border-radius;
+    border-radius: $app-border-radius-sm;
     &--name {
         margin-right: 15px;
     }
@@ -88,12 +100,24 @@ export default {
             margin-right: $star-icon-margin-right;
         }
     }
+    &--team {
+        display: flex;
+        align-items: center;
+        &-icon {
+            margin-right: 5px;
+        }
+    }
     &--actions {
         display: flex;
+        align-items: center;
     }
     &--icon {
         width: 30px;
         margin: 5px;
+        transition: all $transition-duration-fast;
+        &:hover {
+            color: $color-brand;
+        }
     }
 }
 </style>
