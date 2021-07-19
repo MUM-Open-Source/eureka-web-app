@@ -166,5 +166,6 @@ export default defineComponent({
 .side-nav__icon {
     width: $side-nav-icon-width;
     margin-right: $side-nav-icon-mar-r;
+    color: $color-dark;
 }
 </style>
