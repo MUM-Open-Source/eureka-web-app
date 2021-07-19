@@ -21,6 +21,7 @@ import {
     faComments,
     faCalendarAlt,
     faCommentAlt,
+    faHandshake,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -33,6 +34,7 @@ library.add(
     faCode,
     faUserShield,
     faCommentAlt,
+    faHandshake,
 )
 
 createApp(App)

@@ -70,6 +70,16 @@
           <div class="side-nav__text">Projects</div>
         </div>
       </router-link>
+      <router-link :to="{ name: 'FindTalent' }">
+        <div class="side-nav__group--link">
+          <fa
+            :icon="['far', 'handshake']"
+            size="md"
+            class="side-nav__icon"
+          />
+          <div class="side-nav__text">Talent</div>
+        </div>
+      </router-link>
     </div>
     <div class="side-nav__group mar__b--2">      
       <div class="side-nav__group--header" v-if="userIsAdmin">Admin</div>
