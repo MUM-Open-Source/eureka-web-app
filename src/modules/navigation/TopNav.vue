@@ -101,7 +101,7 @@ export default defineComponent({
         width: 100%;
     }
     &__reduced {
-        width: calc(100% - 190px);
+        width: calc(100% - 160px);
     }
     &__left, &__right {
         display: flex;

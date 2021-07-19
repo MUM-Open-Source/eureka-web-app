@@ -82,7 +82,7 @@
       </router-link>
     </div>
     <div class="side-nav__group mar__b--2">      
-      <div class="side-nav__group--header" v-if="userIsAdmin">Admin</div>
+      <div class="side-nav__group--header" v-if="userIsAdmin">Mission Control</div>
       <router-link :to="{ name: 'Admin' }" >
         <div class="side-nav__group--link">
           <fa
@@ -90,7 +90,7 @@
             size="md"
             class="side-nav__icon"
           />
-          <div class="side-nav__text">Mission Control</div>
+          <div class="side-nav__text">Admin Dash</div>
         </div>
       </router-link>
     </div>
@@ -102,7 +102,7 @@
             size="md"
             class="side-nav__icon"
           />
-          <div class="side-nav__text">Provide Feedback</div>
+          <div class="side-nav__text">Feedback</div>
         </div>
       </router-link>
     </div>
