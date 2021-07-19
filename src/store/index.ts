@@ -7,7 +7,7 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 // types
 import { AppState } from '@/types/AppTypes.interface';
-import { User, Event, Feedback } from '@/types/FirebaseTypes.interface';
+import { User, Event, Feedback, PeerReview } from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
     return {
@@ -25,6 +25,7 @@ const getInitState = (): AppState => {
         talent: [],
         mentors: [],
         feedback: [],
+        peer_reviews: [],
         liked_events: [],                     // list of events liked by the user
         user_waves: [],                       // list of users waved at by the auth user
         waves_from_other_users: [],           // list of user ids who waved at the auth user
@@ -711,6 +712,27 @@ export default createStore({
                 .catch(function(error) {
                     console.log("Error getting document:", error);
                 });
+        },
+
+        NEW_PEER_REVIEW(state, peerReview: PeerReview) {
+            // const peerReview: PeerReview = {
+            //     team_id: newPeerReview.team_id,
+            //     from_id: newPeerReview.from_id,
+            //     to_id: newPeerReview.to_id,
+            //     date_created: firebaseApp.firestore.FieldValue.serverTimestamp(),
+            //     rating_count: newPeerReview.rating_count,
+            //     rating_sum: newPeerReview.rating_sum,
+            //     responses: newPeerReview.responses,
+            // }
+            peerReview.date_created = firebaseApp.firestore.FieldValue.serverTimestamp();
+
+            db.collection("peer_review")
+                .add(peerReview)
+                .then(() =>
+                    state.peer_reviews.push(peerReview)
+                ).catch(function(error) {
+                    console.log("Error setting peer review:" + error)
+                });
         }
 
     },
@@ -817,7 +839,11 @@ export default createStore({
 
         getWavesFromOtherUsers({ commit }) {
             commit('GET_WAVES_FROM_OTHER_USERS');
-        }
+        },
+
+        newPeerReview({ commit }, peerReview: PeerReview) {
+            commit('NEW_PEER_REVIEW', peerReview);
+        },
     }
 
 });

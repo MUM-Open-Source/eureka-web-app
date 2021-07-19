@@ -18,6 +18,8 @@ import ResetPassword from '@/views/ResetPassword.vue'
 import Terms from '@/views/Terms.vue'
 import Privacy from '@/views/Privacy.vue'
 import PeerReview from '@/views/PeerReview.vue'
+import PRTeamList from '@/views/PRTeamList.vue'
+import PRTeamOverview from '@/views/PRTeamOverview.vue'
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -55,6 +57,20 @@ const routes: RouteRecordRaw[] = [
     path: '/peer-review',
     name: 'PeerReview',
     component: PeerReview,
+    meta: {
+      requiresAuth: true
+    }
+  }, {
+    path: '/PR-TeamList',
+    name: 'PRTeamList',
+    component: PRTeamList,
+    meta: {
+      requiresAuth: true
+    }
+  }, {
+    path: '/PR-TeamOverview',
+    name: 'PRTeamOverview',
+    component: PRTeamOverview,
     meta: {
       requiresAuth: true
     }

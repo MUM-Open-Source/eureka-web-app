@@ -42,5 +42,13 @@ export interface Feedback {
     user_name: string;
 }
 
-
-
+export interface PeerReview {
+    team_id: string;
+    from_id: string;
+    to_id: string;
+    date_created: firebase.firestore.FieldValue;
+    rating_count: number;
+    rating_sum: number;
+    responses: {}
+    summary: string;
+}

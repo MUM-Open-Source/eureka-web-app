@@ -54,6 +54,10 @@ export default defineComponent({
     .star__icon {
         transition: all 0s;
         padding: $star-rating-icon-padding;
+        transition: 0.25s;
+        &:hover {
+            transform: scale(1.2);
+        }
     }
     .star__color {
         &--brand {
