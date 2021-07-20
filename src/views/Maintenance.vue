@@ -1,10 +1,13 @@
 <template>
     <div class="under-maintenance">
         <div class="">
-            <img src="@/assets/under_maintenance_illustration.svg" class="pad__b--1"/>
+            <img
+                src="@/assets/under_maintenance_illustration.svg"
+                class="pad__b--1"
+            />
             <div class="subheading text--primary text--center">
                 New features coming your way!
-            <br>
+                <br />
                 Website under maintenance.. STAY TUNED
             </div>
         </div>
@@ -13,8 +16,8 @@
 
 <script>
 export default {
-    name: 'Maintenance'
-}
+    name: 'Maintenance',
+};
 </script>
 
 <style lang="scss" scoped>
@@ -24,7 +27,10 @@ export default {
     position: fixed;
     top: $under-maintenance-position-ratio;
     left: $under-maintenance-position-ratio;
-    transform: translate(-$under-maintenance-position-ratio,-$under-maintenance-position-ratio);
+    transform: translate(
+        -$under-maintenance-position-ratio,
+        -$under-maintenance-position-ratio
+    );
     img {
         width: $under-maintenance-img-width;
         padding-right: $under-maintenance-img-padding-right;
@@ -33,7 +39,6 @@ export default {
         margin-right: auto;
     }
 }
-
 
 @media (max-width: 765px) {
     .under-maintenance {
@@ -46,5 +51,4 @@ export default {
         }
     }
 }
-
 </style>

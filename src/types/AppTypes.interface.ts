@@ -1,6 +1,10 @@
 import firebase from 'firebase';
 import { User, Event, Feedback } from '@/types/FirebaseTypes.interface';
-import { EventFilter, MentorFilter, TalentFilter } from '@/types/FilterTypes.interface';
+import {
+    EventFilter,
+    MentorFilter,
+    TalentFilter,
+} from '@/types/FilterTypes.interface';
 
 export interface NewUser {
     first_name: string;

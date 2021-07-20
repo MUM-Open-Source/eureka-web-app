@@ -1,61 +1,68 @@
 <template>
-  <div class='tag-input'>
-    <div v-for='(tag, index) in tags' :key='tag' class='tag-input__tag mar__t--1 text--white'>
-      <span @click="removeTag(index)" class="cursor__pointer">x</span>
-      {{ tag }}
+    <div class="tag-input">
+        <div
+            v-for="(tag, index) in tags"
+            :key="tag"
+            class="tag-input__tag mar__t--1 text--white"
+        >
+            <span @click="removeTag(index)" class="cursor__pointer">x</span>
+            {{ tag }}
+        </div>
+        <input
+            type="text"
+            :placeholder="placeholder"
+            class="tag-input__text"
+            @keydown="addTag"
+            @keydown.delete="removeLastTag"
+        />
     </div>
-    <input 
-      type='text' 
-      :placeholder="placeholder" 
-      class='tag-input__text' 
-      @keydown="addTag" 
-      @keydown.delete="removeLastTag"
-    />
-  </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
 export default defineComponent({
-  props: {
-      limit: {
-          type: Number,
-          default: 10 // default limit is 10 tags
-      },
-      placeholder: {
-        type: String,
-        default: "Enter a Tag"
-      }
-  },
-  data() {
-    return {
-      tags: [] as Array<string>
-    }
-  },
-  methods: {
-      addTag(event:any) {        
-        if(event.code === 'Comma' || event.code === 'Enter'){
-            event.preventDefault();
-            var val = event.target.value.trim()
-            if(this.tags.length < this.limit && val.length > 0 && ! this.tags.includes(val.toUpperCase())){
-                this.tags.push(val.toUpperCase())
-                this.$emit("update-tags", this.tags)
-                event.target.value = ''
+    props: {
+        limit: {
+            type: Number,
+            default: 10, // default limit is 10 tags
+        },
+        placeholder: {
+            type: String,
+            default: 'Enter a Tag',
+        },
+    },
+    data() {
+        return {
+            tags: [] as Array<string>,
+        };
+    },
+    methods: {
+        addTag(event: any) {
+            if (event.code === 'Comma' || event.code === 'Enter') {
+                event.preventDefault();
+                var val = event.target.value.trim();
+                if (
+                    this.tags.length < this.limit &&
+                    val.length > 0 &&
+                    !this.tags.includes(val.toUpperCase())
+                ) {
+                    this.tags.push(val.toUpperCase());
+                    this.$emit('update-tags', this.tags);
+                    event.target.value = '';
+                }
             }
-        }
-      },
-      removeTag(index:number) {
-          this.tags.splice(index,1)
-          this.$emit("update-tags", this.tags)
-      },
-      removeLastTag(event:any){
-          if(event.target.value.length === 0) {
-              this.removeTag(this.tags.length - 1)
-              this.$emit("update-tags", this.tags)
-          }
-      }
-
-  }
-})
+        },
+        removeTag(index: number) {
+            this.tags.splice(index, 1);
+            this.$emit('update-tags', this.tags);
+        },
+        removeLastTag(event: any) {
+            if (event.target.value.length === 0) {
+                this.removeTag(this.tags.length - 1);
+                this.$emit('update-tags', this.tags);
+            }
+        },
+    },
+});
 </script>
 
 <style lang="scss" scoped>

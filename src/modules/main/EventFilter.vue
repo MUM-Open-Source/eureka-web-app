@@ -1,7 +1,7 @@
 <template>
     <div class="filter">
         <div class="subheading">Filter</div>
-        <hr>
+        <hr />
         <div class="filter__inputs">
             <!-- <InputField 
                 label='Sort by' 
@@ -58,47 +58,46 @@ export default {
     name: 'EventFilter',
     components: { Multiselect },
     setup(_, context) {
-
         // reactive filter data point
         const filter = reactive({
             type: '',
             organizer: '',
-            name: ''
-        })
+            name: '',
+        });
 
         // using a duplicate of filter to pass values to the parent
         let filterToEmit = {
             type: '',
-            organizer :'',
-            name: ''
-        }
+            organizer: '',
+            name: '',
+        };
 
         // get the filter value
-        const filterOptions = ref(store.state.filters.event);       
+        const filterOptions = ref(store.state.filters.event);
 
         // passing the filter data to the parent
         const updateFilter = () => {
             // populating the filter object to return to parent
             Object.keys(filter).forEach(function(key) {
-                if (Number.isInteger(filter[key])){ 
+                if (Number.isInteger(filter[key])) {
                     // convert index number to actual value
                     filterToEmit[key] = filterOptions.value[key][filter[key]];
                 } else {
                     // empty string for rest
                     filterToEmit[key] = '';
-                }                      
-            });           
+                }
+            });
 
             context.emit('update-filter', filterToEmit);
-        }
+        };
 
         return {
             filter,
             filterOptions,
-            updateFilter
-        }
-    }
-}
+            updateFilter,
+        };
+    },
+};
 </script>
 
 <style lang="scss" scoped>
