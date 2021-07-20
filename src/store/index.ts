@@ -1,10 +1,10 @@
-import {createStore, Store} from "vuex";
-import firebase from "firebase";
-import firebaseApp from "firebase/app";
-import "firebase/auth";
-import {db, auth, storage} from "@/firebase";
-import router from "@/router";
-import Swal from "sweetalert2";
+import { createStore, Store } from 'vuex';
+import firebase from 'firebase';
+import firebaseApp from 'firebase/app';
+import 'firebase/auth';
+import { db, auth, storage } from '@/firebase';
+import router from '@/router';
+import Swal from 'sweetalert2';
 // types
 import {AppState} from "@/types/AppTypes.interface";
 import {User, Event, Feedback} from "@/types/FirebaseTypes.interface";

@@ -1,56 +1,46 @@
 <template>
-  <div class="form__group field">
-    <input
-      :type="type"
-      class="form__field"
-      :class="disabled ? 'form__field--disabled' : ''"
-      :value="value"
-      :placeholder="placeholder ? placeholder : label"
-      :id="id"
-      :disabled="disabled"
-      required
-    />
-    <label :for="id" class="form__label">{{ label }}</label>
-  </div>
+    <div class="form__group field">
+        <input
+            :type="type"
+            class="form__field"
+            :class="disabled ? 'form__field--disabled' : ''"
+            :value="value"
+            :placeholder="placeholder ? placeholder : label"
+            :id="id"
+            :disabled="disabled"
+            required
+        />
+        <label :for="id" class="form__label">{{ label }}</label>
+    </div>
 </template>
 
 <script>
 export default {
-  name: "InputField",
-  props: {
-    label: {
-      type: String,
-      required: true,
+    name: 'InputField',
+    props: {
+        label: {
+            type: String,
+            required: true,
+        },
+        value: String,
+        placeholder: String,
+        type: {
+            type: String,
+            required: true,
+        },
+        id: {
+            type: String,
+            required: true,
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
-    value: String,
-    placeholder: String,
-    type: {
-      type: String,
-      required: true,
-    },
-    id: {
-      type: String,
-      required: true,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    inputVal: {
-      get() {
-        return this.model;
-      },
-      set(val) {
-        this.$emit("input", val);
-      },
-    },
-  },
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 // Credits: https://codepen.io/lucasyem/pen/ZEEYKdj
 .form__group {
   position: relative;
@@ -79,9 +69,9 @@ export default {
     top: 20px;
   }
 
-  &--disabled {
-    background: $color-disabled;
-  }
+    &--disabled {
+        background: $color-disabled;
+    }
 }
 
 .form__label {
@@ -101,7 +91,25 @@ export default {
     display: block;
     transition: $transition-duration-fast;
     font-size: $tagline-font-size;
-    color: $color-brand;
+    color: $color-dark;
+    padding-left: 6px;
+}
+
+.form__field:focus {
+    ~ .form__label {
+        position: absolute;
+        top: -5px;
+        display: block;
+        transition: $transition-duration-fast;
+        font-size: $tagline-font-size;
+        color: $color-brand;
+        font-weight: 700;
+    }
+    &::placeholder {
+        color: $color-light;
+        font-weight: 500;
+    }
+    padding-bottom: 6px;
     font-weight: 700;
   }
   &::placeholder {
@@ -117,9 +125,9 @@ export default {
 
 /* reset input */
 .form__field {
-  &:required,
-  &:invalid {
-    box-shadow: none;
-  }
+    &:required,
+    &:invalid {
+        box-shadow: none;
+    }
 }
 </style>

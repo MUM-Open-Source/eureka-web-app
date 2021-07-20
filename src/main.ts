@@ -1,31 +1,43 @@
-import {createApp} from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "@/store";
-import VuelidatePlugin from "@vuelidate/core";
-import Vue from "vue";
-
-// import { db, auth } from "@/firebase";
-// const db = require('@/firebase')
-// const auth = require('@/firebase')
-<<<<<<< HEAD
-createApp(App)
-  .use(VuelidatePlugin)
-  .use(store)
-  .use(router)
-  .mount("#app");
-=======
-
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from '@/store';
+import VuelidatePlugin from '@vuelidate/core';
+import Vue from 'vue';
 // Font Awesome Icons
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {
+    faStar,
+    faBorderAll,
+    faProjectDiagram,
+    faBook,
+    faCode,
+    faUserShield,
+} from '@fortawesome/free-solid-svg-icons';
+import {
+    faComments,
+    faCalendarAlt,
+    faCommentAlt,
+    faHandshake,
+} from '@fortawesome/free-regular-svg-icons';
 
-library.add(faStar)
+library.add(
+    faStar,
+    faBorderAll,
+    faComments,
+    faProjectDiagram,
+    faBook,
+    faCalendarAlt,
+    faCode,
+    faUserShield,
+    faCommentAlt,
+    faHandshake
+);
 
 createApp(App)
     .use(store)
+    .use(VuelidatePlugin)
     .use(router)
     .component('fa', FontAwesomeIcon)
-    .mount('#app')
->>>>>>> master
+    .mount('#app');

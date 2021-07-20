@@ -1,21 +1,23 @@
 <template>
-    <div class="top-nav" :class='topNavWidth'>
+    <div class="top-nav" :class="topNavWidth">
         <div class="top-nav__left">
             <img
                 class="top-nav__icon cursor__pointer"
-                @click='toggleSideNavState'
+                @click="toggleSideNavState"
                 src="@/assets/menu-icon.svg"
                 v-if="isLoggedIn"
             />
-            <router-link :to="{ name: 'Home'}">
-                <img class="top-nav__logo" src="@/assets/logo.png"/>
+            <router-link :to="{ name: 'Home' }">
+                <img class="top-nav__logo" src="@/assets/logo.png" />
             </router-link>
         </div>
-        <div class="top-nav__right mar--2" @click='toggleUserMenuState'>
+        <div class="top-nav__right mar--2" @click="toggleUserMenuState">
             <!-- <img id="bell" class="top-nav__icon" src="@/assets/notification-icon.svg" v-if="isLoggedIn" /> -->
             <div class="top-nav__right--user cursor__pointer">
-                <div id="top-nav__name" class="body mar--1">{{ displayName }}</div>
-                <img class="top-nav__profile-img" :src='displayPic' />
+                <div id="top-nav__name" class="body mar--1">
+                    {{ displayName }}
+                </div>
+                <img class="top-nav__profile-img" :src="displayPic" />
             </div>
             <UserMenu v-if="isUserMenuShown" />
         </div>
@@ -23,12 +25,12 @@
 </template>
 
 <script>
+import { defineComponent, computed, ref } from 'vue';
 import UserMenu from '@/modules/navigation/UserMenu.vue';
 import store from '@/store';
 import router from '@/router';
-import { computed, ref } from 'vue';
 
-export default {
+export default defineComponent({
     name: 'TopNav',
     components: { UserMenu },
     setup() {
@@ -40,7 +42,7 @@ export default {
         // open and close side nav
         const toggleSideNavState = () => {
             store.dispatch('toggleSideNavState');
-        }
+        };
         // show and hide user menu
         const toggleUserMenuState = () => {
             if (isLoggedIn.value) {
@@ -48,28 +50,27 @@ export default {
             } else {
                 router.push({ name: 'Login' });
             }
-        }
+        };
 
         // display the logged in user
         const displayName = computed(() =>
-            store.state.user_data
-            ? store.state.user_data.full_name
-            : 'Login'
+            store.state.user_data ? store.state.user_data.full_name : 'Login'
         );
 
         // display the logged in user's profile pic
         const displayPic = computed(() =>
             store.state.user_data
             ? store.state.user_data.image_url
+            // @ts-ignore
             : require('@/assets/default-user-image.png')
         );
 
         // identify nav width
         const topNavWidth = computed(() =>
             store.state.isSideNavCollapsed
-            ? 'top-nav__full'
-            : 'top-nav__reduced'
-        )
+                ? 'top-nav__full'
+                : 'top-nav__reduced'
+        );
 
         return {
             displayName,
@@ -78,13 +79,13 @@ export default {
             isLoggedIn,
             isUserMenuShown,
             toggleUserMenuState,
-            topNavWidth
-        }
+            topNavWidth,
+        };
     },
-}
+})
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .top-nav {
     @include shadow--small;
     display: flex;
@@ -100,9 +101,10 @@ export default {
         width: 100%;
     }
     &__reduced {
-        width: calc(100% - 100px);
+        width: calc(100% - 160px);
     }
-    &__left, &__right {
+    &__left,
+    &__right {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -111,7 +113,8 @@ export default {
         width: $top-nav-icon-width;
         margin-left: $top-nav-elem-margin;
     }
-    &__logo, &__profile-img {
+    &__logo,
+    &__profile-img {
         height: $top-nav-img-height;
         margin-right: $top-nav-elem-margin;
     }
@@ -123,7 +126,7 @@ export default {
         flex-direction: row;
         align-items: center;
     }
-    &__profile-img{
+    &__profile-img {
         border-radius: 50%;
     }
 }
@@ -144,5 +147,4 @@ export default {
         display: none;
     }
 }
-
 </style>

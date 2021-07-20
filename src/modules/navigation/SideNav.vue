@@ -39,9 +39,9 @@
   </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import store from "@/store";
+<script lang="ts">
+import { defineComponent, computed } from 'vue';
+import store from '@/store';
 
 export default {
   name: "SideNav",
@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 /* The sidebar menu */
 #sidenav {
   height: 100%;
