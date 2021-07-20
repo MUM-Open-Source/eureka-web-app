@@ -1,27 +1,34 @@
 <template>
     <div class="find-mentor page-pad">
-        <MentorFilter 
+        <MentorFilter
             :filterOptions="filterOptions"
-            @update-filter="updateFilter" 
-        />    
+            @update-filter="updateFilter"
+        />
         <div class="find-mentor__content">
             <div class="find-mentor__content--title mar__b--3 text--center">
                 <div class="tagline">Monash Seniors & Alumni</div>
                 <div class="heading">Mentors</div>
             </div>
             <div class="mentor">
-                <div v-if="!filteredMentors.length" class="heading text--center">
-                    <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
+                <div
+                    v-if="!filteredMentors.length"
+                    class="heading text--center"
+                >
+                    <img
+                        class="img_not_found"
+                        src="@/assets/search-result-not-found.png"
+                    />
+                    <br />
                     <div class="not-found-caption">No Mentors Found...</div>
                 </div>
-                <ProfileCard 
-                    v-for="user in filteredMentors" 
+                <ProfileCard
+                    v-for="user in filteredMentors"
                     :key="user.key"
                     :user="user"
                 />
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 
 <script>
@@ -34,14 +41,13 @@ export default {
     name: 'FindMentor',
     components: { ProfileCard, MentorFilter },
     setup() {
-        
         // mounted
         onMounted(() => {
             // fetch the data if there is nothing to display
             if (!store.state.mentors.length) {
                 store.dispatch('getMentors');
             }
-        })
+        });
 
         const filter = ref({});
         // the input to the ProfileCard
@@ -54,31 +60,32 @@ export default {
             filter.value = latestFilters;
             filteredMentors.value = calcFilteredUsers();
         }
-        
+
         // filter logic
         const calcFilteredUsers = () => {
-            return store.state.mentors.filter((user) => {
+            return store.state.mentors.filter(user => {
                 return (
                     // interests
-                    (user.interests.includes(filter.value.skill) || filter.value.skill === '') &&
+                    (user.interests.includes(filter.value.skill) ||
+                        filter.value.skill === '') &&
                     // experience
-                    (user.experience_level === filter.value.experience_level || filter.value.experience_level === '') &&
+                    (user.experience_level === filter.value.experience_level ||
+                        filter.value.experience_level === '') &&
                     // degree
                     user.background.match(filter.value.background) &&
                     // name
                     user.full_name.match(filter.value.full_name)
-                )
-            })
-        }
+                );
+            });
+        };
 
         return {
             updateFilter,
             filterOptions,
-            filteredMentors
-        }
-        
-    }
-}
+            filteredMentors,
+        };
+    },
+};
 </script>
 
 <style lang="scss" scoped>

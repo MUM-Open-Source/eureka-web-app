@@ -1,6 +1,6 @@
 <template>
     <div class="browse-events page-pad">
-        <EventFilter @update-filter="updateFilter" />    
+        <EventFilter @update-filter="updateFilter" />
         <div class="browse-events__content">
             <div class="browse-events__content--title mar__b--3 text--center">
                 <div class="tagline">Competition and more stuff</div>
@@ -8,17 +8,21 @@
             </div>
             <div class="events">
                 <div v-if="!filteredEvents.length" class="heading text--center">
-                    <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
+                    <img
+                        class="img_not_found"
+                        src="@/assets/search-result-not-found.png"
+                    />
+                    <br />
                     <div class="not-found-caption">No Events Found...</div>
                 </div>
-                <EventCard 
-                    v-for="event in filteredEvents" 
+                <EventCard
+                    v-for="event in filteredEvents"
                     :key="event.key"
                     :event="event"
                 />
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 
 <script>
@@ -31,14 +35,13 @@ export default {
     name: 'BrowseEvents',
     components: { EventCard, EventFilter },
     setup() {
-
         // mounted
         onMounted(() => {
             // fetch the data if there is nothing to display
             if (!store.state.events.length) {
                 store.dispatch('getEvents');
             }
-        })
+        });
 
         const filter = ref({});
         // the input to the ProfileCard
@@ -49,10 +52,10 @@ export default {
             filter.value = latestFilters;
             filteredEvents.value = calcFilteredUsers();
         }
-        
+
         // filter logic
         const calcFilteredUsers = () => {
-            return store.state.events.filter((event) => {
+            return store.state.events.filter(event => {
                 return (
                     // type
                     event.type.match(filter.value.type) &&
@@ -60,17 +63,16 @@ export default {
                     event.organizer.match(filter.value.organizer) &&
                     // name
                     event.name.match(filter.value.name)
-                )
-            })
-        }
+                );
+            });
+        };
 
         return {
             updateFilter,
-            filteredEvents
-        }
-
-    }
-}
+            filteredEvents,
+        };
+    },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -78,7 +80,7 @@ export default {
     display: flex;
     &__content {
         margin-left: calc(#{$filter-div-width} + 10px);
-        width:100%;
+        width: 100%;
     }
 }
 .events {

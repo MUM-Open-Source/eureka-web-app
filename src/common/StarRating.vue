@@ -1,12 +1,16 @@
 <template>
     <div class="stars__container">
-        <fa 
+        <fa
             v-for="index in maxRating"
             :key="index"
-            icon="star" 
-            size='2x'
+            icon="star"
+            size="2x"
             class="star__icon"
-            :class="(hoverRating || currentRating) >= index ? 'star__color--brand' : 'star__color--grey'"
+            :class="
+                (hoverRating || currentRating) >= index
+                    ? 'star__color--brand'
+                    : 'star__color--grey'
+            "
             @click="() => handleClick(index)"
             @mouseover="() => handleMouseOver(index)"
             @mouseleave="() => handleMouseLeave(index)"
@@ -17,12 +21,12 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
-    name: "StarRating",
+    name: 'StarRating',
     props: {
         maxRating: {
             type: Number,
-            default: 5 // default limit is 5 stars
-        }
+            default: 5, // default limit is 5 stars
+        },
     },
     emits: ['update-rating'],
     setup(_, { emit }) {
@@ -31,20 +35,20 @@ export default defineComponent({
 
         const handleClick = (value: number) => {
             currentRating.value = value;
-            emit("update-rating", value)
-        }
-        const handleMouseOver = (value: number) => hoverRating.value = value;
-        const handleMouseLeave = () => hoverRating.value = 0;
+            emit('update-rating', value);
+        };
+        const handleMouseOver = (value: number) => (hoverRating.value = value);
+        const handleMouseLeave = () => (hoverRating.value = 0);
 
         return {
             currentRating,
             hoverRating,
             handleClick,
             handleMouseOver,
-            handleMouseLeave
-        }
-    }
-})
+            handleMouseLeave,
+        };
+    },
+});
 </script>
 
 <style lang="scss" scoped>

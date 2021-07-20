@@ -41,7 +41,7 @@ export interface Event {
 }
 
 export interface Feedback {
-    created_at: firebase.firestore.FieldValue,
+    created_at: firebase.firestore.FieldValue;
     message: string;
     subject: string;
     user_id: string;
