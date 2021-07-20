@@ -1,10 +1,8 @@
 <template>
     <div class="page-pad">
         <div class="peer-review-content text--center">
-            <!-- <i class="fas fa-exchange-alt"></i> -->
-            <!-- <font-awesome-icon icon="coffee"></font-awesome-icon> -->
             <button class="back-button" @click="handleBackButton">
-                <i class="material-icons back-icon">arrow_back_ios</i>
+                <fa icon="angle-double-left" size="lg"/>
             </button>
 
             <div class="heading peer-review-content__title">Peer Review</div>
@@ -21,7 +19,7 @@
                     <ReviewCommentCard
                         v-model:value="inputValues.shortSummary"
                         class="mar__b--2"
-                        label="Short Review"
+                        label="Short Summary"
                         id="short_review"
                     />
                 </tr>
@@ -51,8 +49,6 @@ import Button from '@/common/Button.vue';
 import { reactive } from '@vue/reactivity';
 import Swal from 'sweetalert2';
 import router from '@/router';
-// import FontAwesomeIcon from "@fortawesome/fontawesome-svg-core"
-// import IconButton from "@/modules/admin/IconButton.vue";
 
 export default defineComponent({
     name: 'PeerReview',
@@ -74,8 +70,6 @@ export default defineComponent({
             'lorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit amet',
             'Is he/she a freeloader?',
             'Do you like he/she?',
-            'Hello World',
-            "What's up?",
         ];
 
         var inputRatings: number[] = new Array(questions.length);
@@ -139,13 +133,25 @@ export default defineComponent({
         }
 
         function handleBackButton() {
-            router.push('PR-TeamOverview');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Your current changes won't be saved!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, take me back.',
+            }).then(result => {
+                if (result.isConfirmed) {
+                    router.push('PR-TeamOverview');
+                }
+            });
         }
 
         return {
             questions,
-            handlePeerReview,
             inputValues,
+            handlePeerReview,
             handleClick,
             handleBackButton,
         };
@@ -169,7 +175,6 @@ table {
 
 .back-icon {
     font-size: 36px;
-    margin: 3px 0 0 5px;
 }
 
 button {
