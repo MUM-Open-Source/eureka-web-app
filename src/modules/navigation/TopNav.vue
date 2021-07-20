@@ -25,12 +25,12 @@
 </template>
 
 <script>
+import { defineComponent, computed, ref } from 'vue';
 import UserMenu from '@/modules/navigation/UserMenu.vue';
 import store from '@/store';
 import router from '@/router';
-import { computed, ref } from 'vue';
 
-export default {
+export default defineComponent({
     name: 'TopNav',
     components: { UserMenu },
     setup() {
@@ -60,8 +60,9 @@ export default {
         // display the logged in user's profile pic
         const displayPic = computed(() =>
             store.state.user_data
-                ? store.state.user_data.image_url
-                : require('@/assets/default-user-image.png')
+            ? store.state.user_data.image_url
+            // @ts-ignore
+            : require('@/assets/default-user-image.png')
         );
 
         // identify nav width
@@ -81,7 +82,7 @@ export default {
             topNavWidth,
         };
     },
-};
+})
 </script>
 
 <style lang="scss" scoped>
@@ -100,7 +101,7 @@ export default {
         width: 100%;
     }
     &__reduced {
-        width: calc(100% - 100px);
+        width: calc(100% - 160px);
     }
     &__left,
     &__right {
