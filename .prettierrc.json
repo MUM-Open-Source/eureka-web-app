@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": true,
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "trailingComma": "es5",
+    "htmlWhitespaceSensitivity": "ignore",
+    "singleAttributePerLine": true
+}

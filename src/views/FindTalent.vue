@@ -1,10 +1,7 @@
 <template>
     <div class="find-talent page-pad">
         <!-- Filter passing data -->
-        <Filter 
-            :filterOptions="filterOptions"
-            @update-filter="updateFilter"
-        />    
+        <Filter :filterOptions="filterOptions" @update-filter="updateFilter" />
         <div class="find-talent__content">
             <div class="find-talent__content--title mar__b--3 text--center">
                 <div class="tagline">Current Students</div>
@@ -12,17 +9,21 @@
             </div>
             <div class="talents">
                 <div v-if="!filteredTalent.length" class="heading text--center">
-                    <img class="img_not_found" src="@/assets/search-result-not-found.png"><br>
+                    <img
+                        class="img_not_found"
+                        src="@/assets/search-result-not-found.png"
+                    />
+                    <br />
                     <div class="not-found-caption">No Talent Found...</div>
                 </div>
-                <ProfileCard 
-                    v-for="user in filteredTalent" 
+                <ProfileCard
+                    v-for="user in filteredTalent"
                     :key="user.key"
                     :user="user"
                 />
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 
 <script>
@@ -41,8 +42,8 @@ export default {
             if (!store.state.talent.length) {
                 store.dispatch('getTalent');
             }
-        })
-        
+        });
+
         const filter = ref({});
         // the input to the ProfileCard
         const filteredTalent = ref(store.state.talent);
@@ -54,30 +55,32 @@ export default {
             filter.value = latestFilters;
             filteredTalent.value = calcFilteredUsers();
         }
-        
+
         // filter logic
         const calcFilteredUsers = () => {
-            return store.state.talent.filter((user) => {
+            return store.state.talent.filter(user => {
                 return (
                     // interests
-                    (user.interests.includes(filter.value.interests) || filter.value.interests === '') &&
+                    (user.interests.includes(filter.value.interests) ||
+                        filter.value.interests === '') &&
                     // experience
-                    (user.experience_level === filter.value.experience_level || filter.value.experience_level === '') &&
+                    (user.experience_level === filter.value.experience_level ||
+                        filter.value.experience_level === '') &&
                     // degree
                     user.background.match(filter.value.background) &&
                     // name
                     user.full_name.match(filter.value.full_name)
-                )
-            })
-        }
+                );
+            });
+        };
 
         return {
             updateFilter,
             filterOptions,
-            filteredTalent
-        }
-    }
-}
+            filteredTalent,
+        };
+    },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -6,7 +6,9 @@
 // @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 // @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap');
 
-body, .multiselect-input, textarea {
+body,
+.multiselect-input,
+textarea {
     font-family: 'Source Sans Pro', sans-serif;
     // font-family: 'Montserrat', sans-serif;
     // font-family: 'Noto Sans JP', sans-serif;
@@ -37,12 +39,20 @@ button {
     }
 }
 
-.side-nav__text {
+.side-nav__group--header {
     font-size: $side-nav-font-size;
     font-weight: $semibold;
+    color: $color-brand;
+}
+.side-nav__text {
+    font-size: $side-nav-font-size;
+    font-weight: $normal;
 }
 
-.body, .multiselect-input, textarea, input {
+.body,
+.multiselect-input,
+textarea,
+input {
     font-size: $body-font-size;
     font-weight: $normal;
 }
@@ -67,7 +77,11 @@ button {
         @include shadow;
         padding: $capsule-padding;
         margin: $capsule-margin;
-        background-image: linear-gradient(to right, $color-brand, $color-brand-alt);
+        background-image: linear-gradient(
+            to right,
+            $color-brand,
+            $color-brand-alt
+        );
         color: $color-white;
         border-radius: $capsule-border-radius;
         text-transform: lowercase;

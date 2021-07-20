@@ -21,50 +21,55 @@ import IncubatorNitin from '@/views/IncubatorNitin.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  }, {
-    path: '/admin',
-    name: 'Admin',
-    component: Admin,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp
-  }, {
-    path: '/find-talent',
-    name: 'FindTalent',
-    component: FindTalent,
-    meta: {
-      requiresAuth: true
-    }
-  }, {
-    path: '/find-mentor',
-    name: 'FindMentor',
-    component: FindMentor,
-    meta: {
-      requiresAuth: true
-    }
-  }, {
-    path: '/feedback',
-    name: 'Feedback',
-    component: Feedback,
-    meta: {
-      requiresAuth: true
-    }
-  }, {
-    path: '/',
-    name: 'Home',
-    component: Home
-  }, 
-  // {
-  //   path: '/profile/info',
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+    },
+    {
+        path: '/admin',
+        name: 'Admin',
+        component: Admin,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/signup',
+        name: 'SignUp',
+        component: SignUp,
+    },
+    {
+        path: '/find-talent',
+        name: 'FindTalent',
+        component: FindTalent,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/find-mentor',
+        name: 'FindMentor',
+        component: FindMentor,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/feedback',
+        name: 'Feedback',
+        component: Feedback,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/',
+        name: 'Home',
+        component: Home,
+    },
+    // {
+    //   path: '/profile/info',
 
   // }, 
   {
@@ -134,25 +139,25 @@ const routes: RouteRecordRaw[] = [
     }
   }
 
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which isLoading lazy-loaded when the route isLoading visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
-]
+    // {
+    //   path: '/about',
+    //   name: 'About',
+    //   // route level code-splitting
+    //   // this generates a separate chunk (about.[hash].js) for this route
+    //   // which isLoading lazy-loaded when the route isLoading visited.
+    //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    // }
+];
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes
-})
+    history: createWebHistory(),
+    routes,
+});
 
 // router guards
 router.beforeEach(async (to, from, next) => {
-  window.scrollTo(0, 0);
-  checkAuth(to, next);
-})
+    window.scrollTo(0, 0);
+    checkAuth(to, next);
+});
 
-export default router
+export default router;

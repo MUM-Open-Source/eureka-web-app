@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from '@/store'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from '@/store';
 // import { db, auth } from "@/firebase";
 // const db = require('@/firebase')
 // const auth = require('@/firebase')
@@ -13,28 +13,47 @@ import {
     faStar,
     faUsers,
     faSignOutAlt,
-    faChevronDown
+    faChevronDown,
+    faBorderAll,
+    faProjectDiagram,
+    faBook,
+    faCode,
+    faUserShield,
 } from '@fortawesome/free-solid-svg-icons'
+
 import { 
     faEnvelope,
     faPaperPlane,
     faFlag,
-    faEdit
+    faEdit,
+    faComments,
+    faCalendarAlt,
+    faCommentAlt,
+    faHandshake,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
-    faStar, 
+    faStar,
     faUsers, 
     faEnvelope, 
     faPaperPlane, 
     faFlag,
     faEdit,
     faSignOutAlt,
-    faChevronDown
+    faChevronDown,
+    faBorderAll,
+    faComments,
+    faProjectDiagram,
+    faBook,
+    faCalendarAlt,
+    faCode,
+    faUserShield,
+    faCommentAlt,
+    faHandshake,
 )
 
 createApp(App)
     .use(store)
     .use(router)
     .component('fa', FontAwesomeIcon)
-    .mount('#app')
+    .mount('#app');

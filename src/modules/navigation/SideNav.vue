@@ -1,71 +1,124 @@
 <template>
-  <div id="sidenav" :class="showOrHide">
-    <router-link :to="{ name: 'BrowseEvents' }">
-      <div class="side-nav__group">
-        <img class="side-nav__icon" src="@/assets/events-icon.svg" />
-        <div class="side-nav__text">Browse Events</div>
-      </div>
-    </router-link>
-    <router-link :to="{ name: 'FindTalent' }">
-      <div class="side-nav__group">
-        <img class="side-nav__icon" src="@/assets/talent-icon.svg" />
-        <div class="side-nav__text">Find Talent</div>
-      </div>
-    </router-link>
-    <router-link :to="{ name: 'FindMentor' }">
-      <div class="side-nav__group">
-        <img class="side-nav__icon" src="@/assets/mentor-icon.svg" />
-        <div class="side-nav__text">Find Mentors</div>
-      </div>
-    </router-link>
-    <router-link :to="{ name: 'IncubatorNitin' }">
-      <div class="side-nav__group">
-        <img class="side-nav__icon" src="https://static.thenounproject.com/png/145780-200.png" />
-        <div class="side-nav__text">Incubator Nitin</div>
-      </div>
-    </router-link>
-    <router-link
-      :to="{ name: 'Admin' }"
-      v-if="userIsAdmin"
-    >
-      <div class="side-nav__group">
-        <img class="side-nav__icon" src="@/assets/info-icon.svg" />
-        <div class="side-nav__text">Mission Control</div>
-      </div>
-    </router-link>
-    <router-link :to="{ name: 'Feedback' }">
-      <div class="side-nav__group side-nav__group--bottom">
-        <img class="side-nav__icon" src="@/assets/feedback-icon.svg" />
-        <div class="side-nav__text">Provide Feedback</div>
-      </div>
-    </router-link>
-  </div>
+    <div id="sidenav" :class="showOrHide">
+        <!-- General -->
+        <div class="side-nav__group mar__b--2 mar__t--1">
+            <router-link :to="{ name: '' }">
+                <div class="side-nav__group--link">
+                    <fa icon="border-all" size="md" class="side-nav__icon" />
+                    <div class="side-nav__text">Dashboard</div>
+                </div>
+            </router-link>
+            <router-link :to="{ name: '' }">
+                <div class="side-nav__group--link">
+                    <fa
+                        :icon="['far', 'comments']"
+                        size="md"
+                        class="side-nav__icon"
+                    />
+                    <div class="side-nav__text">Messages</div>
+                </div>
+            </router-link>
+        </div>
+        <!-- Academic Hub -->
+        <div class="side-nav__group mar__b--2">
+            <div class="side-nav__group--header">Academic Hub</div>
+            <router-link :to="{ name: 'IncubatorNitin' }">
+                <div class="side-nav__group--link">
+                    <fa
+                        icon="project-diagram"
+                        size="md"
+                        class="side-nav__icon"
+                    />
+                    <div class="side-nav__text">Incubator</div>
+                </div>
+            </router-link>
+            <router-link :to="{ name: '' }">
+                <div class="side-nav__group--link">
+                    <fa icon="book" size="md" class="side-nav__icon" />
+                    <div class="side-nav__text">Research</div>
+                </div>
+            </router-link>
+        </div>
+        <!-- Extracurricular -->
+        <div class="side-nav__group mar__b--2">
+            <div class="side-nav__group--header">Extracurricular</div>
+            <router-link :to="{ name: 'BrowseEvents' }">
+                <div class="side-nav__group--link">
+                    <fa
+                        :icon="['far', 'calendar-alt']"
+                        size="md"
+                        class="side-nav__icon"
+                    />
+                    <div class="side-nav__text">Events</div>
+                </div>
+            </router-link>
+            <router-link :to="{ name: '' }">
+                <div class="side-nav__group--link">
+                    <fa icon="code" size="md" class="side-nav__icon" />
+                    <div class="side-nav__text">Projects</div>
+                </div>
+            </router-link>
+            <router-link :to="{ name: 'FindTalent' }">
+                <div class="side-nav__group--link">
+                    <fa
+                        :icon="['far', 'handshake']"
+                        size="md"
+                        class="side-nav__icon"
+                    />
+                    <div class="side-nav__text">Talent</div>
+                </div>
+            </router-link>
+        </div>
+        <div class="side-nav__group mar__b--2">
+            <div class="side-nav__group--header" v-if="userIsAdmin">
+                Mission Control
+            </div>
+            <router-link :to="{ name: 'Admin' }">
+                <div class="side-nav__group--link">
+                    <fa icon="user-shield" size="md" class="side-nav__icon" />
+                    <div class="side-nav__text">Admin Dash</div>
+                </div>
+            </router-link>
+        </div>
+        <div class="side-nav__group mar__b--2">
+            <router-link :to="{ name: 'Feedback' }">
+                <div class="side-nav__group--link side-nav__group--bottom">
+                    <fa
+                        :icon="['far', 'comment-alt']"
+                        size="md"
+                        class="side-nav__icon"
+                    />
+                    <div class="side-nav__text">Feedback</div>
+                </div>
+            </router-link>
+        </div>
+    </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import store from "@/store";
+<script lang="ts">
+import { defineComponent, computed } from 'vue';
+import store from '@/store';
 
-export default {
-  name: "SideNav",
-  setup() {
-    const showOrHide = computed(() =>
-      store.state.isSideNavCollapsed ? "side-nav__hide" : "side-nav__show"
-    );
-    const userIsAdmin = computed(() => 
-        store.state.user_data 
-        ? store.state.user_data.roles.includes('admin') 
-        : false
-    );
-    return {
-      userIsAdmin,
-      showOrHide,
-    };
-  },
-};
+export default defineComponent({
+    name: 'SideNav',
+    setup() {
+        const showOrHide = computed(() =>
+            store.state.isSideNavCollapsed ? 'side-nav__hide' : 'side-nav__show'
+        );
+        const userIsAdmin = computed(() =>
+            store.state.user_data
+                ? store.state.user_data.roles.includes('admin')
+                : false
+        );
+        return {
+            userIsAdmin,
+            showOrHide,
+        };
+    },
+});
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 /* The sidebar menu */
 #sidenav {
     height: 100%;
@@ -77,7 +130,6 @@ export default {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 .side-nav__hide {
     left: -$side-nav-width;
@@ -86,26 +138,30 @@ export default {
     left: 0;
 }
 .side-nav__group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: $side-nav-group-padding;
-    width: 100%;
-    text-align: center;
-    &:hover {
-        background-color: $color-bg-hover;
-        cursor: pointer;
+    &--header {
+        padding-left: $side-nav-header-pad-l;
     }
-    .side-nav__text {
-        width: $side-nav-text-width;
+    &--link {
+        display: flex;
+        align-items: center;
+        padding: $side-nav-group-padding;
+        border-radius: $app-border-radius-sm;
+        margin: $side-nav-link-mar;
+        &:hover {
+            background-color: $color-bg-hover;
+            cursor: pointer;
+        }
     }
     &--bottom {
         position: absolute;
-        bottom: 0;
+        bottom: $side-nav-group-bottom-mar-b;
+        right: 0;
+        left: 0;
     }
 }
 .side-nav__icon {
     width: $side-nav-icon-width;
-    margin-bottom: $side-nav-icon-mar-b;
+    margin-right: $side-nav-icon-mar-r;
+    color: $color-dark;
 }
 </style>
