@@ -1,6 +1,15 @@
 <template>
     <div class="form__group field">
-        <input :type="type" class="form__field" :class="(disabled)?'form__field--disabled':''" :value="value" :placeholder="placeholder?placeholder:label" :id="id" :disabled="disabled" required />
+        <input
+            :type="type"
+            class="form__field"
+            :class="disabled ? 'form__field--disabled' : ''"
+            :value="value"
+            :placeholder="placeholder ? placeholder : label"
+            :id="id"
+            :disabled="disabled"
+            required
+        />
         <label :for="id" class="form__label">{{ label }}</label>
     </div>
 </template>
@@ -11,28 +20,27 @@ export default {
     props: {
         label: {
             type: String,
-            required: true
+            required: true,
         },
         value: String,
         placeholder: String,
         type: {
             type: String,
-            required: true
+            required: true,
         },
         id: {
             type: String,
-            required: true
+            required: true,
         },
         disabled: {
             type: Boolean,
-            default: false
-        }
-    }
-
-}
+            default: false,
+        },
+    },
+};
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 // Credits: https://codepen.io/lucasyem/pen/ZEEYKdj
 .form__group {
     position: relative;
@@ -62,7 +70,7 @@ export default {
     }
 
     &--disabled {
-        background: $color-disabled;        
+        background: $color-disabled;
     }
 }
 
@@ -84,11 +92,11 @@ export default {
         transition: $transition-duration-fast;
         font-size: $tagline-font-size;
         color: $color-brand;
-        font-weight:700;    
+        font-weight: 700;
     }
     &::placeholder {
         color: $color-light;
-        font-weight:500;
+        font-weight: 500;
     }
     padding-bottom: 6px;
     font-weight: 700;
@@ -98,8 +106,10 @@ export default {
 }
 
 /* reset input */
-.form__field{
-    &:required,&:invalid { box-shadow:none; }
+.form__field {
+    &:required,
+    &:invalid {
+        box-shadow: none;
+    }
 }
-
 </style>

@@ -1,6 +1,10 @@
 import firebase from 'firebase';
 import { User, Event, Feedback, Project, Message } from '@/types/FirebaseTypes.interface';
-import { EventFilter, MentorFilter, TalentFilter } from '@/types/FilterTypes.interface';
+import {
+    EventFilter,
+    MentorFilter,
+    TalentFilter,
+} from '@/types/FilterTypes.interface';
 
 export interface NewUser {
     first_name: string;
@@ -30,7 +34,6 @@ export interface AppState {
     projects: Project[];
     messages: Message[];
     feedback: Feedback[];
-    messages: Message[];
     liked_events: string[];
     user_waves: string[];
     waves_from_other_users: string[];
