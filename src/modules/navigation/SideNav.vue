@@ -75,8 +75,8 @@
                 </div>
             </router-link>
         </div>
-        <div class="side-nav__group mar__b--2">
-            <div class="side-nav__group--header" v-if="userIsAdmin">
+        <div class="side-nav__group mar__b--2" v-if="userIsAdmin">
+            <div class="side-nav__group--header">
                 Mission Control
             </div>
             <router-link :to="{ name: 'Admin' }">
