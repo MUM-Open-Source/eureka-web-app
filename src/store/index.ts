@@ -722,14 +722,34 @@ export default createStore({
                 sent_by : auth.currentUser!.uid
             }
 
-            console.log(message); 
-            db.collection("message")
-                .doc("asdfghjkl")
-                .set({"hello": "test"})
+            //console.log(message); 
+            db.collection("message").add(message) 
                 .catch(function(error) {
-                    console.log("Message " + error)
+                    console.log("Error sending Message" + error)
                 });
         },
+
+        GET_MESSAGE(state, message: Message) {
+            db.collection("message")
+                    .get()
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            const message: Message = {
+                                sent_at: doc.data().sent_at,
+                                sent_by: doc.data().sent_by,
+                                text: doc.data().text,
+                                content_type: doc.data().content_type,
+
+                            }
+                            state.messages.push(message);
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log("Error getting Message:", error);
+                    });
+           
+            
+        }
 
     },
 
@@ -835,6 +855,14 @@ export default createStore({
 
         getWavesFromOtherUsers({ commit }) {
             commit('GET_WAVES_FROM_OTHER_USERS');
+        },
+
+        sendMessage({ commit }, message: Message) {
+            commit('SEND_MESSAGE',message);
+        },
+
+        getMessage({ commit }) {
+            commit('GET_MESSAGE');
         }
     }
 

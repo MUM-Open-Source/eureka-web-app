@@ -25,14 +25,14 @@ const firebaseConfig: ConfigVars = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const db_init = firebase.initializeApp(firebaseConfig);
 
 const analytics = firebase.analytics();
 const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 
-export {analytics, db, auth, storage};
+export {db_init, analytics, db, auth, storage};
 
 
 

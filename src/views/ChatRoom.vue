@@ -2,7 +2,7 @@
     <div class = "container-sm mt-20">
         <div class="side_bar">
             <h3 class="side-bar-header">Chats</h3>
-            <input type="text" placeholder="Search Messages or users" class="chat-search-field" required />
+            <input type="text" placeholder="Search users or groups" class="chat-search-field" required />
             <div class= "side_bar_tab_wrapper">
             <span class="tab">
                 <a href="#">Recent</a>
@@ -16,6 +16,23 @@
             <ChatContact contact_name="Adam" />
             <ChatContact contact_name="Adam" />
             <ChatContact contact_name="Adam" />
+             <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+             <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+             <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+             <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+             <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
+             <ChatContact contact_name="Adam" />
+            <ChatContact contact_name="Adam" />
             </div>
 
         </div>
@@ -27,19 +44,6 @@
             <hr class="horizontal_divider">
 
         <div class="message_box">
-        <Message text="SheeYao" sender="" name="sarif"/>
-        <Message :sender="false" name="sarif"/>
-        <Message text="SheeYao" sender="" name="sarif"/>
-        <Message :sender="false" name="sarif"/>
-        <Message sender="" name="sarif"/>
-        <Message text="SheeYao" :sender="false" name="sarif"/>
-
-        <Message text="SheeYao" :sender="false" name="sarif"/>
-        <Message sender="" name="sarif"/>
-        <Message text="SheeYao" :sender="false" name="sarif"/>
-        <Message sender="" name="sarif"/>
-        <Message :sender="false" name="sarif"/>
-        <Message text="SheeYao" sender="" name="sarif"/>
 
         <Message text="SheeYao" sender="" name="sarif"/>
         <Message :sender="false" name="sarif"/>
@@ -53,6 +57,29 @@
         <Message text="SheeYao" :sender="false" name="sarif"/>
         <Message sender="" name="sarif"/>
         <Message :sender="false" name="sarif"/>
+        <Message text="SheeYao" sender="" name="sarif"/>
+
+        <Message text="SheeYao" sender="" name="sarif"/>
+        <Message :sender="false" name="sarif"/>
+        <Message text="SheeYao" sender="" name="sarif"/>
+        <Message :sender="false" name="sarif"/>
+        <Message sender="" name="sarif"/>
+        <Message text="SheeYao" :sender="false" name="sarif"/>
+
+        <Message text="SheeYao" :sender="false" name="sarif"/>
+        <Message sender="" name="sarif"/>
+        <Message text="SheeYao" :sender="false" name="sarif"/>
+        <Message sender="" name="sarif"/>
+        <Message :sender="false" name="sarif"/>
+
+
+        <Message
+        v-for="message in messages"
+        sender=""
+        :key="message.key"
+        :text="message.text"
+        />
+        
         </div>
         <div class="bottom-divider">
 
@@ -89,42 +116,34 @@ import {ref} from 'vue';
 import store from '@/store';
 import Message from '../common/Message.vue';
 import ChatContact from '../common/ChatContact.vue';
+import { db } from "@/firebase";
 
 
 
 export default {
   name : 'ChatRoom',
   components: { Message, ChatContact },
-
+  mounted() {
+      db.collection('message').orderBy('sent_at').onSnapshot(querySnap =>{this.messages = querySnap.docs.map(doc => doc.data())})
+  },
   data() {
       return{
           message: '',
-          messages: [],
+          messages:[],
       }
   },
   setup() {
+
+    //Sending message
     const inputMessage = ref("");
     const sendMessage = () =>{
-        //event.preventDefault()
-        //const messagesRef = db.database().ref("messages");
-        
-        if(inputMessage.value === "" || inputMessage.value === null) {
-            return ; 
-        }
 
-        // const message = {
-        //     id: Date.now.toString,
-        //     text: inputMessage.value,
-        //     type: 1 //1 as direct msg now
-        // }
-        const message = {
-            sent_at: null,
-            sent_by: null,
-            text: inputMessage.value,
-            content_type: "text"
-        }
-        store.dispatch("sendMessage", message);
-        inputMessage.value = "";
+    if(inputMessage.value !== "" || inputMessage.value !== null) {
+        store.dispatch("sendMessage", {sent_at: null,
+        sent_by: null,text: inputMessage.value, content_type: "text"});
+    }
+       
+    inputMessage.value = "";
     }
 
 
@@ -191,11 +210,9 @@ export default {
   width: 310px;
   background-color: #F4F6FA;
   position: fixed;
-  height: 100%;
-  overflow: auto;
+  overflow: scroll;
+  height:95%;
 }
-
-
 
 
 .chat_box {
@@ -262,5 +279,9 @@ a {
 
 .side_bar_tab_wrapper{
     margin-bottom:20px;
+}
+
+div .contact_list{
+    overflow: scroll;
 }
 </style>
