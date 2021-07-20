@@ -7,7 +7,12 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 // types
 import { AppState } from '@/types/AppTypes.interface';
-import { User, Event, Feedback, PeerReview } from '@/types/FirebaseTypes.interface';
+import {
+    User,
+    Event,
+    Feedback,
+    PeerReview,
+} from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
     return {
@@ -26,9 +31,9 @@ const getInitState = (): AppState => {
         mentors: [],
         feedback: [],
         peer_reviews: [],
-        liked_events: [],                     // list of events liked by the user
-        user_waves: [],                       // list of users waved at by the auth user
-        waves_from_other_users: [],           // list of user ids who waved at the auth user
+        liked_events: [], // list of events liked by the user
+        user_waves: [], // list of users waved at by the auth user
+        waves_from_other_users: [], // list of user ids who waved at the auth user
         filters: {
             event: {
                 type: [],
@@ -148,17 +153,17 @@ export default createStore({
                     experience_level: 0,
                     roles: signUpUser.roles, // TODO: retrieve this from the signup form
                     social_links: {
-                        email_id: authUser?.email ?? "",
-                        github_url: "",
-                        linkedin_url: "",
-                        website_url: "",
+                        email_id: authUser?.email ?? '',
+                        github_url: '',
+                        linkedin_url: '',
+                        website_url: '',
                     },
                     peer_reviews: {
                         peer_reviews_given: [],
                         peer_reviews_received: [],
                         peer_rating_count: 0,
                         peer_rating_sum: 0,
-                    }
+                    },
                 };
 
                 // write to db
@@ -232,38 +237,39 @@ export default createStore({
         },
 
         FETCH_CURRENT_USER_DATA_FROM_DB(state) {
-            console.log('Fetch user details')
-            if (auth.currentUser && state.is_new_user_data_available){
-                db.collection("users").doc(auth.currentUser!.uid)
-                .get()
-                .then(doc => {
-                    if (doc.exists) {
-                        const user: User = {
-                            background: doc.data()!.background,
-                            bio: doc.data()!.bio,
-                            created_at: doc.data()!.created_at,
-                            experience_level: doc.data()!.experience_level,
-                            first_name: doc.data()!.first_name,
-                            full_name: doc.data()!.full_name,
-                            id: doc.data()!.id,
-                            image_url: doc.data()!.image_url,
-                            interests: doc.data()!.interests,
-                            last_login: doc.data()!.last_login,
-                            last_name: doc.data()!.last_name,
-                            roles: doc.data()!.roles,
-                            social_links: doc.data()!.social_links,
-                            peer_reviews: doc.data()!.peer_review,
-                        };
-                        state.user_data = user;
-                    } else {
-                        console.log('User not found');
-                    }
-                    state.is_new_user_data_available = false;
-                })
-                .catch(function(error) {
-                    console.log('Error getting document:', error);
-                    state.is_new_user_data_available = false;
-                });
+            console.log('Fetch user details');
+            if (auth.currentUser && state.is_new_user_data_available) {
+                db.collection('users')
+                    .doc(auth.currentUser!.uid)
+                    .get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            const user: User = {
+                                background: doc.data()!.background,
+                                bio: doc.data()!.bio,
+                                created_at: doc.data()!.created_at,
+                                experience_level: doc.data()!.experience_level,
+                                first_name: doc.data()!.first_name,
+                                full_name: doc.data()!.full_name,
+                                id: doc.data()!.id,
+                                image_url: doc.data()!.image_url,
+                                interests: doc.data()!.interests,
+                                last_login: doc.data()!.last_login,
+                                last_name: doc.data()!.last_name,
+                                roles: doc.data()!.roles,
+                                social_links: doc.data()!.social_links,
+                                peer_reviews: doc.data()!.peer_review,
+                            };
+                            state.user_data = user;
+                        } else {
+                            console.log('User not found');
+                        }
+                        state.is_new_user_data_available = false;
+                    })
+                    .catch(function(error) {
+                        console.log('Error getting document:', error);
+                        state.is_new_user_data_available = false;
+                    });
             }
         },
 
@@ -429,7 +435,7 @@ export default createStore({
                             roles: doc.data().roles,
                             social_links: doc.data().social_links,
                             peer_reviews: doc.data()!.peer_review,
-                        }
+                        };
 
                         // populating the talent array
                         state.talent.push(talent);
@@ -490,7 +496,7 @@ export default createStore({
                             roles: doc.data().roles,
                             social_links: doc.data().social_links,
                             peer_reviews: doc.data()!.peer_review,
-                        }
+                        };
 
                         // populating the mentors array
                         state.mentors.push(mentor);
@@ -869,22 +875,30 @@ export default createStore({
             peerReview.date_created = firebaseApp.firestore.FieldValue.serverTimestamp();
             peerReview.from_id = auth.currentUser!.uid;
 
-            const newPeerReviewRef = db.collection("peer_review").doc();
+            const newPeerReviewRef = db.collection('peer_review').doc();
 
             newPeerReviewRef
                 .set(peerReview)
                 .then(() => {
                     state.peer_reviews.push(peerReview);
-                    Swal.fire({ icon: 'success', title: "Thank you!", text: "Peer Review Logged!" });
-                }).catch(function(error) {
-                    console.log("Error setting peer review:" + error)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thank you!',
+                        text: 'Peer Review Logged!',
+                    });
+                })
+                .catch(function(error) {
+                    console.log('Error setting peer review:' + error);
                 });
 
-            db.collection("users").doc(auth.currentUser!.uid).update({
-                'peer_reviews.peer_reviews_given': firebaseApp.firestore.FieldValue.arrayUnion(newPeerReviewRef),
-            })
-        }
-
+            db.collection('users')
+                .doc(auth.currentUser!.uid)
+                .update({
+                    'peer_reviews.peer_reviews_given': firebaseApp.firestore.FieldValue.arrayUnion(
+                        newPeerReviewRef
+                    ),
+                });
+        },
     },
 
     // functions to be called throughout the app that, in turn, call mutations
@@ -999,6 +1013,5 @@ export default createStore({
         newPeerReview({ commit }, peerReview: PeerReview) {
             commit('NEW_PEER_REVIEW', peerReview);
         },
-    }
-
+    },
 });

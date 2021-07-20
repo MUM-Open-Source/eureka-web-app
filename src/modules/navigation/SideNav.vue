@@ -38,6 +38,12 @@
                     <div class="side-nav__text">Research</div>
                 </div>
             </router-link>
+            <router-link :to="{ name: 'PeerReview' }">
+                <div class="side-nav__group--link">
+                    <fa icon="book" size="md" class="side-nav__icon" />
+                    <div class="side-nav__text">Peer Review</div>
+                </div>
+            </router-link>
         </div>
         <!-- Extracurricular -->
         <div class="side-nav__group mar__b--2">
