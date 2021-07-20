@@ -1,9 +1,9 @@
+import Vue from 'vue';
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from '@/store';
 import VuelidatePlugin from '@vuelidate/core';
-import Vue from 'vue';
 // Font Awesome Icons
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
