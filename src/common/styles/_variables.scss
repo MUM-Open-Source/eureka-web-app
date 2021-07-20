@@ -21,7 +21,7 @@ $spacer: 10px;
 $heading-font-size: 27px;
 $subheading-font-size: 22px;
 $tagline-font-size: 16px;
-$side-nav-font-size: 13px;
+$side-nav-font-size: 14px;
 $body-font-size: 18px;
 
 // font weight
@@ -45,11 +45,13 @@ $round-img-width: 120px;
 $square-img-width: 250px;
 
 // side nav
-$side-nav-width: 100px;
-$side-nav-group-padding: 15px 0;
-$side-nav-text-width: 90%;
-$side-nav-icon-width: 35px;
-$side-nav-icon-mar-b: 5px;
+$side-nav-width: 160px;
+$side-nav-group-padding: 15px 10px;
+$side-nav-header-pad-l: 15px;
+$side-nav-link-mar: 0 10px;
+$side-nav-icon-width: 20px;
+$side-nav-icon-mar-r: 10px;
+$side-nav-group-bottom-mar-b: 10px;
 
 // top nav
 $top-nav-height: 60px;
@@ -107,7 +109,7 @@ $signup-radio-label-height: 1;
 $signup-radio-label-padding: 8px 16px;
 $signup-radio-label-border: 1px solid rgba(0, 0, 0, 0.2);
 $signup-radio-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3),
-  0 1px rgba(255, 255, 255, 0.1);
+    0 1px rgba(255, 255, 255, 0.1);
 $signup-radio-label-first-border-radius: 4px 0 0 4px;
 $signup-radio-label-last-border-radius: 0 4px 4px 0;
 $signup-radio-label-first-border-radius-sm: 4px 4px 0 0;
@@ -146,6 +148,13 @@ $under-maintenance-position-ratio: 50%;
 $under-maintenance-img-width: 50%;
 $under-maintenance-img-width-sm: 250px;
 $under-maintenance-img-padding-right: 40px;
+
+// tabs
+$tab-wrapper-width: 100%;
+$tab-wrapper-margin: 0 auto;
+$tab-title-min-width: 80px;
+$tab-title-padding: 10px 20px;
+$tab-content-min-height: 300px;
 
 // Tag Input Styling
 $tag-input-width: 100%;

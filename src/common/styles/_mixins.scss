@@ -1,6 +1,6 @@
 // CSS declarations that you can reuse throughout your site
 
-@mixin gradientAnimation( $start, $end, $non-white: false){
+@mixin gradientAnimation($start, $end, $non-white: false) {
     // Source: https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759
     background-size: 100%;
     background-image: linear-gradient(to right, $start, $end);
@@ -8,11 +8,12 @@
     z-index: 100;
     &:before {
         background-image: linear-gradient(to right, $end, $end);
-        content: "";
+        content: '';
         display: block;
         height: 100%;
         position: absolute;
-        top: 0; left: 0;
+        top: 0;
+        left: 0;
         opacity: 0;
         width: 100%;
         border-radius: $btn-border-radius;
@@ -26,8 +27,6 @@
     }
 }
 
-
-
 // general shadow
 @mixin shadow {
     box-shadow: 0 5px 13px -4px $color-dark;
@@ -36,4 +35,9 @@
 // thinner shadow
 @mixin shadow--small {
     box-shadow: 0 0 5px $color-light;
+}
+
+// subtle shadow
+@mixin shadow--subtle {
+    box-shadow: 0 3px 5px 5px rgba(0,0,0,0.05);
 }

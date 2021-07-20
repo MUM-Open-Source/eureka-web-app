@@ -1,7 +1,7 @@
 <template>
     <div class="form__group--toggle">
         <label :for="id">{{ label }}</label>
-        <input :id="id" type="checkbox" class="toggle">
+        <input :id="id" type="checkbox" class="toggle" />
     </div>
 </template>
 
@@ -11,29 +11,29 @@ export default {
     props: {
         id: {
             type: String,
-            required: true
+            required: true,
         },
         label: {
             type: String,
-            required: true
-        }
-    }
-}
+            required: true,
+        },
+    },
+};
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .form__group--toggle {
     display: flex;
     flex-direction: column;
 }
-input[type=checkbox] {
+input[type='checkbox'] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
 }
-input[type=checkbox]:focus {
+input[type='checkbox']:focus {
     outline: 0;
 }
 
@@ -49,7 +49,7 @@ input[type=checkbox]:focus {
     transition: all $transition-duration-fast ease;
 }
 .toggle:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 2px;
     left: 2px;
