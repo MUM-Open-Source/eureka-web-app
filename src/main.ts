@@ -8,10 +8,34 @@ import store from '@/store'
 
 // Font Awesome Icons
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {
+    faStar,
+    faBorderAll,
+    faProjectDiagram,
+    faBook,
+    faCode,
+    faUserShield,
+} from '@fortawesome/free-solid-svg-icons'
+import { 
+    faComments,
+    faCalendarAlt,
+    faCommentAlt,
+    faHandshake,
+} from '@fortawesome/free-regular-svg-icons'
 
-library.add(faStar)
+library.add(
+    faStar,
+    faBorderAll,
+    faComments,
+    faProjectDiagram,
+    faBook,
+    faCalendarAlt,
+    faCode,
+    faUserShield,
+    faCommentAlt,
+    faHandshake,
+)
 
 createApp(App)
     .use(store)
