@@ -128,6 +128,12 @@ export default createStore({
                         github_url: "",
                         linkedin_url: "",
                         website_url: "",
+                    },
+                    peer_reviews: {
+                        peer_reviews_given: [],
+                        peer_reviews_received: [],
+                        peer_rating_count: 0,
+                        peer_rating_sum: 0,
                     }
                 };
 
@@ -203,7 +209,8 @@ export default createStore({
                             last_login: doc.data()!.last_login,
                             last_name: doc.data()!.last_name,
                             roles: doc.data()!.roles,
-                            social_links: doc.data()!.social_links
+                            social_links: doc.data()!.social_links,
+                            peer_reviews: doc.data()!.peer_review,
                         }
 
                         state.user_data = user;
@@ -348,7 +355,8 @@ export default createStore({
                             last_login: doc.data().last_login,
                             last_name: doc.data().last_name,
                             roles: doc.data().roles,
-                            social_links: doc.data().social_links
+                            social_links: doc.data().social_links,
+                            peer_reviews: doc.data()!.peer_review,
                         }
 
                         // populating the talent array
@@ -394,7 +402,8 @@ export default createStore({
                             last_login: doc.data().last_login,
                             last_name: doc.data().last_name,
                             roles: doc.data().roles,
-                            social_links: doc.data().social_links
+                            social_links: doc.data().social_links,
+                            peer_reviews: doc.data()!.peer_review,
                         }
 
                         // populating the mentors array
@@ -725,14 +734,22 @@ export default createStore({
             //     responses: newPeerReview.responses,
             // }
             peerReview.date_created = firebaseApp.firestore.FieldValue.serverTimestamp();
+            peerReview.from_id = auth.currentUser!.uid;
 
-            db.collection("peer_review")
-                .add(peerReview)
-                .then(() =>
-                    state.peer_reviews.push(peerReview)
-                ).catch(function(error) {
+            const newPeerReviewRef = db.collection("peer_review").doc();
+
+            newPeerReviewRef
+                .set(peerReview)
+                .then(() => {
+                    state.peer_reviews.push(peerReview);
+                    Swal.fire({ icon: 'success', title: "Thank you!", text: "Peer Review Logged!" });
+                }).catch(function(error) {
                     console.log("Error setting peer review:" + error)
                 });
+
+            db.collection("users").doc(auth.currentUser!.uid).update({
+                'peer_reviews.peer_reviews_given': firebaseApp.firestore.FieldValue.arrayUnion(newPeerReviewRef),
+            })
         }
 
     },

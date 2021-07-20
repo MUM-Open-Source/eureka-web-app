@@ -63,11 +63,6 @@ export default defineComponent({
     //   required: true,
     //   defaut: "0",
     // },
-    // from_id: {
-    //   type: String,
-    //   required: true,
-    //   defaut: "1",
-    // },
     // to_id: {
     //   type: String,
     //   required: true,
@@ -125,8 +120,7 @@ export default defineComponent({
       if (allMandatoryRatingsFilled() && allMandatoryFieldsFilled()) {
         const peerReview = {
           team_id: "0",
-          from_id: "1",
-          to_id: "2",
+          to_id: "1",
           rating_count: questions.length,
           rating_sum: totalRating(),
           responses: arrayToDictionaryHelper(),

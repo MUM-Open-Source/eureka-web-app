@@ -21,6 +21,12 @@ export interface User {
         linkedin_url: string;
         website_url: string;
     }
+    peer_reviews: {
+        peer_reviews_given: firebase.firestore.DocumentReference[];
+        peer_reviews_received: firebase.firestore.DocumentReference[];
+        peer_rating_count: number;
+        peer_rating_sum: number;
+    }
 }
 
 export interface Event {
