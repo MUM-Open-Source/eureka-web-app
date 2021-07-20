@@ -71,73 +71,83 @@ const routes: RouteRecordRaw[] = [
     // {
     //   path: '/profile/info',
 
-  // }, 
-  {
-    path: '/browse-events',
-    name: 'BrowseEvents',
-    component: BrowseEvents,
-    meta: {
-      requiresAuth: true
-    }
-  }, {
-    path: '/profile',
-    name: 'Profile',
-    component: UserProfile,
-    meta: {
-      requiresAuth: true
-    }
-  }, {
-    path: '/profile/crop-image',
-    name: 'CropImage',
-    component: CropImage,
-    meta: {
-      requiresAuth: true
-    }
-  }, {
-    path: '/profile/waves-from-talent',
-    name: 'WavesFromTalent',
-    component: WavesFromTalent,
-    meta: {
-      requiresAuth: true
-    }
-  }, {
-    path: '/profile/waves-from-mentors',
-    name: 'WavesFromMentors',
-    component: WavesFromMentors,
-    meta: {
-      requiresAuth: true
-    }
-  }, {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
-    component: NotFound,
-  }, {
-    path: '/maintenance',
-    name: 'Maintenance',
-    component: Maintenance,
-  }, {
-    path: '/reset-password',
-    name: 'ResetPassword',
-    component: ResetPassword,
-    meta: {
-      requiresAuth: false
-    }
-  }, {
-    path: '/terms-and-conditions',
-    name: 'Terms',
-    component: Terms,
-  }, {
-    path: '/privacy-policy',
-    name: 'Privacy',
-    component: Privacy,
-  }, {
-    path: '/incubator-nitin',
-    name: 'IncubatorNitin',
-    component: IncubatorNitin,
-    meta: {
-      requiresAuth: true
-    }
-  }
+    // },
+    {
+        path: '/browse-events',
+        name: 'BrowseEvents',
+        component: BrowseEvents,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: UserProfile,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/profile/crop-image',
+        name: 'CropImage',
+        component: CropImage,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/profile/waves-from-talent',
+        name: 'WavesFromTalent',
+        component: WavesFromTalent,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/profile/waves-from-mentors',
+        name: 'WavesFromMentors',
+        component: WavesFromMentors,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFound,
+    },
+    {
+        path: '/maintenance',
+        name: 'Maintenance',
+        component: Maintenance,
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: ResetPassword,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: '/terms-and-conditions',
+        name: 'Terms',
+        component: Terms,
+    },
+    {
+        path: '/privacy-policy',
+        name: 'Privacy',
+        component: Privacy,
+    },
+    {
+        path: '/incubator-nitin',
+        name: 'IncubatorNitin',
+        component: IncubatorNitin,
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
     // {
     //   path: '/about',
