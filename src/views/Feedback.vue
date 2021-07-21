@@ -1,39 +1,42 @@
 <template>
-    <div class="feedback page-pad">   
+    <div class="feedback page-pad">
         <div class="feedback__content text--center">
             <div class="feedback__content--title mar__b--3 text--center">
                 <div class="heading">Send us your feedback!</div>
-            <div class="feedbackForm">
-                <form class="review-form mar__t--3" @submit.prevent="handleSubmit">
-                    <Multiselect
-                        class="mar__t--2 mar__b--2"
-                        v-model="feedback.subject"
-                        :searchable="false"
-                        placeholder="Subject"
-                        :options="{
-                            suggestion: 'Suggestion', 
-                            bug: 'Something\'s not quite right', 
-                            compliment: 'Compliment'
-                        }"
-                        :canDeselect="false"
-                    />
-                    <textarea 
-                        id="feedback__message" 
-                        class="body" 
-                        placeholder="Message" 
-                        v-model="feedback.message"
-                        required
-                    />
-                    <Button 
-                        text="Submit" 
-                        class="mar--auto mar__t--3 mar__b--1"
-                        type="submit"
-                    />
-                </form>
-            </div>
+                <div class="feedbackForm">
+                    <form
+                        class="review-form mar__t--3"
+                        @submit.prevent="handleSubmit"
+                    >
+                        <Multiselect
+                            class="mar__t--2 mar__b--2"
+                            v-model="feedback.subject"
+                            :searchable="false"
+                            placeholder="Subject"
+                            :options="{
+                                suggestion: 'Suggestion',
+                                bug: 'Something\'s not quite right',
+                                compliment: 'Compliment',
+                            }"
+                            :canDeselect="false"
+                        />
+                        <textarea
+                            id="feedback__message"
+                            class="body"
+                            placeholder="Message"
+                            v-model="feedback.message"
+                            required
+                        />
+                        <Button
+                            text="Submit"
+                            class="mar--auto mar__t--3 mar__b--1"
+                            type="submit"
+                        />
+                    </form>
+                </div>
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 
 <script>
@@ -43,36 +46,40 @@ import Multiselect from '@vueform/multiselect';
 import Button from '@/common/Button.vue';
 import Swal from 'sweetalert2';
 
-
 export default {
-  
     name: 'FeedbackUI',
     components: { Multiselect, Button },
-    
+
     setup() {
         // reactive filter data point
         const feedback = reactive({
             subject: '',
-            message: ''
-        })
+            message: '',
+        });
 
         const handleSubmit = () => {
             if (feedback.subject !== '' && feedback.message !== '') {
-                store.dispatch('sendFeedback', {subject: feedback.subject, message: feedback.message})
-                feedback.subject = ''
-                feedback.message = ''
+                store.dispatch('sendFeedback', {
+                    subject: feedback.subject,
+                    message: feedback.message,
+                });
+                feedback.subject = '';
+                feedback.message = '';
             } else {
-
-                Swal.fire({icon: 'warning', title:'Oops...', text: 'Please fill all fields' }) 
-            } 
-        }
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please fill all fields',
+                });
+            }
+        };
 
         return {
             feedback,
-            handleSubmit
-        }
-    }
-}
+            handleSubmit,
+        };
+    },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -91,4 +98,4 @@ textarea {
     outline: none;
     border-color: $color-bg-hover;
 }
-</style> 
+</style>

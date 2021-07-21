@@ -1,60 +1,32 @@
 <template>
   <div class="frame">
     <h2>The Incubator</h2>
-    <Loader v-if="isLoading" />
+    <Loader v-if="state.isLoading" />
     <div class="workspace-body" v-else>
-      <div class="empty-state" v-if="isEmpty">
-        <img class="empty-image" src="@/assets/not-found-icon.svg" />
-        <p>Seems like you don't have any workspace now</p>
-        <p>Create One !</p>
-      </div>
+      <div v-if="state.showList">
+        <div class="empty-state" v-if="state.isEmpty">
+          <img class="empty-image" src="@/assets/not-found-icon.svg" />
+          <p>Seems like you don't have any workspace now</p>
+          <p>{{ state.canCreateRooms ? "Create One !" : "Join One !" }}</p>
+        </div>
 
-      <div class="workspace-list" v-if="!isEmpty && showList">
-        <div
-          v-for="(data, index) in workspace"
-          class="workspace-card"
-          :key="index"
-        >
-          {{ data.name }}
+        <div class="workspace-list" v-if="!state.isEmpty">
+          <div
+            v-for="(data, index) in state.workspace"
+            class="workspace-card"
+            :key="index"
+            v-on:click="() => router.push(`/incubator/${data.code}`)"
+          >
+            {{ data.name }}
+          </div>
         </div>
       </div>
 
-      <StudentJoinForm v-if="showStudentJoin" />
-
-      <form class="settings-page" v-if="showSettingsPage">
-        <div>
-          <div class="form-group">
-            <label class="form__label">Password</label>
-            <input
-              class="form__input"
-              @input="$v.password.$touch()"
-              v-model="password"
-            />
-          </div>
-          <div class="error" v-if="$v.password.required.$invalid">
-            Password is required.
-          </div>
-          <div class="error" v-if="$v.password.minLength.$invalid">
-            {{ $v.password.minLength.$message }}
-          </div>
-          <div class="form-group">
-            <label class="form__label">Repeat password</label>
-            <input
-              class="form__input"
-              @input="$v.repeatPassword.$touch()"
-              v-model="repeatPassword"
-            />
-          </div>
-          <div class="error" v-if="$v.repeatPassword.sameAsPassword.$invalid">
-            Password must be equal
-          </div>
-        </div>
-        {{ $v }}
-        <div v-on:click="submit">click me</div>
-      </form>
+      <StudentJoinForm v-if="state.showStudentJoin" />
+      <LecturerSettingsPage v-if="state.showSettingsPage" />
 
       <button class="floating-action-button" v-on:click="showAddWorkspace">
-        <p v-if="showList">+</p>
+        <p v-if="state.showList">+</p>
         <p v-else><span class="material-icons"> arrow_back </span></p>
       </button>
     </div>
@@ -62,109 +34,77 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, reactive } from "vue";
 import Loader from "../common/Loader.vue";
-// import InputField from "../common/InputField.vue";
 import store from "../store";
+import router from "../router/index";
 // eslint-disable-next-line no-unused-vars
 import { Incubator } from "../types/Incubator";
-import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, sameAs } from "@vuelidate/validators";
-import { createWorkSpace, getAllWorkspace } from "@/api/IncubatorApi";
+import {
+  getAllLecturerWorkspace,
+  getAllStudentWorkspace,
+} from "@/api/IncubatorApi";
 import StudentJoinForm from "@/modules/incubator/StudentJoinForm.vue";
+import LecturerSettingsPage from "@/modules/incubator/LecturerSettingsPage.vue";
 
 export default {
   name: "Incubator",
-  components: { Loader, StudentJoinForm },
+  components: { Loader, StudentJoinForm, LecturerSettingsPage },
   setup() {
-    const isLoading = ref(true);
-    const canCreateRooms = ref(false);
-    const showList = ref(true);
-    const isEmpty = ref(false);
-    const showStudentJoin = ref(false);
-    const showSettingsPage = ref(false);
-    const workspace = ref<Incubator[]>([]);
-    const password = ref("");
-    const repeatPassword = ref("");
-
-    const rules = {
-      password: { required, minLength: minLength(6) },
-      repeatPassword: {
-        sameAsPassword: sameAs(password),
-      },
-    };
-
-    const $v = useVuelidate(rules as any, { password, repeatPassword });
+    const state = reactive<{
+      isLoading: Boolean;
+      canCreateRooms: Boolean;
+      showList: Boolean;
+      isEmpty: Boolean;
+      showStudentJoin: Boolean;
+      showSettingsPage: Boolean;
+      workspace?: Incubator[];
+    }>({
+      isLoading: true,
+      canCreateRooms:
+        (store.state.user?.email?.includes("monash.edu") &&
+          !store.state.user.email.includes("student")) ||
+        false,
+      showList: true,
+      isEmpty: false,
+      showStudentJoin: false,
+      showSettingsPage: false,
+    });
 
     onMounted(() => {
-      getWorkspace();
-      setTimeout(() => {
-        isLoading.value = false;
-      }, 2000);
+      if (!state.workspace) getWorkspace();
     });
 
     const getWorkspace = () => {
-      getAllWorkspace(
-        store.state.workspace.length === 0 ? ["none"] : store.state.workspace,
-        (data) => {
-          const arrayData: Incubator[] = [];
-          data.forEach((res: any) => {
-            arrayData.push(res.data() as Incubator);
-          });
-          workspace.value = arrayData;
-        },
-        console.log
-      );
-    };
-
-    const addWorkspace = () => {
-      const incubator: Incubator = {
-        code: "",
-        name: "First Workshop",
-        workspaceOwnerId: "",
-        maxNumberOfTeams: 1,
-        maxMemberPerTeam: 2,
-        teamCreationDeadline: new Date(),
-        teamAdjourningDate: new Date(),
-        peerReviewDurationInDays: 2,
-        workspaceMembers: [],
-        tutorialSlots: [],
-        groups: [],
-        tags: [],
+      const onSuccess = (data: any) => {
+        state.workspace = data;
+        state.isEmpty = state.workspace?.length === 0;
+        state.isLoading = false;
       };
-      createWorkSpace(incubator, console.log, console.log);
+      state.canCreateRooms
+        ? getAllLecturerWorkspace(
+            store.state.user?.uid || "",
+            onSuccess,
+            console.log
+          )
+        : getAllStudentWorkspace(
+            store.state.user?.uid || "",
+            onSuccess,
+            console.log
+          );
     };
 
     const showAddWorkspace = () => {
-      canCreateRooms.value
-        ? (showSettingsPage.value = !showSettingsPage.value)
-        : (showStudentJoin.value = !showStudentJoin.value);
-      showList.value = !showList.value;
-    };
-
-    const submit = () => {
-      $v.value.$touch();
-      if ($v.value.$invalid) {
-        console.log("Eror");
-      } else {
-        console.log("Submitted");
-      }
+      state.canCreateRooms
+        ? (state.showSettingsPage = !state.showSettingsPage)
+        : (state.showStudentJoin = !state.showStudentJoin);
+      state.showList = !state.showList;
     };
 
     return {
-      isLoading,
-      canCreateRooms,
-      workspace,
-      addWorkspace,
+      state,
       showAddWorkspace,
-      submit,
-      showSettingsPage,
-      showStudentJoin,
-      showList,
-      isEmpty,
-      password,
-      repeatPassword,
-      $v,
+      router,
     };
   },
 };
@@ -172,14 +112,14 @@ export default {
 
 <style lang="scss" scoped>
 .frame {
-  max-width: 60vw;
+  width: 60vw;
   margin: auto;
   display: flex;
   padding: 10px 15px;
   flex-direction: column;
   align-items: center;
 
-  @media (min-width: 428px) {
+  @media (max-width: 428px) {
     max-width: 100vw;
   }
 
@@ -193,7 +133,7 @@ export default {
     height: 100%;
 
     p {
-      @media (min-width: 428px) {
+      @media (max-width: 428px) {
         font-size: 14px;
       }
     }
@@ -218,7 +158,7 @@ export default {
   .floating-action-button {
     @include shadow;
     margin: 50px;
-    position: absolute;
+    position: fixed;
     right: 0;
     bottom: 0;
     height: 50px;

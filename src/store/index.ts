@@ -1,10 +1,10 @@
-import {createStore, Store} from "vuex";
-import firebase from "firebase";
-import firebaseApp from "firebase/app";
-import "firebase/auth";
-import {db, auth, storage} from "@/firebase";
-import router from "@/router";
-import Swal from "sweetalert2";
+import { createStore, Store } from 'vuex';
+import firebase from 'firebase';
+import firebaseApp from 'firebase/app';
+import 'firebase/auth';
+import { db, auth, storage } from '@/firebase';
+import router from '@/router';
+import Swal from 'sweetalert2';
 // types
 import {AppState} from "@/types/AppTypes.interface";
 import {User, Event, Feedback} from "@/types/FirebaseTypes.interface";
@@ -22,8 +22,6 @@ const getInitState = (): AppState => {
     new_img_url: "",
     is_new: false, // used to ensure all mandatory details are filled after signup
     events: [],
-    workspace: [],
-    can_create_workspace: false,
     talent: [],
     mentors: [],
     feedback: [],
@@ -219,9 +217,7 @@ export default createStore({
           .doc(auth.currentUser!.uid)
           .get()
           .then((doc) => {
-            if (doc.exists) {
-              state.can_create_workspace = doc.data()!.can_create_workspace;
-              state.workspace = Array.from(doc.data()!.workspace);
+            if (state.is_new_user_data_available && doc.exists) {
               const user: User = {
                 background: doc.data()!.background,
                 bio: doc.data()!.bio,

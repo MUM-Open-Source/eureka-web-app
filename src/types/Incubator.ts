@@ -1,16 +1,27 @@
 export type Incubator = {
-  code: string;
-  name: string;
-  workspaceOwnerId: string;
+  code?: string;
+  name?: string;
+  groups?: string[];
+  workspaceOwnerId?: string;
   maxMemberPerTeam: number;
   maxNumberOfTeams?: number;
   teamCreationDeadline: Date;
   teamAdjourningDate?: Date;
+  tags: string[];
+  workspaceMembers?: string[];
   peerReviewDurationInDays: number;
-  workspaceMembers: string[];
-  groups: string[];
-  tags: IncubatorArray[];
-  tutorialSlots: IncubatorArray[];
+  tutorialSlots: string[];
+};
+
+export type WorkspaceMember = {
+  id: string;
+  userId: string;
+  group?: string;
+  workspace: string;
+  memberSince: Date;
+  tags: string[];
+  tutorialSlots: string[];
+  sellYourself: string;
 };
 
 export type Group = {
@@ -19,10 +30,4 @@ export type Group = {
   groupFormDate: Date;
   workspaceId: string;
   groupMembers: string[];
-};
-
-export type IncubatorArray = {
-  id: number;
-  label: string;
-  value: number;
 };

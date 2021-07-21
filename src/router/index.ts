@@ -18,10 +18,16 @@ import ResetPassword from "@/views/ResetPassword.vue";
 import Terms from "@/views/Terms.vue";
 import Privacy from "@/views/Privacy.vue";
 import Incubator from "@/views/Incubator.vue";
+import Report from "@/views/Report.vue";
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
   {path: "/incubator/:code", name: "Workspace", component: Incubator},
+  {
+    path: "/report",
+    name: "report",
+    component: Report,
+  },
   {
     path: "/incubator",
     name: "Incubator",
@@ -164,8 +170,8 @@ const router = createRouter({
 
 // router guards
 router.beforeEach(async (to, from, next) => {
-  window.scrollTo(0, 0);
-  checkAuth(to, next);
+    window.scrollTo(0, 0);
+    checkAuth(to, next);
 });
 
 export default router;
