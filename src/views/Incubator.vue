@@ -21,7 +21,7 @@
                 <div class="workspace-list" v-if="!state.isEmpty">
                     <div
                         v-for="(data, index) in state.workspace"
-                        class="workspace-card"
+                        class="workspace-card cursor__pointer subheading mar--2"
                         :key="index"
                         v-on:click="
                             () => router.push(`/incubator/${data.code}`)
@@ -198,15 +198,19 @@ export default {
     margin-top: 1rem;
     width: 100%;
 }
-
+.workspace-list {
+    display: flex;
+}
 .workspace-card {
     @include shadow;
-    border-radius: 8px;
-    padding: 10px;
-    margin: 10px;
-    width: calc(100% - 40px);
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $app-border-radius;
+    width: 200px;
+    height: 100px;
     user-select: none;
+    color: $color-brand;
 }
 .workspace-card:hover {
     transform: scale(1.02);
