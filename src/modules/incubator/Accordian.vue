@@ -1,56 +1,46 @@
 <template>
     <div class="accordian">
         <div class="accordian__header" @click="toggleAccordian">
-            <div class="accordian__header--details">
-                <div>Hello World</div>
-                <div>2/5 members</div>
-                <div>We need an angular developer</div>
-                <Button text="Join" />
-            </div>
-                <fa 
-                    icon="chevron-down"
-                    size="lg"
-                    :class="isOpen ? '' : 'face-side'"
-                />
+            <slot name="header"></slot>
+            <fa
+                icon="chevron-down"
+                size="lg"
+                :class="isOpen ? '' : 'face-side'"
+            />
         </div>
-        <div 
-            class="accordian__body"
-            :class="isOpen ? '' : 'closed'"
-        >
-            <UserCard />
-            <UserCard />
+        <div class="accordian__body" :class="isOpen ? '' : 'closed'">
+            <slot name="body"></slot>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import UserCard from '@/modules/incubator/UserCard.vue';
-import Button from '@/common/Button.vue';
 
 export default defineComponent({
-    name: "Accordian",
-    components: { UserCard, Button },
+    name: 'Accordian',
     setup() {
         const isOpen = ref(false);
-        const toggleAccordian = () => isOpen.value = !isOpen.value;
+        const toggleAccordian = () => (isOpen.value = !isOpen.value);
 
         return {
             isOpen,
-            toggleAccordian
-        }
-    }
-})
+            toggleAccordian,
+        };
+    },
+});
 </script>
 
 <style lang="scss" scoped>
 .accordian {
     &__header {
-        background-color: burlywood;
+        @include shadow--small;
+        // background-color: burlywood;
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 20px;
+        border-radius: $app-border-radius;
         .face-side {
             transform: rotate(-90deg);
         }
@@ -63,7 +53,7 @@ export default defineComponent({
         }
     }
     &__body {
-        border: solid 1px black;
+        // border: solid 0.2px black;
         max-height: 1000px;
         min-height: 100%;
         overflow: scroll;
