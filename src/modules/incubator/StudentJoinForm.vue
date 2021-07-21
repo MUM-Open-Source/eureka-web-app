@@ -6,8 +6,8 @@
             placeholder="Workspace Code"
         />
         <ErrorMessageComponent
-            :error="v$.workspace.$errors"
-            :silentError="v$.workspace.$silentErrors"
+            v-if="v$.workspace.$error"
+            :errors="v$.workspace.$errors"
         />
         <Button
             class="submit-button"
@@ -15,22 +15,23 @@
             @click="setShowJoinWorkspace"
         />
     </div>
-    <StudentJoinWorkshopForm :workspaceData="state.workspaceData" v-else />
+    <StudentJoinWorkspaceForm :workspaceData="state.workspaceData" v-else />
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import Button from '@/common/Button.vue';
 import { reactive } from 'vue-demi';
 import { useVuelidate } from '@vuelidate/core';
 import { maxLength, minLength, required } from '@vuelidate/validators';
-import StudentJoinWorkshopForm from './StudentJoinWorkshopForm.vue';
+import StudentJoinWorkspaceForm from './StudentJoinWorkspaceForm.vue';
 import ErrorMessageComponent from './ErrorMessageComponent.vue';
 import { getWorkspace } from '@/api/IncubatorApi';
 import Swal from 'sweetalert2';
 
-export default {
+export default defineComponent({
     name: 'StudentJoinForm',
-    components: { Button, StudentJoinWorkshopForm, ErrorMessageComponent },
+    components: { Button, StudentJoinWorkspaceForm, ErrorMessageComponent },
     setup() {
         const state = reactive({
             workspace: '',
@@ -47,6 +48,7 @@ export default {
         const v$ = useVuelidate(rules, state);
 
         const setShowJoinWorkspace = () => {
+            v$.value.$validate();
             if (!v$.value.$invalid) {
                 getWorkspace(
                     state.workspace,
@@ -71,7 +73,7 @@ export default {
 
         return { v$, state, setShowJoinWorkspace };
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -1,20 +1,21 @@
 <template>
-    <div class="frame">
-        <h2>The Incubator</h2>
-        <Loader v-if="state.isLoading" />
-        <div class="workspace-body" v-else>
+    <div class="frame page-pad">
+        <div class="heading">The Incubator</div>
+        <div class="workspace-body">
             <div v-if="state.showList">
                 <div class="empty-state" v-if="state.isEmpty">
                     <img
                         class="empty-image"
                         src="@/assets/not-found-icon.svg"
                     />
-                    <p>Seems like you don't have any workspace now</p>
-                    <p>
+                    <div class="body">
+                        Seems like you don't have any workspace now
+                    </div>
+                    <div class="body">
                         {{
                             state.canCreateRooms ? 'Create One !' : 'Join One !'
                         }}
-                    </p>
+                    </div>
                 </div>
 
                 <div class="workspace-list" v-if="!state.isEmpty">
@@ -47,7 +48,6 @@
 
 <script lang="ts">
 import { onMounted, reactive } from 'vue';
-import Loader from '../common/Loader.vue';
 import store from '../store';
 import router from '../router/index';
 // eslint-disable-next-line no-unused-vars
@@ -61,7 +61,7 @@ import LecturerSettingsPage from '@/modules/incubator/LecturerSettingsPage.vue';
 
 export default {
     name: 'Incubator',
-    components: { Loader, StudentJoinForm, LecturerSettingsPage },
+    components: { StudentJoinForm, LecturerSettingsPage },
     setup() {
         const state = reactive<{
             isLoading: Boolean;

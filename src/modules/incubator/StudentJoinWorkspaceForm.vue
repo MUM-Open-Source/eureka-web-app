@@ -11,8 +11,8 @@
                 :createTag="true"
             />
             <ErrorMessageComponent
-                :error="v$.selectedTags.$errors"
-                :silentError="v$.selectedTags.$silentErrors"
+                v-if="v$.selectedTags.$error"
+                :errors="v$.selectedTags.$errors"
             />
         </div>
         <div class="section">
@@ -24,8 +24,8 @@
                 :options="state.tutorial"
             />
             <ErrorMessageComponent
-                :error="v$.selectedTutorial.$errors"
-                :silentError="v$.selectedTutorial.$silentErrors"
+                v-if="v$.selectedTutorial.$error"
+                :errors="v$.selectedTutorial.$errors"
             />
         </div>
         <div class="section">
@@ -37,15 +37,16 @@
                 placeholder="Sell Yourself"
             ></textarea>
             <ErrorMessageComponent
-                :error="v$.sellYourself.$errors"
-                :silentError="v$.sellYourself.$silentErrors"
+                v-if="v$.sellYourself.$error"
+                :errors="v$.sellYourself.$errors"
             />
-            <Button class="submit-button" text="Join" @click="joinWorkspace" />
         </div>
+        <Button class="submit-button" text="Join" @click="joinWorkspace" />
     </div>
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import Button from '@/common/Button.vue';
 import { reactive } from 'vue-demi';
 import { useVuelidate } from '@vuelidate/core';
@@ -56,8 +57,8 @@ import ErrorMessageComponent from './ErrorMessageComponent.vue';
 import router from '@/router';
 import Swal from 'sweetalert2';
 
-export default {
-    name: 'StudentJoinForm',
+export default defineComponent({
+    name: 'StudentJoinWorkspaceForm',
     components: { Button, Multiselect, ErrorMessageComponent },
     props: {
         workspaceData: Object,
@@ -85,6 +86,7 @@ export default {
         const v$ = useVuelidate(rules, state);
 
         const joinWorkspace = () => {
+            v$.value.$validate();
             if (!v$.value.$invalid) {
                 studentJoinWorkspace({
                     workspaceCode: props.workspaceData.code || 'none',
@@ -111,7 +113,7 @@ export default {
 
         return { v$, state, joinWorkspace };
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>
