@@ -18,7 +18,7 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 export default defineComponent({
     props: {
         limit: {
@@ -67,31 +67,31 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .tag-input {
-  width: $tag-input-width;
-  border: $tag-input-border-radius solid $color-bg-hover;
-  min-height: $tag-input-min-height;
-  box-sizing: border-box;
-  padding: $tag-input-padding;
-  display: flex;
-  flex-wrap: wrap;
-  &__tag {
-    height: $tag-input-tag-height;
-    float: left;
-    margin-right: $tag-input-tag-margin-right;
-    background-color: $color-brand;
-    line-height: $tag-input-tag-line-height;
-    padding: $tag-input-tag-padding;
-    border-radius: $app-border-radius-sm;
-    & > span {
-      opacity: $tag-input-tag-span-opacity;
+    width: $tag-input-width;
+    border: $tag-input-border-radius solid $color-bg-hover;
+    min-height: $tag-input-min-height;
+    box-sizing: border-box;
+    padding: $tag-input-padding;
+    display: flex;
+    flex-wrap: wrap;
+    &__tag {
+        height: $tag-input-tag-height;
+        float: left;
+        margin-right: $tag-input-tag-margin-right;
+        background-color: $color-brand;
+        line-height: $tag-input-tag-line-height;
+        padding: $tag-input-tag-padding;
+        border-radius: $app-border-radius-sm;
+        & > span {
+            opacity: $tag-input-tag-span-opacity;
+        }
     }
-  }
-  &__text {
-    border: none;
-    outline: none;
-    line-height: $tag-input-text-line-height;
-    background: none;
-    flex-grow: 100;
-  }
+    &__text {
+        border: none;
+        outline: none;
+        line-height: $tag-input-text-line-height;
+        background: none;
+        flex-grow: 100;
+    }
 }
 </style>

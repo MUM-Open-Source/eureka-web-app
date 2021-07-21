@@ -7,14 +7,14 @@ import {
 } from '@/types/FilterTypes.interface';
 
 export interface NewUser {
-  first_name: string;
-  last_name: string;
-  role: string;
+    first_name: string;
+    last_name: string;
+    role: string;
 }
 
 export interface ImageToUpload {
-  url: string;
-  fileName: string;
+    url: string;
+    fileName: string;
 }
 
 export interface AppState {
