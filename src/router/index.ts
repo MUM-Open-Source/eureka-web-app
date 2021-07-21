@@ -19,6 +19,7 @@ import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
 import Incubator from '@/views/Incubator.vue';
 import Report from '@/views/Report.vue';
+import IncubatorNitin from '@/views/IncubatorNitin.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -161,6 +162,14 @@ const routes: RouteRecordRaw[] = [
         path: '/incubator',
         name: 'Incubator',
         component: Incubator,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/incubator-nitin',
+        name: 'IncubatorNitin',
+        component: IncubatorNitin,
         meta: {
             requiresAuth: true,
         },

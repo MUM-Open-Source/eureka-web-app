@@ -9,13 +9,21 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
     faStar,
+    faUsers,
+    faSignOutAlt,
+    faChevronDown,
     faBorderAll,
     faProjectDiagram,
     faBook,
     faCode,
     faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
+
 import {
+    faEnvelope,
+    faPaperPlane,
+    faFlag,
+    faEdit,
     faComments,
     faCalendarAlt,
     faCommentAlt,
@@ -24,6 +32,13 @@ import {
 
 library.add(
     faStar,
+    faUsers,
+    faEnvelope,
+    faPaperPlane,
+    faFlag,
+    faEdit,
+    faSignOutAlt,
+    faChevronDown,
     faBorderAll,
     faComments,
     faProjectDiagram,
