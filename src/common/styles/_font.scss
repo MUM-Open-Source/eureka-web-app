@@ -57,6 +57,13 @@ input {
     font-weight: $normal;
 }
 
+label {
+    color: $color-brand;
+    font-size: $tagline-font-size;
+    font-weight: $normal;
+    font-weight: $semibold;
+}
+
 .text {
     &--white {
         color: $color-white;

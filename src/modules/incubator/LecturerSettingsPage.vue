@@ -1,22 +1,18 @@
 <template>
     <div class="lecturer-settings">
         <label for="name">Workspace Name</label>
-        <ErrorMessageComponent
-            :error="v$.name.$errors"
-            :silentError="v$.name.$silentErrors"
-        />
         <input
             id="name"
             type="text"
             placeholder="Workspace Name"
             v-model="state.name"
         />
+        <ErrorMessageComponent
+            v-if="v$.name.$error"
+            :errors="v$.name.$errors"
+        />
 
         <label for="max_member">Max Member Per Team</label>
-        <ErrorMessageComponent
-            :error="v$.maxMemberPerTeam.$errors"
-            :silentError="v$.maxMemberPerTeam.$silentErrors"
-        />
         <input
             id="max_member"
             type="number"
@@ -24,12 +20,12 @@
             v-model="state.maxMemberPerTeam"
             min="1"
         />
+        <ErrorMessageComponent
+            v-if="v$.maxMemberPerTeam.$error"
+            :errors="v$.maxMemberPerTeam.$errors"
+        />
 
         <label for="max_number_of_teams">Max Number Of Teams</label>
-        <ErrorMessageComponent
-            :error="v$.maxNumberOfTeams.$errors"
-            :silentError="v$.maxNumberOfTeams.$silentErrors"
-        />
         <input
             id="max_number_of_teams"
             type="number"
@@ -37,36 +33,36 @@
             v-model="state.maxNumberOfTeams"
             min="1"
         />
+        <ErrorMessageComponent
+            v-if="v$.maxNumberOfTeams.$error"
+            :errors="v$.maxNumberOfTeams.$errors"
+        />
 
         <label for="team_creation_deadline">Team Creation Deadline</label>
-        <ErrorMessageComponent
-            :error="v$.teamCreationDeadline.$errors"
-            :silentError="v$.teamCreationDeadline.$silentErrors"
-        />
         <input
             id="team_creation_deadline"
             type="date"
             placeholder="Team Creation Deadline"
             v-model="state.teamCreationDeadline"
         />
+        <ErrorMessageComponent
+            v-if="v$.teamCreationDeadline.$error"
+            :errors="v$.teamCreationDeadline.$errors"
+        />
 
         <label for="team_adjourning_date">Team Adjourning Date</label>
-        <ErrorMessageComponent
-            :error="v$.teamAdjourningDate.$errors"
-            :silentError="v$.teamAdjourningDate.$silentErrors"
-        />
         <input
             id="team_adjourning_date"
             type="date"
             placeholder="Team Adjourning Date"
             v-model="state.teamAdjourningDate"
         />
+        <ErrorMessageComponent
+            v-if="v$.teamAdjourningDate.$error"
+            :errors="v$.teamAdjourningDate.$errors"
+        />
 
         <label for="peer_review_day_duration">Peer Review Day Duration</label>
-        <ErrorMessageComponent
-            :error="v$.peerReviewDurationInDays.$errors"
-            :silentError="v$.peerReviewDurationInDays.$silentErrors"
-        />
         <input
             id="peer_review_day_duration"
             type="number"
@@ -74,17 +70,21 @@
             min="1"
             v-model="state.peerReviewDurationInDays"
         />
+        <ErrorMessageComponent
+            v-if="v$.peerReviewDurationInDays.$error"
+            :errors="v$.peerReviewDurationInDays.$errors"
+        />
 
         <div class="tags-container">
             <label for="tags" style="margin-bottom: 4px">Tags</label>
-            <ErrorMessageComponent
-                :error="v$.tags.$errors"
-                :silentError="v$.tags.$silentErrors"
-            />
             <TagInput
                 id="tags"
                 placeholder="Enter A tag"
                 @update-tags="onAddTags"
+            />
+            <ErrorMessageComponent
+                v-if="v$.tags.$error"
+                :errors="v$.tags.$errors"
             />
         </div>
 
@@ -92,14 +92,14 @@
             <label for="tutorial-slots" style="margin-bottom: 4px">
                 Tutorial Slots
             </label>
-            <ErrorMessageComponent
-                :error="v$.tutorialSlots.$errors"
-                :silentError="v$.tutorialSlots.$silentErrors"
-            />
             <TagInput
                 id="tutorial-slots"
                 placeholder="Tutorial Slots"
                 @update-tags="onAddTutorial"
+            />
+            <ErrorMessageComponent
+                v-if="v$.tutorialSlots.$error"
+                :errors="v$.tutorialSlots.$errors"
             />
         </div>
 
@@ -112,16 +112,17 @@
 </template>
 
 <script lang="ts">
-import TagInput from '../../common/TagInput.vue';
+import { defineComponent } from 'vue';
+import TagInput from '@/common/TagInput.vue';
 import { reactive } from 'vue-demi';
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
-import Button from '../../common/Button.vue';
-import ErrorMessageComponent from '../incubator/ErrorMessageComponent.vue';
+import Button from '@/common/Button.vue';
+import ErrorMessageComponent from '@/modules/incubator/ErrorMessageComponent.vue';
 import { createWorkSpace } from '@/api/IncubatorApi';
 import Swal from 'sweetalert2';
 import router from '@/router';
-export default {
+export default defineComponent({
     components: { TagInput, Button, ErrorMessageComponent },
     name: 'LecturerSettingsPage',
     setup() {
@@ -159,6 +160,7 @@ export default {
         const v$ = useVuelidate(rules as any, state);
 
         const submitSettings = () => {
+            v$.value.$validate();
             if (!v$.value.$invalid) {
                 createWorkSpace({
                     workshopSettings: {
@@ -190,7 +192,7 @@ export default {
         };
         return { v$, state, submitSettings, onAddTags, onAddTutorial };
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>

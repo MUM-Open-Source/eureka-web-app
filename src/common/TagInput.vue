@@ -68,6 +68,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .tag-input {
     width: $tag-input-width;
+    margin: $tag-input-margin;
     border: $tag-input-border-radius solid $color-bg-hover;
     min-height: $tag-input-min-height;
     box-sizing: border-box;

@@ -9,6 +9,8 @@ $color-white: #ffffff;
 $color-side-nav-bg: #f1f1f1;
 $color-bg-hover: #dddbdb;
 $color-disabled: #f1f1f1;
+$color-error: #ed4337;
+$color-error-bg: #fcdbd5;
 
 // behaviour
 $transition-duration: 0.5s;
@@ -158,6 +160,7 @@ $tab-content-min-height: 300px;
 
 // Tag Input Styling
 $tag-input-width: 100%;
+$tag-input-margin: 5px 0;
 $tag-input-border-radius: 1px;
 $tag-input-min-height: 50px;
 $tag-input-height: 50px;
