@@ -1,5 +1,5 @@
-import { db } from '../firebase';
-import { Incubator } from '../types/Incubator';
+import { db } from '@/firebase';
+import { Incubator } from '@/types/Incubator';
 import store from '@/store';
 
 const INCUBATOR_PATH = 'incubator';

@@ -22,17 +22,6 @@ import Report from '@/views/Report.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
-    { path: '/incubator/:code', name: 'Workspace', component: Incubator },
-    {
-        path: '/report',
-        name: 'report',
-        component: Report,
-    },
-    {
-        path: '/incubator',
-        name: 'Incubator',
-        component: Incubator,
-    },
     {
         path: '/login',
         name: 'Login',
@@ -151,6 +140,30 @@ const routes: RouteRecordRaw[] = [
         path: '/privacy-policy',
         name: 'Privacy',
         component: Privacy,
+    },
+    {
+        path: '/incubator/:code',
+        name: 'Workspace',
+        component: Incubator,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/report',
+        name: 'report',
+        component: Report,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/incubator',
+        name: 'Incubator',
+        component: Incubator,
+        meta: {
+            requiresAuth: true,
+        },
     },
 
     // {
