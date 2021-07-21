@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-export type UserRoles = 'talent' | 'mentor' | 'admin';
+export type UserRoles = 'lecturer' | 'student' | 'talent' | 'mentor' | 'admin';
 
 export interface User {
     background: string;

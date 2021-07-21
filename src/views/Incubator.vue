@@ -74,9 +74,7 @@ export default {
         }>({
             isLoading: true,
             canCreateRooms:
-                (store.state.user?.email?.includes('monash.edu') &&
-                    !store.state.user.email.includes('student')) ||
-                false,
+                store.state.user_data?.roles?.includes('lecturer') || false,
             showList: true,
             isEmpty: false,
             showStudentJoin: false,
