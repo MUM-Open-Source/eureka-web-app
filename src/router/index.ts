@@ -17,6 +17,7 @@ import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue';
 import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
+import ResearchProjects from '@/views/ResearchProjects.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -139,6 +140,11 @@ const routes: RouteRecordRaw[] = [
         name: 'Privacy',
         component: Privacy,
     },
+    {
+        path: '/research-projects',
+        name: 'ResearchProjects',
+        component: ResearchProjects
+    }
 
     // {
     //   path: '/about',
@@ -161,8 +167,4 @@ router.beforeEach(async (to, from, next) => {
     checkAuth(to, next);
 });
 
-<<<<<<< HEAD
-export default router
-=======
 export default router;
->>>>>>> develop

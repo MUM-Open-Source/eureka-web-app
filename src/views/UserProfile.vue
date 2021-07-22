@@ -385,129 +385,6 @@ export default {
                 store.state.user_data.image_url ==
                 'https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b'
         );
-    const user = store.state.user_data;
-    //recommended interests to pick from
-    const interestMenu = reactive({
-        options: [
-            'Python',
-            'JavaScript',
-            'TypeScript',
-            'C',
-            'C++',
-            'Java',
-            'Ruby',
-            'Go',
-            'HTML',
-            'CSS',
-            'Tensorflow',
-            'Machine Learning',
-            'Frontend',
-            'Backend',
-            'Fullstack',
-            'DevOps',
-            'MERN',
-            'MEAN',
-            'Data Science',
-            'Machine Learning',
-            'Artificial Intelligence',
-            'Data Analytics',
-            'NextJS',
-            'ReactJS',
-            'React Native',
-            'Angular',
-            'NodeJS',
-            'VueJS',
-            'MySQL',
-            'PostgreSQL',
-            'MongoDB',
-            'Microsoft Azure',
-            'AWS',
-            'GCP',
-            'Kotlin',
-            'Android',
-            'iOS',
-            'Swift',
-            'Flutter',
-            'IoT',
-            'Cyber Security',
-            'Database Design',
-            'PHP',
-            'SQL',
-            'NoSQL',
-            'Ruby on Rails',
-            'Computer Vision',
-            'NLP',
-            'Docker',
-            'Github',
-            'UI/UX',
-            'Unit Testing',
-            'Computer Graphics',
-            'C#',
-            'Hadoop',
-            'Kafka',
-            'Open Source',
-            'Kaggle',
-            'Bioinformatics',
-            'Ethical Hacking',
-            'Game Development',
-            'Virtual Reality',
-            'Augmented Reality',
-            'Lua',
-            'Elm',
-            'MATLAB',
-            'Scala'
-        ]
-    })
-    const userInterestsIndices = computed(() => {
-        let indices = []
-        user?.interests.forEach((interest) => {
-            const index = interestMenu.options.indexOf(interest);
-            if (index != -1) indices.push(index)
-        })
-        return indices;
-    })
-
-    let inputValues = reactive({
-        background: user.background,
-        bio: user.bio,
-        github_url: user.social_links.github_url,
-        linkedin_url: user.social_links.linkedin_url,
-        website_url: user.social_links.website_url,
-        interests: userInterestsIndices.value,
-        experience_level: user.experience_level,
-    });
-
-    const isUserTalent = computed(() => user?.roles.includes('talent'));
-    const helper = {
-        backgroundLabel: isUserTalent.value ? 'Current Degree*' : 'Degree / Job Title*',
-        backgroundPlaceholder: isUserTalent.value ? 'Computer Science' : 'Software Engineer',
-        skillsLabel: isUserTalent.value ? 'Interests*' : 'Skills*',
-        skillsPlaceholder: "Enter upto 7 " + (isUserTalent.value ? 'interests' : 'skills')
-    }
-    const interest_value = computed(() => store.state.user_data.interests);
-    const hasDefaultImage = computed(() =>
-    store.state.user_data.image_url ==
-    "https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b");
-
-
-    // to check if changes were made
-    const state = reactive({
-        hasUnsavedChanges: false
-    })
-
-    function handleInputsUpdate() {
-        state.hasUnsavedChanges =
-            inputValues.background !== user.background ||
-            inputValues.bio !== user.bio ||
-            inputValues.github_url !== user.social_links.github_url ||
-            inputValues.linkedin_url !== user.social_links.linkedin_url ||
-            inputValues.website_url !== user.social_links.website_url ||
-            parseInt(inputValues.experience_level) !== user.experience_level
-    }
-
-  //Stores the list of selected interests
-    //Initial value is the existing/past selected interests from user's db
-    const selectedInterests = computed(() => JSON.parse(JSON.stringify(store.state.user_data.interests)));
 
         // to check if changes were made
         const state = reactive({
@@ -590,21 +467,23 @@ export default {
 
         const isInputValid = () => {
             const { github_url, linkedin_url, website_url } = inputValues;
-
             if (
                 github_url.length > 0 &&
                 !/^(https:\/\/)(www\.?)?github\.com\//.test(github_url)
             ) {
                 return false;
             }
-
             if (
                 linkedin_url.length > 0 &&
                 !/^(https:\/\/)(www\.?)?linkedin\.com\/in\//.test(linkedin_url)
             ) {
                 return false;
             }
-        }
+            if (website_url.length > 0 && !/^(https?:\/\/)/.test(website_url)) {
+                return false;
+            }
+            return true;
+        };
 
         function handleInfoUpdate() {
             if (allMandatoryFieldsFilled()) {
@@ -647,7 +526,7 @@ export default {
                 state.hasUnsavedChanges = false;
             }
 
-        };
+        }
 
         return {
             state,
