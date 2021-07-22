@@ -863,15 +863,6 @@ export default createStore({
         },
 
         NEW_PEER_REVIEW(state, peerReview: PeerReview) {
-            // const peerReview: PeerReview = {
-            //     team_id: newPeerReview.team_id,
-            //     from_id: newPeerReview.from_id,
-            //     to_id: newPeerReview.to_id,
-            //     date_created: firebaseApp.firestore.FieldValue.serverTimestamp(),
-            //     rating_count: newPeerReview.rating_count,
-            //     rating_sum: newPeerReview.rating_sum,
-            //     responses: newPeerReview.responses,
-            // }
             peerReview.date_created = firebaseApp.firestore.FieldValue.serverTimestamp();
             peerReview.from_id = auth.currentUser!.uid;
 

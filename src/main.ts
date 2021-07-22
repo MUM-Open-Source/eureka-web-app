@@ -17,6 +17,7 @@ import {
     faCode,
     faUserShield,
     faAngleDoubleLeft,
+    faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faComments,
@@ -37,6 +38,7 @@ library.add(
     faCommentAlt,
     faHandshake,
     faAngleDoubleLeft,
+    faPaperPlane
 );
 
 createApp(App)

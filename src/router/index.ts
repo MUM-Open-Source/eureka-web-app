@@ -17,9 +17,9 @@ import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue';
 import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
-import PeerReview from '@/views/PeerReview.vue';
-import PRTeamList from '@/views/PRTeamList.vue';
-import PRTeamOverview from '@/views/PRTeamOverview.vue';
+import NewPeerReview from '@/views/NewPeerReview.vue';
+import PeerReviewTeamList from '@/views/PeerReviewTeamList.vue';
+import PeerReviewTeamOverview from '@/views/PeerReviewTeamOverview.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -58,25 +58,28 @@ const routes: RouteRecordRaw[] = [
         },
     },
     {
-        path: '/peer-review',
-        name: 'PeerReview',
-        component: PeerReview,
+        path: '/peer-review/new_review',
+        name: 'NewPeerReview',
+        component: NewPeerReview,
+        props: true,
         meta: {
             requiresAuth: true,
         },
     },
     {
-        path: '/PR-TeamList',
-        name: 'PRTeamList',
-        component: PRTeamList,
+        path: '/peer-review/team-overview',
+        name: 'PeerReviewTeamOverview',
+        component: PeerReviewTeamOverview,
+        props: true,
         meta: {
             requiresAuth: true,
         },
     },
     {
-        path: '/PR-TeamOverview',
-        name: 'PRTeamOverview',
-        component: PRTeamOverview,
+        path: '/peer-review/team-list',
+        name: 'PeerReviewTeamList',
+        component: PeerReviewTeamList,
+        props: true,
         meta: {
             requiresAuth: true,
         },

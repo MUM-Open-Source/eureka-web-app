@@ -58,9 +58,9 @@ export default defineComponent({
     .star__icon {
         transition: all 0s;
         padding: $star-rating-icon-padding;
-        transition: 0.25s;
+        transition: $transition-duration-fast;
         &:hover {
-            transform: scale(1.2);
+            transform: scale(1.1);
         }
     }
     .star__color {

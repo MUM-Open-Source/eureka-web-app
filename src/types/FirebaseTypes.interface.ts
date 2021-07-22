@@ -55,6 +55,6 @@ export interface PeerReview {
     date_created: firebase.firestore.FieldValue;
     rating_count: number;
     rating_sum: number;
-    responses: {}
-    summary: string;
+    responses: {};
+    summary: {};
 }

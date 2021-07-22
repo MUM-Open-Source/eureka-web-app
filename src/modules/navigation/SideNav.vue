@@ -38,10 +38,22 @@
                     <div class="side-nav__text">Research</div>
                 </div>
             </router-link>
-            <router-link :to="{ name: 'PeerReview' }">
+            <router-link :to="{ name: 'NewPeerReview' }">
                 <div class="side-nav__group--link">
                     <fa icon="book" size="md" class="side-nav__icon" />
                     <div class="side-nav__text">Peer Review</div>
+                </div>
+            </router-link>
+            <router-link :to="{ name: 'PeerReviewTeamOverview' }">
+                <div class="side-nav__group--link">
+                    <fa icon="book" size="md" class="side-nav__icon" />
+                    <div class="side-nav__text">PR Team Overview</div>
+                </div>
+            </router-link>
+            <router-link :to="{ name: 'PeerReviewTeamList' }">
+                <div class="side-nav__group--link">
+                    <fa icon="book" size="md" class="side-nav__icon" />
+                    <div class="side-nav__text">PR Team List</div>
                 </div>
             </router-link>
         </div>

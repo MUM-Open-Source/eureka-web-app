@@ -1,71 +1,63 @@
 <template>
     <div class="page-pad">
         <div class="peer-review-content text--center">
-            <button class="back-button" @click="handleBackButton">
-                <fa icon="angle-double-left" size="lg"/>
-            </button>
+                <button class="back-button" @click="handleBackButtonClick">
+                    <fa icon="angle-double-left" size="lg" />
+                </button>
 
             <div class="heading peer-review-content__title">Peer Review</div>
-            <table>
-                <QuestionCard
-                    v-for="(question, index) in questions"
-                    :key="index"
-                    :question="question"
-                    :questionNumber="index + 1"
-                    @question-rating="handleClick"
-                />
+            <QuestionCard
+                v-for="(question, index) in questions"
+                :key="index"
+                :question="question"
+                :questionNumber="index + 1"
+                @question-rating="handleRatingClick"
+                class="mar__b--3"
+            />
 
-                <tr>
-                    <ReviewCommentCard
-                        v-model:value="inputValues.shortSummary"
-                        class="mar__b--2"
-                        label="Short Summary"
-                        id="short_review"
-                    />
-                </tr>
-            </table>
+            <ReviewCommentCard
+                v-model:value="inputText['summary']"
+                class="mar__b--3"
+                :placeholder="'Input Text Here'"
+            />
 
-            <!-- <pre :style="{ 'text-align': 'left' }">{{
-        JSON.stringify(inputValues, null, 2)
-      }}</pre> -->
-
-            <div>
-                <Button
-                    text="Submit"
-                    class="mar--auto mar__t--3 mar__b--1"
-                    @click="handlePeerReview"
-                />
-            </div>
+            <Button
+                text="Submit"
+                class="mar--auto mar__t--3 mar__b--1"
+                @click="handlePeerReviewClick"
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import store from '@/store';
-import QuestionCard from '@/modules/peer_review/QuestionCard.vue';
-import ReviewCommentCard from '@/modules/peer_review/ReviewCommentCard.vue';
+import QuestionCard from '@/modules/peer-review/QuestionCard.vue';
+import ReviewCommentCard from '@/modules/peer-review/ReviewCommentCard.vue';
 import Button from '@/common/Button.vue';
-import { reactive } from '@vue/reactivity';
 import Swal from 'sweetalert2';
 import router from '@/router';
 
 export default defineComponent({
-    name: 'PeerReview',
+    name: 'NewPeerReview',
     components: { QuestionCard, ReviewCommentCard, Button },
     props: {
-        // team_id: {
-        //   type: String,
-        //   required: true,
-        //   defaut: "0",
-        // },
-        // to_id: {
-        //   type: String,
-        //   required: true,
-        //   defaut: "2",
-        // },
+        // To be changed when props are available
+        team_id: {
+            type: String,
+            required: true,
+        },
+        to_id: {
+            type: String,
+            required: true,
+        },
+        teamName: {
+            type: String,
+            required: true,
+        }
     },
-    setup() {
+    setup(props) {
         const questions = [
             'lorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit ametlorem ipsum dolor sit amet',
             'Is he/she a freeloader?',
@@ -73,16 +65,13 @@ export default defineComponent({
         ];
 
         var inputRatings: number[] = new Array(questions.length);
+        var inputText = reactive({} as { [id: string]: string });
 
-        const inputValues = reactive({
-            shortSummary: '',
-        });
-
-        function handleClick(questionIndex: number, value: number) {
+        function handleRatingClick(questionIndex: number, value: number) {
             inputRatings[questionIndex] = value;
         }
 
-        function handlePeerReview() {
+        function handlePeerReviewClick() {
             const allMandatoryRatingsFilled = function() {
                 for (var i = 0; i < inputRatings.length; i++) {
                     if (!Number.isInteger(inputRatings[i])) {
@@ -93,7 +82,7 @@ export default defineComponent({
             };
 
             const allMandatoryFieldsFilled = () =>
-                inputValues.shortSummary.length !== 0;
+                inputText['summary'].length !== 0;
 
             function totalRating(): number {
                 var count: number = 0;
@@ -113,47 +102,54 @@ export default defineComponent({
 
             if (allMandatoryRatingsFilled() && allMandatoryFieldsFilled()) {
                 const peerReview = {
-                    team_id: '0',
-                    to_id: '1',
+                    // To be changed
+                    team_id: props.team_id,
+                    to_id: props.to_id,
                     rating_count: questions.length,
                     rating_sum: totalRating(),
                     responses: arrayToDictionaryHelper(),
-                    summary: inputValues.shortSummary,
+                    summary: inputText,
                 };
                 store.dispatch('newPeerReview', peerReview);
-                router.push('PR-TeamOverview');
+                router.push({
+                name: 'PeerReviewTeamOverview',
+                params: {
+                    team_id: props.team_id,
+                    teamName: props.teamName,
+                },
+            });
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Please fill all the mandatory fields',
                     text: 'Fill up please',
-                    // text: "They are marked with an asterisk (*) for your convenience",
                 });
             }
         }
 
-        function handleBackButton() {
+        function handleBackButtonClick() {
+            console.log("Team ID: " + props.team_id)
+            console.log("Team Name: " + props.teamName)
+            router.push({
+                name: 'PeerReviewTeamOverview',
+                params: {
+                    team_id: props.team_id,
+                    teamName: props.teamName,
+                },
+            });
             Swal.fire({
-                title: 'Are you sure?',
-                text: "Your current changes won't be saved!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, take me back.',
-            }).then(result => {
-                if (result.isConfirmed) {
-                    router.push('PR-TeamOverview');
-                }
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Peer Review is not saved.',
             });
         }
 
         return {
             questions,
-            inputValues,
-            handlePeerReview,
-            handleClick,
-            handleBackButton,
+            inputText,
+            handlePeerReviewClick,
+            handleRatingClick,
+            handleBackButtonClick,
         };
     },
 });
@@ -165,7 +161,8 @@ export default defineComponent({
     margin-right: auto;
 
     &__title {
-        text-decoration: underline;
+        margin-bottom: 15px;
+        font-size: 36px;
     }
 }
 
@@ -188,11 +185,8 @@ button {
     @include gradientAnimation($color-brand, $color-brand-alt);
     @include shadow;
     display: block;
-    // padding: 5px 5px 2px 15px;
-    // margin-left: 25px;
     color: $color-white;
     border: none;
-    // border-radius: $btn-border-radius;
     height: 50px;
     width: 50px;
     border-radius: 50%;
