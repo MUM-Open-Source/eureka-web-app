@@ -1,7 +1,7 @@
 <template>
     <div class="filter">
         <div class="subheading">Filter</div>
-        <hr>
+        <hr />
         <div class="filter__inputs">
             <Multiselect
                 class="mar__t--2 mar__b--2"
@@ -63,17 +63,17 @@ export default {
     props: {
         filterOptions: {
             type: Object,
-            required: true
-        }
+            required: true,
+        },
     },
-    setup(props, context){
+    setup(props, context) {
         // reactive filter data point
         const filter = reactive({
             skill: '',
             experience_level: '',
             background: '',
-            full_name: ''
-        })
+            full_name: '',
+        });
 
         // using a duplicate of filter to pass values to the parent
         let filterToEmit = {
@@ -82,36 +82,36 @@ export default {
             background: '',
             // event: '',
             full_name: '',
-        }
+        };
 
         // passing the filter data to the parent
         const updateFilter = () => {
             // populating the filter object to return to parent
             Object.keys(filter).forEach(function(key) {
-                if (Number.isInteger(filter[key])){ 
+                if (Number.isInteger(filter[key])) {
                     if (key === 'experience_level') {
                         // return the xp lvl as an integer + 1
-                        filterToEmit[key] = filter[key]+1;
+                        filterToEmit[key] = filter[key] + 1;
                     } else {
                         // convert index number to actual value
-                        filterToEmit[key] = props.filterOptions[key][filter[key]];
+                        filterToEmit[key] =
+                            props.filterOptions[key][filter[key]];
                     }
-                }
-                else {
+                } else {
                     // empty string for rest
                     filterToEmit[key] = '';
-                }                      
-            });         
+                }
+            });
 
             context.emit('update-filter', filterToEmit);
-        }
+        };
 
         return {
             filter,
-            updateFilter
-        }
-    }
-}
+            updateFilter,
+        };
+    },
+};
 </script>
 
 <style lang="scss" scoped>

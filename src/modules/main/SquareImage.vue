@@ -11,18 +11,18 @@ export default {
     props: {
         imgName: {
             type: String,
-            required: true
+            required: true,
         },
-        alt: String
-    }
-}
+        alt: String,
+    },
+};
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .square-img {
     @include shadow;
     width: $square-img-width;
     height: auto;
-    border-radius: $app-border-radius;    
+    border-radius: $app-border-radius;
 }
 </style>

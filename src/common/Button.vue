@@ -8,15 +8,16 @@ export default {
     props: {
         text: {
             type: String,
-            required: true
-        }
-    }
-}
+            required: true,
+        },
+    },
+};
 </script>
 
-<style lang='scss' scoped>
-button, input[type=file]::-webkit-file-upload-button {
-    @include gradientAnimation($color-brand , $color-brand-alt);
+<style lang="scss" scoped>
+button,
+input[type='file']::-webkit-file-upload-button {
+    @include gradientAnimation($color-brand, $color-brand-alt);
     @include shadow;
     font-family: inherit;
     display: block;

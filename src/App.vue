@@ -1,16 +1,16 @@
 <template>
-  <div v-if="isUnderMaintenance">
-    <Maintenance />
-  </div>
-  <div v-else>
-    <SideNav v-if="isLoggedIn" />
-    <div class="main" :class="marginLeft">
-      <TopNav v-if="!isNewUser"/>
-      <!-- routing -->
-      <Loader v-if="isLoading"/>
-      <router-view v-else/>
+    <div v-if="isUnderMaintenance">
+        <Maintenance />
     </div>
-  </div>
+    <div v-else>
+        <SideNav v-if="isLoggedIn" />
+        <div class="main" :class="marginLeft">
+            <TopNav v-if="!isNewUser" />
+            <!-- routing -->
+            <Loader v-if="isLoading" />
+            <router-view v-else />
+        </div>
+    </div>
 </template>
 
 <script>
@@ -22,69 +22,64 @@ import TopNav from '@/modules/navigation/TopNav';
 import Maintenance from '@/views/Maintenance';
 
 export default {
-  name: "App", // name of the component
+    name: 'App', // name of the component
 
-  components: { Loader, SideNav, TopNav, Maintenance },  // imported components
+    components: { Loader, SideNav, TopNav, Maintenance }, // imported components
 
-  // Vue 3 Composition API
-  setup() {
-    // mounted
-    onMounted(() => {
-      store.dispatch("setAuthUser");
-    });
+    // Vue 3 Composition API
+    setup() {
+        // mounted
+        onMounted(() => {
+            store.dispatch('setAuthUser');
+        });
 
-    // updated
-    onUpdated(() => {
-      if (isNewUserDataAvailable.value) {
-        store.dispatch("fetchCurrentUserFromDB");
-      }
-    })
+        // updated
+        onUpdated(() => {
+            if (isNewUserDataAvailable.value) {
+                store.dispatch('fetchCurrentUserFromDB');
+            }
+        });
 
-    // computed properties
-    const isLoggedIn = computed(() => store.state.user !== null);
-    // let isNewUserDataAvailable = ref(store.state.is_new_user_data_available);
-    let isNewUserDataAvailable = computed(() => store.state.is_new_user_data_available);
+        // computed properties
+        const isLoggedIn = computed(() => store.state.user !== null);
+        // let isNewUserDataAvailable = ref(store.state.is_new_user_data_available);
+        let isNewUserDataAvailable = computed(() => store.state.is_new_user_data_available);
 
-    const isNewUser = computed(() => store.state.is_new);
-    const isLoading = computed(() => store.state.isLoading === true);
-    const isUnderMaintenance = computed(() => store.state.is_under_maintenance === true);
-    const marginLeft = computed(() =>
-      store.state.isSideNavCollapsed
-        ? "main__width--full"
-        : "main__width--reduced"
-    );
+        const isNewUser = computed(() => store.state.is_new);
+        const isLoading = computed(() => store.state.isLoading === true);
+        const isUnderMaintenance = computed(() => store.state.is_under_maintenance === true);
+        const marginLeft = computed(() => (store.state.isSideNavCollapsed ? 'main__width--full' : 'main__width--reduced'));
 
-    // return everything that needs to be referenced in the template
-    return {
-      isLoggedIn,
-      isNewUser,
-      isLoading,
-      isUnderMaintenance,
-      marginLeft
-    };
-  },
+        // return everything that needs to be referenced in the template
+        return {
+            isLoggedIn,
+            isNewUser,
+            isLoading,
+            isUnderMaintenance,
+            marginLeft,
+        };
+    },
 };
 </script>
 
 <style lang="scss">
 // TODO: Move to the styles directory
 .main {
-  min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 60px);
 }
 .main__width {
-  &--full {
-    margin-left: 0;
-  }
-  &--reduced {
-    margin-left: $side-nav-width;
-  }
+    &--full {
+        margin-left: 0;
+    }
+    &--reduced {
+        margin-left: $side-nav-width;
+    }
 }
 @media (max-width: 576px) {
-  .main__width {
-    &--reduced {
-      margin-left: 0;
+    .main__width {
+        &--reduced {
+            margin-left: 0;
+        }
     }
-  }
 }
 </style>
-

@@ -1,19 +1,21 @@
 <template>
     <div class="waves-from-users page-pad">
         <div class="waves-from-users__content">
-            <div class="waves-from-users__content--title mar__b--3 text--center">
+            <div
+                class="waves-from-users__content--title mar__b--3 text--center"
+            >
                 <div class="tagline">These Users Waved At You. Wave back!</div>
                 <div class="heading">Waves From Talent</div>
             </div>
             <div class="users">
-                <ProfileCard 
-                    v-for="user in wavesFromTalent" 
+                <ProfileCard
+                    v-for="user in wavesFromTalent"
                     :key="user.key"
                     :user="user"
                 />
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 
 <script>
@@ -25,7 +27,6 @@ export default {
     name: 'WavesFromTalent',
     components: { ProfileCard },
     setup() {
-
         // mounted
         onMounted(() => {
             // fetch the data if there is nothing to display
@@ -35,17 +36,19 @@ export default {
             if (!store.state.waves_from_other_users.length) {
                 store.dispatch('getWavesFromOtherUsers');
             }
-        })
-        
+        });
+
         // the input to the ProfileCard
-        const wavesFromTalent = computed(() => store.state.talent.filter(hasGivenWave));
+        const wavesFromTalent = computed(() =>
+            store.state.talent.filter(hasGivenWave)
+        );
 
-        const hasGivenWave = (value) => store.state.waves_from_other_users.includes(value.id);
+        const hasGivenWave = value =>
+            store.state.waves_from_other_users.includes(value.id);
 
-        return { wavesFromTalent }
-
-    }
-}
+        return { wavesFromTalent };
+    },
+};
 </script>
 
 <style lang="scss" scoped>

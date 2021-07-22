@@ -17,20 +17,19 @@
 
 body {
     // Removes scroll bars
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
     margin-top: $top-nav-height;
-    transition: padding-right 0s;   // to avoid the body content jump when displaying SweetAlert
+    transition: padding-right 0s; // to avoid the body content jump when displaying SweetAlert
 }
 
 ::-webkit-scrollbar {
     display: none;
 }
 
-
 // prevent image selection
 img {
-    user-drag: none; 
+    user-drag: none;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-drag: none;
@@ -39,19 +38,19 @@ img {
 }
 
 // anchor tag styling
-a{
+a {
     text-decoration: none;
-    color:$color-dark;
+    color: $color-dark;
 }
-a:visited{
+a:visited {
     text-decoration: none;
-    color:$color-dark;
+    color: $color-dark;
 }
 #sidenav a {
     width: 100%;
 }
 
-// multiselect 
+// multiselect
 .multiselect-options {
     overflow-x: hidden;
 }
