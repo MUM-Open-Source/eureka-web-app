@@ -23,11 +23,14 @@ const getInitState = (): AppState => {
         is_new: false,                        // used to ensure all mandatory details are filled after signup
         events: [],
         projects: [],
+        dialog: [],
         talent: [],
         mentors: [],
+        upload_files: {url: '', fileName: ''},
         feedback: [],
         liked_events: [],                     // list of events liked by the user
         user_waves: [],                       // list of users waved at by the auth user
+        process_status: false,
         waves_from_other_users: [],           // list of user ids who waved at the auth user
         filters: {
             event: {
@@ -732,6 +735,19 @@ export default createStore({
                 })
         },
 
+        UPLOAD_FILES(state, files) {
+            state.process_status = false;
+            for (let i = 0; i < files.length; i++) {
+                console.log(files[i].fileName)
+                const task = storage.ref().child('documents/' + auth.currentUser!.uid + '/' + files[i].fileName).put(files[i].file, files[i].metadata)
+                task
+                    .then(snapshot => snapshot.ref.getDownloadURL())
+                    .then(url =>
+                        state.upload_files = { url: url, fileName: files[i].fileName})
+            }
+            state.process_status = true;
+        },
+
         GET_WAVES_FROM_OTHER_USERS(state) {
             db.collection("user_waves")
                 .where("to_user_id", "==", auth.currentUser!.uid)
@@ -827,6 +843,10 @@ export default createStore({
         uploadUserImage({ commit }, user) {
             commit('UPLOAD_USER_IMAGE', user);
             commit('SET_USER_IMAGE_URL');
+        },
+
+        uploadFiles({ commit }, files) {
+            commit('UPLOAD_FILES', files)
         },
 
         setDefaultUserImage({ commit }) {

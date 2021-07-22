@@ -21,22 +21,36 @@
             </div>
         </div>
         <!-- Apply Button -->
-        <Button text="APPLY" class=user__card--actions />
+        <Button text="APPLY" class=user__card--actions @click="showModal" />
     </div>
+
+    <Dialog v-show="isModalVisible" @close="closeModal" :file_Upload="project.project_name" />
 </template>
 
 <script>
 import Button from '@/common/Button.vue'
-// import store from '@/store';
-// import { onMounted, ref } from 'vue';
+import Dialog from '@/common/Dialog.vue'
 
 export default {
     name: 'List',
-    components: {Button},
+    components: {Button, Dialog},
+    data() {
+        return {
+            isModalVisible: false
+        }
+    },
     props: {
         project: {
             type: Object,
             required: true
+        }
+    },
+    methods: {
+        showModal() {
+            this.isModalVisible = true;
+        },
+        closeModal() {
+            this.isModalVisible = false;
         }
     }
 }
@@ -47,6 +61,7 @@ export default {
     @include shadow--small;
     display: flex;
     border-radius: $app-border-radius;
+    justify-content: space-between;
     &--project {
         margin-right: $user-card-project-margin-right;
     }
