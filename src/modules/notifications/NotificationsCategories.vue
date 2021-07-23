@@ -5,30 +5,30 @@
             :category="noti.category"
             :id="noti.id"
             :longNoti="longNoti"
-            icon="celebration"
-            title="Someone waved at you"
-            :bodyText="`${noti.user} just waved at you. Say hi to them back by giving a friendly wave back!`"
             :moment="getMoment(noti.timeStamp)"
             :readStatus="noti.readStatus"
+            icon="celebration"
             iconColor="#71c9a2"
+            title="Someone waved at you"
+            :bodyText="`${noti.user} just waved at you. Say hi to them back by giving a friendly wave back!`"
         />
         <NotificationsItem
             v-if="noti.category == 'projects'"
-            :id="noti.id"
             :category="noti.category"
+            :id="noti.id"
             :longNoti="longNoti"
-            icon="book_online"
-            title="A new project was created"
-            :bodyText="`Check out ${noti.name} now`"
             :moment="getMoment(noti.timeStamp)"
             :readStatus="noti.readStatus"
+            icon="book_online"
             iconColor="#FFFF00"
+            title="A new project was created"
+            :bodyText="`Check out ${noti.name} now`"
         />
     </div>
 </template>
 
 <script>
-import moment from 'moment';
+import { formatDistance } from 'date-fns';
 
 import NotificationsItem from './NotificationsItem.vue';
 
@@ -41,9 +41,7 @@ export default {
     },
     setup() {
         const getMoment = timeStamp => {
-            return moment(new Date(timeStamp.seconds * 1000))
-                .fromNow()
-                .toString();
+            return formatDistance(timeStamp, Date.now()).toString() + ' ago';
         };
 
         return { getMoment };

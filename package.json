@@ -14,7 +14,6 @@
     "date-fns": "^2.22.1",
     "firebase": "^8.2.2",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.0",
     "sweetalert2": "^10.15.5",

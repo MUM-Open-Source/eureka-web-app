@@ -1,7 +1,7 @@
 import { createStore, Store } from 'vuex';
 import firebase from 'firebase';
 import firebaseApp from 'firebase/app';
-import { compareAsc, compareDesc, parseISO } from 'date-fns';
+import { compareDesc } from 'date-fns';
 import 'firebase/auth';
 
 import { db, auth, storage } from '@/firebase';
@@ -767,12 +767,22 @@ export default createStore({
                     querySnapshot.forEach(doc => {
                         if (state.notifications.some(obj => obj.id === doc.id)) {
                             const objIndex = state.notifications.findIndex(obj => obj.id == doc.id);
-                            state.notifications[objIndex] = { category: category, id: doc.id, ...doc.data() };
+                            (state.notifications[objIndex] as any) = {
+                                ...doc.data(),
+                                category: category,
+                                id: doc.id,
+                                timeStamp: new Date(doc.data().timeStamp.seconds * 1000)
+                            };
                         } else {
-                            state.notifications.push({ category: category, id: doc.id, ...doc.data() });
+                            (state.notifications as any).push({
+                                ...doc.data(),
+                                category: category,
+                                id: doc.id,
+                                timeStamp: new Date(doc.data().timeStamp.seconds * 1000)
+                            });
                         }
                     });
-                    state.notifications.sort((a: any, b: any) => (new Date(a.timeStamp.seconds * 1000) > new Date(b.timeStamp.seconds * 1000) ? -1 : 1));
+                    state.notifications.sort((a: any, b: any) => compareDesc(a.timeStamp, b.timeStamp));
                 });
             });
 

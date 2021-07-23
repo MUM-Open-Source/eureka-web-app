@@ -13,6 +13,18 @@ export interface ImageToUpload {
     fileName: string;
 }
 
+export interface NotificationType {
+    id: string;
+    category: string;
+    name: string;
+    user: string;
+    readStatus: boolean;
+    timeStamp: {
+        seconds: number;
+        nanoseconds: number;
+    };
+}
+
 export interface AppState {
     user: firebase.User | null;
     isSideNavCollapsed: boolean;
@@ -36,6 +48,6 @@ export interface AppState {
         talent: TalentFilter;
         mentors: MentorFilter;
     };
-    notifications: any[];
+    notifications: NotificationType[];
     defaultNotificationCategories: string[];
 }

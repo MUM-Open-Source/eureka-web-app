@@ -30,7 +30,7 @@
 
 <script>
 import UserMenu from '@/modules/navigation/UserMenu.vue';
-import NotificationsModal from './NotificationsModal.vue';
+import NotificationsModal from '@/modules/notifications/NotificationsModal.vue';
 import store from '@/store';
 import router from '@/router';
 import { computed, ref } from 'vue';

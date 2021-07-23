@@ -8,8 +8,8 @@
             </select>
         </div>
         <div class="content">
-            <div class="content__content-available" v-if="notifications.length">
-                <NotificationsCategories :notifications="notifications" :longNoti="true" />
+            <div class="content__content-available" v-if="filteredNotifications.length">
+                <NotificationsCategories :notifications="filteredNotifications" :longNoti="true" />
             </div>
             <div class="content__empty-content" v-else>
                 <i class="material-icons-outlined no-noti">
@@ -26,21 +26,24 @@
 import store from '@/store';
 import { ref } from '@vue/reactivity';
 
-import NotificationsCategories from '../modules/navigation/NotificationsCategories.vue';
+import NotificationsCategories from '@/modules/notifications/NotificationsCategories.vue';
+import { computed } from '@vue/runtime-core';
 
 export default {
     name: 'Notifications',
     components: { NotificationsCategories },
     setup() {
+        // Set current state of filter (ensure that reactive notifications work)
+        const currentFilter = ref('all');
+
         const notifications = ref(store.state.notifications);
+        const filteredNotifications = computed(() =>
+            notifications.value.filter(notification => (currentFilter.value == 'all' ? true : notification.readStatus == false))
+        );
 
-        const onChangeFilter = e => {
-            var selectedFilter = e.target.options[e.target.options.selectedIndex].value;
-            const storeNotifications = ref(store.state.notifications);
+        const onChangeFilter = e => (currentFilter.value = e.target.options[e.target.options.selectedIndex].value);
 
-            notifications.value = storeNotifications.value.filter(notification => (selectedFilter == 'all' ? true : notification.readStatus == false));
-        };
-        return { notifications, onChangeFilter };
+        return { filteredNotifications, onChangeFilter };
     }
 };
 </script>

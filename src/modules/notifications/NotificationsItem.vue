@@ -8,8 +8,8 @@
             </div>
             <div :style="{ flex: '1' }">
                 <div class="content-title">
-                    <h2 class="title-text">{{ title }}</h2>
-                    <span class="moment-text">
+                    <h2 class="content-title__title-text">{{ title }}</h2>
+                    <span class="content-title__moment-text">
                         {{ moment }}
                     </span>
                 </div>
@@ -17,8 +17,8 @@
                     <p :style="{ fontSize: '14px' }">
                         {{ bodyText }}
                     </p>
-                    <i class="material-icons-outlined" @click="readIndividual">
-                        {{ icon }}
+                    <i class="material-icons-outlined" :class="[readStatus ? 'content-body__invincible' : 'content-body__doneIcon']" @click="readIndividual">
+                        mark_email_read
                     </i>
                 </div>
             </div>
@@ -50,6 +50,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.divider {
+    border: 1px solid #e2e8ee;
+    border-radius: 5px;
+    margin: 10px 0;
+}
 .noti-item {
     padding: 10px;
     border-radius: 10px;
@@ -68,31 +73,35 @@ export default {
         border-color: $color-brand;
     }
 }
-.divider {
-    border: 1px solid #e2e8ee;
-    border-radius: 5px;
-    margin: 10px 0;
+.unread {
+    background: #e5f4fd;
 }
 .content-title {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
     align-items: center;
+    &__title-text {
+        font-size: 16px;
+        width: 65%;
+    }
+    &__moment-text {
+        font-size: 12px;
+        color: $color-light;
+        width: 30%;
+        text-align: end;
+    }
 }
 .content-body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-.moment-text {
-    font-size: 12px;
-    color: $color-light;
-    width: 30%;
-    text-align: end;
-}
-.title-text {
-    font-size: 16px;
-    width: 65%;
+    &__doneIcon {
+        color: #03bb40;
+    }
+    &__invincible {
+        visibility: hidden;
+    }
 }
 .noti-item-icon {
     position: relative;
@@ -104,9 +113,7 @@ export default {
     border-radius: 50%;
     margin-right: 15px;
 }
-.unread {
-    background: #e5f4fd;
-}
+
 .badge[data-count]:after {
     position: absolute;
     right: 0%;
