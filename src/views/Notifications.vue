@@ -22,9 +22,7 @@
                 />
             </div>
             <div class="content__empty-content" v-else>
-                <i class="material-icons-outlined no-noti">
-                    notifications
-                </i>
+                <fa icon="bell" class="no-noti" />
                 <p class="subheading mar__t--1">Notifications Zero</p>
                 <p class="body mar__t--1" :style="{ textAlign: 'center' }">
                     Hmm, looks like it's a bit lonely here, come back another
@@ -96,6 +94,7 @@ export default {
 .no-noti {
     font-size: 200px;
     color: $color-brand;
+    margin-bottom: 20px;
 }
 .selector {
     padding: 5px 10px;

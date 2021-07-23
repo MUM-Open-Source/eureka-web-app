@@ -13,15 +13,15 @@
                 </router-link>
             </div>
             <div class="top-nav__right">
-                <i
-                    class="material-icons noti-icon"
+                <fa
+                    icon="bell"
+                    size="lg"
+                    class="noti-icon"
                     :class="{ badge: unreadNotifications }"
                     data-count=""
                     @click="modalController('notification')"
                     v-if="isLoggedIn"
-                >
-                    notifications
-                </i>
+                />
                 <div
                     @click="modalController('userMenu')"
                     class="top-nav__right--user cursor__pointer"
@@ -118,7 +118,7 @@ export default {
 .noti-icon {
     position: relative;
     margin-right: 10px;
-    padding: 7px;
+    padding: 10px;
     border-radius: 10px;
     cursor: pointer;
     &:hover {

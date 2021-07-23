@@ -10,9 +10,7 @@
                 :style="{ backgroundColor: iconColor }"
                 data-count=""
             >
-                <i class="material-icons-outlined">
-                    {{ icon }}
-                </i>
+                <fa :icon="icon" :style="{ fontSize: '18px' }" />
             </div>
             <div :style="{ flex: '1' }">
                 <div class="content-title">
@@ -25,17 +23,15 @@
                     <p :style="{ fontSize: '14px' }">
                         {{ bodyText }}
                     </p>
-                    <i
-                        class="material-icons-outlined"
+                    <fa
+                        icon="mail-bulk"
                         :class="[
                             readStatus
                                 ? 'content-body__invincible'
                                 : 'content-body__doneIcon',
                         ]"
                         @click="readIndividual"
-                    >
-                        mark_email_read
-                    </i>
+                    />
                 </div>
             </div>
         </div>
