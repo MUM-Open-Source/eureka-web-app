@@ -4,7 +4,7 @@
             <!-- Details -->
             <div class="user__card--row mar__b--1">
                 <!-- name -->
-                <div class="subheading user__card--project">{{ project.project_name }}</div><span class="user__card--name">(Dr Lillian)</span>
+                <div class="subheading user__card--project">{{ project.project_name }}</div><span class="user__card--name">({{ project.supervisor }})</span>
                 <!-- tags -->
                 <div class="user__card--tags">
                     <div

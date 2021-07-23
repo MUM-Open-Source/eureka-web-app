@@ -35,6 +35,8 @@ export interface Event {
 }
 
 export interface Project {
+    project_id: string;
+    supervisor: string | null;
     project_name: string;
     project_duration: string;
     project_fields: string[];

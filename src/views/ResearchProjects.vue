@@ -3,7 +3,7 @@
         <div class="inner-div" v-if="true">
             <div class="heading text--center mar__t--3">Incubator</div>
             <TabsWrapper>
-                <Tab title="Your Projects"><YourProject v-for="i in [1,2,3,4,5]" :key="i"/></Tab>
+                <Tab title="Your Projects"><YourProject /></Tab>
                 <Tab title="All Projects"><AllProjects /></Tab>
                 <Tab title="New Project"><NewProject /></Tab>
             </TabsWrapper>

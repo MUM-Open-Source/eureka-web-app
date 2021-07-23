@@ -344,6 +344,8 @@ export default createStore({
         },
 
         ADD_PROJECT(state, project: Project) {
+            project.project_id = auth.currentUser!.uid;
+            project.supervisor = auth.currentUser!.displayName;
             db.collection("projects")
                 .doc()
                 .set(project).then(() => {
@@ -353,22 +355,40 @@ export default createStore({
                 })
         },
 
-        GET_PROJECTS(state) {
+        GET_PROJECTS(state, yourProject) {
             db.collection("projects")
                 .get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
 
-                        const project: Project = {
-                            overview: doc.data().overview,
-                            project_duration: doc.data().project_duration,
-                            project_fields: doc.data().project_fields,
-                            project_name: doc.data().project_name
+                        if (yourProject === true) {
+
+                            const project: Project = {
+                                project_id: doc.data().project_id,
+                                supervisor: doc.data().supervisor,
+                                overview: doc.data().overview,
+                                project_duration: doc.data().project_duration,
+                                project_fields: doc.data().project_fields,
+                                project_name: doc.data().project_name
+                            }
+
+                            if (project.supervisor === auth.currentUser!.displayName) {
+                                state.projects.push(project);
+                            }
+
+                        } else {
+                            const project: Project = {
+                                project_id: doc.data().project_id,
+                                supervisor: doc.data().supervisor,
+                                overview: doc.data().overview,
+                                project_duration: doc.data().project_duration,
+                                project_fields: doc.data().project_fields,
+                                project_name: doc.data().project_name
+                            }
+
+                            state.projects.push(project);
+
                         }
-
-                        console.log('added')
-
-                        state.projects.push(project);
                     })
                 })
                 .catch(function(error) {
@@ -942,8 +962,8 @@ export default createStore({
         addProjects({ commit }, obj: Project) {
             commit('ADD_PROJECT', obj)
         },
-        getProjects({ commit }) {
-            commit('GET_PROJECTS');
+        getProjects({ commit }, yourProject: boolean) {
+            commit('GET_PROJECTS', yourProject);
         },
         getMentors({ commit }) {
             commit('GET_MENTORS');

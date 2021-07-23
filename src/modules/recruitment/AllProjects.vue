@@ -7,10 +7,8 @@
 </template>
 
 <script>
-// import Button from '@/common/Button.vue'
 import store from '@/store';
 import { onMounted, ref } from 'vue';
-// import { ref } from 'vue';
 import List from '@/common/List.vue';
 
 export default {
@@ -19,7 +17,7 @@ export default {
     setup() {
         onMounted(() => {
             if (!store.state.projects.length) {
-                store.dispatch("getProjects")
+                store.dispatch("getProjects", false)
             }
         })
 
