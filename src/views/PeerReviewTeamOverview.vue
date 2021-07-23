@@ -1,26 +1,28 @@
 <template>
     <div class="page-pad">
-        <div class="PR-current-team-overview-content text--center">
+        <div class="peer-review-team-overview-content text--center">
             <router-link :to="{ name: 'PeerReviewTeamList' }">
                 <button class="back-button">
                     <fa icon="angle-double-left" size="lg" />
                 </button>
             </router-link>
 
-            <div class="heading PR-current-team-overview-content__title">
+            <div class="heading peer-review-team-overview-content__title">
                 {{ teamName }}
             </div>
-            <PeerReviewUserCard
-                class="mar__b--2"
-                v-for="i in [1, 2, 3, 4, 5]"
-                :key="i"
-                :team_id="team_id"
-                :teamName="teamName"
-                :to_id="'Team Member ' + i"
-                :userName="'Team Member ' + i"
-                :userNumber="i"
-                :buttoncheck="true"
-            />
+            <div class="peer-review-team-overview-content__usercard">
+                <PeerReviewUserCard
+                    class="mar__b--2 card"
+                    v-for="i in [1, 2, 3, 4, 5]"
+                    :key="i"
+                    :team_id="team_id"
+                    :teamName="teamName"
+                    :to_id="'Team Member ' + i"
+                    :userName="'Team Member ' + i"
+                    :userNumber="i"
+                    :buttoncheck="true"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -48,13 +50,21 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.PR-current-team-overview-content {
+.peer-review-team-overview-content {
     margin-left: auto;
     margin-right: auto;
 
     &__title {
         margin-bottom: 15px;
         font-size: 36px;
+    }
+
+    &__usercard {
+        padding: 35px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
     }
 }
 

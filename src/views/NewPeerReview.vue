@@ -6,6 +6,14 @@
             </button>
 
             <div class="heading peer-review-content__title">Peer Review</div>
+            <div class="peer-review-content__to">
+                <span class="subheading">Team: </span>
+                <span class="body">{{ teamName }}</span>
+                <br />
+                <span class="subheading">To: </span>
+                <span class="body">{{ to_id }}</span>
+            </div>
+
             <QuestionCard
                 v-for="(question, index) in ratingQuestions"
                 :key="index"

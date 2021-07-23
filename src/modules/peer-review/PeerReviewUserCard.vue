@@ -1,16 +1,18 @@
 <template>
-    <div class="user__card pad--2">
-        <div class="user__card--details">
-            <!-- Details -->
-            <div class="user__card--row">
-                <!-- name -->
-                <div class="subheading user__card--name">
-                    {{ userNumber }}. {{ userName }}
+    <section id="team">
+        <!--container---------------->
+        <div class="container">
+            <!--box-1----------->
+            <div class="box">
+                <!--top-bar---------------->
+                <div class="top-bar"></div>
+                <!--img and details---------------->
+                <div class="details">
+                    <img alt="" src="@/assets/default-user-image.png" />
+                    <span class="subheading">{{ userName }}</span>
+                    <p>Details goes here.</p>
                 </div>
-                <div
-                    class="tagline user__card--actions mar__t--1"
-                    v-if="buttoncheck"
-                >
+                <div v-if="buttoncheck">
                     <router-link
                         :to="{
                             name: 'NewPeerReview',
@@ -24,16 +26,12 @@
                         <Button text="Do Peer Review" />
                     </router-link>
                 </div>
-                <div class="tagline user__card--actions mar__t--1" v-else>
-                    <Button
-                        class="user__card--buttonOff"
-                        text="Do Peer Review"
-                    />
+                <div v-else>
+                    <Button class="button-off" text="Do Peer Review" />
                 </div>
             </div>
-            <!-- Action items -->
         </div>
-    </div>
+    </section>
 </template>
 
 <script lang="ts">
@@ -94,38 +92,58 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.user__card {
-    @include shadow--small;
+* {
+    box-sizing: border-box;
+}
+.box {
+    width: 266px;
+    height: 340px;
+    background-color: #ffffff;
+    box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.05);
     display: flex;
-    border-radius: $app-border-radius-sm;
-    &--name {
-        margin-right: 15px;
-    }
-    &--row {
-        display: flex;
-        align-items: center;
-    }
-    &--actions {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        &-icon {
-            margin-right: 5px;
-        }
-    }
-    &--icon {
-        width: 30px;
-        margin: 5px;
-        transition: all $transition-duration-fast;
-        &:hover {
-            color: $color-brand;
-        }
-    }
-    &--buttonOff {
-        opacity: 30%;
-        &:hover {
-            cursor: default;
-        }
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
+    position: relative;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.top-bar {
+    width: 50%;
+    height: 4px;
+    position: absolute;
+    left: 50%;
+    top: 0px;
+    transform: translateX(-50%);
+    background-color: #507bfc;
+    border-radius: 0px 0px 10px 10px;
+}
+.details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.details img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    object-fit: cover;
+    object-position: center;
+    margin: 25px 0 25px 0;
+}
+.button-off {
+    opacity: 30%;
+    &:hover {
+        cursor: default;
     }
 }
 </style>
