@@ -1,6 +1,6 @@
 <template>
     <div class="review-comment-card pad--2 mar__b--2 mar__t--2">
-        <header class="subheading">Short Summary</header>
+        <header class="subheading">{{ questionNumber }}. {{ question }}</header>
         <div class="form__group field">
             <textarea
                 class="body"
@@ -19,7 +19,7 @@
 <script>
 export default {
     name: 'ReviewCommentCard',
-    props: ['placeholder', 'value']
+    props: ['placeholder', 'value', 'question', 'questionNumber'],
 };
 </script>
 
