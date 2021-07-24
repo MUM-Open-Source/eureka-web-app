@@ -40,7 +40,6 @@ textarea {
     resize: vertical;
     outline: none;
     border-color: $color-bg-hover;
-    // resize: none;
     width: 100%;
     font-size: $body-font-size;
 }
