@@ -20,7 +20,6 @@
                     :to_id="'Team Member ' + i"
                     :userName="'Team Member ' + i"
                     :userNumber="i"
-                    :buttoncheck="true"
                 />
             </div>
         </div>
@@ -28,9 +27,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 
 import PeerReviewUserCard from '@/modules/peer-review/PeerReviewUserCard.vue';
+import store from '@/store';
 
 export default defineComponent({
     name: 'PeerReviewTeamOverview',
@@ -45,7 +45,17 @@ export default defineComponent({
             required: true,
         },
     },
-    setup() {},
+    setup() {
+        onMounted(() => {
+            // Fetch data if there's no peer review
+            if (!store.state.peer_reviews.length) {
+                store.dispatch('getPeerReview');
+            }
+        });
+
+        return {
+        };
+    },
 });
 </script>
 

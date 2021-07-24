@@ -51,7 +51,6 @@ export default defineComponent({
     },
     setup(props) {
         function handleEnterTeam() {
-            console.log("Team_ID: " + props.team_id);
             router.push({
                 name: 'PeerReviewTeamOverview',
                 params: {

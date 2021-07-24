@@ -2,7 +2,7 @@
     <section id="team">
         <!--container---------------->
         <div class="container">
-            <!--box-1----------->
+            <!--box----------->
             <div class="box">
                 <!--top-bar---------------->
                 <div class="top-bar"></div>
@@ -12,7 +12,7 @@
                     <span class="subheading">{{ userName }}</span>
                     <p>Details goes here.</p>
                 </div>
-                <div v-if="buttoncheck">
+                <div v-if="checkIfDone">
                     <router-link
                         :to="{
                             name: 'NewPeerReview',
@@ -35,9 +35,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, reactive } from 'vue';
 import Button from '@/common/Button.vue';
 import router from '@/router';
+import store from '@/store';
 
 export default defineComponent({
     name: 'PeerReviewUserCard',
@@ -64,16 +65,9 @@ export default defineComponent({
             type: Number,
             required: true,
         },
-        buttoncheck: {
-            type: Boolean,
-            required: true,
-            default: true,
-        },
     },
     setup(props) {
         function createNewPeerReview() {
-            console.log('Team ID: ' + props.team_id);
-            console.log('To student ID: ' + props.to_id);
             router.push({
                 name: 'NewPeerReview',
                 params: {
@@ -84,8 +78,26 @@ export default defineComponent({
             });
         }
 
+        const peerReviews = reactive(store.state.peer_reviews);
+        const checkToId: string[] = [];
+
+        const checkIfDone = computed(() => {
+            peerReviews.forEach(eachPeerReviews => {
+                if (eachPeerReviews.team_id === props.team_id) {
+                    checkToId.push(eachPeerReviews.to_id);
+                }
+            });
+
+            if (checkToId.includes(props.to_id)) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+
         return {
             createNewPeerReview,
+            checkIfDone,
         };
     },
 });
@@ -122,7 +134,7 @@ export default defineComponent({
     left: 50%;
     top: 0px;
     transform: translateX(-50%);
-    background-color: #507bfc;
+    background-color: $color-brand;
     border-radius: 0px 0px 10px 10px;
 }
 .details {

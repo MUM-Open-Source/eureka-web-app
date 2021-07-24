@@ -890,6 +890,31 @@ export default createStore({
                     ),
                 });
         },
+
+        GET_PEER_REVIEW(state) {
+            const peerReviewRef = db.collection('peer_review');
+
+            peerReviewRef.where('from_id', '==', auth.currentUser!.uid)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    const peerReview: PeerReview = {
+                        team_id: doc.data().team_id,
+                        from_id: doc.data().from_id,
+                        to_id: doc.data().to_id,
+                        date_created: doc.data().date_created,
+                        rating_count: doc.data().rating_count,
+                        text_count: doc.data().text_count,
+                        rating_sum: doc.data().rating_sum,
+                        rating_responses: doc.data().responses,
+                        text_responses: doc.data().summary,
+                    }
+
+                    if (peerReview )
+                    state.peer_reviews.push(peerReview);
+                })
+            });
+        },
     },
 
     // functions to be called throughout the app that, in turn, call mutations
@@ -1003,6 +1028,10 @@ export default createStore({
 
         newPeerReview({ commit }, peerReview: PeerReview) {
             commit('NEW_PEER_REVIEW', peerReview);
+        },
+
+        getPeerReview({ commit }) {
+            commit('GET_PEER_REVIEW');
         },
     },
 });

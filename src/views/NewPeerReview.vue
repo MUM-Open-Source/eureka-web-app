@@ -7,10 +7,10 @@
 
             <div class="heading peer-review-content__title">Peer Review</div>
             <div class="peer-review-content__to">
-                <span class="subheading">Team: </span>
+                <span class="subheading mar--1">Team:</span>
                 <span class="body">{{ teamName }}</span>
                 <br />
-                <span class="subheading">To: </span>
+                <span class="subheading mar--1">To:</span>
                 <span class="body">{{ to_id }}</span>
             </div>
 
@@ -134,8 +134,6 @@ export default defineComponent({
                 return tempDict;
             }
 
-            console.log(arrayToDictionaryHelper(inputText, textQuestions));
-
             if (allMandatoryRatingsFilled() && allMandatoryFieldsFilled()) {
                 const peerReview = {
                     // To be changed
@@ -144,11 +142,14 @@ export default defineComponent({
                     rating_count: ratingQuestions.length,
                     text_count: textQuestions.length,
                     rating_sum: totalRating(),
-                    responses: arrayToDictionaryHelper(
+                    rating_responses: arrayToDictionaryHelper(
                         inputRatings,
                         ratingQuestions
                     ),
-                    summary: arrayToDictionaryHelper(inputText, textQuestions),
+                    text_responses: arrayToDictionaryHelper(
+                        inputText,
+                        textQuestions
+                    ),
                 };
                 store.dispatch('newPeerReview', peerReview);
                 router.push({
@@ -168,8 +169,6 @@ export default defineComponent({
         }
 
         function handleBackButtonClick() {
-            console.log('Team ID: ' + props.team_id);
-            console.log('Team Name: ' + props.teamName);
             router.push({
                 name: 'PeerReviewTeamOverview',
                 params: {

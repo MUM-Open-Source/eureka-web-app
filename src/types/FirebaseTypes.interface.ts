@@ -56,6 +56,6 @@ export interface PeerReview {
     rating_count: number;
     text_count: number;
     rating_sum: number;
-    responses: {};
-    summary: {};
+    rating_responses: {};
+    text_responses: {};
 }
