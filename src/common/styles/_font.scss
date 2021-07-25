@@ -73,6 +73,15 @@ input {
     &--center {
         text-align: center;
     }
+    &--left {
+        text-align: left;
+    }
+    &--right {
+        text-align: right;
+    }
+    &--justify {
+        text-align: justify;
+    }
     &--capsule {
         @include shadow;
         padding: $capsule-padding;

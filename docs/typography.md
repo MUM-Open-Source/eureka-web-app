@@ -36,12 +36,18 @@
 
 ## Alignment
 
-| Class        | Example                                       |
-| ------------ | --------------------------------------------- |
-| text--center | <div class="text--center">Centered Text</div> |
+| Class         | Example                                           |
+| ------------- | ------------------------------------------------- |
+| text--center  | <div class="text--center">Centered Text</div>     |
+| text--left    | <div class="text--left">Left-Aligned Text</div>   |
+| text--right   | <div class="text--right">Right-Aligned Text</div> |
+| text--justify | <div class="text--justify">Jusitified Text</div>  |
 
 ```md
 <div class="body text--center">Centered Text</div>
+<div class="body text--left">Left-Aligned Text</div>
+<div class="body text--right">Right-Aligned Text</div>
+<div class="body text--justify">Jusitified Text</div>
 ```
 
 ## Special Text
