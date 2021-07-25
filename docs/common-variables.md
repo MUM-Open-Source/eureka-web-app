@@ -2,7 +2,7 @@
 
 Eureka has standardized certain stlyes through the use of scss variables. These variables are accessible by any file in the codebase within the `<style>` tags.
 
-::: tip
+::: tip FILE LOCATION
 The classes specified here exist at `/src/common/styles/_variables.scss`.
 :::
 
@@ -40,6 +40,21 @@ While applying transitions, ensure to use one of the following durations:
 ```scss
 .button {
     transition: all ease $transition-duration;
+}
+```
+
+## Border Radius
+
+There are 2 options of border radius available to use within Eureka:
+
+-   `$app-border-radius` which is 18px
+-   `$app-border-radius-sm` which is 9px
+
+### Examples
+
+```scss
+.button {
+    border-radius: $app-border-radius;
 }
 ```
 

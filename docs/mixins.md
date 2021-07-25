@@ -2,7 +2,7 @@
 
 Eureka has used the `@mixin` directive to create reusable CSS code. To take advantage of these mixins, you will need to use the `@include` directive.
 
-::: tip
+::: tip FILE LOCATION
 The classes specified here exist at `/src/common/styles/_mixins.scss`.
 :::
 
