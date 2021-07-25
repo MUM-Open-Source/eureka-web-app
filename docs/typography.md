@@ -2,6 +2,10 @@
 
 Eureka sets some basic global typography styles. Whether you're creating a heading or simply a paragraph, make sure you use the css classes covered here before using custom styles.
 
+::: tip
+The classes specified here exist at `/src/common/styles/_font.scss`.
+:::
+
 ## Sizes
 
 | Class         | Example                                         |

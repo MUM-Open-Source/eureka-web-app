@@ -1,5 +1,11 @@
 # Spacing
 
+It is important that elements are properly spaced out to ensure a clean UI. You should be able to add the necessary spacing for any element based on the classes described here.
+
+::: tip
+The classes specified here exist at `/src/common/styles/_spacing.scss`.
+:::
+
 ## Page Padding
 
 Every page or "view" in Eureka is wrapped in the `page-pad` class. This should be a standard practice when creating new pages.
