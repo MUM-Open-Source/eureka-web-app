@@ -61,7 +61,7 @@
 ```
 
 <style lang="scss" scoped>
-@import "../src/common/styles/global.scss";
+@import "../src/common/styles/_font.scss";
 .text--white {
     background-color: black;
 }
