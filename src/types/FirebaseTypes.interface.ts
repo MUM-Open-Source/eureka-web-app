@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-export type UserRoles = 'talent' | 'mentor' | 'admin';
+export type UserRoles = 'talent' | 'mentor' | 'admin' | 'staff';
 
 export interface User {
     background: string;
@@ -35,7 +35,7 @@ export interface Event {
 }
 
 export interface Project {
-    project_id: string;
+    supervisor_id: string;
     supervisor: string | null;
     project_name: string;
     project_duration: string;

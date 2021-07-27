@@ -2,6 +2,7 @@
     <div class="outer-div">
         <div class="inner-div" v-if="true">
             <div class="heading text--center mar__t--3">Incubator</div>
+            <!-- Tabs for Academic Research Recruitment -->
             <TabsWrapper>
                 <Tab title="Your Projects"><YourProject /></Tab>
                 <Tab title="All Projects"><AllProjects /></Tab>

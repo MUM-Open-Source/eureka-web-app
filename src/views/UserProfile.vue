@@ -1,26 +1,6 @@
 <template>
     <div class="user-profile page-pad">
         <div class="profile__page">
-            <!-- <div class="profile__menu mar__b--3">
-            <router-link :to="{ name: 'Profile'}">
-                <div class="active profile__menu--option pad__t--1 pad__b--1">
-                    <img class="profile__menu--icon" src="@/assets/profile-user-icon.svg" />
-                    <div class="body">User info</div>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'WavesFromTalent'}">
-                <div class="profile__menu--option pad__t--1 pad__b--1">
-                    <img class="profile__menu--icon" src="@/assets/profile-talent-icon.svg" />
-                    <div class="body">Waves from talent</div>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'WavesFromMentors'}">
-                <div class="profile__menu--option pad__t--1 pad__b--1">
-                    <img class="profile__menu--icon" src="@/assets/profile-mentor-icon.svg" />
-                    <div class="body">Waves from mentors</div>
-                </div>
-            </router-link>
-        </div> -->
             <div class="heading mar__b--3 text--center">User Profile</div>
             <div class="profile__content">
                 <div class="profile__img text--center pad--4">

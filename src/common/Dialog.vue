@@ -66,8 +66,9 @@
 import store from "@/store";
 import Button from "@/common/Button.vue";
 import Swal from "sweetalert2";
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: "BaseDialog",
   components: {
     Button,
@@ -130,7 +131,7 @@ export default {
       })
     },
   },
-};
+});
 </script>
 
 <style lang="scss">

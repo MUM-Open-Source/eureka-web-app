@@ -23,6 +23,7 @@ const getInitState = (): AppState => {
         is_new: false, // used to ensure all mandatory details are filled after signup
         events: [],
         projects: [],
+        all_projects: [],
         dialog: [],
         talent: [],
         mentors: [],
@@ -344,7 +345,7 @@ export default createStore({
         },
 
         ADD_PROJECT(state, project: Project) {
-            project.project_id = auth.currentUser!.uid;
+            project.supervisor_id = auth.currentUser!.uid;
             project.supervisor = auth.currentUser!.displayName;
             db.collection("projects")
                 .doc()
@@ -354,17 +355,14 @@ export default createStore({
                     console.log("Error getting document")
                 })
         },
-
-        GET_PROJECTS(state, yourProject) {
+        // Gets specific projects
+        GET_PROJECTS(state) {
             db.collection("projects")
                 .get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
-
-                        if (yourProject === true) {
-
                             const project: Project = {
-                                project_id: doc.data().project_id,
+                                supervisor_id: doc.data().supervisor_id,
                                 supervisor: doc.data().supervisor,
                                 overview: doc.data().overview,
                                 project_duration: doc.data().project_duration,
@@ -372,28 +370,36 @@ export default createStore({
                                 project_name: doc.data().project_name
                             }
 
-                            if (project.supervisor === auth.currentUser!.displayName) {
+                            if (project.supervisor_id === auth.currentUser!.uid) {
                                 state.projects.push(project);
                             }
-
-                        } else {
-                            const project: Project = {
-                                project_id: doc.data().project_id,
-                                supervisor: doc.data().supervisor,
-                                overview: doc.data().overview,
-                                project_duration: doc.data().project_duration,
-                                project_fields: doc.data().project_fields,
-                                project_name: doc.data().project_name
-                            }
-
-                            state.projects.push(project);
-
-                        }
                     })
                 })
                 .catch(function(error) {
                     console.log("Error getting document")
                 });
+        },
+        // gets all projects
+        GET_ALL_PROJECTS(state) {
+            db.collection("projects")
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                        const project: Project = {
+                            supervisor_id: doc.data().supervisor_id,
+                            supervisor: doc.data().supervisor,
+                            overview: doc.data().overview,
+                            project_duration: doc.data().project_duration,
+                            project_fields: doc.data().project_fields,
+                            project_name: doc.data().project_name
+                        }
+
+                        state.all_projects.push(project)
+                })
+            })
+            .catch(function(error) {
+                console.log("Error getting document")
+            });
         },
 
         GET_LIKED_EVENTS(state) {
@@ -962,8 +968,11 @@ export default createStore({
         addProjects({ commit }, obj: Project) {
             commit('ADD_PROJECT', obj)
         },
-        getProjects({ commit }, yourProject: boolean) {
-            commit('GET_PROJECTS', yourProject);
+        getProjects({ commit }) {
+            commit('GET_PROJECTS');
+        },
+        getAllProjects({ commit }) {
+            commit('GET_ALL_PROJECTS');
         },
         getMentors({ commit }) {
             commit('GET_MENTORS');

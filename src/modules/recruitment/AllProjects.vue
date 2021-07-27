@@ -1,8 +1,10 @@
 <template>
+    <!-- List of projects -->
     <List
         v-for="project in projectsFinal"
         :key="project.key"
         :project="project"
+        :project_status="false"
     />
 </template>
 
@@ -15,13 +17,16 @@ export default {
     name: 'AllProjects',
     components: { List },
     setup() {
+
+        // gets all projects when mounted (refer to store/index.ts)
         onMounted(() => {
-            if (!store.state.projects.length) {
-                store.dispatch("getProjects", false)
+            if (!store.state.all_projects.length) {
+                store.dispatch("getAllProjects")
             }
         })
 
-        const projectsFinal = ref(store.state.projects);
+        // references all projects in state and store in projects Final
+        const projectsFinal = ref(store.state.all_projects);
 
         return {
             projectsFinal
