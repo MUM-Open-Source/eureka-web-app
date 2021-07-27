@@ -206,10 +206,6 @@ export default defineComponent({
     }
 }
 
-table {
-    width: 100%;
-}
-
 .back-icon {
     font-size: 36px;
 }
@@ -230,6 +226,7 @@ button {
     height: 50px;
     width: 50px;
     border-radius: 50%;
+    z-index: 0;
     &:focus {
         outline: 0;
     }

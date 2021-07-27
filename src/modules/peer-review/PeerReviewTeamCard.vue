@@ -1,24 +1,21 @@
 <template>
     <div class="user__card pad--2">
-        <div class="user__card--details">
-            <!-- Details -->
-            <div class="user__card--row">
-                <!-- name -->
-                <div class="subheading user__card--name">
-                    {{ teamNumber }}. {{ teamName }}
-                </div>
-                <div
-                    class="tagline user__card--actions mar__t--1"
-                    v-if="buttoncheck"
-                >
-                    <Button text="Enter Team" @click="handleEnterTeam" />
-                </div>
-                <div class="tagline user__card--actions mar__t--1" v-else>
-                    <Button class="user__card--buttonOff" text="Enter Team" />
-                </div>
+        <div class="user__card--row">
+            <!-- name -->
+            <div class="subheading user__card--name">
+                {{ teamNumber }}. {{ teamName }}
             </div>
-            <!-- Action items -->
+            <div
+                class="tagline user__card--actions mar__t--1"
+                v-if="buttoncheck"
+            >
+                <Button text="Enter Team" @click="handleEnterTeam" />
+            </div>
+            <div class="tagline user__card--actions mar__t--1" v-else>
+                <Button class="user__card--buttonOff" text="Enter Team" />
+            </div>
         </div>
+        <!-- Action items -->
     </div>
 </template>
 
@@ -39,7 +36,7 @@ export default defineComponent({
             type: Number,
             required: true,
         },
-        teamName: { 
+        teamName: {
             type: String,
             requred: true,
         },
@@ -56,8 +53,8 @@ export default defineComponent({
                 params: {
                     team_id: props.team_id,
                     teamName: props.teamName!,
-                }
-            })
+                },
+            });
         }
 
         return {
@@ -70,30 +67,20 @@ export default defineComponent({
 <style lang="scss" scoped>
 .user__card {
     @include shadow--small;
-    display: flex;
     border-radius: $app-border-radius-sm;
     &--name {
         margin-right: 15px;
+        margin-top: auto;
+        margin-bottom: auto;
     }
     &--row {
         display: flex;
-        align-items: center;
+        justify-content: space-between;
     }
     &--actions {
         display: flex;
+        margin-top: 0px;
         align-items: center;
-        justify-content: flex-end;
-        &-icon {
-            margin-right: 5px;
-        }
-    }
-    &--icon {
-        width: 30px;
-        margin: 5px;
-        transition: all $transition-duration-fast;
-        &:hover {
-            color: $color-brand;
-        }
     }
     &--buttonOff {
         opacity: 30%;
