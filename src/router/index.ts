@@ -147,7 +147,7 @@ const routes: RouteRecordRaw[] = [
         component: ResearchProjects
     },
     {
-        path: '/project-details',
+        path: '/project-details/:id',
         name: 'ProjectDetails',
         component: ProjectDetails
     }

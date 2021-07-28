@@ -35,8 +35,8 @@
         />
 
         <!-- Details Button (For Staff) -->
-        <router-link :to="{ name: 'ProjectDetails' }" class="user__card--actions" v-if="userIsStaff">
-            <Button text="DETAILS"/>
+        <router-link :to="{ name: 'ProjectDetails', params: { 'id': project.id } }" class="user__card--actions" v-if="userIsStaff">
+            <Button text="DETAILS" />
         </router-link>
 
         <!-- Status Update (For Students) -->

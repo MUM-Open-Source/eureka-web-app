@@ -22,6 +22,7 @@ const getInitState = (): AppState => {
         new_img_url: '',
         is_new: false, // used to ensure all mandatory details are filled after signup
         events: [],
+        project_detail: [],
         projects: [],
         all_projects: [],
         dialog: [],
@@ -362,6 +363,7 @@ export default createStore({
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                             const project: Project = {
+                                id: doc.id,
                                 supervisor_id: doc.data().supervisor_id,
                                 supervisor: doc.data().supervisor,
                                 overview: doc.data().overview,
@@ -369,7 +371,6 @@ export default createStore({
                                 project_fields: doc.data().project_fields,
                                 project_name: doc.data().project_name
                             }
-
                             if (project.supervisor_id === auth.currentUser!.uid) {
                                 state.projects.push(project);
                             }
@@ -386,6 +387,7 @@ export default createStore({
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                         const project: Project = {
+                            id: doc.id,
                             supervisor_id: doc.data().supervisor_id,
                             supervisor: doc.data().supervisor,
                             overview: doc.data().overview,
@@ -400,6 +402,26 @@ export default createStore({
             .catch(function(error) {
                 console.log("Error getting document")
             });
+        },
+
+        GET_PROJECT(state, id) {
+            console.log(id)
+            db.collection("projects")
+                .doc(id)
+                .get()
+                .then((querySnapshot) => {
+                    const project: Project = {
+                        id: querySnapshot.data()?.id,
+                        supervisor_id: querySnapshot.data()?.supervisor_id,
+                        supervisor: querySnapshot.data()?.supervisor,
+                        overview: querySnapshot.data()?.overview,
+                        project_duration: querySnapshot.data()?.project_duration,
+                        project_fields: querySnapshot.data()?.project_fields,
+                        project_name: querySnapshot.data()?.project_name
+                    }
+
+                    state.project_detail.push(project)
+                })
         },
 
         GET_LIKED_EVENTS(state) {
@@ -789,19 +811,6 @@ export default createStore({
         },
 
         UPDATE_USER_PROFILE(state, user: User) {
-            // old code
-            // const updatedAttributes = {
-            //     background: user.background,
-            //     bio: user.bio,
-            //     interests: user.interests,
-            //     experience_level: parseInt(user.experience_level),
-            //     social_links: {
-            //         ...state.user_data.social_links,
-            //         github_url: user.github_url,
-            //         linkedin_url: user.linkedin_url,
-            //         website_url: user.website_url,
-            //     }
-            // }
 
             // updating user profile
             db.collection('users')
@@ -970,6 +979,9 @@ export default createStore({
         },
         getProjects({ commit }) {
             commit('GET_PROJECTS');
+        },
+        getProject({ commit }, id: string) {
+            commit('GET_PROJECT', id)
         },
         getAllProjects({ commit }) {
             commit('GET_ALL_PROJECTS');

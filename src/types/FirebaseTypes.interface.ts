@@ -35,6 +35,7 @@ export interface Event {
 }
 
 export interface Project {
+    id: string;
     supervisor_id: string;
     supervisor: string | null;
     project_name: string;
