@@ -411,7 +411,7 @@ export default createStore({
                 .get()
                 .then((querySnapshot) => {
                     const project: Project = {
-                        id: querySnapshot.data()?.id,
+                        id: id,
                         supervisor_id: querySnapshot.data()?.supervisor_id,
                         supervisor: querySnapshot.data()?.supervisor,
                         overview: querySnapshot.data()?.overview,
@@ -419,6 +419,8 @@ export default createStore({
                         project_fields: querySnapshot.data()?.project_fields,
                         project_name: querySnapshot.data()?.project_name
                     }
+
+                    console.log('here')
 
                     state.project_detail.push(project)
                 })

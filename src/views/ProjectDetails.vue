@@ -1,5 +1,5 @@
 <template>
-    <div class="pad--5 something-info">
+    <!-- <div class="pad--5 something-info">
         <div>
             <div class="heading something-info__specific">
                 Project Name:
@@ -33,40 +33,50 @@
         <div>
             <Button text="APPLY" />
         </div>
-    </div>
+    </div> -->
+    <div>{{ project_detail.project_name }}</div>
 </template>
 
 <script>
-// import { onMounted } from '@vue/runtime-core';
-// import { ref } from 'vue';
+import { onMounted } from 'vue';
 import store from '@/store';
 import { useRoute } from 'vue-router';
-import Button from '@/common/Button.vue';
+// import Button from '@/common/Button.vue';
+// import { onMounted } from 'vue';
 
 export default {
     name: 'ProjectDetails',
-    components: {
-        Button,
-    },
+    // components: {
+    //     Button,
+    // },
     setup() {
+
         const route = useRoute();
-
         const id = route.params.id;
-        console.log(id);
-        store.dispatch('getProject', id);
 
-        const projectFinal = store.state.project_detail;
+        console.log('--------------');
 
-        const project_detail = projectFinal[0];
+        onMounted(() => {
+            if (!store.state.projects.length) {
+                console.log('asdfhgbakejvg');
+                store.dispatch('getProject', id);
+            }
+        });
 
-        console.log(projectFinal);
-        console.log(project_detail);
-        // console.log(project_detail[0]);
+        console.log('hello');
 
-        return {
-            project_detail,
-            projectFinal
-        };
+        // const projectFinal = ref(store.state.project_detail);
+
+        // const project_detail = projectFinal.value[0];
+
+        // console.log(projectFinal);
+        // console.log(project_detail);
+        // // console.log(project_detail[0]);
+
+        // return {
+        //     project_detail,
+        //     projectFinal
+        // };
     },
 };
 </script>
