@@ -1,25 +1,25 @@
 <template>
-    <div class="pad--5 project-info">
+    <div class="pad--5 something-info">
         <div>
-            <div class="heading project-info__specific">
+            <div class="heading something-info__specific">
                 Project Name:
-                <div class="tagline project-info__specific--answer">
+                <div class="tagline something-info__specific--answer">
                     {{ project_detail.project_name }}
                 </div>
             </div>
-            <div class="heading project-info__specific">
+            <div class="heading something-info__specific">
                 Staff PIC:
-                <div class="tagline project-info__specific--answer">
+                <div class="tagline something-info__specific--answer">
                     {{ project_detail.supervisor }}
                 </div>
             </div>
-            <div class="heading project-info__specific">
+            <div class="heading something-info__specific">
                 Project Duration:
-                <div class="tagline project-info__specific--answer">
+                <div class="tagline something-info__specific--answer">
                     {{ project_detail.project_duration }}
                 </div>
             </div>
-            <div class="heading project-info__specific">
+            <div class="heading something-info__specific">
                 Project Field(s):
                 <div
                     v-for="field in project_detail.project_fields"
@@ -34,11 +34,11 @@
             <Button text="APPLY" />
         </div>
     </div>
-    <!-- <img src="@/assets/line.svg" class="project-details__line" /> -->
 </template>
 
 <script>
-import { onMounted } from '@vue/runtime-core';
+// import { onMounted } from '@vue/runtime-core';
+// import { ref } from 'vue';
 import store from '@/store';
 import { useRoute } from 'vue-router';
 import Button from '@/common/Button.vue';
@@ -51,25 +51,28 @@ export default {
     setup() {
         const route = useRoute();
 
-        onMounted(() => {
-            const id = route.params.id;
-            console.log(id);
-            store.dispatch('getProject', id);
-        });
+        const id = route.params.id;
+        console.log(id);
+        store.dispatch('getProject', id);
 
-        const project_detail = store.state.project_detail[1];
+        const projectFinal = store.state.project_detail;
 
+        const project_detail = projectFinal[0];
+
+        console.log(projectFinal);
         console.log(project_detail);
+        // console.log(project_detail[0]);
 
         return {
             project_detail,
+            projectFinal
         };
     },
 };
 </script>
 
 <style lang="scss">
-.project-info {
+.something-info {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

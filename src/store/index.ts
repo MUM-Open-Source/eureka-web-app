@@ -405,9 +405,9 @@ export default createStore({
         },
 
         GET_PROJECT(state, id) {
-            console.log(id)
+            console.log('executed')
             db.collection("projects")
-                .doc(id)
+                .doc(`${id}`)
                 .get()
                 .then((querySnapshot) => {
                     const project: Project = {
