@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    title: 'Eureka Developer Docs',
+    title: 'Eureka Developer Guidelines',
     // scss: {
     //     prependData: `
     //         @import ../../../src/common/styles/global.scss";
