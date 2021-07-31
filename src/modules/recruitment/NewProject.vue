@@ -73,6 +73,7 @@ export default {
   },
   methods: {
     addProject() {
+      console.log(this.indexes)
       this.indexes.forEach((index) => {
         this.project_fields.push(this.options[index])
       })

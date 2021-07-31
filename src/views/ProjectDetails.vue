@@ -1,28 +1,28 @@
 <template>
-    <!-- <div class="pad--5 something-info">
+    <div class="pad--5 something-info">
         <div>
             <div class="heading something-info__specific">
                 Project Name:
                 <div class="tagline something-info__specific--answer">
-                    {{ project_detail.project_name }}
+                    {{ project_detail[0].project_name }}
                 </div>
             </div>
             <div class="heading something-info__specific">
                 Staff PIC:
                 <div class="tagline something-info__specific--answer">
-                    {{ project_detail.supervisor }}
+                    {{ project_detail[0].supervisor }}
                 </div>
             </div>
             <div class="heading something-info__specific">
                 Project Duration:
                 <div class="tagline something-info__specific--answer">
-                    {{ project_detail.project_duration }}
+                    {{ project_detail[0].project_duration }}
                 </div>
             </div>
             <div class="heading something-info__specific">
                 Project Field(s):
                 <div
-                    v-for="field in project_detail.project_fields"
+                    v-for="field in project_detail[0].project_fields"
                     :key="field"
                     class="tagline text--capsule cursor__default"
                 >
@@ -33,52 +33,33 @@
         <div>
             <Button text="APPLY" />
         </div>
-    </div> -->
-    <div>{{ project_detail.project_name }}</div>
+    </div>
 </template>
 
 <script>
-import { onMounted } from 'vue';
 import store from '@/store';
 import { useRoute } from 'vue-router';
-// import Button from '@/common/Button.vue';
-// import { onMounted } from 'vue';
+import { defineComponent, ref } from 'vue';
+import Button from '@/common/Button.vue';
 
-export default {
+export default defineComponent({
     name: 'ProjectDetails',
-    // components: {
-    //     Button,
-    // },
+    components: {
+        Button,
+    },
     setup() {
 
         const route = useRoute();
-        const id = route.params.id;
+        const id = route.params.id
+        store.dispatch('getProject', id)
+        const project_detail = ref(store.state.project_detail)
 
-        console.log('--------------');
 
-        onMounted(() => {
-            if (!store.state.projects.length) {
-                console.log('asdfhgbakejvg');
-                store.dispatch('getProject', id);
-            }
-        });
-
-        console.log('hello');
-
-        // const projectFinal = ref(store.state.project_detail);
-
-        // const project_detail = projectFinal.value[0];
-
-        // console.log(projectFinal);
-        // console.log(project_detail);
-        // // console.log(project_detail[0]);
-
-        // return {
-        //     project_detail,
-        //     projectFinal
-        // };
+        return {
+            project_detail
+        };
     },
-};
+});
 </script>
 
 <style lang="scss">
