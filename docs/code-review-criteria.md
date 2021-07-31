@@ -1,8 +1,8 @@
-# Code Review Criteria
+## Code Review Criteria
 
 When submitting a PR into the Eureka repo, this will be the criteria used to approve your code:
 
-## Implementation
+### Implementation
 
 -   Meets all Functional Requirements (if they exist)
 -   Can this solution be simplified or improved?
@@ -18,20 +18,20 @@ When submitting a PR into the Eureka repo, this will be the criteria used to app
 -   Was a framework, API, library, service not used that could improve the solution?
 -   Would you have solved the problem in a different way that is substantially better in terms of the code’s maintainability, readability, performance, security?
 
-## Error Handling and Logging
+### Error Handling and Logging
 
 -   Is error handling done the correct way?
 -   Should any logging or debugging information be added or removed?
 -   Are error messages user-friendly?
 
-## Readability
+### Readability
 
 -   Good use of comments and documentation
 -   Are you able to understand the code easily?
 -   Is there any commented out code?
 -   Are good coding standards & practices followed?
 
-## Important Considerations
+### Important Considerations
 
 -   Does this code open the software for security vulnerabilities?
 -   Are authorization and authentication handled in the right way?
