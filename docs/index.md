@@ -1,14 +1,77 @@
-## Vue File Stucture in Eureka
+## Getting Started
 
-### Practices
+### Git Workflow
+
+There are certain practices that should be followed when contributing to Eureka's code base. These are discussed in detail here.
+
+After following the [README](https://github.com/MUM-Open-Source/eureka-web-app#readme) instructions on GitHub, you're set to make your contribution.
+
+#### Creating a Feature Branch
+
+Make sure you're on the develop branch. To create your feature branch, run the following:
+
+```bash
+git pull
+git checkout -b feature/your-feature
+```
+
+#### Add your contribution
+
+Make the necessary contributions then commit all your changes and push your branch:
+
+```bash
+git add *
+git commit -m "feat(navigation): descriptive commit message"
+git push -u origin feature/your-feature
+```
+
+:::tip
+You are encouraged to follow Vue's [Git Commit Message Convention](https://github.com/vuejs/vue-next/blob/master/.github/commit-convention.md) which makes it easier to understand the commit.
+:::
+
+#### Submitting a PR
+
+You need to create a Pull Request for your feature branch by opening the repository on GitHub and creating a PR into Eureka's `develop` branch (it would be selected by default).
+
+In the PR, make sure to elaborate on the changes you've made and include supporting material such as how to test the feature or photo attachments for visual elements. This will help facilitate a smoother and more efficient review process.
+
+### Common Elements
+
+It is important to be aware of some common elements that have been made available for use during development.
+
+:::tip
+Common elements can be found in the `/src/common/` directory.
+:::
+
+#### Common Components
+
+The components available are:
+
+-   Button
+-   ~~InputField~~ (deprecated)
+-   Loader
+-   StarRating
+-   TagInput
+-   Toggle
+
+#### Common Styles
+
+The styles are discussed in the sections that follow.
+
+### Vue File Stucture in Eureka
+
+In the interest of standardization and quick setup, a recommended file structure has been discussed here.
+
+#### Practices
 
 When creating a new Vue component or view, we need to keep in mind the following practices:
 
 -   Use TypeScript
 -   Use scoped scss styling
 -   Use the **Composition API** instead of ~~Options API~~ whenever possible
+-   Use the class `page-pad` in the root `div` for every new view (page)
 
-### Code Snippet
+#### Code Snippet
 
 You can use the following code snippet as a starting point.
 
