@@ -17,6 +17,8 @@ git checkout -b feature/your-feature
 
 #### Add your contribution
 
+You can refer to existing code when implementing your changes. For this, perfoming a global search may come in handy. For example, if you're not sure how to implement a button, you could global search and see how the button has been implemented elsewhere.
+
 Make the necessary contributions then commit all your changes and push your branch:
 
 ```bash
