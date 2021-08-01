@@ -32,7 +32,7 @@
                     <div class="side-nav__text">Incubator</div>
                 </div>
             </router-link>
-            <router-link :to="{ name: '' }">
+            <router-link :to="{ name: 'ResearchProjects' }">
                 <div class="side-nav__group--link">
                     <fa icon="book" size="md" class="side-nav__icon" />
                     <div class="side-nav__text">Research</div>

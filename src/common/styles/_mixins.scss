@@ -37,3 +37,8 @@
 @mixin shadow--small {
     box-shadow: 0 0 5px $color-light;
 }
+
+// subtle shadow
+@mixin shadow--subtle {
+    box-shadow: 0 3px 5px 5px rgba(0,0,0,0.05);
+}

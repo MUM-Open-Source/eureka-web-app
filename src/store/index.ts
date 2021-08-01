@@ -7,7 +7,7 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 // types
 import { AppState } from '@/types/AppTypes.interface';
-import { User, Event, Feedback } from '@/types/FirebaseTypes.interface';
+import { User, Event, Feedback, Project } from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
     return {
@@ -22,12 +22,18 @@ const getInitState = (): AppState => {
         new_img_url: '',
         is_new: false, // used to ensure all mandatory details are filled after signup
         events: [],
+        project_detail: [],
+        projects: [],
+        all_projects: [],
+        dialog: [],
         talent: [],
         mentors: [],
+        upload_files: {url: '', fileName: ''},
         feedback: [],
-        liked_events: [], // list of events liked by the user
-        user_waves: [], // list of users waved at by the auth user
-        waves_from_other_users: [], // list of user ids who waved at the auth user
+        liked_events: [],                     // list of events liked by the user
+        user_waves: [],                       // list of users waved at by the auth user
+        process_status: false,
+        waves_from_other_users: [],           // list of user ids who waved at the auth user
         filters: {
             event: {
                 type: [],
@@ -337,6 +343,87 @@ export default createStore({
                     );
                     if (index >= 0) state.events.splice(index, 1);
                 });
+        },
+
+        ADD_PROJECT(state, project: Project) {
+            project.supervisor_id = auth.currentUser!.uid;
+            project.supervisor = auth.currentUser!.displayName;
+            db.collection("projects")
+                .doc()
+                .set(project).then(() => {
+                    state.projects.push(project)
+                }).catch(function(error) {
+                    console.log("Error getting document")
+                })
+        },
+        // Gets specific projects
+        GET_PROJECTS(state) {
+            db.collection("projects")
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                            const project: Project = {
+                                id: doc.id,
+                                supervisor_id: doc.data().supervisor_id,
+                                supervisor: doc.data().supervisor,
+                                overview: doc.data().overview,
+                                project_duration: doc.data().project_duration,
+                                project_fields: doc.data().project_fields,
+                                project_name: doc.data().project_name
+                            }
+                            if (project.supervisor_id === auth.currentUser!.uid) {
+                                state.projects.push(project);
+                            }
+                    })
+                })
+                .catch(function(error) {
+                    console.log("Error getting document")
+                });
+        },
+        // gets all projects
+        GET_ALL_PROJECTS(state) {
+            db.collection("projects")
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                        const project: Project = {
+                            id: doc.id,
+                            supervisor_id: doc.data().supervisor_id,
+                            supervisor: doc.data().supervisor,
+                            overview: doc.data().overview,
+                            project_duration: doc.data().project_duration,
+                            project_fields: doc.data().project_fields,
+                            project_name: doc.data().project_name
+                        }
+
+                        state.all_projects.push(project)
+                })
+            })
+            .catch(function(error) {
+                console.log("Error getting document")
+            });
+        },
+
+        GET_PROJECT(state, id) {
+            console.log('executed')
+            db.collection("projects")
+                .doc(`${id}`)
+                .get()
+                .then((querySnapshot) => {
+                    const project: Project = {
+                        id: id,
+                        supervisor_id: querySnapshot.data()?.supervisor_id,
+                        supervisor: querySnapshot.data()?.supervisor,
+                        overview: querySnapshot.data()?.overview,
+                        project_duration: querySnapshot.data()?.project_duration,
+                        project_fields: querySnapshot.data()?.project_fields,
+                        project_name: querySnapshot.data()?.project_name
+                    }
+
+                    console.log('here')
+
+                    state.project_detail.push(project)
+                })
         },
 
         GET_LIKED_EVENTS(state) {
@@ -726,19 +813,6 @@ export default createStore({
         },
 
         UPDATE_USER_PROFILE(state, user: User) {
-            // old code
-            // const updatedAttributes = {
-            //     background: user.background,
-            //     bio: user.bio,
-            //     interests: user.interests,
-            //     experience_level: parseInt(user.experience_level),
-            //     social_links: {
-            //         ...state.user_data.social_links,
-            //         github_url: user.github_url,
-            //         linkedin_url: user.linkedin_url,
-            //         website_url: user.website_url,
-            //     }
-            // }
 
             // updating user profile
             db.collection('users')
@@ -831,6 +905,19 @@ export default createStore({
             });
         },
 
+        UPLOAD_FILES(state, files) {
+            state.process_status = false;
+            for (let i = 0; i < files.length; i++) {
+                console.log(files[i].fileName)
+                const task = storage.ref().child('documents/' + auth.currentUser!.uid + '/' + files[i].fileName).put(files[i].file, files[i].metadata)
+                task
+                    .then(snapshot => snapshot.ref.getDownloadURL())
+                    .then(url =>
+                        state.upload_files = { url: url, fileName: files[i].fileName})
+            }
+            state.process_status = true;
+        },
+
         GET_WAVES_FROM_OTHER_USERS(state) {
             db.collection('user_waves')
                 .where('to_user_id', '==', auth.currentUser!.uid)
@@ -889,6 +976,18 @@ export default createStore({
         addEvents({ commit }, obj: Event) {
             commit('ADD_EVENT', obj);
         },
+        addProjects({ commit }, obj: Project) {
+            commit('ADD_PROJECT', obj)
+        },
+        getProjects({ commit }) {
+            commit('GET_PROJECTS');
+        },
+        getProject({ commit }, id: string) {
+            commit('GET_PROJECT', id)
+        },
+        getAllProjects({ commit }) {
+            commit('GET_ALL_PROJECTS');
+        },
         getMentors({ commit }) {
             commit('GET_MENTORS');
             // fetch users that auth user waved at
@@ -926,6 +1025,10 @@ export default createStore({
         uploadUserImage({ commit }, user) {
             commit('UPLOAD_USER_IMAGE', user);
             commit('SET_USER_IMAGE_URL');
+        },
+
+        uploadFiles({ commit }, files) {
+            commit('UPLOAD_FILES', files)
         },
 
         setDefaultUserImage({ commit }) {
