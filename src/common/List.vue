@@ -88,7 +88,7 @@ export default defineComponent({
 
         // Hides Apply Button if either at Your Projects (Student & Staff) or All Projects (Staff)
         const isYourProject = computed(() => {
-            return props.project_status ? false : (userIsStaff.value ? false : true);
+            return !props.project_status ? (userIsStaff.value ? false : true) : false;
         });
 
         // Checks if the user is a staff.
@@ -100,10 +100,13 @@ export default defineComponent({
 
         // Checks if the user is a student
         const userIsStudent = computed(() => {
-            return isYourProject.value ? (store.state.user_data
-                ? store.state.user_data.roles.includes('talent')
-                : false) : false
+            console.log(isYourProject.value)
+            return !isYourProject.value ? (store.state.user_data
+                ? store.state.user_data.roles.includes('talent') : false)
+                : false
         });
+
+
 
         return {
             userIsStudent,
