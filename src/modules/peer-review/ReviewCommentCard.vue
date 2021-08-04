@@ -1,6 +1,6 @@
 <template>
     <div class="review-comment-card pad--2 mar__b--2 mar__t--2">
-        <header class="subheading">{{ questionNumber }}. {{ question }}</header>
+        <header class="body">{{ question }}</header>
         <div class="form__group field">
             <textarea
                 class="body"

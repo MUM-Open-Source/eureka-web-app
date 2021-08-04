@@ -1,24 +1,15 @@
 <template>
     <div class="page-pad">
         <div class="peer-review-content text--center">
-            <button class="back-button" @click="handleBackButtonClick">
-                <fa icon="angle-double-left" size="lg" />
-            </button>
-
-            <div class="heading peer-review-content__title">Peer Review</div>
-            <div class="peer-review-content__to">
-                <span class="subheading mar--1">Team:</span>
-                <span class="body">{{ teamName }}</span>
-                <br />
-                <span class="subheading mar--1">To:</span>
-                <span class="body">{{ to_id }}</span>
+            <div class="heading">Peer Review</div>
+            <div class="body mar__t--1 mar__b--3">
+                Reviewing {{ to_id }} from {{ teamName }}
             </div>
 
             <QuestionCard
                 v-for="(question, index) in ratingQuestions"
                 :key="index"
                 :question="question"
-                :questionNumber="index + 1"
                 @question-rating="handleRatingClick"
                 class="mar__b--3"
             />
@@ -38,6 +29,10 @@
                 class="mar--auto mar__t--3 mar__b--1"
                 @click="handlePeerReviewClick"
             />
+
+            <div class="cursor__pointer" @click="handleBackButtonClick">
+                Do This Review Later
+            </div>
         </div>
     </div>
 </template>
@@ -196,39 +191,24 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.peer-review-content {
-    margin-left: auto;
-    margin-right: auto;
+// .back-icon {
+//     font-size: 36px;
+// }
 
-    &__title {
-        margin-bottom: 15px;
-        font-size: 36px;
-    }
-}
-
-.back-icon {
-    font-size: 36px;
-}
-
-button {
-    &:hover {
-        transform: scale(1.2);
-        cursor: pointer;
-    }
-}
-
-.back-button {
-    @include gradientAnimation($color-brand, $color-brand-alt);
-    @include shadow;
-    display: block;
-    color: $color-white;
-    border: none;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    z-index: 0;
-    &:focus {
-        outline: 0;
-    }
-}
+// .back-button {
+//     @include gradientAnimation($color-brand, $color-brand-alt);
+//     @include shadow;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     color: $color-white;
+//     border: none;
+//     height: 50px;
+//     width: 50px;
+//     border-radius: 50%;
+//     z-index: 0;
+//     &:focus {
+//         outline: 0;
+//     }
+// }
 </style>
