@@ -105,7 +105,6 @@ export default createStore({
         },
 
         SIGNUP_USER() {
-            const MONASH_DOMAINS = ['@student.monash.edu', '@monash.edu'];
             var provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope('email');
 
