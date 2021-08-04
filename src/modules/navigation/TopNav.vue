@@ -28,7 +28,6 @@
 import { defineComponent, computed, ref } from 'vue';
 import UserMenu from '@/modules/navigation/UserMenu.vue';
 import store from '@/store';
-import router from '@/router';
 
 export default defineComponent({
     name: 'TopNav',
@@ -48,7 +47,7 @@ export default defineComponent({
             if (isLoggedIn.value) {
                 isUserMenuShown.value = !isUserMenuShown.value;
             } else {
-                router.push({ name: 'Login' });
+                store.dispatch('signUpUser');
             }
         };
 
@@ -60,9 +59,9 @@ export default defineComponent({
         // display the logged in user's profile pic
         const displayPic = computed(() =>
             store.state.user_data
-            ? store.state.user_data.image_url
-            // @ts-ignore
-            : require('@/assets/default-user-image.png')
+                ? store.state.user_data.image_url
+                : // @ts-ignore
+                  require('@/assets/default-user-image.png')
         );
 
         // identify nav width
@@ -82,7 +81,7 @@ export default defineComponent({
             topNavWidth,
         };
     },
-})
+});
 </script>
 
 <style lang="scss" scoped>
