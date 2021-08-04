@@ -7,7 +7,12 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 // types
 import { AppState } from '@/types/AppTypes.interface';
-import { User, Event, Feedback } from '@/types/FirebaseTypes.interface';
+import {
+    User,
+    Event,
+    Feedback,
+    UserRoles,
+} from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
     return {
@@ -99,133 +104,100 @@ export default createStore({
                 });
         },
 
-        SIGNUP_USER(
-            state,
-            signUpUser: Pick<User, 'first_name' | 'last_name' | 'roles'>
-        ) {
-            const DOMAIN_NAMES = ['@student.monash.edu', '@monash.edu'];
+        SIGNUP_USER() {
+            const MONASH_DOMAINS = ['@student.monash.edu', '@monash.edu'];
             var provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope('email');
 
-            const checksEmailMatchesDomains = (
-                arrayOfAcceptableDomainNames: string[],
-                userEmail: string
-            ): boolean =>
-                arrayOfAcceptableDomainNames
-                    .map(domain_name =>
-                        userEmail.toLowerCase().endsWith(domain_name)
-                    )
-                    .includes(true);
+            const setUserRoles = (authUser: firebase.User) => {
+                if (authUser.email!.endsWith('@student.monash.edu'))
+                    return ['student' as UserRoles];
+                else if (authUser.email!.endsWith('@monash.edu'))
+                    return ['staff' as UserRoles];
+                else return ['public' as UserRoles];
+            };
 
-            const evaluatesUserMail = (
-                userEmail: string,
-                arrayOfAcceptableDomainNames: string[],
-                onAccepted: Function,
-                onRejected: Function
-            ): void =>
-                checksEmailMatchesDomains(
-                    arrayOfAcceptableDomainNames,
-                    userEmail
-                )
-                    ? onAccepted()
-                    : onRejected();
-
-            const whenAccept = (authUser: firebase.User): void => {
+            const whenAccept = (
+                authUser: firebase.User,
+                givenName: string,
+                familyName: string
+            ): void => {
                 const userObj: User = {
                     created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
                     last_login: firebaseApp.firestore.FieldValue.serverTimestamp(),
                     id: auth.currentUser!.uid,
-                    first_name: signUpUser.first_name,
-                    last_name: signUpUser.last_name,
-                    full_name:
-                        signUpUser.first_name + ' ' + signUpUser.last_name,
-                    image_url:
-                        'https://firebasestorage.googleapis.com/v0/b/eureka-development-860d4.appspot.com/o/default-user-image.png?alt=media&token=a3a39904-b0f7-4c56-8e76-353efa9b526b',
-                    background: '',
-                    bio: '',
-                    interests: [],
-                    experience_level: 0,
-                    roles: signUpUser.roles, // TODO: retrieve this from the signup form
+                    first_name: givenName,
+                    last_name: familyName,
+                    full_name: authUser.displayName!,
+                    image_url: authUser.photoURL!,
+                    roles: setUserRoles(authUser),
                     social_links: {
                         email_id: authUser?.email ?? '',
-                        github_url: '',
-                        linkedin_url: '',
-                        website_url: '',
                     },
                 };
 
                 // write to db
                 db.collection('users')
                     .doc(auth.currentUser!.uid)
-                    .set(userObj);
-
-                // handle the next steps
-                state.is_new = true;
-                router.push({ name: 'Home' });
-
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Complete Your Profile Setup',
-                    confirmButtonText: "Let's Go",
-                }).then(result => {
-                    // Prompting users to complete their profile
-                    if (result.isConfirmed) {
-                        router.push({ name: 'Profile' });
-                    }
-                });
-            };
-
-            const whenReject = (user: firebase.User, errorMessage: string) => {
-                // If it doesn't match, deletes the user from authentication
-                auth.signOut()
-                    .then(() => {
-                        user.delete();
-                        Swal.fire({
-                            icon: 'error',
-                            title: errorMessage,
-                        });
-                    })
-                    .catch(error => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: error.message,
-                        });
-                    });
+                    .set(userObj)
+                    .then(() => router.push({ name: 'Home' }));
             };
 
             firebase
                 .auth()
                 .signInWithPopup(provider)
                 .then(result => {
-                    const user: firebase.User | any = result.user;
-                    if (result.additionalUserInfo!.isNewUser) {
-                        if (signUpUser && signUpUser.roles.includes('talent'))
-                            evaluatesUserMail(
-                                user!.email ?? '',
-                                DOMAIN_NAMES,
-                                () => whenAccept(user),
-                                () =>
-                                    whenReject(
-                                        user,
-                                        'You need a Monash student account, or are you a spy?'
-                                    )
-                            );
-                        else if (
-                            signUpUser &&
-                            signUpUser.roles.includes('mentor')
-                        )
-                            whenAccept(user);
-                        else
-                            whenReject(
-                                user,
-                                'Please Sign Up An Account First.'
-                            );
+                    const user: firebase.User | null = result.user;
+                    const additionalUserInfo: any = result.additionalUserInfo;
+                    // handle new users
+                    if (additionalUserInfo!.isNewUser) {
+                        whenAccept(
+                            user!,
+                            additionalUserInfo.profile.given_name,
+                            additionalUserInfo.profile.family_name
+                        );
                     } else router.push({ name: 'Home' });
                 });
         },
 
         FETCH_CURRENT_USER_DATA_FROM_DB(state) {
-            console.log('Fetch user details');
+            // update the user roles (TEMP)
+            const updateUserRoles = (user: User) => {
+                if (
+                    user.social_links.email_id.endsWith(
+                        '@student.monash.edu'
+                    ) &&
+                    !user.roles.includes('student')
+                ) {
+                    user.roles.push('student');
+                    writeUpdatedRoles(user.roles);
+                } else if (
+                    user.social_links.email_id.endsWith('@.monash.edu') &&
+                    !user.roles.includes('staff')
+                ) {
+                    user.roles.push('staff');
+                    writeUpdatedRoles(user.roles);
+                } else if (
+                    !user.social_links.email_id.endsWith('monash.edu') &&
+                    !user.roles.includes('public')
+                ) {
+                    user.roles.push('public');
+                    writeUpdatedRoles(user.roles);
+                }
+            };
+
+            // write the user roles to DB (TEMP)
+            const writeUpdatedRoles = (roles: UserRoles[]) => {
+                db.collection('users')
+                    .doc(auth.currentUser!.uid)
+                    .update({
+                        roles,
+                    })
+                    .catch(function(error) {
+                        console.log('Error getting document:', error);
+                    });
+            };
+
             if (auth.currentUser && state.is_new_user_data_available) {
                 db.collection('users')
                     .doc(auth.currentUser!.uid)
@@ -233,20 +205,19 @@ export default createStore({
                     .then(doc => {
                         if (doc.exists) {
                             const user: User = {
-                                background: doc.data()!.background,
-                                bio: doc.data()!.bio,
                                 created_at: doc.data()!.created_at,
-                                experience_level: doc.data()!.experience_level,
                                 first_name: doc.data()!.first_name,
                                 full_name: doc.data()!.full_name,
                                 id: doc.data()!.id,
                                 image_url: doc.data()!.image_url,
-                                interests: doc.data()!.interests,
                                 last_login: doc.data()!.last_login,
                                 last_name: doc.data()!.last_name,
                                 roles: doc.data()!.roles,
                                 social_links: doc.data()!.social_links,
                             };
+
+                            // update the user roles (TEMP)
+                            updateUserRoles(user);
 
                             state.user_data = user;
                         } else {
@@ -865,11 +836,8 @@ export default createStore({
         fetchCurrentUserFromDB({ commit }) {
             commit('FETCH_CURRENT_USER_DATA_FROM_DB');
         },
-        signUpUser(
-            { commit },
-            user: Pick<User, 'first_name' | 'last_name' | 'roles'>
-        ) {
-            commit('SIGNUP_USER', user);
+        signUpUser({ commit }) {
+            commit('SIGNUP_USER');
         },
         setEvents({ commit }, eventObj: Event) {
             commit('SET_EVENT', eventObj);
