@@ -1,7 +1,9 @@
 <template>
     <div class="outer-div">
         <div class="inner-div" v-if="true">
-            <div class="heading text--center mar__t--3">Incubator</div>
+            <div class="heading text--center mar__t--3">
+                Academic Recruitment
+            </div>
             <!-- Tabs for Academic Research Recruitment -->
             <TabsWrapper>
                 <Tab title="Your Projects"><YourProject /></Tab>
@@ -32,22 +34,21 @@ export default defineComponent({
         NotFound,
         YourProject,
         AllProjects,
-        NewProject
+        NewProject,
     },
     setup() {
         // to keep track of the tab
         const tab = ref(0);
 
-        const updateTab = (newTab: number) => tab.value = newTab;
+        const updateTab = (newTab: number) => (tab.value = newTab);
 
         return {
             tab,
-            updateTab
-        }
-    }
+            updateTab,
+        };
+    },
 });
 </script>
 
 <style>
-
 </style>
