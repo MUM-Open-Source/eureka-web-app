@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper-container page-pad">
         <div class="wrapper-container__header">
-            <h1 class="subheading">Your Notifications</h1>
+            <div class="subheading">Your Notifications</div>
             <select
                 name="filter"
                 class="selector"
@@ -23,11 +23,11 @@
             </div>
             <div class="content__empty-content" v-else>
                 <fa icon="bell" class="no-noti" />
-                <p class="subheading mar__t--1">Notifications Zero</p>
-                <p class="body mar__t--1" :style="{ textAlign: 'center' }">
+                <div class="subheading mar__t--1">Notifications Zero</div>
+                <div class="body mar__t--1" :style="{ textAlign: 'center' }">
                     Hmm, looks like it's a bit lonely here, come back another
                     time to check.
-                </p>
+                </div>
             </div>
         </div>
     </div>

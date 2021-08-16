@@ -14,15 +14,15 @@
             </div>
             <div :style="{ flex: '1' }">
                 <div class="content-title">
-                    <h2 class="content-title__title-text">{{ title }}</h2>
+                    <div class="content-title__title-text">{{ title }}</div>
                     <span class="content-title__moment-text">
                         {{ moment }}
                     </span>
                 </div>
                 <div class="content-body">
-                    <p :style="{ fontSize: '14px' }">
+                    <div :style="{ fontSize: '14px' }">
                         {{ bodyText }}
-                    </p>
+                    </div>
                     <fa
                         icon="mail-bulk"
                         :class="[
@@ -98,6 +98,7 @@ export default {
     margin-bottom: 5px;
     align-items: center;
     &__title-text {
+        font-weight: bold;
         font-size: 16px;
         width: 65%;
     }

@@ -1,7 +1,7 @@
 <template>
     <div class="modal">
         <div class="modal__header">
-            <h1 class="subheading">Your Notifications</h1>
+            <div class="subheading">Your Notifications</div>
             <button
                 class="text--primary cta"
                 :style="{ padding: '5px 10px' }"

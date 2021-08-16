@@ -20,7 +20,6 @@
                     class="noti-icon"
                     :class="{ badge: unreadNotifications }"
                     @click="modalController('notification')"
-                    @focusout="modalController('notification')"
                     v-if="isLoggedIn"
                 />
                 <div
