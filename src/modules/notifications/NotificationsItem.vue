@@ -1,12 +1,12 @@
 <template>
     <div
         class="noti-item"
-        :class="{ unread: !readStatus, longNotiStyle: longNoti }"
+        :class="{ unread: !read_status, longNotiStyle: longNoti }"
     >
         <div :style="{ display: 'flex' }">
             <div
                 class="noti-item-icon "
-                :class="{ badge: !readStatus }"
+                :class="{ badge: !read_status }"
                 :style="{ backgroundColor: iconColor }"
                 data-count=""
             >
@@ -26,7 +26,7 @@
                     <fa
                         icon="mail-bulk"
                         :class="[
-                            readStatus
+                            read_status
                                 ? 'content-body__invincible'
                                 : 'content-body__doneIcon',
                         ]"
@@ -50,16 +50,13 @@ export default {
         title: { type: String, required: true },
         bodyText: { type: String, required: true },
         moment: { type: String, required: true },
-        readStatus: { type: Boolean, required: true },
+        read_status: { type: Boolean, required: true },
         iconColor: { type: String, required: true },
         longNoti: { type: Boolean },
     },
     setup(props) {
         const readIndividual = () =>
-            store.dispatch('readIndividualNotification', {
-                notiId: props.id,
-                category: props.category,
-            });
+            store.dispatch('readIndividualNotification', props.id);
         return { readIndividual };
     },
 };

@@ -5,8 +5,8 @@
             :category="noti.category"
             :id="noti.id"
             :longNoti="longNoti"
-            :moment="getMoment(noti.timeStamp)"
-            :readStatus="noti.readStatus"
+            :moment="getMoment(noti.timestamp)"
+            :read_status="noti.read_status"
             icon="hand-spock"
             iconColor="#71c9a2"
             title="Someone waved at you"
@@ -19,8 +19,8 @@
             :category="noti.category"
             :id="noti.id"
             :longNoti="longNoti"
-            :moment="getMoment(noti.timeStamp)"
-            :readStatus="noti.readStatus"
+            :moment="getMoment(noti.timestamp)"
+            :read_status="noti.read_status"
             icon="tasks"
             iconColor="#FFFF00"
             title="A new project was created"
@@ -40,8 +40,8 @@ export default {
         longNoti: { type: Boolean, required: true, default: false },
     },
     setup() {
-        const getMoment = timeStamp => {
-            return formatDistance(timeStamp, Date.now()).toString() + ' ago';
+        const getMoment = timestamp => {
+            return formatDistance(timestamp, Date.now()).toString() + ' ago';
         };
         return { getMoment };
     },

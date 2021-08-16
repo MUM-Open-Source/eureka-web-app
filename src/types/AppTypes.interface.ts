@@ -1,5 +1,10 @@
 import firebase from 'firebase';
-import { User, Event, Feedback } from '@/types/FirebaseTypes.interface';
+import {
+    User,
+    Event,
+    Feedback,
+    Notification,
+} from '@/types/FirebaseTypes.interface';
 import {
     EventFilter,
     MentorFilter,
@@ -17,17 +22,6 @@ export interface ImageToUpload {
     fileName: string;
 }
 
-export interface NotificationType {
-    id: string;
-    category: string;
-    name: string;
-    user: string;
-    readStatus: boolean;
-    timeStamp: {
-        seconds: number;
-        nanoseconds: number;
-    };
-}
 export interface AppState {
     user: firebase.User | null;
     isSideNavCollapsed: boolean;
@@ -51,6 +45,5 @@ export interface AppState {
         talent: TalentFilter;
         mentors: MentorFilter;
     };
-    notifications: NotificationType[];
-    defaultNotificationCategories: string[];
+    notifications: Notification[];
 }

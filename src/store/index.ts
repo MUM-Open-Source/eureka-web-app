@@ -55,7 +55,6 @@ const getInitState = (): AppState => {
             },
         },
         notifications: [],
-        defaultNotificationCategories: ['projects', 'waves'],
     };
 };
 
@@ -606,15 +605,19 @@ export default createStore({
                     from_user_id: auth.currentUser!.uid,
                     to_user_id: toUserId,
                 })
-                .then(() => {
+                .then(async () => {
+                    const docRef = await db.collection('Safes').doc();
+                    const id = docRef.id;
                     db.collection('notifications')
-                        .doc(toUserId)
-                        .collection('waves')
-                        .add({
-                            readStatus: false,
-                            timeStamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
-                            user: state.user_data!.first_name,
-                            userId: auth.currentUser!.uid,
+                        .doc(id)
+                        .set({
+                            id: id,
+                            category: 'waves',
+                            user_id: toUserId, // owner of notification
+                            read_status: false,
+                            timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+                            from_user_name: state.user_data?.first_name,
+                            from_user_id: auth.currentUser?.uid,
                         });
                 })
                 // Alert with SweetAlert2
@@ -650,9 +653,8 @@ export default createStore({
                 .delete()
                 .then(() => {
                     db.collection('notifications')
-                        .doc(toUserId)
-                        .collection('waves')
-                        .where('userId', '==', auth.currentUser!.uid)
+                        .where('user_id', '==', toUserId)
+                        .where('from_user_id', '==', auth.currentUser?.uid)
                         .get()
                         .then(querySnapshots => {
                             querySnapshots.forEach(doc => {
@@ -846,134 +848,60 @@ export default createStore({
         },
 
         GET_USER_NOTIFICATIONS(state) {
-            const categories = state.defaultNotificationCategories;
-            const collectionRef = db
-                .collection('notifications')
-                .doc(auth.currentUser?.uid);
-            categories.forEach(category => {
-                collectionRef.collection(category).onSnapshot(querySnapshot => {
+            db.collection('notifications')
+                .where('user_id', '==', auth.currentUser?.uid)
+                .onSnapshot(querySnapshot => {
                     querySnapshot.forEach(doc => {
                         if (
-                            state.notifications.some(obj => obj.id === doc.id)
+                            state.notifications.some(
+                                notification => notification.id === doc.id
+                            )
                         ) {
                             const objIndex = state.notifications.findIndex(
-                                obj => obj.id == doc.id
+                                notification => notification.id == doc.id
                             );
                             (state.notifications[objIndex] as any) = {
                                 ...doc.data(),
-                                category: category,
-                                id: doc.id,
-                                timeStamp: new Date(
-                                    doc.data().timeStamp.seconds * 1000
+                                timestamp: new Date(
+                                    doc.data().timestamp.seconds * 1000
                                 ),
                             };
                         } else {
                             (state.notifications as any).push({
                                 ...doc.data(),
-                                category: category,
-                                id: doc.id,
-                                timeStamp: new Date(
-                                    doc.data().timeStamp.seconds * 1000
+                                timestamp: new Date(
+                                    doc.data().timestamp.seconds * 1000
                                 ),
                             });
                         }
                     });
                     state.notifications.sort((a: any, b: any) =>
-                        compareDesc(a.timeStamp, b.timeStamp)
+                        compareDesc(a.timestamp, b.timestamp)
                     );
                 });
-            });
-
-            // db.collection('notifications')
-            //     .doc(auth.currentUser?.uid)
-            //     .onSnapshot(doc => {
-            //         const notifications: object[] = [];
-            //         const snapshot = doc.data() ?? {};
-            //         Object.keys(snapshot).forEach(category => {
-            //             snapshot[category].forEach((notif: object) => {
-            //                 notifications.push({ type: category, ...notif });
-            //             });
-            //         });
-            //         notifications.sort((a: any, b: any) => compareDesc(parseISO(a.timeStamp), parseISO(b.timeStamp)));
-            //         state.notifications = notifications;
-            //     });
         },
 
-        READ_ALL_NOTIFICATIONS(state) {
-            const categories = state.defaultNotificationCategories;
-            const collectionRef = db
-                .collection('notifications')
-                .doc(auth.currentUser?.uid);
-            categories.forEach(category => {
-                const categoryRef = collectionRef.collection(category);
-                categoryRef
-                    .where('readStatus', '==', false)
-                    .get()
-                    .then(snapshots => {
-                        snapshots.forEach(doc => {
-                            categoryRef
-                                .doc(doc.id)
-                                .update({ readStatus: true });
-                        });
-                    });
-            });
-
-            // const data = state.notifications;
-            // const uniqueCategories = [...new Set(data.map((noti: any) => noti.type))];
-            // let readAllNoti: any = {};
-            // uniqueCategories.forEach((category: string) => {
-            //     const filter = data.filter(noti => noti.type == category);
-            //     const cleanedNotifications: any = filter.map(noti => {
-            //         if (noti.type == category) {
-            //             const { type, ...dataWithoutType } = noti;
-            //             return { ...dataWithoutType, readStatus: true };
-            //         }
-            //     });
-            //     readAllNoti[category] = cleanedNotifications;
-            // });
-            // state.notifications = state.notifications.map(noti => (noti.readStatus = true));
-
-            // db.collection('notifications')
-            //     .doc(auth.currentUser?.uid)
-            //     .update(readAllNoti);
-        },
-
-        READ_INDIVIDUAL_NOTIFICATION(state, { notiId, category }) {
+        READ_ALL_NOTIFICATIONS() {
             db.collection('notifications')
-                .doc(auth.currentUser?.uid)
-                .collection(category)
+                .where('user_id', '==', auth.currentUser?.uid)
+                .where('read_status', '==', false)
+                .get()
+                .then(snapshots => {
+                    snapshots.forEach(doc => {
+                        console.log(doc.data());
+                        doc.ref.update({ read_status: true });
+                    });
+                });
+        },
+
+        READ_INDIVIDUAL_NOTIFICATION(_, notiId) {
+            db.collection('notifications')
                 .doc(notiId)
                 .update({
-                    readStatus: true,
+                    read_status: true,
                 });
-
-            // const data = state.notifications;
-            // const uniqueCategories = [...new Set(data.map((noti: any) => noti.type))];
-            // let readOneNoti: any = {};
-            // uniqueCategories.forEach((category: string) => {
-            //     const filter = data.filter(noti => noti.type == category);
-            //     const cleanedNotifications: any = filter.map(noti => {
-            //         if (noti.type == category) {
-            //             const { type, ...dataWithoutType } = noti;
-            //             if (noti.id == notiId) {
-            //                 return { ...dataWithoutType, readStatus: true };
-            //             } else {
-            //                 return { ...dataWithoutType };
-            //             }
-            //         }
-            //     });
-            //     readOneNoti[category] = cleanedNotifications;
-            // });
-            // state.notifications = state.notifications.map(noti => {
-            //     noti.id == notiId ? (noti.readStatus = true) : noti;
-            // });
-
-            // db.collection('notifications')
-            //     .doc(auth.currentUser?.uid)
-            //     .update(readOneNoti);
         },
     },
-
     // functions to be called throughout the app that, in turn, call mutations
     actions: {
         toggleSideNavState({ commit }) {
@@ -1088,8 +1016,8 @@ export default createStore({
             commit('READ_ALL_NOTIFICATIONS');
         },
 
-        readIndividualNotification({ commit }, { notiId, category }) {
-            commit('READ_INDIVIDUAL_NOTIFICATION', { notiId, category });
+        readIndividualNotification({ commit }, notiId) {
+            commit('READ_INDIVIDUAL_NOTIFICATION', notiId);
         },
     },
 });

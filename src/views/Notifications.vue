@@ -49,7 +49,7 @@ export default {
             notifications.value.filter(notification =>
                 currentFilter.value == 'all'
                     ? true
-                    : notification.readStatus == false
+                    : notification.read_status == false
             )
         );
         const onChangeFilter = e =>
