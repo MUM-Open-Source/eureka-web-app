@@ -20,7 +20,7 @@ export interface User {
         github_url: string;
         linkedin_url: string;
         website_url: string;
-    }
+    };
 }
 
 export interface Event {
@@ -35,12 +35,23 @@ export interface Event {
 }
 
 export interface Feedback {
-    created_at: firebase.firestore.FieldValue,
+    created_at: firebase.firestore.FieldValue;
     message: string;
     subject: string;
     user_id: string;
     user_name: string;
 }
 
-
-
+export interface Notification {
+    id: string;
+    user_id: string;
+    category: 'Waves' | 'Projects';
+    read_status: boolean;
+    time_stamp: {
+        seconds: number;
+        nanoseconds: number;
+    };
+    project_name?: string;
+    from_user_id?: string;
+    from_user_name?: string;
+}

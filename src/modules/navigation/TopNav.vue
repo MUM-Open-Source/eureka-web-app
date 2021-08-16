@@ -39,7 +39,7 @@ export default {
     name: 'TopNav',
     components: { UserMenu, NotificationsModal },
     setup() {
-        const unreadNotifications = computed(() => store.state.notifications.some(noti => noti.readStatus == false));
+        const unreadNotifications = computed(() => store.state.notifications.some(noti => noti.read_status == false));
 
         // controls notification click state
         const notiState = ref(false);

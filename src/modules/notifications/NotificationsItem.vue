@@ -1,7 +1,7 @@
 <template>
-    <div class="noti-item" :class="{ unread: !readStatus, longNotiStyle: longNoti }">
+    <div class="noti-item" :class="{ unread: !read_status, longNotiStyle: longNoti }">
         <div :style="{ display: 'flex' }">
-            <div class="noti-item-icon " :class="{ badge: !readStatus }" :style="{ backgroundColor: iconColor }" data-count="">
+            <div class="noti-item-icon " :class="{ badge: !read_status }" :style="{ backgroundColor: iconColor }" data-count="">
                 <i class="material-icons-outlined">
                     {{ icon }}
                 </i>
@@ -17,7 +17,7 @@
                     <div :style="{ fontSize: '14px' }">
                         {{ bodyText }}
                     </div>
-                    <i class="material-icons-outlined" :class="[readStatus ? 'content-body__invincible' : 'content-body__doneIcon']" @click="readIndividual">
+                    <i class="material-icons-outlined" :class="[read_status ? 'content-body__invincible' : 'content-body__doneIcon']" @click="readIndividual">
                         mark_email_read
                     </i>
                 </div>
@@ -38,12 +38,12 @@ export default {
         title: { type: String, required: true },
         bodyText: { type: String, required: true },
         moment: { type: String, required: true },
-        readStatus: { type: Boolean, required: true },
+        read_status: { type: Boolean, required: true },
         iconColor: { type: String, required: true },
         longNoti: { type: Boolean }
     },
     setup(props) {
-        const readIndividual = () => store.dispatch('readIndividualNotification', { notiId: props.id, category: props.category });
+        const readIndividual = () => store.dispatch('readIndividualNotification', props.id);
         return { readIndividual };
     }
 };

@@ -38,7 +38,7 @@ export default {
 
         const notifications = ref(store.state.notifications);
         const filteredNotifications = computed(() =>
-            notifications.value.filter(notification => (currentFilter.value == 'all' ? true : notification.readStatus == false))
+            notifications.value.filter(notification => (currentFilter.value == 'all' ? true : notification.read_status == false))
         );
 
         const onChangeFilter = e => (currentFilter.value = e.target.options[e.target.options.selectedIndex].value);

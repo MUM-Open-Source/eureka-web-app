@@ -5,24 +5,24 @@
             :category="noti.category"
             :id="noti.id"
             :longNoti="longNoti"
-            :moment="getMoment(noti.timeStamp)"
-            :readStatus="noti.readStatus"
+            :moment="getMoment(noti.timestamp)"
+            :read_status="noti.read_status"
             icon="celebration"
             iconColor="#71c9a2"
             title="Someone waved at you"
-            :bodyText="`${noti.user} just waved at you. Say hi to them back by giving a friendly wave back!`"
+            :bodyText="`${noti.from_user_name} just waved at you. Say hi to them back by giving a friendly wave back!`"
         />
         <NotificationsItem
             v-if="noti.category == 'projects'"
             :category="noti.category"
             :id="noti.id"
             :longNoti="longNoti"
-            :moment="getMoment(noti.timeStamp)"
-            :readStatus="noti.readStatus"
+            :moment="getMoment(noti.timestamp)"
+            :read_status="noti.read_status"
             icon="book_online"
             iconColor="#FFFF00"
             title="A new project was created"
-            :bodyText="`Check out ${noti.name} now`"
+            :bodyText="`Check out ${noti.project_name} now`"
         />
     </div>
 </template>
@@ -40,8 +40,8 @@ export default {
         longNoti: { type: Boolean, required: true, default: false }
     },
     setup() {
-        const getMoment = timeStamp => {
-            return formatDistance(timeStamp, Date.now()).toString() + ' ago';
+        const getMoment = timestamp => {
+            return formatDistance(timestamp, Date.now()).toString() + ' ago';
         };
 
         return { getMoment };
