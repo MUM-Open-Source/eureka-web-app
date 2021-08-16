@@ -23,7 +23,7 @@
                 </div>
             </div>
             <NotificationsModal @viewAllClicked="viewAllClicked" v-if="notiState" />
-            <UserMenu v-if="isUserMenuShown" />
+            <UserMenu @userMenuButtonClick="modalController('userMenu', $event)" v-if="isUserMenuShown" />
         </div>
     </div>
 </template>
