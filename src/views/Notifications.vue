@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper-container">
         <div class="wrapper-container__header">
-            <h1 class="subheading">Your Notifications</h1>
+            <div class="subheading">Your Notifications</div>
             <select name="filter" class="selector" @change="onChangeFilter($event)">
                 <option value="all">All</option>
                 <option value="unread">Unread</option>
@@ -15,8 +15,8 @@
                 <i class="material-icons-outlined no-noti">
                     notifications
                 </i>
-                <p class="subheading mar__t--1">Notifications Zero</p>
-                <p class="body mar__t--1" :style="{ textAlign: 'center' }">Hmm, looks like it's a bit lonely here, come back another time to check.</p>
+                <div class="subheading mar__t--1">Notifications Zero</div>
+                <div class="body mar__t--1" :style="{ textAlign: 'center' }">Hmm, looks like it's a bit lonely here, come back another time to check.</div>
             </div>
         </div>
     </div>
