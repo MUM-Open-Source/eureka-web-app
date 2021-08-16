@@ -144,6 +144,9 @@ const routes: RouteRecordRaw[] = [
         path: '/notifications',
         name: 'Notifications',
         component: Notifications,
+        meta: {
+            requiresAuth: true,
+        },
     },
 
     // {

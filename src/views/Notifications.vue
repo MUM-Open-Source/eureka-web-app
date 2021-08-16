@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper-container">
+    <div class="wrapper-container page-pad">
         <div class="wrapper-container__header">
             <h1 class="subheading">Your Notifications</h1>
             <select
@@ -63,7 +63,7 @@ export default {
 <style lang="scss" scoped>
 .wrapper-container {
     max-width: 1000px;
-    padding: 20px;
+    padding: 20px; // override to reduce wasted space
     margin: 0 auto;
     &__header {
         display: flex;
