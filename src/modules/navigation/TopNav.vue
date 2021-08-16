@@ -16,10 +16,11 @@
                 <fa
                     icon="bell"
                     size="lg"
+                    data-count=""
                     class="noti-icon"
                     :class="{ badge: unreadNotifications }"
-                    data-count=""
                     @click="modalController('notification')"
+                    @focusout="modalController('notification')"
                     v-if="isLoggedIn"
                 />
                 <div

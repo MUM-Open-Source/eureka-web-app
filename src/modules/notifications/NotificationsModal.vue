@@ -12,22 +12,23 @@
             </button>
         </div>
         <hr class="divider" />
-        <NotificationsCategories
-            :notifications="displayNotifications"
-            :longNoti="false"
-        />
-        <div class="modal__footer">
-            <button
-                class="text--primary cta"
-                :style="{ padding: '10px' }"
-                @click="toNotificationsPage"
+        <div
+            class="modal__body"
+            :class="{ modal__noNotiStyle: !displayNotifications.length }"
+        >
+            <NotificationsCategories
+                :notifications="displayNotifications"
+                :longNoti="false"
                 v-if="displayNotifications.length"
-            >
-                View All Notifications
-            </button>
-            <div class="no-noti" v-else>
+            />
+            <div class="no-noti-text" v-else>
                 Looks likes you have no notifications yet. Welcome to Eureka !
             </div>
+        </div>
+        <div class="modal__footer">
+            <button class="text--primary cta" @click="toNotificationsPage">
+                View All Notifications
+            </button>
         </div>
     </div>
 </template>
@@ -66,6 +67,7 @@ export default {
     font-weight: bold;
     cursor: pointer;
     border: 0px;
+    padding: 10px;
     border-radius: 5px;
     font-size: 12px;
     background-color: transparent;
@@ -87,30 +89,38 @@ export default {
     margin: 0 10px;
     top: $user-menu-top + 25;
     right: $user-menu-right;
+    display: flex;
+    flex-direction: column;
     &__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 35px;
     }
-    &__footer {
+    &__body {
+        flex: 1;
+    }
+    &__noNotiStyle {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        font-weight: bold;
+        color: $color-brand;
+        text-align: center;
     }
-}
-.no-noti {
-    height: 415px;
-    font-weight: bold;
-    color: $color-brand;
-    text-align: center;
-    display: flex;
-    align-items: center;
+    &__footer {
+        height: 35px;
+        margin: 0 auto;
+    }
 }
 @media (max-width: 48em) {
     .modal {
         max-width: 300px;
-        right: 0px;
+        height: 400px; // constant height to allow overflow-y to work
+        margin: 0 auto; // align to be center for absolute-positioned
+        right: 0;
+        left: 0;
     }
 }
 </style>
