@@ -36,7 +36,10 @@
                 @viewAllClicked="viewAllClicked"
                 v-if="notiState"
             />
-            <UserMenu v-if="isUserMenuShown" />
+            <UserMenu
+                @userMenuButtonClick="modalController('userMenu', $event)"
+                v-if="isUserMenuShown"
+            />
         </div>
     </div>
 </template>
@@ -45,8 +48,9 @@
 import UserMenu from '@/modules/navigation/UserMenu.vue';
 import NotificationsModal from '@/modules/notifications/NotificationsModal.vue';
 import store from '@/store';
-import { defineComponent, computed, ref } from 'vue';
-export default defineComponent({
+import router from '@/router';
+import { computed, ref } from 'vue';
+export default {
     name: 'TopNav',
     components: { UserMenu, NotificationsModal },
     setup() {
@@ -62,7 +66,7 @@ export default defineComponent({
         // control individual modal opening
         const modalController = currentTab => {
             if (!isLoggedIn.value) {
-                store.dispatch('signUpUser');
+                router.push({ name: 'Login' });
                 return;
             }
             switch (currentTab) {
@@ -81,7 +85,6 @@ export default defineComponent({
         const toggleSideNavState = () => {
             store.dispatch('toggleSideNavState');
         };
-
         // display the logged in user
         const displayName = computed(() =>
             store.state.user_data ? store.state.user_data.full_name : 'Login'
@@ -90,8 +93,7 @@ export default defineComponent({
         const displayPic = computed(() =>
             store.state.user_data
                 ? store.state.user_data.image_url
-                : // @ts-ignore
-                  require('@/assets/default-user-image.png')
+                : require('@/assets/default-user-image.png')
         );
         // identify nav width
         const topNavWidth = computed(() =>
@@ -112,7 +114,7 @@ export default defineComponent({
             viewAllClicked,
         };
     },
-});
+};
 </script>
 
 <style lang="scss" scoped>
