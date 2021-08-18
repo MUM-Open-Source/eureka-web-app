@@ -28,7 +28,6 @@
 import { defineComponent, computed, ref } from 'vue';
 import UserMenu from '@/modules/navigation/UserMenu.vue';
 import store from '@/store';
-import router from '@/router';
 
 export default defineComponent({
     name: 'TopNav',
@@ -48,7 +47,7 @@ export default defineComponent({
             if (isLoggedIn.value) {
                 isUserMenuShown.value = !isUserMenuShown.value;
             } else {
-                router.push({ name: 'Login' });
+                store.dispatch('signUpUser');
             }
         };
 
