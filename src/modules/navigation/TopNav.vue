@@ -60,9 +60,9 @@ export default defineComponent({
         // display the logged in user's profile pic
         const displayPic = computed(() =>
             store.state.user_data
-            ? store.state.user_data.image_url
-            // @ts-ignore
-            : require('@/assets/default-user-image.png')
+                ? store.state.user_data.image_url
+                : // @ts-ignore
+                  require('@/assets/default-user-image.png')
         );
 
         // identify nav width
@@ -82,7 +82,7 @@ export default defineComponent({
             topNavWidth,
         };
     },
-})
+});
 </script>
 
 <style lang="scss" scoped>

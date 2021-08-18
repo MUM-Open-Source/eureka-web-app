@@ -7,8 +7,8 @@ import store from '@/store';
 // const auth = require('@/firebase')
 
 // Font Awesome Icons
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
     faStar,
     faBorderAll,
@@ -16,13 +16,15 @@ import {
     faBook,
     faCode,
     faUserShield,
-} from '@fortawesome/free-solid-svg-icons'
-import { 
+    faEllipsisV,
+    faTimes,
+} from '@fortawesome/free-solid-svg-icons';
+import {
     faComments,
     faCalendarAlt,
     faCommentAlt,
     faHandshake,
-} from '@fortawesome/free-regular-svg-icons'
+} from '@fortawesome/free-regular-svg-icons';
 
 library.add(
     faStar,
@@ -35,7 +37,9 @@ library.add(
     faUserShield,
     faCommentAlt,
     faHandshake,
-)
+    faEllipsisV,
+    faTimes
+);
 
 createApp(App)
     .use(store)

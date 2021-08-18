@@ -1,287 +1,316 @@
 <template>
-    <div class = "container-sm mt-20">
-        <div class="side_bar">
-            <h3 class="side-bar-header">Chats</h3>
-            <input type="text" placeholder="Search users or groups" class="chat-search-field" required />
-            <div class= "side_bar_tab_wrapper">
-            <span class="tab">
-                <a href="#">Recent</a>
-                <a href="#">Direct</a>
-                <a href="#">Group</a>
-            </span>
-            <button class="add_button">+</button>
+    <div class="container-sm mt-20">
+        <div v-if="showOrHideChatList" class="side_bar">
+            <div class="side_bar__header" :id="showOrHide">
+                <h3>Chats</h3>
+
+                <button class="create-group-btn" v-on:click="createGroup">
+                    +
+                </button>
+                <span class="chat-list-toggle" @click="isMessageComponentShow">
+                    chat window (For testing now)
+                </span>
+
+                <Multiselect
+                    v-model="selected_user.id"
+                    mode="tags"
+                    :searchable="true"
+                    :options="select_options.map(user => user.full_name)"
+                    placeholder="Select members to chat"
+                    class="multselect"
+                />
             </div>
 
             <div class="contact_list">
-            <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-             <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-             <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-             <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-             <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-             <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-             <ChatContact contact_name="Adam" />
-            <ChatContact contact_name="Adam" />
-            </div>
-
-        </div>
-
-        <div class="chat_box">
-            <div class="chat_nav_bar">   
-                <h2>Sauce Foong</h2>
-            </div>
-            <hr class="horizontal_divider">
-
-        <div class="message_box">
-
-        <Message text="SheeYao" sender="" name="sarif"/>
-        <Message :sender="false" name="sarif"/>
-        <Message text="SheeYao" sender="" name="sarif"/>
-        <Message :sender="false" name="sarif"/>
-        <Message sender="" name="sarif"/>
-        <Message text="SheeYao" :sender="false" name="sarif"/>
-
-        <Message text="SheeYao" :sender="false" name="sarif"/>
-        <Message sender="" name="sarif"/>
-        <Message text="SheeYao" :sender="false" name="sarif"/>
-        <Message sender="" name="sarif"/>
-        <Message :sender="false" name="sarif"/>
-        <Message text="SheeYao" sender="" name="sarif"/>
-
-        <Message text="SheeYao" sender="" name="sarif"/>
-        <Message :sender="false" name="sarif"/>
-        <Message text="SheeYao" sender="" name="sarif"/>
-        <Message :sender="false" name="sarif"/>
-        <Message sender="" name="sarif"/>
-        <Message text="SheeYao" :sender="false" name="sarif"/>
-
-        <Message text="SheeYao" :sender="false" name="sarif"/>
-        <Message sender="" name="sarif"/>
-        <Message text="SheeYao" :sender="false" name="sarif"/>
-        <Message sender="" name="sarif"/>
-        <Message :sender="false" name="sarif"/>
-
-
-        <Message
-        v-for="message in messages"
-        sender=""
-        :key="message.key"
-        :text="message.text"
-        />
-        
-        </div>
-        <div class="bottom-divider">
-
-        </div>
-        <!-- <Message 
-        v-for="{id, text, userName, userId} in messages"
-        :key="id"
-        :name= "userName"
-        :sender="userId === user?.uid"
-        >
-        {{text}}
-        </Message> -->
-
-         <div class="bottom">
-            <hr class="horizontal_divider">
-            <div class="input-field-wrapper">
-            <form @submit.prevent = "sendMessage">
-                <input type="text" v-model="inputMessage" placeholder="Type Message" class="text_bar" required />
-                <button class="button-send"><span class="button-icon">Send</span></button>
-            </form>
+                <Group
+                    v-for="group in updateDirectGroupName(user_groups)"
+                    :class="{ group_selected: currentActiveGroup == group.id }"
+                    :is_team="group.is_team"
+                    :group_name="group.name"
+                    :group_id="group.id"
+                    :last_update="group.recent_message.timestamp"
+                    :recent_message="
+                        getRecentMessage(group, group.recent_message)
+                    "
+                    :key="group.key"
+                    @click="updateGroupId(group.id, group.name, group.is_team)"
+                />
             </div>
         </div>
+        <div class="chat-room-right">
+            <MessagingComponent
+                v-if="render"
+                :group_id="currentGroupId"
+                :key="chat_group_info.msgKey"
+                :group_name="currentGroupName"
+                :is_team="currentGroupIsTeam"
+            />
         </div>
-
-       
-
     </div>
 </template>
 
-
-
-//<script>
-import {ref} from 'vue';
+//
+<script>
+import { ref, onMounted, reactive, computed } from 'vue';
 import store from '@/store';
-import Message from '../common/Message.vue';
-import ChatContact from '../common/ChatContact.vue';
-import { db } from "@/firebase";
+import Group from '../common/Group.vue';
+import MessagingComponent from '../common/MessagingComponent.vue';
+import Multiselect from '@vueform/multiselect';
+import Swal from 'sweetalert2';
 
-
+// import { db } from "@/firebase";
 
 export default {
-  name : 'ChatRoom',
-  components: { Message, ChatContact },
-  mounted() {
-      db.collection('message').orderBy('sent_at').onSnapshot(querySnap =>{this.messages = querySnap.docs.map(doc => doc.data())})
-  },
-  data() {
-      return{
-          message: '',
-          messages:[],
-      }
-  },
-  setup() {
+    name: 'ChatRoom',
+    components: { Group, MessagingComponent, Multiselect },
 
-    //Sending message
-    const inputMessage = ref("");
-    const sendMessage = () =>{
+    setup() {
+        onMounted(() => {
+            // fetch the data if there is nothing to display
+            if (!store.state.user_list_to_chat.length) {
+                store.dispatch('getUserListToChat');
+            }
+            if (!store.state.groups.length) {
+                store.dispatch('getUserGroup');
+            }
+        });
 
-    if(inputMessage.value !== "" || inputMessage.value !== null) {
-        store.dispatch("sendMessage", {sent_at: null,
-        sent_by: null,text: inputMessage.value, content_type: "text"});
-    }
-       
-    inputMessage.value = "";
-    }
+        // Messaging Component Props
+        const render = computed(() => store.state.messagingComponent.render);
 
+        const currentGroupId = computed(
+            () => store.state.messagingComponent.group_id
+        );
 
-    return {inputMessage,sendMessage}
+        const currentGroupName = computed(
+            () => store.state.messagingComponent.group_name
+        );
 
-  }
+        const currentActiveGroup = computed(
+            () => store.state.messagingComponent.active_group_id
+        );
 
+        const currentGroupIsTeam = computed(
+            () => store.state.messagingComponent.is_team
+        );
 
-  }
+        const user_id = ref(store.state.user_data?.id);
+        const select_options = ref(store.state.user_list_to_chat);
+        const user_groups = ref(store.state.groups);
+        const chat_group_info = reactive({
+            msgKey: 0,
+        });
 
+        const selected_user = reactive({
+            id: [],
+            users: [], // The creator must be one of the member inside the group
+        });
 
+        const updateGroupId = (group_id, group_name, group_is_team) => {
+            if (currentGroupId.value !== group_id) {
+                //clear the messages in the state
+                store.state.messages = [];
+                //increment the key to rerender the messaging component
+                chat_group_info.msgKey += 1;
+                store.dispatch('setMessagingComponentRender', true);
+
+                //update the group id when clicking groups
+                store.dispatch('setMessagingComponentGroupId', group_id);
+                // update the group name;
+                store.dispatch('setMessagingComponentGroupName', group_name);
+                // update group is_team status
+                store.dispatch('setMessagingComponentIsTeam', group_is_team);
+                // shows which group is actively selected now
+                store.dispatch('setMessagingComponentActiveGroupId', group_id);
+            }
+        };
+
+        const createGroup = () => {
+            // The creator must be one of the member inside the group
+            selected_user.users.push(store.state.user_data?.id);
+
+            selected_user.id.forEach(index => {
+                selected_user.users.push(select_options.value[index].id);
+            });
+
+            if (selected_user.users !== [] && selected_user.users.length > 1) {
+                if (selected_user.users.length > 2) {
+                    let members = selected_user.users;
+                    //Ask for group name
+                    Swal.fire({
+                        title: 'Please give your group a name: ',
+                        input: 'text',
+                        inputAttributes: {
+                            autocapitalize: 'off',
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: 'Create',
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: () => !Swal.isLoading(),
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            console.log(selected_user.users);
+                            store.dispatch('createGroup', {
+                                id:
+                                    Date.now().toString() +
+                                    store.state.user_data?.id,
+                                members: members,
+                                name: result.value,
+                                is_team: true,
+                            });
+                            Swal.fire(
+                                'Group ' + result.value,
+                                ' has been created ! ',
+                                'success'
+                            );
+                            // 'Group ' + Date.now().toString()
+                        }
+                    });
+                } else {
+                    store.dispatch('createGroup', {
+                        id: Date.now().toString() + store.state.user_data?.id,
+                        members: selected_user.users,
+                        name: null,
+                        is_team: false,
+                    });
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:
+                        'Failed to create a New Group. It might already exist or lack of members (at least 1 member)',
+                });
+            }
+
+            selected_user.id = [];
+            selected_user.users = [];
+        };
+
+        const updateDirectGroupName = groups => {
+            //retrieve name
+            groups.forEach(group => {
+                if (!group.is_team) {
+                    select_options.value.forEach(user => {
+                        // console.log(user);
+                        if (
+                            user.id === group.members[0] ||
+                            user.id === group.members[1]
+                        ) {
+                            // console.log(user.full_name);
+                            group.name = user.full_name;
+                        }
+                    });
+                }
+            });
+            return groups;
+        };
+
+        const getRecentMessage = (group, recent_message) => {
+            if (recent_message !== null) {
+                let new_recent_message =
+                    recent_message.from === store.state.user_data?.id
+                        ? 'You: ' + recent_message.payload
+                        : group.members.length > 2 &&
+                          recent_message.from !== null
+                        ? recent_message.sender_full_name +
+                          ': ' +
+                          recent_message.payload
+                        : recent_message.payload;
+                return new_recent_message;
+            }
+
+            return null;
+        };
+
+        const showOrHideChatList = computed(() => store.state.isChatListHide);
+
+        const isMessageComponentShow = () => {
+            store.state.isChatListHide = !store.state.isChatListHide;
+            console.log(store.state.isChatListHide);
+        };
+
+        return {
+            user_id,
+            select_options,
+            selected_user,
+            createGroup,
+            updateDirectGroupName,
+            user_groups,
+            updateGroupId,
+            chat_group_info,
+            getRecentMessage,
+            render,
+            currentGroupId,
+            currentGroupName,
+            currentGroupIsTeam,
+            currentActiveGroup,
+            isMessageComponentShow,
+            showOrHideChatList,
+        };
+    },
+};
 </script>
 
-
-<style scoped>
-
-.bottom-divider {
-    font:white;
-    margin-bottom: 100px;
-    width:100%;
-    height:100px;
-}
-
-
-
-.bottom {
-    margin-top:200px;
-    z-index:1;
-    position: fixed;
-    width: 100%;
-    height: 65px;
-    bottom: 0;
-    background-color: white;
-}
-
-
-.text_bar{
-    padding: 8px 10px;
-    border: none;
-    background: #E0E4EE;
-    outline: none;
-    font-size: 17px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    margin:10px 20px;
-}
-
-.button-send{
-    padding-right:20px;
-    margin-bottom:10px;
-    width:70px;
-    height: 35px;
-    bottom:0;
-    right:0;
-    position:fixed;
-    background-color: #7069E7;
-}
-
-
+<style lang="scss" scoped>
 .side_bar {
-  margin: 0;
-  padding: 0;
-  width: 310px;
-  background-color: #F4F6FA;
-  position: fixed;
-  overflow: scroll;
-  height:95%;
+    margin: 0;
+    padding: 0;
+    width: 310px;
+    background-color: #f4f6fa;
+    position: fixed;
+    overflow: scroll;
+    height: 95%;
+    &__header {
+        font-size: 30px;
+        h3 {
+            float: left;
+        }
+        .create-group-btn {
+            margin: 10px;
+            font-size: 15px;
+        }
+        .chat-list-toggle {
+            float: right;
+            font-size: 15px;
+            text-decoration: underline;
+            padding: 10px;
+        }
+
+        .multselect {
+            display: block;
+        }
+    }
+    .group_selected {
+        background-color: rgb(230, 230, 230);
+    }
 }
 
-
-.chat_box {
-  margin-left: 300px;
-  padding: 1px 16px;
-  height: 1000px;
+@media screen and (min-width: 1281px) {
+    .chat-list-toggle {
+        display: none;
+    }
 }
-
-.chat-search-field {
-    margin:20px;
-    height:5%;
-    width:250px;
-    background: #E0E4EE;
-    font-size:15px;
-}
-
 
 @media screen and (max-width: 700px) {
-  .side_bar {
-    width: 30%;
-  }
-  .chat-search-field{
-      width:80px;
-  }
-  
-  .chat_box{
-      margin-left:110px;
-  }
+    .side_bar {
+        width: 100%;
+        z-index: 1;
+        .chat-search-field {
+            width: 80px;
+        }
 
-  .chat_room {margin-left: 0;}
+        .chat-list-toggle {
+            visibility: visible;
+            display: block;
+        }
+    }
 }
 
-@media screen and (max-width: 400px) {
-}
-
-.chat_nav_bar {
-    margin:20px ;
-}
-
-.horizontal_divider {
-    border-top: 2px solid #bbb ; 
-}
-
-.side-bar-header{
-    font-size:30px;
-    margin-left:20px;
-    margin-right:auto;
-}
-
-.add_button{
-    size: 40px;
-    float:right;
-    margin-right:20px;
-}
-
-.tab {
-    font-size:20px;
-    padding:20px;
-}
-
-a {
-    margin-right:10px;
-}
-
-.side_bar_tab_wrapper{
-    margin-bottom:20px;
-}
-
-div .contact_list{
-    overflow: scroll;
-}
+// @media screen and (max-width: 400px) {
+//     .chat-list-toggle {
+//         visibility: visible;
+//         display: block;
+//     }
+// }
 </style>
