@@ -7,9 +7,8 @@
             cursor__pointer
             show-bottom-border
         "
-        @click="onCardClicked"
     >
-        <div class="user__card--details">
+        <div class="user__card--details" @click="onCardClicked">
             <!-- project name -->
             <div class="subheading user__card--project mar__b--1">
                 {{ project.project_name }}
@@ -143,7 +142,7 @@ export default defineComponent({
         });
 
         const onCardClicked = () => {
-            if (!userIsStaff.value && !props.is_details_page) {
+            if (userIsStaff.value && !props.is_details_page) {
                 store.state.project_detail = [props.project];
                 router.push({
                     name: 'ProjectDetails',
