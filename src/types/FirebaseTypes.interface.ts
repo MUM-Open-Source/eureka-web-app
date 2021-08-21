@@ -36,13 +36,13 @@ export interface Event {
 
 export interface Project {
     id: string;
-    supervisor_id: string;
-    supervisor: string | null;
-    project_name: string;
-    project_duration: string;
-    project_fields: string[];
-    overview: string;
-    email: string;
+    supervisor_id?: string;
+    supervisor?: string | null;
+    project_name?: string;
+    project_duration?: string;
+    project_fields?: string[];
+    overview?: string;
+    email?: string;
 }
 
 export interface Feedback {

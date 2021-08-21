@@ -372,12 +372,7 @@ export default createStore({
                     querySnapshot.forEach(doc => {
                         const project: Project = {
                             id: doc.id,
-                            supervisor_id: doc.data().supervisor_id,
-                            supervisor: doc.data().supervisor,
-                            overview: doc.data().overview,
-                            project_duration: doc.data().project_duration,
-                            project_fields: doc.data().project_fields,
-                            project_name: doc.data().project_name,
+                            ...doc.data(),
                         };
                         if (project.supervisor_id === auth.currentUser!.uid) {
                             state.projects.push(project);
