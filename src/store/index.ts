@@ -1087,6 +1087,13 @@ export default createStore({
                     user_id: state.user?.uid,
                     statusCode: RESEARCH_INTEREST,
                     updateLog: [Date.now()],
+                })
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your Interest Has Been expressed',
+                        text: 'The supervisor will recieve an email shortly',
+                    });
                 });
         },
         studentApply({ state }, { research_id, fileName }) {
@@ -1096,6 +1103,13 @@ export default createStore({
                     statusCode: RESEARCH_APPLY,
                     fileName,
                     updateLog: [Date.now()],
+                })
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your Application Has Been Submitted',
+                        text: 'The supervisor will recieve an email shortly',
+                    });
                 });
         },
         updateUserInvolvements(_, { research_id, user_id, statusCode }) {

@@ -56,7 +56,10 @@
         </div>
 
         <!-- Apply Button (Only in All Projects Student View) -->
-        <IconButton @click="showModal" v-if="userIsStudent && !isYourProject">
+        <IconButton
+            @click="expressInterest"
+            v-if="userIsStudent && !isYourProject"
+        >
             <fa icon="heart" />
         </IconButton>
 
@@ -132,6 +135,10 @@ export default defineComponent({
             return store.state.user_data?.roles.includes('talent');
         });
 
+        const expressInterest = () => {
+            store.dispatch('studentExpressInterest', props.project.id);
+        };
+
         const onCardClicked = () => {
             if (userIsStaff.value && !props.is_details_page) {
                 store.state.project_detail = [props.project];
@@ -150,6 +157,7 @@ export default defineComponent({
             userIsStudent,
             isYourProject,
             userIsStaff,
+            expressInterest,
             onCardClicked,
         };
     },
