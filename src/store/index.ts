@@ -13,6 +13,7 @@ import {
     Feedback,
     Project,
 } from '@/types/FirebaseTypes.interface';
+import { RESEARCH_INTEREST } from '@/modules/constants/index';
 
 const getInitState = (): AppState => {
     return {
@@ -948,6 +949,17 @@ export default createStore({
                 })
                 .catch(function(error) {
                     console.log('Error getting document:', error);
+                });
+        },
+        EXPRESS_INTEREST(state, research_id) {
+            db.collection('users')
+                .doc(state.user?.uid)
+                .update({
+                    research: firebase.firestore.FieldValue.arrayUnion({
+                        status: RESEARCH_INTEREST,
+                        date: new Date(),
+                        research_id,
+                    }),
                 });
         },
     },

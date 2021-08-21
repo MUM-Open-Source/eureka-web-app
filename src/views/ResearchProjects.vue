@@ -5,12 +5,14 @@
                 Academic Recruitment
             </div>
             <!-- Tabs for Academic Research Recruitment -->
-            <TabsWrapper v-if="userIsStaff">
+            <TabsWrapper v-if="userIsStaff && userIsStudent">
                 <Tab title="Your Projects"><YourProject /></Tab>
                 <Tab title="All Projects"><AllProjects /></Tab>
-                <Tab title="New Project">
-                    <NewProject />
-                </Tab>
+                <Tab title="Create New Project"><NewProject /></Tab>
+            </TabsWrapper>
+            <TabsWrapper v-else-if="userIsStaff">
+                <Tab title="Your Projects"><YourProject /></Tab>
+                <Tab title="Create New Project"><NewProject /></Tab>
             </TabsWrapper>
             <TabsWrapper v-else>
                 <Tab title="Your Projects"><YourProject /></Tab>
@@ -51,15 +53,18 @@ export default defineComponent({
 
         // Checks if the user is a staff.
         const userIsStaff = computed(() => {
-            return store.state.user_data
-                ? store.state.user_data.roles.includes('staff')
-                : false;
+            return store.state.user_data?.roles.includes('staff');
+        });
+
+        const userIsStudent = computed(() => {
+            return store.state.user_data?.roles.includes('talent');
         });
 
         return {
             tab,
             updateTab,
             userIsStaff,
+            userIsStudent,
         };
     },
 });

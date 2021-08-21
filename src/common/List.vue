@@ -56,16 +56,15 @@
         </div>
 
         <!-- Apply Button (Only in All Projects Student View) -->
-        <Button
-            text="APPLY"
-            class="user__card--actions"
-            @click="showModal"
-            v-if="isYourProject"
-            :project_status="project_status"
-        />
+        <IconButton @click="showModal" v-if="userIsStudent && !isYourProject">
+            <fa icon="heart" />
+        </IconButton>
 
         <!-- Status Update (For Students) -->
-        <div class="tagline text--capsule cursor__default" v-if="userIsStudent">
+        <div
+            class="tagline text--capsule cursor__default"
+            v-if="state.involvement"
+        >
             pending
         </div>
     </div>
@@ -76,16 +75,16 @@
 </template>
 
 <script lang="ts">
-import Button from '@/common/Button.vue';
 import ApplyDialog from '@/common/ApplyDialog.vue';
 import router from '@/router';
 import store from '@/store';
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, reactive } from 'vue';
 import Modal from './Modal.vue';
+import IconButton from '@/modules/admin/IconButton.vue';
 
 export default defineComponent({
     name: 'List',
-    components: { Button, ApplyDialog, Modal },
+    components: { ApplyDialog, Modal, IconButton },
     data() {
         return {
             isModalVisible: false,
@@ -114,30 +113,23 @@ export default defineComponent({
         },
     },
     setup(props) {
+        const state = reactive({
+            involvement: null,
+        });
+
         // Hides Apply Button if either at Your Projects (Student & Staff) or All Projects (Staff)
         const isYourProject = computed(() => {
-            return !props.project_status
-                ? userIsStaff.value
-                    ? false
-                    : true
-                : false;
+            return store.state.user?.uid === props.project.supervisor_id;
         });
 
         // Checks if the user is a staff.
         const userIsStaff = computed(() => {
-            return store.state.user_data
-                ? store.state.user_data.roles.includes('staff')
-                : false;
+            return store.state.user_data?.roles.includes('staff');
         });
 
         // Checks if the user is a student
         const userIsStudent = computed(() => {
-            console.log(isYourProject.value);
-            return !isYourProject.value
-                ? store.state.user_data
-                    ? store.state.user_data.roles.includes('talent')
-                    : false
-                : false;
+            return store.state.user_data?.roles.includes('talent');
         });
 
         const onCardClicked = () => {
@@ -154,6 +146,7 @@ export default defineComponent({
 
         return {
             props,
+            state,
             userIsStudent,
             isYourProject,
             userIsStaff,
