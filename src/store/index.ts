@@ -13,7 +13,7 @@ import {
     Feedback,
     Project,
 } from '@/types/FirebaseTypes.interface';
-import { RESEARCH_INTEREST } from '@/modules/constants/index';
+import { RESEARCH_APPLY, RESEARCH_INTEREST } from '@/modules/constants/index';
 
 const getInitState = (): AppState => {
     return {
@@ -951,17 +951,6 @@ export default createStore({
                     console.log('Error getting document:', error);
                 });
         },
-        EXPRESS_INTEREST(state, research_id) {
-            db.collection('users')
-                .doc(state.user?.uid)
-                .update({
-                    research: firebase.firestore.FieldValue.arrayUnion({
-                        status: RESEARCH_INTEREST,
-                        date: new Date(),
-                        research_id,
-                    }),
-                });
-        },
     },
 
     // functions to be called throughout the app that, in turn, call mutations
@@ -1087,6 +1076,37 @@ export default createStore({
 
         getWavesFromOtherUsers({ commit }) {
             commit('GET_WAVES_FROM_OTHER_USERS');
+        },
+        studentExpressInterest({ state }, research_id) {
+            db.collection('research-involvements')
+                .doc(`${state.user?.uid}${research_id}`)
+                .set({
+                    research_id,
+                    user_name: state.user?.displayName,
+                    user_email: state.user?.email,
+                    user_id: state.user?.uid,
+                    statusCode: RESEARCH_INTEREST,
+                    updateLog: [Date.now()],
+                });
+        },
+        studentApply({ state }, { research_id, fileName }) {
+            db.collection('research-involvements')
+                .doc(`${state.user?.uid}${research_id}`)
+                .update({
+                    statusCode: RESEARCH_APPLY,
+                    fileName,
+                    updateLog: [Date.now()],
+                });
+        },
+        updateUserInvolvements(_, { research_id, user_id, statusCode }) {
+            db.collection('research-involvements')
+                .doc(`${user_id}${research_id}`)
+                .update({
+                    statusCode,
+                    updateLog: firebase.firestore.FieldValue.arrayUnion(
+                        Date.now()
+                    ),
+                });
         },
     },
 });
