@@ -1,6 +1,12 @@
 <template>
     <div
-        class="user__card pad--2 pad__l--1 mar__b--2 cursor__pointer"
+        class="
+            user__card
+            pad--2 pad__l--1
+            mar__b--2
+            cursor__pointer
+            show-bottom-border
+        "
         @click="onCardClicked"
     >
         <div class="user__card--details">
@@ -145,9 +151,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .user__card {
-    @include shadow--small;
     display: flex;
-    border-radius: $app-border-radius;
     justify-content: space-between;
     @media (max-width: 576px) {
         flex-direction: column;
@@ -184,6 +188,10 @@ export default defineComponent({
         align-self: center;
         margin-left: $user-card-row-margin-left;
     }
+}
+
+.show-bottom-border {
+    border-bottom: 0.2rem solid $color-side-nav-bg;
 }
 
 .text--capsule {
