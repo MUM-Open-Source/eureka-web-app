@@ -17,6 +17,7 @@ import {
     faCode,
     faUserShield,
     faArrowLeft,
+    faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faComments,
@@ -36,6 +37,7 @@ library.add(
     faUserShield,
     faCommentAlt,
     faHandshake,
+    faTimes,
     faArrowLeft
 );
 

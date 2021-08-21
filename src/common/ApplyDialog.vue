@@ -1,72 +1,52 @@
 <template>
-    <transition name="modal-transition">
-        <div>
-            <div class="backdrop" @click="close" />
-            <div class="modal pad--3">
-                <!-- Header -->
-                <header class="modal__header pad--1">
-                    <div class="heading">
-                        <slot name="header">Submit File</slot>
-                    </div>
-                    <div class="modal__button cursor__pointer" @click="close">
-                        <b>X</b>
-                    </div>
-                </header>
-                <!-- File Upload Component -->
-                <section class="modal__body">
-                    <slot name="body">
-                        <div class="file-upload">
-                            <input
-                                :id="file_Upload"
-                                type="file"
-                                name="fileUpload"
-                                @change="filePreview"
-                                multiple
-                            />
-                            <label
-                                :for="file_Upload"
-                                name="fileDrag"
-                                class="file-upload__label"
-                            >
-                                <img
-                                    src="@/assets/file-upload.svg"
-                                    alt="Preview"
-                                    class="mar__b--2"
-                                />
-                                <div class="file-upload__start">
-                                    <div class="mar__b--2">
-                                        Select a file or drag here
-                                    </div>
-                                    <span
-                                        class="
-                                            tagline
-                                            text--capsule
-                                            cursor__pointer
-                                        "
-                                    >
-                                        Select a File
-                                    </span>
-                                </div>
-                            </label>
-                        </div>
-                    </slot>
-                </section>
-                <!-- File names for preview -->
-                <div v-for="(file, key) in files" :key="key">
-                    <div class="modal__preview mar--2">
-                        <div>{{ file.name }}</div>
-                    </div>
-                </div>
-
-                <Button
-                    text="Submit"
-                    type="submit"
-                    class="modal__button--submit"
-                    @click.prevent="handleSubmit"
-                />
-            </div>
+    <!-- File Upload Component -->
+    <header class="modal__header pad--1">
+        <div class="heading">
+            <slot name="header">Submit File</slot>
         </div>
-    </transition>
+    </header>
+    <section class="modal__body">
+        <slot name="body">
+            <div class="file-upload">
+                <input
+                    :id="file_Upload"
+                    type="file"
+                    name="fileUpload"
+                    @change="filePreview"
+                    multiple
+                />
+                <label
+                    :for="file_Upload"
+                    name="fileDrag"
+                    class="file-upload__label"
+                >
+                    <img
+                        src="@/assets/file-upload.svg"
+                        alt="Preview"
+                        class="mar__b--2"
+                    />
+                    <div class="file-upload__start">
+                        <div class="mar__b--2">Select a file or drag here</div>
+                        <span class="tagline text--capsule cursor__pointer">
+                            Select a File
+                        </span>
+                    </div>
+                </label>
+            </div>
+        </slot>
+    </section>
+    <!-- File names for preview -->
+    <div v-for="(file, key) in files" :key="key">
+        <div class="modal__preview mar--2">
+            <div>{{ file.name }}</div>
+        </div>
+    </div>
+    <Button
+        text="Submit"
+        type="submit"
+        class="modal__button--submit"
+        @click.prevent="handleSubmit"
+    />
 </template>
 
 <script>
@@ -76,7 +56,7 @@ import Swal from 'sweetalert2';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    name: 'BaseDialog',
+    name: 'ApplyDialog',
     components: {
         Button,
     },
@@ -146,19 +126,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.backdrop {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    background-color: rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 3;
-}
 .modal {
     position: fixed;
     top: 50%;

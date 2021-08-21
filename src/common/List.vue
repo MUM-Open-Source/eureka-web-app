@@ -70,23 +70,22 @@
         </div>
     </div>
 
-    <Dialog
-        v-show="isModalVisible"
-        @close="closeModal"
-        :file_Upload="project.project_name"
-    />
+    <Modal v-show="isModalVisible" @close="closeModal">
+        <ApplyDialog :file_Upload="project.project_name" />
+    </Modal>
 </template>
 
 <script lang="ts">
 import Button from '@/common/Button.vue';
-import Dialog from '@/common/Dialog.vue';
+import ApplyDialog from '@/common/ApplyDialog.vue';
 import router from '@/router';
 import store from '@/store';
 import { defineComponent, computed } from 'vue';
+import Modal from './Modal.vue';
 
 export default defineComponent({
     name: 'List',
-    components: { Button, Dialog },
+    components: { Button, ApplyDialog, Modal },
     data() {
         return {
             isModalVisible: false,
