@@ -7,7 +7,12 @@ import router from '@/router';
 import Swal from 'sweetalert2';
 // types
 import { AppState } from '@/types/AppTypes.interface';
-import { User, Event, Feedback, Project } from '@/types/FirebaseTypes.interface';
+import {
+    User,
+    Event,
+    Feedback,
+    Project,
+} from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
     return {
@@ -28,12 +33,12 @@ const getInitState = (): AppState => {
         dialog: [],
         talent: [],
         mentors: [],
-        upload_files: {url: '', fileName: ''},
+        upload_files: { url: '', fileName: '' },
         feedback: [],
-        liked_events: [],                     // list of events liked by the user
-        user_waves: [],                       // list of users waved at by the auth user
+        liked_events: [], // list of events liked by the user
+        user_waves: [], // list of users waved at by the auth user
         process_status: false,
-        waves_from_other_users: [],           // list of user ids who waved at the auth user
+        waves_from_other_users: [], // list of user ids who waved at the auth user
         filters: {
             event: {
                 type: [],
@@ -348,44 +353,23 @@ export default createStore({
         ADD_PROJECT(state, project: Project) {
             project.supervisor_id = auth.currentUser!.uid;
             project.supervisor = auth.currentUser!.displayName;
-            db.collection("projects")
+            project.email = auth.currentUser!.email || '';
+            db.collection('projects')
                 .doc()
-                .set(project).then(() => {
-                    state.projects.push(project)
-                }).catch(function(error) {
-                    console.log("Error getting document")
+                .set(project)
+                .then(() => {
+                    state.projects.push(project);
                 })
+                .catch(function(error) {
+                    console.log('Error getting document');
+                });
         },
         // Gets specific projects
         GET_PROJECTS(state) {
-            db.collection("projects")
+            db.collection('projects')
                 .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                            const project: Project = {
-                                id: doc.id,
-                                supervisor_id: doc.data().supervisor_id,
-                                supervisor: doc.data().supervisor,
-                                overview: doc.data().overview,
-                                project_duration: doc.data().project_duration,
-                                project_fields: doc.data().project_fields,
-                                project_name: doc.data().project_name
-                            }
-                            if (project.supervisor_id === auth.currentUser!.uid) {
-                                state.projects.push(project);
-                            }
-                    })
-                })
-                .catch(function(error) {
-                    console.log("Error getting document")
-                });
-        },
-        // gets all projects
-        GET_ALL_PROJECTS(state) {
-            db.collection("projects")
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
+                .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
                         const project: Project = {
                             id: doc.id,
                             supervisor_id: doc.data().supervisor_id,
@@ -393,37 +377,62 @@ export default createStore({
                             overview: doc.data().overview,
                             project_duration: doc.data().project_duration,
                             project_fields: doc.data().project_fields,
-                            project_name: doc.data().project_name
+                            project_name: doc.data().project_name,
+                        };
+                        if (project.supervisor_id === auth.currentUser!.uid) {
+                            state.projects.push(project);
                         }
-
-                        state.all_projects.push(project)
+                    });
                 })
-            })
-            .catch(function(error) {
-                console.log("Error getting document")
-            });
+                .catch(function(error) {
+                    console.log('Error getting document');
+                });
+        },
+        // gets all projects
+        GET_ALL_PROJECTS(state) {
+            db.collection('projects')
+                .get()
+                .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        const project: Project = {
+                            id: doc.id,
+                            supervisor_id: doc.data().supervisor_id,
+                            supervisor: doc.data().supervisor,
+                            overview: doc.data().overview,
+                            project_duration: doc.data().project_duration,
+                            project_fields: doc.data().project_fields,
+                            project_name: doc.data().project_name,
+                        };
+
+                        state.all_projects.push(project);
+                    });
+                })
+                .catch(function(error) {
+                    console.log('Error getting document');
+                });
         },
 
         GET_PROJECT(state, id) {
-            console.log('executed')
-            db.collection("projects")
+            console.log('executed');
+            db.collection('projects')
                 .doc(`${id}`)
                 .get()
-                .then((querySnapshot) => {
+                .then(querySnapshot => {
                     const project: Project = {
                         id: id,
                         supervisor_id: querySnapshot.data()?.supervisor_id,
                         supervisor: querySnapshot.data()?.supervisor,
                         overview: querySnapshot.data()?.overview,
-                        project_duration: querySnapshot.data()?.project_duration,
+                        project_duration: querySnapshot.data()
+                            ?.project_duration,
                         project_fields: querySnapshot.data()?.project_fields,
-                        project_name: querySnapshot.data()?.project_name
-                    }
+                        project_name: querySnapshot.data()?.project_name,
+                    };
 
-                    console.log('here')
+                    console.log('here');
 
-                    state.project_detail.push(project)
-                })
+                    state.project_detail.push(project);
+                });
         },
 
         GET_LIKED_EVENTS(state) {
@@ -813,7 +822,6 @@ export default createStore({
         },
 
         UPDATE_USER_PROFILE(state, user: User) {
-
             // updating user profile
             db.collection('users')
                 .doc(auth.currentUser!.uid)
@@ -908,12 +916,23 @@ export default createStore({
         UPLOAD_FILES(state, files) {
             state.process_status = false;
             for (let i = 0; i < files.length; i++) {
-                console.log(files[i].fileName)
-                const task = storage.ref().child('documents/' + auth.currentUser!.uid + '/' + files[i].fileName).put(files[i].file, files[i].metadata)
-                task
-                    .then(snapshot => snapshot.ref.getDownloadURL())
-                    .then(url =>
-                        state.upload_files = { url: url, fileName: files[i].fileName})
+                console.log(files[i].fileName);
+                const task = storage
+                    .ref()
+                    .child(
+                        'documents/' +
+                            auth.currentUser!.uid +
+                            '/' +
+                            files[i].fileName
+                    )
+                    .put(files[i].file, files[i].metadata);
+                task.then(snapshot => snapshot.ref.getDownloadURL()).then(
+                    url =>
+                        (state.upload_files = {
+                            url: url,
+                            fileName: files[i].fileName,
+                        })
+                );
             }
             state.process_status = true;
         },
@@ -977,13 +996,13 @@ export default createStore({
             commit('ADD_EVENT', obj);
         },
         addProjects({ commit }, obj: Project) {
-            commit('ADD_PROJECT', obj)
+            commit('ADD_PROJECT', obj);
         },
         getProjects({ commit }) {
             commit('GET_PROJECTS');
         },
         getProject({ commit }, id: string) {
-            commit('GET_PROJECT', id)
+            commit('GET_PROJECT', id);
         },
         getAllProjects({ commit }) {
             commit('GET_ALL_PROJECTS');
@@ -1028,7 +1047,7 @@ export default createStore({
         },
 
         uploadFiles({ commit }, files) {
-            commit('UPLOAD_FILES', files)
+            commit('UPLOAD_FILES', files);
         },
 
         setDefaultUserImage({ commit }) {

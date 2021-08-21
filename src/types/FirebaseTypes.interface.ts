@@ -42,6 +42,7 @@ export interface Project {
     project_duration: string;
     project_fields: string[];
     overview: string;
+    email: string;
 }
 
 export interface Feedback {
