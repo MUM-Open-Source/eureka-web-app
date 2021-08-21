@@ -143,19 +143,15 @@ export default defineComponent({
         });
 
         const onCardClicked = () => {
-            // if (userIsStaff.value) {
-            //     router.push({
-            //         name: 'ProjectDetails',
-            //         params: { id: props.project.id },
-            //     });
-            //     return true;
-            // }
-            // return false;
-            store.state.project_detail = [props.project];
-            router.push({
-                name: 'ProjectDetails',
-                params: { id: props.project.id },
-            });
+            if (!userIsStaff.value && !props.is_details_page) {
+                store.state.project_detail = [props.project];
+                router.push({
+                    name: 'ProjectDetails',
+                    params: { id: props.project.id },
+                });
+                return true;
+            }
+            return false;
         };
 
         return {

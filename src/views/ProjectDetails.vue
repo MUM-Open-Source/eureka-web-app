@@ -1,5 +1,11 @@
 <template>
     <div class="pad--5 something-info">
+        <div class="back-button">
+            <IconButton @click="goBack">
+                <fa icon="arrow-left" size="md" />
+            </IconButton>
+            <div>Back</div>
+        </div>
         <List
             v-if="state.project_detail"
             :project="state.project_detail"
@@ -14,9 +20,11 @@ import { useRoute } from 'vue-router';
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import store from '@/store';
 import List from '@/common/List.vue';
+import IconButton from '@/modules/admin/IconButton.vue';
+import router from '@/router';
 
 export default defineComponent({
-    components: { List },
+    components: { List, IconButton },
     name: 'ProjectDetails',
     setup() {
         const route = useRoute();
@@ -34,8 +42,11 @@ export default defineComponent({
                   });
         });
 
+        const goBack = () => router.back();
+
         return {
             state,
+            goBack,
         };
     },
 });
@@ -43,8 +54,19 @@ export default defineComponent({
 
 <style lang="scss">
 .something-info {
+    height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
+
+    .back-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        margin-right: auto;
+    }
 
     &__tags {
         display: flex;
