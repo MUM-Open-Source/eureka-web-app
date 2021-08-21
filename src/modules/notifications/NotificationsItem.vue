@@ -1,12 +1,12 @@
 <template>
-    <div
-        class="noti-item"
-        :class="{ unread: !read_status, longNotiStyle: longNoti }"
-    >
-        <div :style="{ display: 'flex' }">
+    <div v-if="noti.category == notiFor">
+        <div
+            class="noti-item"
+            :class="{ unread: !noti.read_status, longNotiStyle: longNoti }"
+        >
             <div
                 class="noti-item-icon "
-                :class="{ badge: !read_status }"
+                :class="{ badge: !noti.read_status }"
                 :style="{ backgroundColor: iconColor }"
                 data-count=""
             >
@@ -16,7 +16,7 @@
                 <div class="content-title">
                     <div class="content-title__title-text">{{ title }}</div>
                     <span class="content-title__moment-text">
-                        {{ moment }}
+                        {{ getMoment(noti.timestamp) }}
                     </span>
                 </div>
                 <div class="content-body">
@@ -26,7 +26,7 @@
                     <fa
                         icon="mail-bulk"
                         :class="[
-                            read_status
+                            noti.read_status
                                 ? 'content-body__invincible'
                                 : 'content-body__doneIcon',
                         ]"
@@ -35,29 +35,33 @@
                 </div>
             </div>
         </div>
+        <hr class="divider" v-if="!longNoti" />
     </div>
-    <hr class="divider" v-if="!longNoti" />
 </template>
 
 <script>
 import store from '@/store';
+import { formatDistance } from 'date-fns';
+
 export default {
     name: 'NotificationsItem',
     props: {
-        id: { type: String, required: true },
+        notiFor: { type: String },
+        noti: { type: Object },
         icon: { type: String, required: true },
-        category: { type: String, required: true },
         title: { type: String, required: true },
         bodyText: { type: String, required: true },
-        moment: { type: String, required: true },
-        read_status: { type: Boolean, required: true },
         iconColor: { type: String, required: true },
         longNoti: { type: Boolean },
     },
     setup(props) {
         const readIndividual = () =>
-            store.dispatch('readIndividualNotification', props.id);
-        return { readIndividual };
+            store.dispatch('readIndividualNotification', props.noti.id);
+
+        const getMoment = timestamp => {
+            return formatDistance(timestamp, Date.now()).toString() + ' ago';
+        };
+        return { getMoment, readIndividual };
     },
 };
 </script>
@@ -69,6 +73,7 @@ export default {
     margin: 10px 0;
 }
 .noti-item {
+    display: flex;
     padding: 10px;
     border-radius: 10px;
     cursor: pointer;

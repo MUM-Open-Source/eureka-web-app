@@ -1,12 +1,9 @@
 <template>
     <div v-for="noti in notifications" :key="noti.id">
         <NotificationsItem
-            v-if="noti.category == 'waves'"
-            :category="noti.category"
-            :id="noti.id"
+            notiFor="waves"
+            :noti="noti"
             :longNoti="longNoti"
-            :moment="getMoment(noti.timestamp)"
-            :read_status="noti.read_status"
             icon="hand-spock"
             iconColor="#71c9a2"
             title="Someone waved at you"
@@ -15,12 +12,9 @@
             "
         />
         <NotificationsItem
-            v-if="noti.category == 'projects'"
-            :category="noti.category"
-            :id="noti.id"
+            notiFor="projects"
+            :noti="noti"
             :longNoti="longNoti"
-            :moment="getMoment(noti.timestamp)"
-            :read_status="noti.read_status"
             icon="tasks"
             iconColor="#FFFF00"
             title="A new project was created"
@@ -30,7 +24,6 @@
 </template>
 
 <script>
-import { formatDistance } from 'date-fns';
 import NotificationsItem from './NotificationsItem.vue';
 export default {
     name: 'NotificationsCategories',
@@ -38,12 +31,6 @@ export default {
     props: {
         notifications: { type: Array, required: true },
         longNoti: { type: Boolean, required: true, default: false },
-    },
-    setup() {
-        const getMoment = timestamp => {
-            return formatDistance(timestamp, Date.now()).toString() + ' ago';
-        };
-        return { getMoment };
     },
 };
 </script>
