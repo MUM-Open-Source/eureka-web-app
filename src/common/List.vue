@@ -1,5 +1,8 @@
 <template>
-    <div class="user__card pad--2 mar__b--1">
+    <div
+        class="user__card pad--2 mar__b--1 cursor__pointer"
+        @click="onCardClicked"
+    >
         <div class="user__card--details">
             <!-- Details -->
             <div class="user__card--row mar__b--1">
@@ -7,7 +10,6 @@
                 <div class="subheading user__card--project">
                     {{ project.project_name }}
                 </div>
-                <span class="user__card--name">({{ project.supervisor }})</span>
                 <!-- tags -->
                 <div class="user__card--tags">
                     <div
@@ -18,6 +20,22 @@
                         {{ fields }}
                     </div>
                 </div>
+            </div>
+
+            <!-- Supervisor Info -->
+            <div class="user__card--supervisor-details">
+                <span class="user__card--name">
+                    <div class="tagline--bold" style="padding-right: 0.5rem">
+                        Supervisor
+                    </div>
+                    {{ project.supervisor }}
+                </span>
+                <span class="user__card--name">
+                    <div class="tagline--bold" style="padding-right: 0.5rem">
+                        Email
+                    </div>
+                    {{ project.email }}
+                </span>
             </div>
             <!-- bio -->
             <div class="body">
@@ -33,11 +51,6 @@
             v-if="isYourProject"
             :project_status="project_status"
         />
-
-        <!-- Details Button (For Staff) -->
-        <router-link :to="{ name: 'ProjectDetails', params: { 'id': project.id } }" class="user__card--actions" v-if="userIsStaff">
-            <Button text="DETAILS" />
-        </router-link>
 
         <!-- Status Update (For Students) -->
         <div class="tagline text--capsule cursor__default" v-if="userIsStudent">
@@ -55,6 +68,7 @@
 <script lang="ts">
 import Button from '@/common/Button.vue';
 import Dialog from '@/common/Dialog.vue';
+import router from '@/router';
 import store from '@/store';
 import { defineComponent, computed } from 'vue';
 
@@ -85,33 +99,48 @@ export default defineComponent({
         },
     },
     setup(props) {
-
         // Hides Apply Button if either at Your Projects (Student & Staff) or All Projects (Staff)
         const isYourProject = computed(() => {
-            return !props.project_status ? (userIsStaff.value ? false : true) : false;
+            return !props.project_status
+                ? userIsStaff.value
+                    ? false
+                    : true
+                : false;
         });
 
         // Checks if the user is a staff.
         const userIsStaff = computed(() => {
             return store.state.user_data
                 ? store.state.user_data.roles.includes('staff')
-                : false
-        })
+                : false;
+        });
 
         // Checks if the user is a student
         const userIsStudent = computed(() => {
-            console.log(isYourProject.value)
-            return !isYourProject.value ? (store.state.user_data
-                ? store.state.user_data.roles.includes('talent') : false)
-                : false
+            console.log(isYourProject.value);
+            return !isYourProject.value
+                ? store.state.user_data
+                    ? store.state.user_data.roles.includes('talent')
+                    : false
+                : false;
         });
 
-
+        const onCardClicked = () => {
+            if (userIsStaff.value) {
+                router.push({
+                    name: 'ProjectDetails',
+                    params: { id: props.project.id },
+                });
+                return true;
+            }
+            return false;
+        };
 
         return {
             userIsStudent,
             isYourProject,
-            userIsStaff
+            userIsStaff,
+            onCardClicked,
         };
     },
 });
@@ -126,8 +155,16 @@ export default defineComponent({
     &--project {
         margin-right: $user-card-project-margin-right;
     }
+    &--supervisor-details {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 1rem;
+    }
     &--name {
-        margin-right: $user-card-name-margin-right;
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        flex-direction: row;
     }
     &--row {
         display: flex;

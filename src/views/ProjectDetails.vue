@@ -2,25 +2,25 @@
     <div class="pad--5 something-info">
         <div>
             <div class="heading something-info__specific">
-                Project Name:
+                Project Name
                 <div class="tagline something-info__specific--answer">
                     {{ project_detail[0].project_name }}
                 </div>
             </div>
             <div class="heading something-info__specific">
-                Staff PIC:
+                Staff PIC
                 <div class="tagline something-info__specific--answer">
                     {{ project_detail[0].supervisor }}
                 </div>
             </div>
             <div class="heading something-info__specific">
-                Project Duration:
+                Project Duration
                 <div class="tagline something-info__specific--answer">
                     {{ project_detail[0].project_duration }}
                 </div>
             </div>
             <div class="heading something-info__specific">
-                Project Field(s):
+                Project Field(s)
                 <div
                     v-for="field in project_detail[0].project_fields"
                     :key="field"
@@ -48,15 +48,13 @@ export default defineComponent({
         Button,
     },
     setup() {
-
         const route = useRoute();
-        const id = route.params.id
-        store.dispatch('getProject', id)
-        const project_detail = ref(store.state.project_detail)
-
+        const id = route.params.id;
+        store.dispatch('getProject', id);
+        const project_detail = ref(store.state.project_detail);
 
         return {
-            project_detail
+            project_detail,
         };
     },
 });
