@@ -1,25 +1,12 @@
 <template>
     <div
-        class="user__card pad--2 mar__b--1 cursor__pointer"
+        class="user__card pad--2 pad__l--1 mar__b--2 cursor__pointer"
         @click="onCardClicked"
     >
         <div class="user__card--details">
-            <!-- Details -->
-            <div class="user__card--row mar__b--1">
-                <!-- name -->
-                <div class="subheading user__card--project">
-                    {{ project.project_name }}
-                </div>
-                <!-- tags -->
-                <div class="user__card--tags">
-                    <div
-                        v-for="fields in project.project_fields"
-                        :key="fields"
-                        class="tagline text--capsule cursor__default"
-                    >
-                        {{ fields }}
-                    </div>
-                </div>
+            <!-- project name -->
+            <div class="subheading user__card--project mar__b--1">
+                {{ project.project_name }}
             </div>
 
             <!-- Supervisor Info -->
@@ -37,8 +24,18 @@
                     {{ project.email }}
                 </span>
             </div>
-            <!-- bio -->
-            <div class="body">
+
+            <!-- tags -->
+            <div class="user__card--tags mar__b--1">
+                <div
+                    v-for="fields in project.project_fields"
+                    :key="fields"
+                    class="tagline text--capsule cursor__default"
+                >
+                    {{ fields }}
+                </div>
+            </div>
+            <div class="body user__card--body">
                 {{ project.overview }}
             </div>
         </div>
@@ -152,16 +149,22 @@ export default defineComponent({
     display: flex;
     border-radius: $app-border-radius;
     justify-content: space-between;
+    @media (max-width: 576px) {
+        flex-direction: column;
+    }
+    &--body {
+        padding-left: 0.5rem;
+    }
     &--project {
-        margin-right: $user-card-project-margin-right;
+        padding-left: 0.5rem;
     }
     &--supervisor-details {
         display: flex;
         flex-direction: column;
+        padding-left: 0.5rem;
         padding-bottom: 1rem;
     }
     &--name {
-        cursor: pointer;
         user-select: none;
         display: flex;
         flex-direction: row;
@@ -173,14 +176,7 @@ export default defineComponent({
     &--tags {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-    }
-    &--rating {
-        display: flex;
-        .star__icon {
-            width: $star-icon-width;
-            margin-right: $star-icon-margin-right;
-        }
+        justify-content: flex-start;
     }
     &--actions {
         display: flex;
@@ -188,13 +184,9 @@ export default defineComponent({
         align-self: center;
         margin-left: $user-card-row-margin-left;
     }
-    &--icon {
-        width: $user-card-icon-width;
-        margin: $user-card-icon-margin;
-    }
 }
 
 .text--capsule {
-    align-self: center;
+    align-self: flex-start;
 }
 </style>
