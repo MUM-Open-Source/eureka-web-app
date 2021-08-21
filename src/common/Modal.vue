@@ -4,7 +4,7 @@
             <div class="backdrop" @click="close" />
             <div class="modal pad--1">
                 <IconButton @click="close">
-                    <fa icon="times" size="md" />
+                    <fa icon="times" />
                 </IconButton>
                 <slot></slot>
             </div>

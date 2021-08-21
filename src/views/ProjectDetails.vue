@@ -2,7 +2,7 @@
     <div class="pad--5 something-info">
         <div class="back-button">
             <IconButton @click="goBack">
-                <fa icon="arrow-left" size="md" />
+                <fa icon="arrow-left" />
             </IconButton>
             <div>Back</div>
         </div>
