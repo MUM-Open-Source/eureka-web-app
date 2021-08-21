@@ -2,7 +2,7 @@
     <div
         class="
             user__card
-            pad--2 pad__l--1
+            pad--2 pad__l--0
             mar__b--2
             cursor__pointer
             show-bottom-border
@@ -29,6 +29,12 @@
                     </div>
                     {{ project.email }}
                 </span>
+                <span class="user__card--name">
+                    <div class="tagline--bold" style="padding-right: 0.5rem">
+                        Project Duration
+                    </div>
+                    {{ project.project_duration }}
+                </span>
             </div>
 
             <!-- tags -->
@@ -42,7 +48,11 @@
                 </div>
             </div>
             <div class="body user__card--body">
-                {{ project.overview }}
+                {{
+                    project.overview.length > 500 && !props.is_details_page
+                        ? `${project.overview.substring(0, 500)} ...`
+                        : project.overview
+                }}
             </div>
         </div>
 
@@ -92,6 +102,10 @@ export default defineComponent({
             type: Boolean,
             required: true,
         },
+        is_details_page: {
+            type: Boolean,
+            required: true,
+        },
     },
     methods: {
         showModal() {
@@ -129,17 +143,23 @@ export default defineComponent({
         });
 
         const onCardClicked = () => {
-            if (userIsStaff.value) {
-                router.push({
-                    name: 'ProjectDetails',
-                    params: { id: props.project.id },
-                });
-                return true;
-            }
-            return false;
+            // if (userIsStaff.value) {
+            //     router.push({
+            //         name: 'ProjectDetails',
+            //         params: { id: props.project.id },
+            //     });
+            //     return true;
+            // }
+            // return false;
+            store.state.project_detail = [props.project];
+            router.push({
+                name: 'ProjectDetails',
+                params: { id: props.project.id },
+            });
         };
 
         return {
+            props,
             userIsStudent,
             isYourProject,
             userIsStaff,
@@ -153,11 +173,13 @@ export default defineComponent({
 .user__card {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     @media (max-width: 576px) {
         flex-direction: column;
     }
     &--body {
         padding-left: 0.5rem;
+        text-align: justify;
     }
     &--project {
         padding-left: 0.5rem;

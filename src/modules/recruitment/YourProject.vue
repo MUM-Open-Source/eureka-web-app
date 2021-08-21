@@ -5,6 +5,7 @@
         :key="project.key"
         :project="project"
         :project_status="true"
+        :is_details_page="false"
     />
 </template>
 

@@ -412,9 +412,7 @@ export default createStore({
                     console.log('Error getting document');
                 });
         },
-
-        GET_PROJECT(state, id) {
-            console.log('executed');
+        GET_PROJECT(state, { id, onRecieve }) {
             db.collection('projects')
                 .doc(`${id}`)
                 .get()
@@ -429,10 +427,8 @@ export default createStore({
                         project_fields: querySnapshot.data()?.project_fields,
                         project_name: querySnapshot.data()?.project_name,
                     };
-
-                    console.log('here');
-
                     state.project_detail.push(project);
+                    onRecieve(project);
                 });
         },
 
@@ -1002,8 +998,8 @@ export default createStore({
         getProjects({ commit }) {
             commit('GET_PROJECTS');
         },
-        getProject({ commit }, id: string) {
-            commit('GET_PROJECT', id);
+        getProject({ commit }, { id, onRecieve }) {
+            commit('GET_PROJECT', { id, onRecieve });
         },
         getAllProjects({ commit }) {
             commit('GET_ALL_PROJECTS');
