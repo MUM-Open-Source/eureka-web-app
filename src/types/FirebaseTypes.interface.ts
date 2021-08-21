@@ -47,3 +47,14 @@ export interface Feedback {
     user_id: string;
     user_name: string;
 }
+
+export interface Notification {
+    id: string;
+    user_id: string;
+    category: 'waves' | 'projects' | 'none';
+    read_status: boolean;
+    timestamp: number;
+    project_name?: string;
+    from_user_id?: string;
+    from_user_name?: string;
+}
