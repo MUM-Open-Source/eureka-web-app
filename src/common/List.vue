@@ -175,6 +175,9 @@ export default defineComponent({
         padding-left: 0.5rem;
         text-align: justify;
     }
+    &--details {
+        width: 100%;
+    }
     &--project {
         padding-left: 0.5rem;
     }

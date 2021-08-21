@@ -5,10 +5,16 @@
                 Academic Recruitment
             </div>
             <!-- Tabs for Academic Research Recruitment -->
-            <TabsWrapper>
+            <TabsWrapper v-if="userIsStaff">
                 <Tab title="Your Projects"><YourProject /></Tab>
                 <Tab title="All Projects"><AllProjects /></Tab>
-                <Tab title="New Project"><NewProject /></Tab>
+                <Tab title="New Project">
+                    <NewProject />
+                </Tab>
+            </TabsWrapper>
+            <TabsWrapper v-else>
+                <Tab title="Your Projects"><YourProject /></Tab>
+                <Tab title="All Projects"><AllProjects /></Tab>
             </TabsWrapper>
         </div>
         <div class="inner-div" v-else>
@@ -18,13 +24,14 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import TabsWrapper from '@/common/TabsWrapper.vue';
 import Tab from '@/common/Tab.vue';
 import NotFound from '@/views/NotFound.vue';
 import YourProject from '@/modules/recruitment/YourProject.vue';
 import AllProjects from '@/modules/recruitment/AllProjects.vue';
 import NewProject from '@/modules/recruitment/NewProject.vue';
+import store from '@/store';
 
 export default defineComponent({
     name: 'ResearchProjects',
@@ -42,9 +49,17 @@ export default defineComponent({
 
         const updateTab = (newTab: number) => (tab.value = newTab);
 
+        // Checks if the user is a staff.
+        const userIsStaff = computed(() => {
+            return store.state.user_data
+                ? store.state.user_data.roles.includes('staff')
+                : false;
+        });
+
         return {
             tab,
             updateTab,
+            userIsStaff,
         };
     },
 });
