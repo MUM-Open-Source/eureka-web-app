@@ -51,12 +51,10 @@ export interface Feedback {
 export interface Notification {
     id: string;
     user_id: string;
-    category: 'Waves' | 'Projects';
+    category: 'waves' | 'projects' | 'none';
     read_status: boolean;
-    time_stamp: {
-        seconds: number;
-        nanoseconds: number;
-    };
+    timestamp: number;
     project_name?: string;
     from_user_id?: string;
+    from_user_name?: string;
 }

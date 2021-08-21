@@ -1,3 +1,4 @@
+import { sendNotification } from './../helpers/notifications';
 import { createStore, Store } from 'vuex';
 import firebase from 'firebase';
 import firebaseApp from 'firebase/app';
@@ -606,19 +607,12 @@ export default createStore({
                     to_user_id: toUserId,
                 })
                 .then(async () => {
-                    const docRef = await db.collection('Safes').doc();
-                    const id = docRef.id;
-                    db.collection('notifications')
-                        .doc(id)
-                        .set({
-                            id: id,
-                            category: 'waves',
-                            user_id: toUserId, // owner of notification
-                            read_status: false,
-                            timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
-                            from_user_name: state.user_data?.first_name,
-                            from_user_id: auth.currentUser?.uid,
-                        });
+                    sendNotification(toUserId, {
+                        category: 'waves', // required parameter
+                        // extra parameters
+                        from_user_name: state.user_data?.first_name,
+                        from_user_id: state.user_data?.id,
+                    });
                 })
                 // Alert with SweetAlert2
                 .then(() => {

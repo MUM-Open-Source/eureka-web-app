@@ -13,15 +13,15 @@
                 </router-link>
             </div>
             <div class="top-nav__right">
-                <fa
-                    icon="bell"
-                    size="lg"
-                    data-count=""
+                <div
                     class="noti-icon"
+                    data-count=""
                     :class="{ badge: unreadNotifications }"
                     @click="modalController('notification')"
                     v-if="isLoggedIn"
-                />
+                >
+                    <fa icon="bell" size="lg" />
+                </div>
                 <div
                     @click="modalController('userMenu')"
                     class="top-nav__right--user cursor__pointer"

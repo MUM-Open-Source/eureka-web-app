@@ -11,7 +11,7 @@
             iconColor="#71c9a2"
             title="Someone waved at you"
             :bodyText="
-                `${noti.user} just waved at you. Say hi to them back by giving a friendly wave back!`
+                `${noti.from_user_name} just waved at you. Say hi to them back by giving a friendly wave back!`
             "
         />
         <NotificationsItem
@@ -24,7 +24,7 @@
             icon="tasks"
             iconColor="#FFFF00"
             title="A new project was created"
-            :bodyText="`Check out ${noti.name} now`"
+            :bodyText="`Check out ${noti.project_name} now`"
         />
     </div>
 </template>
