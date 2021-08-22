@@ -63,7 +63,7 @@ export interface Message {
     type: string;
     payload: string; // can be text or media files
     group_id: string ;
-    timestamp: string | null ;
+    timestamp: string ;
 }
 
 export interface Group {

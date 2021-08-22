@@ -35,12 +35,15 @@
             </Modal>
             <div class="message_box">
                 <Message
-                    v-for="message in messages"
+                    v-for="(message, index) in messages"
                     :sender_id="message.from"
                     :sender_full_name="message.sender_full_name"
                     :key="message.key"
                     :text="message.payload"
                     :datetime="message.timestamp"
+                    :isDateSame="
+                        checkIsDateSame(index, message.timestamp, messages)
+                    "
                     class="message-text"
                     :id="
                         message.from === user_id ? 'sender-box' : 'receiver-box'
@@ -85,6 +88,7 @@ import GroupMenu from '../common/GroupMenu.vue';
 import Modal from '../common/Modal.vue';
 import { db } from '@/firebase';
 import { defineComponent } from 'vue';
+import moment from 'moment';
 
 export default defineComponent({
     name: 'MessagingComponent',
@@ -145,6 +149,11 @@ export default defineComponent({
             window.scrollTo(0, 0);
 
             store.dispatch('getGroupMember', props.group_id);
+            const d = moment().format('DD-MM-YYYY');
+            console.log(d);
+            // const de = moment(d, 'DD-MM-YYYY');
+            // console.log(de);
+            // console.log(de.isValid());
         });
 
         onUnmounted(() => {
@@ -152,6 +161,29 @@ export default defineComponent({
             unsub();
         });
         const messages = ref(store.state.messages);
+
+        const checkIsDateSame = (
+            index: number,
+            current_message_timestamp: string,
+            lst: typeof Message[]
+        ) => {
+            if (index !== 0) {
+                let previous_messsage_date = moment(
+                    lst[index - 1].timestamp,
+                    'DD/MM/YYYY'
+                ).format('DD/MM/YYYY');
+                let current_message_date = moment(
+                    current_message_timestamp,
+                    'DD/MM/YYYY'
+                ).format('DD/MM/YYYY');
+                console.log(index);
+                return current_message_date === previous_messsage_date;
+                // return current_message_timestamp;
+            } else {
+                return false;
+                // return current_message_timestamp;
+            }
+        };
         const isGroupMenuShown = ref(false);
         const isModalShown = ref(false);
 
@@ -205,6 +237,7 @@ export default defineComponent({
             currentGroup,
             unsubscribe,
             user_id,
+            checkIsDateSame,
         };
     },
 });
@@ -303,9 +336,6 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 400px) {
-    .chat_box {
-    }
-
     .chat_nav_bar {
         min-width: 100%;
         margin-left: -15px;

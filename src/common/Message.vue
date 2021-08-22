@@ -1,6 +1,13 @@
 <template>
     <div class="container">
+        <!-- <div class="message-date-container">
+            <span class="message-date" v-if="!isDateSame">{{ date }}</span>
+            <hr />
+        </div> -->
         <div v-if="sender_id !== user_id" class="message_receiver">
+            <div class="message-date-container-receiver">
+                <span class="message-date" v-if="!isDateSame">{{ date }}</span>
+            </div>
             <span
                 v-if="sender_id !== user_id"
                 class="message_receiver__texter_name"
@@ -12,20 +19,23 @@
                     {{ text }}
                 </p>
                 <br />
-                <div class="message-date-time">
-                    {{ datetime }}
+                <div class="message-time">
+                    {{ time }}
                 </div>
             </div>
         </div>
 
         <div v-else class="message_sender">
+            <div class="message-date-container-sender">
+                <span class="message-date" v-if="!isDateSame">{{ date }}</span>
+            </div>
             <div class="message_sender__text-container">
                 <p class="message-text">
                     {{ text }}
                 </p>
                 <br />
-                <div class="message-date-time">
-                    {{ datetime }}
+                <div class="message-time">
+                    {{ time }}
                 </div>
             </div>
         </div>
@@ -35,6 +45,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import store from '@/store';
+import moment from 'moment';
 
 export default defineComponent({
     props: {
@@ -55,12 +66,26 @@ export default defineComponent({
             default:
                 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quasi quas aliquam commodi quaerat sit reiciendis dignissimos quam totam nemo.',
         },
+        isDateSame: {
+            type: Boolean,
+            default: false,
+        },
     },
 
-    setup() {
+    setup(props) {
         const user_id = computed(() => store.state.user_data?.id);
+        const date = moment(props.datetime, 'DD/MM/YYYY')
+            .calendar()
+            .split(' at')[0];
+        const time = moment(props.datetime, 'YYYY ddd MMM HH:mm').format(
+            'HH:mm'
+        );
+        console.log(time);
+
         return {
             user_id,
+            date,
+            time,
         };
     },
 });
@@ -69,6 +94,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .container {
     z-index: 999;
+    .message-date-container-receiver {
+        text-align: right;
+        .message-date {
+            margin: 135px;
+        }
+    }
     .message_receiver {
         width: 100%;
         margin-top: 20px;
@@ -107,7 +138,7 @@ export default defineComponent({
         margin-top: 20px;
         overflow: auto;
     }
-    .message-date-time {
+    .message-time {
         float: right;
         font-size: 12px;
         margin-left: 50px;
