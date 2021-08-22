@@ -26,7 +26,7 @@
             <div
                 class="student-lists"
                 v-for="student in state.project_students"
-                v-bind:key="student.id"
+                v-bind:key="student.user_id"
             >
                 <div class="leading">
                     <div class="pad--1">
@@ -48,10 +48,14 @@
                     </div>
                 </div>
                 <div class="trailing">
-                    <IconButton @click="buttonClicked">
+                    <IconButton
+                        @click="() => rejectButtomClicked(student.user_id)"
+                    >
                         <fa icon="times" />
                     </IconButton>
-                    <IconButton @click="buttonClicked">
+                    <IconButton
+                        @click="() => checkedButtonClicked(student.user_id)"
+                    >
                         <fa icon="check" />
                     </IconButton>
                 </div>
@@ -72,6 +76,7 @@ import {
     RESEARCH_APPLY,
     RESEARCH_INTEREST,
     RESEARCH_INTEREST_ACCEPTED,
+    RESEARCH_REJECTED,
 } from '@/modules/constants';
 
 export default defineComponent({
@@ -101,11 +106,31 @@ export default defineComponent({
             }
         };
 
-        const buttonClicked = () => {};
+        const rejectButtomClicked = (user_id) => {
+            store.dispatch('updateResearchInvolvement', {
+                statusCode: RESEARCH_REJECTED,
+                research_id: state.project_detail.id,
+                user_id,
+            });
+        };
+        const checkedButtonClicked = (user_id) => {
+            if (state.project_detail.statusCode === RESEARCH_INTEREST)
+                store.dispatch('updateResearchInvolvement', {
+                    statusCode: RESEARCH_INTEREST_ACCEPTED,
+                    research_id: state.project_detail.id,
+                    user_id,
+                });
+            else if (state.project_detail.statusCode === RESEARCH_APPLY)
+                store.dispatch('updateResearchInvolvement', {
+                    statusCode: RESEARCH_APPLICATION_ACCEPTED,
+                    research_id: state.project_detail.id,
+                    user_id,
+                });
+        };
 
         const getProjectUsers = (research_id) => {
             state.isUserProject =
-                state.project_detail?.supervisor_id === state.userId;
+                state.project_detail?.supervisor_id === state.userId || true;
             if (state.isUserProject) {
                 store.dispatch('getResearchStudent', {
                     research_id,
@@ -135,7 +160,8 @@ export default defineComponent({
             state,
             goBack,
             statusDisplayer,
-            buttonClicked,
+            rejectButtomClicked,
+            checkedButtonClicked,
         };
     },
 });

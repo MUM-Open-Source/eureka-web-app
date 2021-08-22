@@ -1135,7 +1135,7 @@ export default createStore({
                     });
                 });
         },
-        updateUserInvolvements(_, { research_id, user_id, statusCode }) {
+        updateResearchInvolvement(_, { research_id, user_id, statusCode }) {
             db.collection('research-involvements')
                 .doc(`${user_id}${research_id}`)
                 .update({
@@ -1143,7 +1143,15 @@ export default createStore({
                     updateLog: firebase.firestore.FieldValue.arrayUnion(
                         Date.now()
                     ),
-                });
+                })
+                .then(() =>
+                    Swal.fire({
+                        icon: 'success',
+                        title:
+                            'Your decision will be forwareded to the student',
+                        text: 'The student will recieve an email shortly',
+                    })
+                );
         },
     },
 });
