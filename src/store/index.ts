@@ -30,6 +30,7 @@ const getInitState = (): AppState => {
         events: [],
         project_detail: [],
         projects: [],
+        project_involvements: [],
         all_projects: [],
         dialog: [],
         talent: [],
@@ -404,6 +405,7 @@ export default createStore({
                             project_duration: doc.data().project_duration,
                             project_fields: doc.data().project_fields,
                             project_name: doc.data().project_name,
+                            email: doc.data().email,
                         };
 
                         state.all_projects.push(project);
@@ -951,6 +953,9 @@ export default createStore({
                     console.log('Error getting document:', error);
                 });
         },
+        UPDATE_PROJECT_INVOLVEMENTS(state, newValue) {
+            state.project_involvements = newValue;
+        },
     },
 
     // functions to be called throughout the app that, in turn, call mutations
@@ -1077,6 +1082,17 @@ export default createStore({
         getWavesFromOtherUsers({ commit }) {
             commit('GET_WAVES_FROM_OTHER_USERS');
         },
+        getResearchInvolvement({ commit, state }) {
+            db.collection('research-involvements')
+                .where('user_id', '==', state.user?.uid)
+                .get()
+                .then(snapshot => {
+                    commit(
+                        'UPDATE_PROJECT_INVOLVEMENTS',
+                        snapshot.docs.map(data => data.data())
+                    );
+                });
+        },
         studentExpressInterest({ state }, research_id) {
             db.collection('research-involvements')
                 .doc(`${state.user?.uid}${research_id}`)
@@ -1095,6 +1111,12 @@ export default createStore({
                         text: 'The supervisor will recieve an email shortly',
                     });
                 });
+        },
+        getResearchStudent(_, { research_id, onRecieved }) {
+            db.collection('research-involvements')
+                .where('research_id', '==', research_id)
+                .get()
+                .then(docs => onRecieved(docs.docs.map(data => data.data())));
         },
         studentApply({ state }, { research_id, fileName }) {
             db.collection('research-involvements')

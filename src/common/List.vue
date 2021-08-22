@@ -58,7 +58,7 @@
         <!-- Apply Button (Only in All Projects Student View) -->
         <IconButton
             @click="expressInterest"
-            v-if="userIsStudent && !isYourProject"
+            v-if="userIsStudent && !isYourProject && !state.involvement"
         >
             <fa icon="heart" />
         </IconButton>
@@ -68,7 +68,7 @@
             class="tagline text--capsule cursor__default"
             v-if="state.involvement"
         >
-            pending
+            {{ statusDisplayer() }}
         </div>
     </div>
 
@@ -81,9 +81,15 @@
 import ApplyDialog from '@/common/ApplyDialog.vue';
 import router from '@/router';
 import store from '@/store';
-import { defineComponent, computed, reactive } from 'vue';
+import { defineComponent, computed, reactive, onMounted } from 'vue';
 import Modal from './Modal.vue';
 import IconButton from '@/modules/admin/IconButton.vue';
+import {
+    RESEARCH_APPLICATION_ACCEPTED,
+    RESEARCH_APPLY,
+    RESEARCH_INTEREST,
+    RESEARCH_INTEREST_ACCEPTED,
+} from '@/modules/constants';
 
 export default defineComponent({
     name: 'List',
@@ -120,6 +126,14 @@ export default defineComponent({
             involvement: null,
         });
 
+        onMounted(() => {
+            state.involvement = store.state.project_involvements.find(
+                (research) =>
+                    (research as { research_id: string }).research_id ===
+                    props.project.id
+            ) as any;
+        });
+
         // Hides Apply Button if either at Your Projects (Student & Staff) or All Projects (Staff)
         const isYourProject = computed(() => {
             return store.state.user?.uid === props.project.supervisor_id;
@@ -139,6 +153,20 @@ export default defineComponent({
             store.dispatch('studentExpressInterest', props.project.id);
         };
 
+        const statusDisplayer = () => {
+            if (state.involvement) {
+                const { statusCode } = state.involvement as any;
+                if (statusCode === RESEARCH_INTEREST) return 'Interest Pending';
+                else if (statusCode === RESEARCH_INTEREST_ACCEPTED)
+                    return 'Interest Accepted';
+                else if (statusCode === RESEARCH_APPLY)
+                    return 'Application Pending';
+                else if (statusCode === RESEARCH_APPLICATION_ACCEPTED)
+                    return 'Application Accepted';
+                else return 'Rejected';
+            }
+        };
+
         const onCardClicked = () => {
             if (userIsStaff.value && !props.is_details_page) {
                 store.state.project_detail = [props.project];
@@ -156,6 +184,7 @@ export default defineComponent({
             state,
             userIsStudent,
             isYourProject,
+            statusDisplayer,
             userIsStaff,
             expressInterest,
             onCardClicked,
@@ -215,6 +244,8 @@ export default defineComponent({
 }
 
 .text--capsule {
+    text-align: center;
     align-self: flex-start;
+    white-space: nowrap;
 }
 </style>

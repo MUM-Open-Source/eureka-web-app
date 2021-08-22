@@ -1,6 +1,15 @@
 import firebase from 'firebase';
-import { User, Event, Feedback, Project } from '@/types/FirebaseTypes.interface';
-import { EventFilter, MentorFilter, TalentFilter } from '@/types/FilterTypes.interface';
+import {
+    User,
+    Event,
+    Feedback,
+    Project,
+} from '@/types/FirebaseTypes.interface';
+import {
+    EventFilter,
+    MentorFilter,
+    TalentFilter,
+} from '@/types/FilterTypes.interface';
 
 export interface NewUser {
     first_name: string;
@@ -16,6 +25,15 @@ export interface ImageToUpload {
 export interface FileUpload {
     url: string;
     fileName: string;
+}
+
+export interface ResearchInvolvement {
+    research_id: string;
+    status_code: number;
+    updateLog: number[];
+    user_email: string;
+    user_id: string;
+    user_name: string;
 }
 
 export interface AppState {
@@ -36,6 +54,7 @@ export interface AppState {
     upload_files: FileUpload;
     project_detail: object[];
     projects: Project[];
+    project_involvements: ResearchInvolvement[];
     all_projects: object[];
     feedback: Feedback[];
     liked_events: string[];

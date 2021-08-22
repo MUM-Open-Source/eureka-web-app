@@ -26,7 +26,7 @@
 </template>
 
 <script lang='ts'>
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import TabsWrapper from '@/common/TabsWrapper.vue';
 import Tab from '@/common/Tab.vue';
 import NotFound from '@/views/NotFound.vue';
@@ -49,15 +49,19 @@ export default defineComponent({
         // to keep track of the tab
         const tab = ref(0);
 
+        const userIsStudent = computed(() => {
+            return store.state.user_data?.roles.includes('talent');
+        });
+        onMounted(() => {
+            if (userIsStudent.value) store.dispatch('getResearchInvolvement');
+            store.dispatch('getProjects');
+        });
+
         const updateTab = (newTab: number) => (tab.value = newTab);
 
         // Checks if the user is a staff.
         const userIsStaff = computed(() => {
             return store.state.user_data?.roles.includes('staff');
-        });
-
-        const userIsStudent = computed(() => {
-            return store.state.user_data?.roles.includes('talent');
         });
 
         return {
