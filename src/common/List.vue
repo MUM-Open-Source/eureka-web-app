@@ -63,12 +63,22 @@
             <fa icon="heart" />
         </IconButton>
 
-        <!-- Status Update (For Students) -->
-        <div
-            class="tagline text--capsule cursor__default"
-            v-if="state.involvement"
-        >
-            {{ statusDisplayer() }}
+        <div class="trailing">
+            <div
+                class="tagline text--capsule cursor__default"
+                v-if="state.involvement"
+            >
+                {{ statusDisplayer() }}
+            </div>
+            <FlatButton
+                text="APPLY"
+                @click="showModal"
+                v-if="
+                    userIsStudent &&
+                    !isYourProject &&
+                    state.involvement?.statusCode === RESEARCH_INTEREST_ACCEPTED
+                "
+            />
         </div>
     </div>
 
@@ -84,6 +94,7 @@ import store from '@/store';
 import { defineComponent, computed, reactive, onMounted } from 'vue';
 import Modal from './Modal.vue';
 import IconButton from '@/modules/admin/IconButton.vue';
+import FlatButton from '@/modules/admin/FlatButton.vue';
 import {
     RESEARCH_APPLICATION_ACCEPTED,
     RESEARCH_APPLY,
@@ -93,7 +104,7 @@ import {
 
 export default defineComponent({
     name: 'List',
-    components: { ApplyDialog, Modal, IconButton },
+    components: { ApplyDialog, Modal, IconButton, FlatButton },
     data() {
         return {
             isModalVisible: false,
@@ -188,6 +199,7 @@ export default defineComponent({
             userIsStaff,
             expressInterest,
             onCardClicked,
+            RESEARCH_INTEREST_ACCEPTED,
         };
     },
 });
@@ -243,9 +255,15 @@ export default defineComponent({
     border-bottom: 0.2rem solid $color-side-nav-bg;
 }
 
+.trailing {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+}
+
 .text--capsule {
     text-align: center;
-    align-self: flex-start;
     white-space: nowrap;
 }
 </style>
