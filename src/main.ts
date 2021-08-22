@@ -19,6 +19,7 @@ import {
     faArrowLeft,
     faTimes,
     faHeart,
+    faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faComments,
@@ -40,7 +41,8 @@ library.add(
     faHandshake,
     faTimes,
     faArrowLeft,
-    faHeart
+    faHeart,
+    faCheck
 );
 
 createApp(App)

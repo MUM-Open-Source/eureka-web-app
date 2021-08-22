@@ -971,8 +971,9 @@ export default createStore({
         signoutUser({ commit }) {
             commit('SIGNOUT_USER');
         },
-        fetchCurrentUserFromDB({ commit }) {
+        fetchCurrentUserFromDB({ commit, dispatch }) {
             commit('FETCH_CURRENT_USER_DATA_FROM_DB');
+            dispatch('getResearchInvolvement');
         },
         signUpUser(
             { commit },

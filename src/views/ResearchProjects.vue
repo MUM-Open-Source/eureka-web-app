@@ -53,7 +53,6 @@ export default defineComponent({
             return store.state.user_data?.roles.includes('talent');
         });
         onMounted(() => {
-            if (userIsStudent.value) store.dispatch('getResearchInvolvement');
             store.dispatch('getProjects');
         });
 

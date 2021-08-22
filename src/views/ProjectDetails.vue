@@ -12,28 +12,48 @@
             :project_status="true"
             :is_details_page="true"
         />
-        <div class="pad__1 mar--1" style="width: 100%">
+        <div
+            class="pad__1 mar--1"
+            style="width: 100%"
+            v-if="state.isUserProject"
+        >
             <div class="subheading">Students</div>
+
+            <div v-if="state.project_students.length === 0">
+                No Students Have Applied Yet
+            </div>
+
             <div
                 class="student-lists"
                 v-for="student in state.project_students"
                 v-bind:key="student.id"
             >
-                <div>
-                    <div>{{ student.user_name }}</div>
-                    <div>{{ student.user_email }}</div>
-                    <div>
-                        {{
-                            new Date(
-                                student.updateLog[student.statusCode]
-                            ).toString()
-                        }}
+                <div class="leading">
+                    <div class="pad--1">
+                        <div>{{ student.user_name }}</div>
+                        <div>{{ student.user_email }}</div>
+                        <div>
+                            {{
+                                new Date(
+                                    student.updateLog[student.statusCode]
+                                ).toString()
+                            }}
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <div class="tagline text--capsule cursor__default">
+                    <div
+                        class="tagline text--capsule cursor__default"
+                        style="width: fit-content"
+                    >
                         {{ statusDisplayer(student) }}
                     </div>
+                </div>
+                <div class="trailing">
+                    <IconButton @click="buttonClicked">
+                        <fa icon="times" />
+                    </IconButton>
+                    <IconButton @click="buttonClicked">
+                        <fa icon="check" />
+                    </IconButton>
                 </div>
             </div>
         </div>
@@ -42,7 +62,7 @@
 
 <script>
 import { useRoute } from 'vue-router';
-import { defineComponent, onMounted, reactive, ref, computed } from 'vue';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import store from '@/store';
 import List from '@/common/List.vue';
 import IconButton from '@/modules/admin/IconButton.vue';
@@ -63,13 +83,8 @@ export default defineComponent({
         const state = reactive({
             project_detail: null,
             project_students: [],
-        });
-
-        const projectIsUsers = computed(() => {
-            return (
-                store.state.user_data?.roles.includes('staff') ||
-                state.project_detail.supervisor_id === store.state.user.uid
-            );
+            userId: store.state.user.uid,
+            isUserProject: false,
         });
 
         const statusDisplayer = (involvement) => {
@@ -86,8 +101,12 @@ export default defineComponent({
             }
         };
 
+        const buttonClicked = () => {};
+
         const getProjectUsers = (research_id) => {
-            if (projectIsUsers.value) {
+            state.isUserProject =
+                state.project_detail?.supervisor_id === state.userId;
+            if (state.isUserProject) {
                 store.dispatch('getResearchStudent', {
                     research_id,
                     onRecieved: (student_list) =>
@@ -116,6 +135,7 @@ export default defineComponent({
             state,
             goBack,
             statusDisplayer,
+            buttonClicked,
         };
     },
 });
@@ -158,5 +178,21 @@ export default defineComponent({
     padding: 1rem;
     border-bottom: 0.2rem solid $color-side-nav-bg;
     cursor: pointer;
+}
+
+.leading {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.trailing {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: $color-side-nav-bg;
 }
 </style>
