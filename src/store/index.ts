@@ -1086,8 +1086,7 @@ export default createStore({
         getResearchInvolvement({ commit, state }) {
             db.collection('research-involvements')
                 .where('user_id', '==', state.user?.uid)
-                .get()
-                .then(snapshot => {
+                .onSnapshot(snapshot => {
                     commit(
                         'UPDATE_PROJECT_INVOLVEMENTS',
                         snapshot.docs.map(data => data.data())
@@ -1103,7 +1102,9 @@ export default createStore({
                     user_email: state.user?.email,
                     user_id: state.user?.uid,
                     statusCode: RESEARCH_INTEREST,
-                    updateLog: [Date.now()],
+                    updateLog: [
+                        firebaseApp.firestore.FieldValue.serverTimestamp(),
+                    ],
                 })
                 .then(() => {
                     Swal.fire({
@@ -1125,7 +1126,9 @@ export default createStore({
                 .update({
                     statusCode: RESEARCH_APPLY,
                     fileName,
-                    updateLog: [Date.now()],
+                    updateLog: firebase.firestore.FieldValue.arrayUnion(
+                        new Date()
+                    ),
                 })
                 .then(() => {
                     Swal.fire({
@@ -1141,14 +1144,13 @@ export default createStore({
                 .update({
                     statusCode,
                     updateLog: firebase.firestore.FieldValue.arrayUnion(
-                        Date.now()
+                        new Date()
                     ),
                 })
                 .then(() =>
                     Swal.fire({
                         icon: 'success',
-                        title:
-                            'Your decision will be forwareded to the student',
+                        title: 'Your decision will be forwarded to the student',
                         text: 'The student will recieve an email shortly',
                     })
                 );

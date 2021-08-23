@@ -47,15 +47,17 @@
                         {{ statusDisplayer(student) }}
                     </div>
                 </div>
-                <div class="trailing">
-                    <IconButton
-                        @click="() => rejectButtomClicked(student.user_id)"
-                    >
+                <div
+                    class="trailing"
+                    v-if="
+                        student.statusCode === RESEARCH_APPLY ||
+                        student.statusCode === RESEARCH_INTEREST
+                    "
+                >
+                    <IconButton @click="() => rejectButtomClicked(student)">
                         <fa icon="times" />
                     </IconButton>
-                    <IconButton
-                        @click="() => checkedButtonClicked(student.user_id)"
-                    >
+                    <IconButton @click="() => checkedButtonClicked(student)">
                         <fa icon="check" />
                     </IconButton>
                 </div>
@@ -106,25 +108,25 @@ export default defineComponent({
             }
         };
 
-        const rejectButtomClicked = (user_id) => {
+        const rejectButtomClicked = (user) => {
             store.dispatch('updateResearchInvolvement', {
                 statusCode: RESEARCH_REJECTED,
                 research_id: state.project_detail.id,
-                user_id,
+                user_id: user.user_id,
             });
         };
-        const checkedButtonClicked = (user_id) => {
-            if (state.project_detail.statusCode === RESEARCH_INTEREST)
+        const checkedButtonClicked = (user) => {
+            if (user.statusCode === RESEARCH_INTEREST)
                 store.dispatch('updateResearchInvolvement', {
                     statusCode: RESEARCH_INTEREST_ACCEPTED,
                     research_id: state.project_detail.id,
-                    user_id,
+                    user_id: user.user_id,
                 });
-            else if (state.project_detail.statusCode === RESEARCH_APPLY)
+            else if (user.statusCode === RESEARCH_APPLY)
                 store.dispatch('updateResearchInvolvement', {
                     statusCode: RESEARCH_APPLICATION_ACCEPTED,
                     research_id: state.project_detail.id,
-                    user_id,
+                    user_id: user.user_id,
                 });
         };
 
