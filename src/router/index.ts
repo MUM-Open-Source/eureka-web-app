@@ -18,7 +18,7 @@ import ResetPassword from '@/views/ResetPassword.vue';
 import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
 import ResearchProjects from '@/views/ResearchProjects.vue';
-import ProjectDetails from '@/views/ProjectDetails.vue'
+import ProjectDetails from '@/views/ProjectDetails.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -144,13 +144,13 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/research-projects',
         name: 'ResearchProjects',
-        component: ResearchProjects
+        component: ResearchProjects,
     },
     {
         path: '/project-details/:id',
         name: 'ProjectDetails',
-        component: ProjectDetails
-    }
+        component: ProjectDetails,
+    },
 
     // {
     //   path: '/about',

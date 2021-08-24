@@ -1,7 +1,7 @@
 <template>
     <!-- List of projects -->
     <List
-        v-for="project in state.userProjects"
+        v-for="project in userProjects"
         :key="project.key"
         :project="project"
         :project_status="true"
@@ -10,43 +10,43 @@
 </template>
 
 <script>
-import store from '@/store';
-import { onMounted, reactive } from 'vue';
 import List from '@/common/List.vue';
+import { computed } from '@vue/runtime-core';
+import store from '@/store';
+import {
+    GET_IS_LECTURER,
+    GET_IS_STUDENT,
+    GET_LECTURER_MY_PROJECTS,
+    GET_STUDENT_MY_PROJECTS,
+    RECRUITMENT_STORE,
+} from './recruitmentStore';
 
 export default {
     name: 'AllProjects',
     components: { List },
     setup() {
-        // gets specific projects when mounted (see store/index.ts)
-        // 2 Conditions
-        // Staff: Shows published projecs
-        // Student: Shows applied projects along with status
+        const userProjects = computed(() => {
+            const studentProjects =
+                store.getters[`${RECRUITMENT_STORE}${GET_STUDENT_MY_PROJECTS}`];
+            const staffProjects =
+                store.getters[
+                    `${RECRUITMENT_STORE}${GET_LECTURER_MY_PROJECTS}`
+                ];
+            const isStudent =
+                store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
+            const isStaff =
+                store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
 
-        const state = reactive({
-            userProjects: [],
-            userIsStaff: store.state.user_data?.roles.includes('staff'),
-            userIsStudent: store.state.user_data?.roles.includes('talent'),
+            if (isStudent && isStaff)
+                return studentProjects.concat(staffProjects);
+            else if (store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`])
+                return studentProjects;
+            else if (store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`])
+                return staffProjects;
         });
-        onMounted(() => {
-            const supervisorProjects = store.state.all_projects.filter(
-                (projects) => projects.supervisor_id === store.state.user.uid
-            );
-            const userProjects = store.state.all_projects.filter((p) =>
-                store.state.project_involvements.find(
-                    (involvements) => involvements.research_id === p.id
-                )
-            );
-            if (state.userIsStaff && state.userIsStudent)
-                state.userProjects = supervisorProjects.concat(userProjects);
-            else if (state.userIsStaff) state.userIsStaff = supervisorProjects;
-            else state.userProjects = userProjects;
-        });
-
-        // references projects in state and store in projects Final
 
         return {
-            state,
+            userProjects,
         };
     },
 };

@@ -91,7 +91,7 @@
 import ApplyDialog from '@/common/ApplyDialog.vue';
 import router from '@/router';
 import store from '@/store';
-import { defineComponent, computed, reactive, onMounted } from 'vue';
+import { defineComponent, computed, reactive } from 'vue';
 import Modal from './Modal.vue';
 import IconButton from '@/modules/admin/IconButton.vue';
 import FlatButton from '@/modules/admin/FlatButton.vue';
@@ -101,6 +101,12 @@ import {
     RESEARCH_INTEREST,
     RESEARCH_INTEREST_ACCEPTED,
 } from '@/modules/constants';
+import {
+    GET_IS_LECTURER,
+    GET_IS_STUDENT,
+    GET_USER_INVOLVEMENT,
+    RECRUITMENT_STORE,
+} from '@/modules/recruitment/recruitmentStore';
 
 export default defineComponent({
     name: 'List',
@@ -134,31 +140,21 @@ export default defineComponent({
     },
     setup(props) {
         const state = reactive({
-            involvement: null,
+            involvement: computed(() =>
+                store.getters[
+                    `${RECRUITMENT_STORE}${GET_USER_INVOLVEMENT}`
+                ].find(
+                    (research: any) => research.research_id === props.project.id
+                )
+            ),
         });
 
-        onMounted(() => {
-            state.involvement = store.state.project_involvements.find(
-                (research) =>
-                    (research as { research_id: string }).research_id ===
-                    props.project.id
-            ) as any;
-        });
-
-        // Hides Apply Button if either at Your Projects (Student & Staff) or All Projects (Staff)
-        const isYourProject = computed(() => {
-            return store.state.user?.uid === props.project.supervisor_id;
-        });
-
-        // Checks if the user is a staff.
-        const userIsStaff = computed(() => {
-            return store.state.user_data?.roles.includes('staff');
-        });
-
-        // Checks if the user is a student
-        const userIsStudent = computed(() => {
-            return store.state.user_data?.roles.includes('talent');
-        });
+        const isYourProject =
+            store.state.user?.uid === props.project.supervisor_id;
+        const userIsStaff =
+            store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`];
+        const userIsStudent =
+            store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
 
         const expressInterest = () => {
             store.dispatch('studentExpressInterest', props.project.id);

@@ -26,7 +26,7 @@
 </template>
 
 <script lang='ts'>
-import { computed, defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
 import TabsWrapper from '@/common/TabsWrapper.vue';
 import Tab from '@/common/Tab.vue';
 import NotFound from '@/views/NotFound.vue';
@@ -34,6 +34,14 @@ import YourProject from '@/modules/recruitment/YourProject.vue';
 import AllProjects from '@/modules/recruitment/AllProjects.vue';
 import NewProject from '@/modules/recruitment/NewProject.vue';
 import store from '@/store';
+import {
+    ACTION_GET_ALL_PROJECTS,
+    ACTION_GET_USER_INVOLVEMENT_SUBSCRIPTION,
+    GET_IS_LECTURER,
+    GET_IS_STUDENT,
+    RECRUITMENT_STORE,
+    SET_USER_INVOLVEMENTS_UNSUBSCRIBE,
+} from '@/modules/recruitment/recruitmentStore';
 
 export default defineComponent({
     name: 'ResearchProjects',
@@ -48,20 +56,28 @@ export default defineComponent({
     setup() {
         // to keep track of the tab
         const tab = ref(0);
-
-        const userIsStudent = computed(() => {
-            return store.state.user_data?.roles.includes('talent');
-        });
-        onMounted(() => {
-            store.dispatch('getProjects');
-        });
-
         const updateTab = (newTab: number) => (tab.value = newTab);
+        const userIsStaff =
+            store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`];
+        const userIsStudent =
+            store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
+
+        onMounted(() => {
+            store.dispatch(`${RECRUITMENT_STORE}${ACTION_GET_ALL_PROJECTS}`);
+            if (userIsStudent) {
+                store.dispatch(
+                    `${RECRUITMENT_STORE}${ACTION_GET_USER_INVOLVEMENT_SUBSCRIPTION}`
+                );
+            }
+        });
+
+        onUnmounted(() => {
+            store.commit(
+                `${RECRUITMENT_STORE}${SET_USER_INVOLVEMENTS_UNSUBSCRIBE}`
+            );
+        });
 
         // Checks if the user is a staff.
-        const userIsStaff = computed(() => {
-            return store.state.user_data?.roles.includes('staff');
-        });
 
         return {
             tab,
