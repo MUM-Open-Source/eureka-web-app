@@ -12,11 +12,7 @@
             :project_status="true"
             :is_details_page="true"
         />
-        <div
-            class="pad__1 mar--1"
-            style="width: 100%"
-            v-if="state.isUserProject"
-        >
+        <div class="pad__1 mar--1" style="width: 100%" v-if="true">
             <div class="subheading">Students</div>
 
             <div v-if="state.project_students.length === 0">
@@ -81,7 +77,9 @@ import {
     RESEARCH_REJECTED,
 } from '@/modules/constants';
 import {
+    ACTION_GET_STUDENT_LIST_SUBSCRIPTION,
     GET_PROJECT_DETAILS,
+    GET_PROJECT_DETAILS_STUDENTS,
     RECRUITMENT_STORE,
 } from '@/modules/recruitment/recruitmentStore';
 
@@ -89,19 +87,26 @@ export default defineComponent({
     components: { List, IconButton },
     name: 'ProjectDetails',
     setup() {
-        //const route = useRoute();
-        // const id = route.params.id;
         const state = reactive({
-            project_students: [],
             userId: store.state.user.uid,
             isUserProject: false,
             project_detail: computed(
                 () =>
                     store.getters[`${RECRUITMENT_STORE}${GET_PROJECT_DETAILS}`]
             ),
+            project_students: computed(
+                () =>
+                    store.getters[
+                        `${RECRUITMENT_STORE}${GET_PROJECT_DETAILS_STUDENTS}`
+                    ]
+            ),
         });
 
         onMounted(() => {
+            store.dispatch(
+                `${RECRUITMENT_STORE}${ACTION_GET_STUDENT_LIST_SUBSCRIPTION}`,
+                { research_id: state.project_detail.id }
+            );
             state.isUserProject =
                 store.state.user?.uid === state.project_detail.supervisor_id;
         });
