@@ -57,7 +57,6 @@ export interface AppState {
     user_waves: string[];
     process_status: boolean;
     waves_from_other_users: string[];
-    project_involvement_subscription: any;
     filters: {
         event: EventFilter;
         talent: TalentFilter;
