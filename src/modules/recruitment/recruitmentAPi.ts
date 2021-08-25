@@ -76,7 +76,8 @@ export const studentInterested = async ({
     user_id: string;
     research_id: string;
 }) => {
-    db.collection(RESEARCH_INVOLVEMENTS)
+    return db
+        .collection(RESEARCH_INVOLVEMENTS)
         .doc(getResearchId({ user_id, research_id }))
         .update({
             statusCode: RESEARCH_INTEREST,

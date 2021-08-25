@@ -48,22 +48,14 @@
             </div>
             <div class="body user__card--body">
                 {{
-                    project.overview.length > 500 && !props.is_details_page
+                    project.overview.length > 500 && !is_details_page
                         ? `${project.overview.substring(0, 500)} ...`
                         : project.overview
                 }}
             </div>
         </div>
 
-        <!-- Apply Button (Only in All Projects Student View) -->
-        <IconButton
-            @click="expressInterest"
-            v-if="
-                state.userIsStudent &&
-                !state.isYourProject &&
-                !state.involvement
-            "
-        >
+        <IconButton @click="expressInterest" v-if="displayInterestIcon()">
             <fa icon="heart" />
         </IconButton>
 
@@ -77,16 +69,12 @@
             <FlatButton
                 text="APPLY"
                 @click="showModal"
-                v-if="
-                    state.userIsStudent &&
-                    !state.isYourProject &&
-                    state.involvement?.statusCode === RESEARCH_INTEREST_ACCEPTED
-                "
+                v-if="displayApplyButton()"
             />
         </div>
     </div>
 
-    <Modal v-show="isModalVisible" @close="closeModal">
+    <Modal v-show="state.isModalVisible" @close="closeModal">
         <ApplyDialog :file_Upload="project.project_name" />
     </Modal>
 </template>
@@ -112,14 +100,14 @@ import {
     RECRUITMENT_STORE,
     SET_PROJECT_DETAILS_PAGE,
 } from '@/modules/recruitment/recruitmentStore';
+import { studentInterested } from '@/modules/recruitment/recruitmentAPi';
+import Swal from 'sweetalert2';
 
 export default defineComponent({
     name: 'List',
     components: { ApplyDialog, Modal, IconButton, FlatButton },
     data() {
-        return {
-            isModalVisible: false,
-        };
+        return {};
     },
     props: {
         project: {
@@ -135,16 +123,15 @@ export default defineComponent({
             required: true,
         },
     },
-    methods: {
-        showModal() {
-            this.isModalVisible = true;
-        },
-        closeModal() {
-            this.isModalVisible = false;
-        },
-    },
     setup(props) {
         const state = reactive({
+            isModalVisible: false,
+            isYourProject:
+                store.state.user?.uid === props.project.supervisor_id,
+            userIsStaff:
+                store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`],
+            userIsStudent:
+                store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`],
             involvement: computed(() =>
                 store.getters[
                     `${RECRUITMENT_STORE}${GET_USER_INVOLVEMENT}`
@@ -152,16 +139,39 @@ export default defineComponent({
                     (research: any) => research.research_id === props.project.id
                 )
             ),
-            isYourProject:
-                store.state.user?.uid === props.project.supervisor_id,
-            userIsStaff:
-                store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`],
-            userIsStudent:
-                store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`],
         });
 
-        const expressInterest = () => {
-            store.dispatch('studentExpressInterest', props.project.id);
+        const expressInterest = async () => {
+            await studentInterested({
+                user_id: store.state.user?.uid || '',
+                research_id: props.project.id,
+            }).then(() =>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your Intrest Has Been Recorded',
+                    text: 'The supervisor will recieve an email soon',
+                })
+            );
+        };
+
+        const showModal = () => {
+            state.isModalVisible = true;
+        };
+
+        const closeModal = () => {
+            state.isModalVisible = false;
+        };
+
+        const displayInterestIcon = () => {
+            return (
+                state.userIsStudent &&
+                !state.isYourProject &&
+                !state.involvement
+            );
+        };
+
+        const displayApplyButton = () => {
+            return state.involvement?.statusCode === RESEARCH_INTEREST_ACCEPTED;
         };
 
         const statusDisplayer = () => {
@@ -192,12 +202,15 @@ export default defineComponent({
         };
 
         return {
-            props,
             state,
+            showModal,
+            closeModal,
+            onCardClicked,
             statusDisplayer,
             expressInterest,
-            onCardClicked,
-            RESEARCH_INTEREST_ACCEPTED,
+            displayInterestIcon,
+            displayApplyButton,
+            ...props,
         };
     },
 });
