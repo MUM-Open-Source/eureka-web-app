@@ -10,7 +10,7 @@
                 class="tagline text--capsule cursor__default"
                 style="width: fit-content"
             >
-                {{ statusDisplayer() }}
+                {{ statusDisplayer }}
             </div>
         </div>
         <div class="trailing" v-if="studentInterested || studentApplication">
@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import IconButton from '@/modules/admin/IconButton.vue';
 import {
     RESEARCH_APPLICATION_ACCEPTED,
@@ -50,21 +50,27 @@ export default defineComponent({
     },
     components: { IconButton },
     setup(props) {
-        const studentInterested =
-            props.student?.statusCode == RESEARCH_INTEREST;
-        const studentApplication = props.student?.statusCode == RESEARCH_APPLY;
-        const interestedAccepted =
-            props.student?.statusCode == RESEARCH_INTEREST_ACCEPTED;
-        const applicationAccepted =
-            props.student?.statusCode == RESEARCH_APPLICATION_ACCEPTED;
+        const studentInterested = computed(
+            () => props.student?.statusCode == RESEARCH_INTEREST
+        );
 
-        const statusDisplayer = () => {
-            if (studentInterested) return 'Student Interested';
-            else if (interestedAccepted) return 'Interest Accepted';
-            else if (studentApplication) return 'New Applicant';
-            else if (applicationAccepted) return 'Application Accepted';
+        const studentApplication = computed(
+            () => props.student?.statusCode == RESEARCH_APPLY
+        );
+        const interestedAccepted = computed(
+            () => props.student?.statusCode == RESEARCH_INTEREST_ACCEPTED
+        );
+        const applicationAccepted = computed(
+            () => props.student?.statusCode == RESEARCH_APPLICATION_ACCEPTED
+        );
+
+        const statusDisplayer = computed(() => {
+            if (studentInterested.value) return 'Student Interested';
+            else if (interestedAccepted.value) return 'Interest Accepted';
+            else if (studentApplication.value) return 'New Applicant';
+            else if (applicationAccepted.value) return 'Application Accepted';
             else return 'Rejected';
-        };
+        });
 
         const onApprove = () => {
             Swal.fire({
@@ -84,13 +90,13 @@ export default defineComponent({
 
         const checkedButtonClicked = () => {
             const { user_id, research_id }: any = props.student;
-            if (studentInterested) {
+            if (studentInterested.value) {
                 updateStudentInvolvements({
                     statusCode: RESEARCH_INTEREST_ACCEPTED,
                     research_id,
                     user_id,
                 }).then(onApprove);
-            } else if (studentApplication) {
+            } else if (studentApplication.value) {
                 updateStudentInvolvements({
                     statusCode: RESEARCH_APPLICATION_ACCEPTED,
                     research_id,

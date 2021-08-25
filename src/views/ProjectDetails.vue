@@ -14,11 +14,11 @@
         />
         <div class="pad__1 mar--1" style="width: 100%" v-if="true">
             <div class="subheading">Students</div>
-            <div v-if="state.project_students.length === 0">
+            <div v-if="project_students.length === 0">
                 No Students Have Applied Yet
             </div>
             <ProjectDetailsStudentList
-                v-for="student in state.project_students"
+                v-for="student in project_students"
                 v-bind:key="student.user_id"
                 :student="student"
             />
@@ -51,14 +51,13 @@ export default defineComponent({
                 () =>
                     store.getters[`${RECRUITMENT_STORE}${GET_PROJECT_DETAILS}`]
             ),
-            project_students: computed(
-                () =>
-                    store.getters[
-                        `${RECRUITMENT_STORE}${GET_PROJECT_DETAILS_STUDENTS}`
-                    ]
-            ),
         });
 
+        const project_students = computed(() => {
+            return store.getters[
+                `${RECRUITMENT_STORE}${GET_PROJECT_DETAILS_STUDENTS}`
+            ];
+        });
         onMounted(() => {
             store.dispatch(
                 `${RECRUITMENT_STORE}${ACTION_GET_STUDENT_LIST_SUBSCRIPTION}`,
@@ -73,6 +72,7 @@ export default defineComponent({
         return {
             state,
             goBack,
+            project_students,
         };
     },
 });
