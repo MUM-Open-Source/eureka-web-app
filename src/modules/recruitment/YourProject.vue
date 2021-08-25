@@ -1,5 +1,12 @@
 <template>
     <!-- List of projects -->
+    <div class="not-found" v-if="!userProjects || userProjects.length === 0">
+        <img src="@/assets/search-result-not-found.png" />
+        <div class="heading">You don't have any projects</div>
+        <div class="body">
+            {{ isStudent ? 'Find One In All Projects' : 'Create One !' }}
+        </div>
+    </div>
     <List
         v-for="project in userProjects"
         :key="project.key"
@@ -25,6 +32,8 @@ export default {
     name: 'AllProjects',
     components: { List },
     setup() {
+        const isStudent =
+            store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
         const userProjects = computed(() => {
             const studentProjects =
                 store.getters[`${RECRUITMENT_STORE}${GET_STUDENT_MY_PROJECTS}`];
@@ -47,10 +56,18 @@ export default {
 
         return {
             userProjects,
+            isStudent,
         };
     },
 };
 </script>
 
-<style>
+<style lang='scss' scoped>
+.not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
 </style>

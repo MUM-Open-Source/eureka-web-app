@@ -101,7 +101,9 @@ export default defineComponent({
 
         const dateDisplayer = () => {
             const { student } = props;
-            return new Date(student?.updateLog[student.updateLog.length - 1])
+            return new Date(
+                student?.updateLog[student.updateLog.length - 1].time
+            )
                 .toString()
                 .substring(0, 16);
         };

@@ -1,6 +1,13 @@
 <template>
     <!-- List of projects -->
+    <div class="not-found" v-if="projects.length === 0">
+        <img src="@/assets/search-result-not-found.png" />
+        <div class="heading">No Projects Currently</div>
+        <div class="body">Please check later</div>
+    </div>
+
     <List
+        v-else
         v-for="project in projects"
         :key="project.key"
         :project="project"
@@ -28,5 +35,12 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
 </style>

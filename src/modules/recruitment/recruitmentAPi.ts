@@ -2,7 +2,7 @@ import { db } from '@/firebase';
 import firebase from 'firebase';
 import { RESEARCH_INTEREST } from '../constants';
 
-const RESEARCH_INVOLVEMENTS = 'research-involvements';
+const RESEARCH_INVOLVEMENTS = 'research_involvements';
 const PROJECT = 'projects';
 
 const getResearchId = ({
