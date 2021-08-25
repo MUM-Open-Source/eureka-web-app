@@ -66,22 +66,24 @@ export default defineComponent({
             else return 'Rejected';
         };
 
+        const onApprove = () => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Your Decision is Recorded',
+                text: 'The student will receieve an email soon',
+            });
+        };
+
         const rejectButtomClicked = () => {
             updateStudentInvolvements({
                 user_id: props.student?.user_id,
                 research_id: props.student?.research_id,
                 statusCode: RESEARCH_REJECTED,
-            });
+            }).then(onApprove);
         };
+
         const checkedButtonClicked = () => {
             const { user_id, research_id }: any = props.student;
-            const onApprove = () => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Your Decision is Recorded',
-                    text: 'The student will receieve an email soon',
-                });
-            };
             if (studentInterested) {
                 updateStudentInvolvements({
                     statusCode: RESEARCH_INTEREST_ACCEPTED,
