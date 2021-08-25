@@ -41,6 +41,7 @@ import {
     RESEARCH_REJECTED,
 } from '../constants';
 import { updateStudentInvolvements } from './recruitmentAPi';
+import Swal from 'sweetalert2';
 
 export default defineComponent({
     name: 'ProjectDetailsStudentList',
@@ -74,18 +75,25 @@ export default defineComponent({
         };
         const checkedButtonClicked = () => {
             const { user_id, research_id }: any = props.student;
+            const onApprove = () => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your Decision is Recorded',
+                    text: 'The student will receieve an email soon',
+                });
+            };
             if (studentInterested) {
                 updateStudentInvolvements({
                     statusCode: RESEARCH_INTEREST_ACCEPTED,
                     research_id,
                     user_id,
-                });
+                }).then(onApprove);
             } else if (studentApplication) {
                 updateStudentInvolvements({
                     statusCode: RESEARCH_APPLICATION_ACCEPTED,
                     research_id,
                     user_id,
-                });
+                }).then(onApprove);
             }
         };
 

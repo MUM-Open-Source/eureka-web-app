@@ -148,7 +148,7 @@ export default defineComponent({
             }).then(() =>
                 Swal.fire({
                     icon: 'success',
-                    title: 'Your Intrest Has Been Recorded',
+                    title: 'Your Interest Has Been Recorded',
                     text: 'The supervisor will recieve an email soon',
                 })
             );
