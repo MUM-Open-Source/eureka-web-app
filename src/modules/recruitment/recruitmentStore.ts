@@ -51,6 +51,9 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
                 state.userInvolvements.find(findProject(p))
             );
         },
+        [GET_PROJECT_DETAILS]: state => {
+            return state.projectDetailsPageData;
+        },
         [GET_IS_LECTURER]: (__, _, rootState) => {
             return rootState.user_data?.roles.includes('staff');
         },
@@ -90,6 +93,12 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
             state,
             { newSubscription }: { newSubscription: any }
         ) => (state.userInvolvementSubscription = newSubscription),
+        [SET_PROJECT_DETAILS_PAGE]: (
+            state,
+            { detailsPageData }: { detailsPageData: Project }
+        ) => {
+            state.projectDetailsPageData = detailsPageData;
+        },
         [SET_USER_INVOLVEMENTS_UNSUBSCRIBE]: state => {
             state.userInvolvementSubscription = null;
         },

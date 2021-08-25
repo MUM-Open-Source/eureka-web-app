@@ -58,7 +58,11 @@
         <!-- Apply Button (Only in All Projects Student View) -->
         <IconButton
             @click="expressInterest"
-            v-if="userIsStudent && !isYourProject && !state.involvement"
+            v-if="
+                state.userIsStudent &&
+                !state.isYourProject &&
+                !state.involvement
+            "
         >
             <fa icon="heart" />
         </IconButton>
@@ -74,8 +78,8 @@
                 text="APPLY"
                 @click="showModal"
                 v-if="
-                    userIsStudent &&
-                    !isYourProject &&
+                    state.userIsStudent &&
+                    !state.isYourProject &&
                     state.involvement?.statusCode === RESEARCH_INTEREST_ACCEPTED
                 "
             />
@@ -106,6 +110,7 @@ import {
     GET_IS_STUDENT,
     GET_USER_INVOLVEMENT,
     RECRUITMENT_STORE,
+    SET_PROJECT_DETAILS_PAGE,
 } from '@/modules/recruitment/recruitmentStore';
 
 export default defineComponent({
@@ -147,14 +152,13 @@ export default defineComponent({
                     (research: any) => research.research_id === props.project.id
                 )
             ),
+            isYourProject:
+                store.state.user?.uid === props.project.supervisor_id,
+            userIsStaff:
+                store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`],
+            userIsStudent:
+                store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`],
         });
-
-        const isYourProject =
-            store.state.user?.uid === props.project.supervisor_id;
-        const userIsStaff =
-            store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`];
-        const userIsStudent =
-            store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
 
         const expressInterest = () => {
             store.dispatch('studentExpressInterest', props.project.id);
@@ -174,15 +178,23 @@ export default defineComponent({
             }
         };
 
-        const onCardClicked = () => {};
+        const onCardClicked = () => {
+            if (!props.is_details_page) {
+                store.commit(
+                    `${RECRUITMENT_STORE}${SET_PROJECT_DETAILS_PAGE}`,
+                    { detailsPageData: props.project }
+                );
+                router.push({
+                    name: 'ProjectDetails',
+                    params: { id: props.project.id },
+                });
+            }
+        };
 
         return {
             props,
             state,
-            userIsStudent,
-            isYourProject,
             statusDisplayer,
-            userIsStaff,
             expressInterest,
             onCardClicked,
             RESEARCH_INTEREST_ACCEPTED,

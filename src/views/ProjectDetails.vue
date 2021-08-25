@@ -67,8 +67,8 @@
 </template>
 
 <script>
-import { useRoute } from 'vue-router';
-import { defineComponent, onMounted, reactive, ref } from 'vue';
+//import { useRoute } from 'vue-router';
+import { computed, defineComponent, onMounted, reactive } from 'vue';
 import store from '@/store';
 import List from '@/common/List.vue';
 import IconButton from '@/modules/admin/IconButton.vue';
@@ -80,18 +80,30 @@ import {
     RESEARCH_INTEREST_ACCEPTED,
     RESEARCH_REJECTED,
 } from '@/modules/constants';
+import {
+    GET_PROJECT_DETAILS,
+    RECRUITMENT_STORE,
+} from '@/modules/recruitment/recruitmentStore';
 
 export default defineComponent({
     components: { List, IconButton },
     name: 'ProjectDetails',
     setup() {
-        const route = useRoute();
-        const id = route.params.id;
+        //const route = useRoute();
+        // const id = route.params.id;
         const state = reactive({
-            project_detail: null,
             project_students: [],
             userId: store.state.user.uid,
             isUserProject: false,
+            project_detail: computed(
+                () =>
+                    store.getters[`${RECRUITMENT_STORE}${GET_PROJECT_DETAILS}`]
+            ),
+        });
+
+        onMounted(() => {
+            state.isUserProject =
+                store.state.user?.uid === state.project_detail.supervisor_id;
         });
 
         const statusDisplayer = (involvement) => {
@@ -130,31 +142,19 @@ export default defineComponent({
                 });
         };
 
-        const getProjectUsers = (research_id) => {
-            state.isUserProject =
-                state.project_detail?.supervisor_id === state.userId || true;
-            if (state.isUserProject) {
-                store.dispatch('getResearchStudent', {
-                    research_id,
-                    onRecieved: (student_list) =>
-                        (state.project_students = student_list),
-                });
-            }
-        };
+        // const getProjectUsers = (research_id) => {
+        //     state.isUserProject =
+        //         state.project_detail?.supervisor_id === state.userId || true;
+        //     if (state.isUserProject) {
+        //         store.dispatch('getResearchStudent', {
+        //             research_id,
+        //             onRecieved: (student_list) =>
+        //                 (state.project_students = student_list),
+        //         });
+        //     }
+        // };
 
-        onMounted(() => {
-            store.state.project_detail.length > 0
-                ? (state.project_detail = ref(store.state.project_detail[0]))
-                : store.dispatch('getProject', {
-                      onRecieve: (project) => {
-                          state.project_detail = project;
-                          getProjectUsers(project.id);
-                      },
-                      id,
-                  });
-
-            if (state.project_detail) getProjectUsers(state.project_detail.id);
-        });
+        onMounted(() => {});
 
         const goBack = () => router.back();
 
