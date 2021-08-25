@@ -4,17 +4,13 @@
         <div class="side-nav__group mar__b--2 mar__t--1">
             <router-link :to="{ name: '' }">
                 <div class="side-nav__group--link">
-                    <fa icon="border-all" size="md" class="side-nav__icon" />
+                    <fa icon="border-all" class="side-nav__icon" />
                     <div class="side-nav__text">Dashboard</div>
                 </div>
             </router-link>
             <router-link :to="{ name: '' }">
                 <div class="side-nav__group--link">
-                    <fa
-                        :icon="['far', 'comments']"
-                        size="md"
-                        class="side-nav__icon"
-                    />
+                    <fa :icon="['far', 'comments']" class="side-nav__icon" />
                     <div class="side-nav__text">Messages</div>
                 </div>
             </router-link>
@@ -24,17 +20,13 @@
             <div class="side-nav__group--header">Academic Hub</div>
             <router-link :to="{ name: '' }">
                 <div class="side-nav__group--link">
-                    <fa
-                        icon="project-diagram"
-                        size="md"
-                        class="side-nav__icon"
-                    />
+                    <fa icon="project-diagram" class="side-nav__icon" />
                     <div class="side-nav__text">Incubator</div>
                 </div>
             </router-link>
             <router-link :to="{ name: 'ResearchProjects' }">
                 <div class="side-nav__group--link">
-                    <fa icon="book" size="md" class="side-nav__icon" />
+                    <fa icon="book" class="side-nav__icon" />
                     <div class="side-nav__text">Research</div>
                 </div>
             </router-link>
@@ -46,7 +38,6 @@
                 <div class="side-nav__group--link">
                     <fa
                         :icon="['far', 'calendar-alt']"
-                        size="md"
                         class="side-nav__icon"
                     />
                     <div class="side-nav__text">Events</div>
@@ -54,28 +45,22 @@
             </router-link>
             <router-link :to="{ name: '' }">
                 <div class="side-nav__group--link">
-                    <fa icon="code" size="md" class="side-nav__icon" />
+                    <fa icon="code" class="side-nav__icon" />
                     <div class="side-nav__text">Projects</div>
                 </div>
             </router-link>
             <router-link :to="{ name: 'FindTalent' }">
                 <div class="side-nav__group--link">
-                    <fa
-                        :icon="['far', 'handshake']"
-                        size="md"
-                        class="side-nav__icon"
-                    />
+                    <fa :icon="['far', 'handshake']" class="side-nav__icon" />
                     <div class="side-nav__text">Talent</div>
                 </div>
             </router-link>
         </div>
         <div class="side-nav__group mar__b--2" v-if="userIsAdmin">
-            <div class="side-nav__group--header">
-                Mission Control
-            </div>
+            <div class="side-nav__group--header">Mission Control</div>
             <router-link :to="{ name: 'Admin' }">
                 <div class="side-nav__group--link">
-                    <fa icon="user-shield" size="md" class="side-nav__icon" />
+                    <fa icon="user-shield" class="side-nav__icon" />
                     <div class="side-nav__text">Admin Dash</div>
                 </div>
             </router-link>
@@ -83,11 +68,7 @@
         <div class="side-nav__group mar__b--2">
             <router-link :to="{ name: 'Feedback' }">
                 <div class="side-nav__group--link side-nav__group--bottom">
-                    <fa
-                        :icon="['far', 'comment-alt']"
-                        size="md"
-                        class="side-nav__icon"
-                    />
+                    <fa :icon="['far', 'comment-alt']" class="side-nav__icon" />
                     <div class="side-nav__text">Feedback</div>
                 </div>
             </router-link>

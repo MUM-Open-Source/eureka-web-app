@@ -14,61 +14,24 @@
         />
         <div class="pad__1 mar--1" style="width: 100%" v-if="true">
             <div class="subheading">Students</div>
-
             <div v-if="state.project_students.length === 0">
                 No Students Have Applied Yet
             </div>
-
-            <div
-                class="student-lists"
+            <ProjectDetailsStudentList
                 v-for="student in state.project_students"
                 v-bind:key="student.user_id"
-            >
-                <div class="leading">
-                    <div class="pad--1">
-                        <div>{{ student.user_name }}</div>
-                        <div>{{ student.user_email }}</div>
-                        <div>
-                            {{
-                                new Date(
-                                    student.updateLog[student.statusCode]
-                                ).toString()
-                            }}
-                        </div>
-                    </div>
-                    <div
-                        class="tagline text--capsule cursor__default"
-                        style="width: fit-content"
-                    >
-                        {{ statusDisplayer(student) }}
-                    </div>
-                </div>
-                <div
-                    class="trailing"
-                    v-if="
-                        student.statusCode === RESEARCH_APPLY ||
-                        student.statusCode === RESEARCH_INTEREST
-                    "
-                >
-                    <IconButton @click="() => rejectButtomClicked(student)">
-                        <fa icon="times" />
-                    </IconButton>
-                    <IconButton @click="() => checkedButtonClicked(student)">
-                        <fa icon="check" />
-                    </IconButton>
-                </div>
-            </div>
+                :student="student"
+            />
         </div>
     </div>
 </template>
 
 <script>
-//import { useRoute } from 'vue-router';
 import { computed, defineComponent, onMounted, reactive } from 'vue';
 import store from '@/store';
 import List from '@/common/List.vue';
-import IconButton from '@/modules/admin/IconButton.vue';
 import router from '@/router';
+import ProjectDetailsStudentList from '@/modules/recruitment/ProjectDetailsStudentList.vue';
 import {
     RESEARCH_APPLICATION_ACCEPTED,
     RESEARCH_APPLY,
@@ -82,9 +45,10 @@ import {
     GET_PROJECT_DETAILS_STUDENTS,
     RECRUITMENT_STORE,
 } from '@/modules/recruitment/recruitmentStore';
+import IconButton from '@/modules/admin/IconButton.vue';
 
 export default defineComponent({
-    components: { List, IconButton },
+    components: { List, IconButton, ProjectDetailsStudentList },
     name: 'ProjectDetails',
     setup() {
         const state = reactive({
@@ -111,20 +75,6 @@ export default defineComponent({
                 store.state.user?.uid === state.project_detail.supervisor_id;
         });
 
-        const statusDisplayer = (involvement) => {
-            if (involvement) {
-                const { statusCode } = involvement;
-                if (statusCode === RESEARCH_INTEREST)
-                    return 'Student Interested';
-                else if (statusCode === RESEARCH_INTEREST_ACCEPTED)
-                    return 'Interest Accepted';
-                else if (statusCode === RESEARCH_APPLY) return 'New Applicant';
-                else if (statusCode === RESEARCH_APPLICATION_ACCEPTED)
-                    return 'Application Accepted';
-                else return 'Rejected';
-            }
-        };
-
         const rejectButtomClicked = (user) => {
             store.dispatch('updateResearchInvolvement', {
                 statusCode: RESEARCH_REJECTED,
@@ -147,26 +97,11 @@ export default defineComponent({
                 });
         };
 
-        // const getProjectUsers = (research_id) => {
-        //     state.isUserProject =
-        //         state.project_detail?.supervisor_id === state.userId || true;
-        //     if (state.isUserProject) {
-        //         store.dispatch('getResearchStudent', {
-        //             research_id,
-        //             onRecieved: (student_list) =>
-        //                 (state.project_students = student_list),
-        //         });
-        //     }
-        // };
-
-        onMounted(() => {});
-
         const goBack = () => router.back();
 
         return {
             state,
             goBack,
-            statusDisplayer,
             rejectButtomClicked,
             checkedButtonClicked,
         };

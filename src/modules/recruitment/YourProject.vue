@@ -38,7 +38,7 @@ export default {
                 store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
 
             if (isStudent && isStaff)
-                return studentProjects.concat(staffProjects);
+                return staffProjects.concat(studentProjects);
             else if (store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`])
                 return studentProjects;
             else if (store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`])
