@@ -30,11 +30,6 @@ const getInitState = (): AppState => {
         new_img_url: '',
         is_new: false, // used to ensure all mandatory details are filled after signup
         events: [],
-        project_detail: [],
-        projects: [],
-        project_involvements: [],
-        project_involvement_subscription: [],
-        all_projects: [],
         dialog: [],
         talent: [],
         mentors: [],
@@ -954,15 +949,6 @@ export default createStore({
                     console.log('Error getting document:', error);
                 });
         },
-        UPDATE_PROJECT_INVOLVEMENTS(state, newValue) {
-            state.project_involvements = newValue;
-        },
-        UPDATE_PROJECTS(state, newProjects) {
-            state.all_projects = newProjects;
-        },
-        UPDATE_PROJECTS_INVOLVEMENTS_SUBSCRIPTION(state, subscriptions) {
-            state.project_involvement_subscription = subscriptions;
-        },
     },
 
     // functions to be called throughout the app that, in turn, call mutations
@@ -1089,76 +1075,6 @@ export default createStore({
 
         getWavesFromOtherUsers({ commit }) {
             commit('GET_WAVES_FROM_OTHER_USERS');
-        },
-        async getResearchInvolvement({ commit, state }) {
-            // const results = await getRealtimeStudentInvolvements({
-            //     user_id: state.user?.uid || '',
-            //     onSnapshot: (studentInvolvements: any) =>
-            //         commit('UPDATE_PROJECT_INVOLVEMENTS', studentInvolvements),
-            // });
-            // commit('UPDATE_PROJECTS_INVOLVEMENTS_SUBSCRIPTION', results);
-        },
-        studentExpressInterest({ state }, research_id) {
-            // db.collection('research-involvements')
-            //     .doc(`${state.user?.uid}${research_id}`)
-            //     .set({
-            //         research_id,
-            //         user_name: state.user?.displayName,
-            //         user_email: state.user?.email,
-            //         user_id: state.user?.uid,
-            //         statusCode: RESEARCH_INTEREST,
-            //         updateLog: [
-            //             firebaseApp.firestore.FieldValue.serverTimestamp(),
-            //         ],
-            //     })
-            //     .then(() => {
-            //         Swal.fire({
-            //             icon: 'success',
-            //             title: 'Your Interest Has Been expressed',
-            //             text: 'The supervisor will recieve an email shortly',
-            //         });
-            //     });
-        },
-        getResearchStudent(_, { research_id, onRecieved }) {
-            // db.collection('research-involvements')
-            //     .where('research_id', '==', research_id)
-            //     .get()
-            //     .then(docs => onRecieved(docs.docs.map(data => data.data())));
-        },
-        studentApply({ state }, { research_id, fileName }) {
-            // db.collection('research-involvements')
-            //     .doc(`${state.user?.uid}${research_id}`)
-            //     .update({
-            //         statusCode: RESEARCH_APPLY,
-            //         fileName,
-            //         updateLog: firebase.firestore.FieldValue.arrayUnion(
-            //             new Date()
-            //         ),
-            //     })
-            //     .then(() => {
-            //         Swal.fire({
-            //             icon: 'success',
-            //             title: 'Your Application Has Been Submitted',
-            //             text: 'The supervisor will recieve an email shortly',
-            //         });
-            //     });
-        },
-        updateResearchInvolvement(_, { research_id, user_id, statusCode }) {
-            // db.collection('research-involvements')
-            //     .doc(`${user_id}${research_id}`)
-            //     .update({
-            //         statusCode,
-            //         updateLog: firebase.firestore.FieldValue.arrayUnion(
-            //             new Date()
-            //         ),
-            //     })
-            //     .then(() =>
-            //         Swal.fire({
-            //             icon: 'success',
-            //             title: 'Your decision will be forwarded to the student',
-            //             text: 'The student will recieve an email shortly',
-            //         })
-            //     );
         },
     },
     modules: {

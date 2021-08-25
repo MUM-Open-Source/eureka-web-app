@@ -52,10 +52,6 @@ export interface AppState {
     talent: User[];
     mentors: User[];
     upload_files: FileUpload;
-    project_detail: object[];
-    projects: Project[];
-    project_involvements: ResearchInvolvement[];
-    all_projects: object[];
     feedback: Feedback[];
     liked_events: string[];
     user_waves: string[];
