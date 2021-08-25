@@ -68,7 +68,7 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
         [GET_OTHER_PROJECTS]: (state, _, rootState) => {
             return state.allProjects.filter(
                 (p: Project) =>
-                    p.supervisor_id !== rootState.user?.uid ||
+                    p.supervisor_id !== rootState.user?.uid &&
                     !state.userInvolvements.find(findProject(p))
             );
         },
