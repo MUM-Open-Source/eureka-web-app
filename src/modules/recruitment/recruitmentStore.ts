@@ -9,26 +9,37 @@ import RecruitementStoreState from './recruitmentTypes';
 
 // Store Function Name Space
 export const RECRUITMENT_STORE = 'recruitementStore/';
+
 // Getters
-export const GET_STUDENT_MY_PROJECTS = 'getStudentMyProjects';
-export const GET_LECTURER_MY_PROJECTS = 'getLecturerMyProjects';
-export const GET_OTHER_PROJECTS = 'getOtherProjects';
 export const GET_IS_STUDENT = 'getIsStudent';
 export const GET_IS_LECTURER = 'getIsLecturer';
+export const GET_OTHER_PROJECTS = 'getOtherProjects';
 export const GET_PROJECT_DETAILS = 'getProjectDetails';
+export const GET_STUDENT_MY_PROJECTS = 'getStudentMyProjects';
 export const GET_USER_INVOLVEMENT = 'getUserProjectInvolvement';
+export const GET_LECTURER_MY_PROJECTS = 'getLecturerMyProjects';
+export const GET_PROJECT_DETAILS_STUDENTS = 'getProjectDetailsStudents';
+
 // Mutations
 export const SET_ALL_PROJECTS = 'setAllProjects';
+export const SET_STUDENT_LIST = 'setStudentList';
 export const SET_USER_INVOLVEMENTS = 'setUserInvolvements';
 export const SET_PROJECT_DETAILS_PAGE = 'setProjectsDetailsPage';
-export const SET_USER_INVOLVEMENTS_SUBSCRIPTIONS =
-    'userInvolvementSubscription';
+export const SET_PROJECT_DETAILS_STUDENTS = 'setProjectDetailsStudents';
 export const SET_USER_INVOLVEMENTS_UNSUBSCRIBE =
     'setUserInvolvementUnsubscribe';
+export const SET_USER_INVOLVEMENTS_SUBSCRIPTIONS =
+    'userInvolvementSubscription';
+export const SET_PROJECT_DETAILS_STUDENTS_UNSUBSCRIBE =
+    'setProjectDetailsStudentsUnsubscribe';
+export const SET_PROJECT_DETAILS_STUDENTS_SUBSCRIPTIONS =
+    'setProjectDetailsStudentsSubscriptions';
+
 // Actions
 export const ACTION_GET_ALL_PROJECTS = 'getAllProjects';
 export const ACTION_GET_PROJECT_DETAILS = 'getProjectDetails';
-export const ACTION_GET_STUDENT_LIST = 'getStudentList';
+export const ACTION_GET_PROJECT_DETAILS_STUDENTS = 'getProjectDetailsStudents';
+export const ACTION_GET_STUDENT_LIST_SUBSCRIPTION = 'getStudentList';
 export const ACTION_GET_USER_INVOLVEMENT_SUBSCRIPTION =
     'userInvolvementSubscription';
 
@@ -67,6 +78,9 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
         },
         [GET_USER_INVOLVEMENT]: state => {
             return state.userInvolvements;
+        },
+        [GET_PROJECT_DETAILS_STUDENTS]: state => {
+            return state.projectDetailsPageStudentList;
         },
         [GET_OTHER_PROJECTS]: (state, _, rootState) => {
             return state.allProjects.filter(
