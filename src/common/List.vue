@@ -64,7 +64,7 @@
                 class="tagline text--capsule cursor__default"
                 v-if="state.involvement"
             >
-                {{ statusDisplayer() }}
+                {{ statusDisplayer }}
             </div>
             <FlatButton
                 text="APPLY"
@@ -173,7 +173,7 @@ export default defineComponent({
             return state.involvement?.statusCode === RESEARCH_INTEREST_ACCEPTED;
         };
 
-        const statusDisplayer = () => {
+        const statusDisplayer = computed(() => {
             if (state.involvement) {
                 const { statusCode } = state.involvement as any;
                 if (statusCode === RESEARCH_INTEREST) return 'Interest Pending';
@@ -185,7 +185,8 @@ export default defineComponent({
                     return 'Application Accepted';
                 else return 'Rejected';
             }
-        };
+            return '';
+        });
 
         const onCardClicked = () => {
             if (!props.is_details_page) {
