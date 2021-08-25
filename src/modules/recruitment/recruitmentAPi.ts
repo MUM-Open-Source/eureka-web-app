@@ -11,7 +11,7 @@ const getResearchId = ({
 }: {
     user_id: string;
     research_id: string;
-}) => `${research_id}${user_id}`;
+}) => `${user_id}${research_id}`;
 
 export const getAllProjects = async () =>
     (await db.collection(PROJECT).get()).docs.map(p => ({
