@@ -1,7 +1,7 @@
 <template>
     <div class="outer-div">
         <div class="inner-div" v-if="true">
-            <div class="heading text--center mar__t--3">
+            <div class="heading text--center mar__t--5 mar__b--3">
                 Academic Recruitment
             </div>
             <!-- Tabs for Academic Research Recruitment -->
@@ -89,5 +89,16 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang='scss' scoped>
+.outer-div {
+    width: 60%;
+    margin: auto;
+}
+
+@media (max-width: 600px) {
+    .outer-div {
+        width: 100%;
+        margin: auto;
+    }
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="pad--5 something-info">
+    <div class="pad--1 something-info">
         <div class="back-button">
             <IconButton @click="goBack">
                 <fa icon="arrow-left" />
@@ -80,8 +80,8 @@ export default defineComponent({
 
 <style lang="scss">
 .something-info {
-    height: 100%;
     display: flex;
+    margin: 5rem;
     flex-direction: column;
     justify-content: space-between;
 
@@ -105,6 +105,12 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         padding-bottom: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .something-info {
+        margin: 1rem;
     }
 }
 </style>
