@@ -64,7 +64,7 @@ export const updateStudentInvolvements = async ({
         .update({
             statusCode,
             updateLog: firebase.firestore.FieldValue.arrayUnion({
-                time: firebase.firestore.FieldValue.serverTimestamp(),
+                time: new Date(),
                 status: statusCode,
             }),
         });
@@ -72,17 +72,25 @@ export const updateStudentInvolvements = async ({
 export const studentInterested = async ({
     user_id,
     research_id,
+    user_email,
+    user_name,
 }: {
     user_id: string;
     research_id: string;
+    user_email: string;
+    user_name: string;
 }) => {
     return db
         .collection(RESEARCH_INVOLVEMENTS)
         .doc(getResearchId({ user_id, research_id }))
-        .update({
+        .set({
+            user_id,
+            research_id,
+            user_email,
+            user_name,
             statusCode: RESEARCH_INTEREST,
             updateLog: firebase.firestore.FieldValue.arrayUnion({
-                time: firebase.firestore.FieldValue.serverTimestamp(),
+                time: new Date(),
                 status: RESEARCH_INTEREST,
             }),
         });

@@ -106,9 +106,6 @@ import Swal from 'sweetalert2';
 export default defineComponent({
     name: 'List',
     components: { ApplyDialog, Modal, IconButton, FlatButton },
-    data() {
-        return {};
-    },
     props: {
         project: {
             type: Object,
@@ -143,8 +140,10 @@ export default defineComponent({
 
         const expressInterest = async () => {
             await studentInterested({
-                user_id: store.state.user?.uid || '',
                 research_id: props.project.id,
+                user_id: store.state.user?.uid || '',
+                user_email: store.state.user?.email || '',
+                user_name: store.state.user?.displayName || '',
             }).then(() =>
                 Swal.fire({
                     icon: 'success',
