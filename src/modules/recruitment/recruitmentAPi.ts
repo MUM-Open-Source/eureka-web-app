@@ -1,5 +1,6 @@
 import { db } from '@/firebase';
 import firebase from 'firebase';
+import { RESEARCH_INTEREST } from '../constants';
 
 const RESEARCH_INVOLVEMENTS = 'research-involvements';
 const PROJECT = 'projects';
@@ -55,14 +56,33 @@ export const updateStudentInvolvements = async ({
 }: {
     user_id: string;
     research_id: string;
-    statusCode: string;
+    statusCode: number;
 }) =>
     db
         .collection(RESEARCH_INVOLVEMENTS)
         .doc(getResearchId({ user_id, research_id }))
         .update({
             statusCode,
-            updateLog: firebase.firestore.FieldValue.arrayUnion(
-                firebase.firestore.FieldValue.serverTimestamp()
-            ),
+            updateLog: firebase.firestore.FieldValue.arrayUnion({
+                time: firebase.firestore.FieldValue.serverTimestamp(),
+                status: statusCode,
+            }),
         });
+
+export const studentInterested = async ({
+    user_id,
+    research_id,
+}: {
+    user_id: string;
+    research_id: string;
+}) => {
+    db.collection(RESEARCH_INVOLVEMENTS)
+        .doc(getResearchId({ user_id, research_id }))
+        .update({
+            statusCode: RESEARCH_INTEREST,
+            updateLog: firebase.firestore.FieldValue.arrayUnion({
+                time: firebase.firestore.FieldValue.serverTimestamp(),
+                status: RESEARCH_INTEREST,
+            }),
+        });
+};

@@ -10,15 +10,21 @@
                 class="tagline text--capsule cursor__default"
                 style="width: fit-content"
             >
-                {{ statusDisplayer(student) }}
+                {{ statusDisplayer() }}
             </div>
         </div>
-        <div class="trailing" v-if="studentApplication || studentInterested">
+        <div class="trailing" v-if="studentInterested || studentApplication">
             <IconButton @click="() => rejectButtomClicked(student)">
                 <fa icon="times" />
             </IconButton>
             <IconButton @click="() => checkedButtonClicked(student)">
                 <fa icon="check" />
+            </IconButton>
+            <IconButton
+                v-if="studentApplication"
+                @click="() => checkedButtonClicked(student)"
+            >
+                <fa icon="file-download" />
             </IconButton>
         </div>
     </div>
@@ -32,7 +38,9 @@ import {
     RESEARCH_APPLY,
     RESEARCH_INTEREST,
     RESEARCH_INTEREST_ACCEPTED,
+    RESEARCH_REJECTED,
 } from '../constants';
+import { updateStudentInvolvements } from './recruitmentAPi';
 
 export default defineComponent({
     name: 'ProjectDetailsStudentList',
@@ -57,6 +65,30 @@ export default defineComponent({
             else return 'Rejected';
         };
 
+        const rejectButtomClicked = () => {
+            updateStudentInvolvements({
+                user_id: props.student?.user_id,
+                research_id: props.student?.research_id,
+                statusCode: RESEARCH_REJECTED,
+            });
+        };
+        const checkedButtonClicked = () => {
+            const { user_id, research_id }: any = props.student;
+            if (studentInterested) {
+                updateStudentInvolvements({
+                    statusCode: RESEARCH_INTEREST_ACCEPTED,
+                    research_id,
+                    user_id,
+                });
+            } else if (studentApplication) {
+                updateStudentInvolvements({
+                    statusCode: RESEARCH_APPLICATION_ACCEPTED,
+                    research_id,
+                    user_id,
+                });
+            }
+        };
+
         const dateDisplayer = () => {
             const { student } = props;
             return new Date(student?.updateLog[student.updateLog.length - 1])
@@ -71,6 +103,8 @@ export default defineComponent({
             studentApplication,
             interestedAccepted,
             applicationAccepted,
+            rejectButtomClicked,
+            checkedButtonClicked,
             dateDisplayer,
             ...props,
         };
@@ -79,4 +113,30 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.student-lists {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 0.2rem solid $color-side-nav-bg;
+    cursor: pointer;
+}
+
+.leading {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.trailing {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: $color-side-nav-bg;
+}
 </style>
