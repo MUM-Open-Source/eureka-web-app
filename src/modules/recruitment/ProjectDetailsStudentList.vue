@@ -20,10 +20,7 @@
             <IconButton @click="() => checkedButtonClicked(student)">
                 <fa icon="check" />
             </IconButton>
-            <IconButton
-                v-if="studentApplication"
-                @click="() => checkedButtonClicked(student)"
-            >
+            <IconButton v-if="studentApplication" @click="downloadFile">
                 <fa icon="file-download" />
             </IconButton>
         </div>
@@ -31,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, onMounted } from 'vue';
 import IconButton from '@/modules/admin/IconButton.vue';
 import {
     RESEARCH_APPLICATION_ACCEPTED,
@@ -50,10 +47,13 @@ export default defineComponent({
     },
     components: { IconButton },
     setup(props) {
+        onMounted(() => {
+            console.log(props.student);
+        });
+
         const studentInterested = computed(
             () => props.student?.statusCode == RESEARCH_INTEREST
         );
-
         const studentApplication = computed(
             () => props.student?.statusCode == RESEARCH_APPLY
         );
@@ -105,6 +105,16 @@ export default defineComponent({
             }
         };
 
+        const downloadFile = () => {
+            const { files } = props.student as any;
+            var link = document.createElement('a');
+            link.download = files[0];
+            link.target = '_blank';
+            link.href = files[0];
+            document.body.appendChild(link);
+            link.click();
+        };
+
         const dateDisplayer = () => {
             const { student } = props;
             const { seconds } =
@@ -121,6 +131,7 @@ export default defineComponent({
             applicationAccepted,
             rejectButtomClicked,
             checkedButtonClicked,
+            downloadFile,
             dateDisplayer,
             ...props,
         };

@@ -99,13 +99,20 @@ export const studentInterested = async ({
 export const studentUploadDocuments = async ({
     user_id,
     research_id,
+    user_name,
     files,
 }: {
     user_id: string;
+    user_name: string;
     research_id: string;
     files: { metadata: any; file: any; filename: any }[];
 }) => {
-    const filesLinks = await uploadDocuments({ user_id, research_id, files });
+    const filesLinks = await uploadDocuments({
+        user_id,
+        research_id,
+        files,
+        user_name,
+    });
     return await db
         .collection(RESEARCH_INVOLVEMENTS)
         .doc(getResearchId({ user_id, research_id }))
@@ -122,16 +129,22 @@ export const uploadDocuments = async ({
     user_id,
     research_id,
     files,
+    user_name,
 }: {
     user_id: string;
     research_id: string;
     files: { metadata: any; file: any; filename: any }[];
+    user_name: string;
 }) => {
-    return files.map(async file => {
-        const document = await storage
-            .ref()
-            .child(`documents/${user_id}/${research_id}-${file.filename}`)
-            .put(file.file, file.metadata);
-        return await document.ref.getDownloadURL();
-    });
+    return await Promise.all(
+        files.map(async file => {
+            const document = await storage
+                .ref()
+                .child(
+                    `documents/${user_id}/${research_id}/${user_name}-${file.filename}`
+                )
+                .put(file.file, file.metadata);
+            return await document.ref.getDownloadURL();
+        })
+    );
 };

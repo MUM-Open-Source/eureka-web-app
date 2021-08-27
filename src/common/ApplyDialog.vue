@@ -1,12 +1,38 @@
 <template>
-    <!-- File Upload Component -->
-    <header class="modal__header pad--1">
-        <div class="heading">
-            <slot name="header">Submit File</slot>
+    <div class="modal-frame">
+        <header class="modal__header">
+            <div class="subheading">
+                You are applying for {{ props.project.project_name }} under the
+                supervision of
+                {{ props.project.supervisor }}
+            </div>
+        </header>
+        <div class="body pad__t--1">
+            Please compress your file into a single folder if you need to submit
+            multiple files.
         </div>
-    </header>
-    <section class="modal__body">
-        <slot name="body">
+
+        <div
+            class="mar__b--2 mar__t--2"
+            style="
+                border: 0.1rem solid grey;
+                border-radius: 0.5rem;
+                padding-bottom: 1rem;
+                padding-top: 0.3rem;
+                padding-left: 0.8rem;
+            "
+        >
+            <div v-if="state.files.length === 0" class="modal__preview mar--1">
+                No Files Selected Yet
+            </div>
+            <div
+                v-else
+                v-for="(file, key) in state.files"
+                :key="key"
+                class="modal__preview mar--1"
+            >
+                <span>{{ file.name }}</span>
+            </div>
             <div class="file-upload">
                 <input
                     :id="file_Upload"
@@ -20,40 +46,29 @@
                     name="fileDrag"
                     class="file-upload__label"
                 >
-                    <img
-                        src="@/assets/file-upload.svg"
-                        alt="Preview"
-                        class="mar__b--2"
-                    />
                     <div class="file-upload__start">
-                        <div class="mar__b--2">Select a file or drag here</div>
                         <span class="tagline text--capsule cursor__pointer">
                             Select a File
                         </span>
                     </div>
                 </label>
             </div>
-        </slot>
-    </section>
-    <!-- File names for preview -->
-    <div v-for="(file, key) in files" :key="key">
-        <div class="modal__preview mar--2">
-            <div>{{ file.name }}</div>
         </div>
+
+        <Button
+            text="Submit"
+            type="submit"
+            class="modal__button--submit"
+            @click.prevent="submitFiles"
+        />
     </div>
-    <Button
-        text="Submit"
-        type="submit"
-        class="modal__button--submit"
-        @click.prevent="handleSubmit"
-    />
 </template>
 
-<script>
-import store from '@/store';
+<script lang='ts'>
 import Button from '@/common/Button.vue';
 import Swal from 'sweetalert2';
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
+import { studentUploadDocuments } from '@/modules/recruitment/recruitmentAPi';
 
 export default defineComponent({
     name: 'ApplyDialog',
@@ -61,127 +76,86 @@ export default defineComponent({
         Button,
     },
     props: {
+        project: {
+            type: Object,
+            required: true,
+        },
+        involvement: {
+            type: Object,
+            required: true,
+        },
         file_Upload: {
             type: String,
             required: true,
         },
     },
-    data() {
-        return {
+    setup(props, context) {
+        const state = reactive({
             files: [],
-            preview_files: [],
-            file_upload: [],
-        };
-    },
-    methods: {
-        close() {
-            // Closes the Dialog, clears off any temporary files used for preview
-            this.$emit('close');
-            this.files = [];
-            this.file_upload = [];
-        },
-        filePreview(e) {
+        });
+
+        const filePreview = (e: any) => {
             // pushes all selected files into main file instance variable, to prep for file upload
             const selectedFiles = e.target.files;
-            this.files = [];
+            state.files = [];
             for (let i = 0; i < selectedFiles.length; i++) {
-                this.files.push(selectedFiles[i]);
+                console.log(selectedFiles[i]);
+                state.files.push(selectedFiles[i] as never);
             }
-            console.log(this.files);
-        },
-        handleSubmit() {
-            // Pushes all files to upload payload and clears temporary instance variable
-            this.file_upload = [];
-            console.log(this.files);
-            for (let i = 0; i < this.files.length; i++) {
-                const fileName = new Date() + '-' + this.files[i].name;
-                const metaData = { contentType: this.files[i].type };
-                this.file_upload.push({
-                    file: this.files[i],
-                    fileName: fileName,
-                    metadata: metaData,
-                });
-            }
-            this.files = [];
-            // Uploads all files from payload instance to firebase
-            store.dispatch('uploadFiles', this.file_upload).then(() => {
-                // Checks if file uploaded successfully and outputs respective results
-                if (store.state.process_status === true) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'File Upload Success!',
-                        text: 'Press OK to continue',
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'File Upload Failed!',
-                        text: 'There seems to be something wrong',
-                    });
-                }
+        };
+
+        const submitFiles = () => {
+            const { user_id, research_id, user_name } = props.involvement;
+            studentUploadDocuments({
+                user_id,
+                user_name,
+                research_id,
+                files: state.files.map((file: any) => ({
+                    filename: (new Date() + '-' + file.name) as any,
+                    metadata: { contentType: file.type } as any,
+                    file: file as any,
+                })),
+            }).then(() => {
+                console.log('close modal')
+                context.emit('close');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'File Upload Success!',
+                    text: 'Press OK to continue',
+                }).then(() => context.emit('close'));
             });
-        },
+        };
+
+        return {
+            state,
+            filePreview,
+            submitFiles,
+            props,
+        };
     },
 });
 </script>
 
 <style lang="scss">
+.modal-frame {
+    padding: 1rem;
+}
 .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #ffffff;
-    box-shadow: 2px 2px 20px 1px;
+    padding: 1rem;
     overflow-x: auto;
     display: flex;
     border-radius: 1rem;
     flex-direction: column;
+    width: 30%;
     z-index: 4;
 
-    &__header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    &__body {
-        padding: 20px 10px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    &__footer {
-        padding: 15px;
-        display: flex;
-        border-top: 1px solid #eeeeee;
-        flex-direction: column;
-        justify-content: flex-end;
-    }
-
     &__button {
-        width: 20px;
+        width: 25px;
 
         &--submit {
-            margin-top: 10px;
-            margin-bottom: 20px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 30px;
         }
     }
-
-    &__preview {
-        text-align: center;
-    }
-}
-
-.modal-transition-enter,
-.modal-transition-leave-to {
-    opacity: 0;
-}
-.modal-transition-enter-active,
-.modal-transition-leave-active {
-    transition: opacity 0.5s ease;
 }
 
 .file-upload {
@@ -189,28 +163,6 @@ export default defineComponent({
     clear: both;
     margin: 0 auto;
     width: 100%;
-    max-width: 600px;
-
-    &__label {
-        float: left;
-        clear: both;
-        padding: 2rem 1.5rem;
-        text-align: center;
-        background: #ffffff;
-        border-radius: 7px;
-        border: 3px solid #eee;
-        transition: all 0.2s ease;
-        user-select: none;
-        margin: auto;
-
-        &:hover {
-            border-color: #454cad;
-        }
-        &.hover {
-            border: 3px solid #454cad;
-            box-shadow: inset 0 0 0 6px #eee;
-        }
-    }
 
     input[type='file'] {
         display: none;

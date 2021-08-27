@@ -74,8 +74,17 @@
         </div>
     </div>
 
-    <Modal v-show="state.isModalVisible" @close="closeModal">
-        <ApplyDialog :file_Upload="project.project_name" />
+    <Modal
+        v-if="state.involvement"
+        v-show="state.isModalVisible"
+        @close="closeModal"
+    >
+        <ApplyDialog
+            :project="project"
+            :file_Upload="project.project_name"
+            :involvement="state.involvement"
+            @close="closeModal"
+        />
     </Modal>
 </template>
 
