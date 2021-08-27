@@ -12,7 +12,11 @@
             :project_status="true"
             :is_details_page="true"
         />
-        <div class="pad__1 mar--1" style="width: 100%" v-if="true">
+        <div
+            class="pad__1 mar--1"
+            style="width: 100%"
+            v-if="state.isUserProject"
+        >
             <div class="subheading">Students</div>
             <div v-if="project_students.length === 0">
                 No Students Have Applied Yet
