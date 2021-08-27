@@ -11,6 +11,7 @@ export interface ResearchInvolvement {
     research_id: string;
     status_code: number;
     updateLog: number[];
+    file_path?: string;
     user_email: string;
     user_id: string;
     user_name: string;

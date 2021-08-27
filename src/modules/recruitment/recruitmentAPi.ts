@@ -1,6 +1,6 @@
-import { db } from '@/firebase';
+import { db, storage } from '@/firebase';
 import firebase from 'firebase';
-import { RESEARCH_INTEREST } from '../constants';
+import { RESEARCH_APPLY, RESEARCH_INTEREST } from '../constants';
 
 const RESEARCH_INVOLVEMENTS = 'research_involvements';
 const PROJECT = 'projects';
@@ -94,4 +94,44 @@ export const studentInterested = async ({
                 status: RESEARCH_INTEREST,
             }),
         });
+};
+
+export const studentUploadDocuments = async ({
+    user_id,
+    research_id,
+    files,
+}: {
+    user_id: string;
+    research_id: string;
+    files: { metadata: any; file: any; filename: any }[];
+}) => {
+    const filesLinks = await uploadDocuments({ user_id, research_id, files });
+    return await db
+        .collection(RESEARCH_INVOLVEMENTS)
+        .doc(getResearchId({ user_id, research_id }))
+        .update({
+            statusCode: RESEARCH_APPLY,
+            files: filesLinks,
+            updateLog: firebase.firestore.FieldValue.arrayUnion({
+                time: new Date(),
+                status: RESEARCH_APPLY,
+            }),
+        });
+};
+export const uploadDocuments = async ({
+    user_id,
+    research_id,
+    files,
+}: {
+    user_id: string;
+    research_id: string;
+    files: { metadata: any; file: any; filename: any }[];
+}) => {
+    return files.map(async file => {
+        const document = await storage
+            .ref()
+            .child(`documents/${user_id}/${research_id}-${file.filename}`)
+            .put(file.file, file.metadata);
+        return await document.ref.getDownloadURL();
+    });
 };
