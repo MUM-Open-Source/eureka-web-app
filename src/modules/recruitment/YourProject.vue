@@ -1,7 +1,7 @@
 <template>
     <!-- List of projects -->
     <div class="not-found" v-if="!userProjects || userProjects.length === 0">
-        <img src="@/assets/search-result-not-found.png" />
+        <img class="img" src="@/assets/search-result-not-found.png" />
         <div class="heading">You don't have any projects</div>
         <div class="body">
             {{ isStudent ? 'Find One In All Projects' : 'Create One !' }}
@@ -69,5 +69,11 @@ export default {
     align-items: center;
     justify-content: center;
     padding: 1rem;
+}
+
+.img {
+    @media (max-width: 428px) {
+        width: 100%;
+    }
 }
 </style>

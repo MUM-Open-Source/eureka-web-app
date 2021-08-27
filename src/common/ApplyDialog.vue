@@ -99,7 +99,6 @@ export default defineComponent({
             const selectedFiles = e.target.files;
             state.files = [];
             for (let i = 0; i < selectedFiles.length; i++) {
-                console.log(selectedFiles[i]);
                 state.files.push(selectedFiles[i] as never);
             }
         };
@@ -116,7 +115,6 @@ export default defineComponent({
                     file: file as any,
                 })),
             }).then(() => {
-                console.log('close modal')
                 context.emit('close');
                 Swal.fire({
                     icon: 'success',
@@ -148,6 +146,10 @@ export default defineComponent({
     flex-direction: column;
     width: 30%;
     z-index: 4;
+
+    @media (max-width: 428px) {
+        width: 90%;
+    }
 
     &__button {
         width: 25px;

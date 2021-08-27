@@ -1,7 +1,7 @@
 <template>
     <!-- List of projects -->
     <div class="not-found" v-if="projects.length === 0">
-        <img src="@/assets/search-result-not-found.png" />
+        <img class="img" src="@/assets/search-result-not-found.png" />
         <div class="heading">No Projects Currently</div>
         <div class="body">Please check later</div>
     </div>
@@ -42,5 +42,11 @@ export default {
     align-items: center;
     justify-content: center;
     padding: 1rem;
+}
+
+.img {
+    @media (max-width: 428px) {
+        width: 100%;
+    }
 }
 </style>
