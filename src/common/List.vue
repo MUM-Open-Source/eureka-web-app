@@ -71,6 +71,10 @@
                 @click="showModal"
                 v-if="displayApplyButton()"
             />
+            <div v-if="showResubmit()">
+                <FlatButton text="CURRENT SUBMISSION" @click="downloadFile" />
+                <FlatButton text="RESUBMIT " @click="showModal" />
+            </div>
         </div>
     </div>
 
@@ -197,6 +201,23 @@ export default defineComponent({
             return '';
         });
 
+        const downloadFile = () => {
+            const { files } = state.involvement as any;
+            var link = document.createElement('a');
+            link.download = files[files.length - 1];
+            link.target = '_blank';
+            link.href = files[files.length - 1];
+            document.body.appendChild(link);
+            link.click();
+        };
+
+        const showResubmit = () => {
+            return (
+                state.involvement &&
+                state.involvement.statusCode === RESEARCH_APPLY
+            );
+        };
+
         const onCardClicked = () => {
             if (!props.is_details_page) {
                 store.commit(
@@ -214,6 +235,8 @@ export default defineComponent({
             state,
             showModal,
             closeModal,
+            downloadFile,
+            showResubmit,
             onCardClicked,
             statusDisplayer,
             expressInterest,

@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from 'vue';
+import { computed, defineComponent } from 'vue';
 import IconButton from '@/modules/admin/IconButton.vue';
 import {
     RESEARCH_APPLICATION_ACCEPTED,
@@ -47,10 +47,6 @@ export default defineComponent({
     },
     components: { IconButton },
     setup(props) {
-        onMounted(() => {
-            console.log(props.student);
-        });
-
         const studentInterested = computed(
             () => props.student?.statusCode == RESEARCH_INTEREST
         );
@@ -108,9 +104,9 @@ export default defineComponent({
         const downloadFile = () => {
             const { files } = props.student as any;
             var link = document.createElement('a');
-            link.download = files[0];
+            link.download = files[files.length - 1];
             link.target = '_blank';
-            link.href = files[0];
+            link.href = files[files.length - 1];
             document.body.appendChild(link);
             link.click();
         };
