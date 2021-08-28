@@ -1,42 +1,46 @@
 <template>
     <div class="container-sm mt-20">
-        <div v-if="showOrHideChatList" class="side_bar">
-            <div class="side_bar__header" :id="showOrHide">
-                <h3>Chats</h3>
+        <transition-group tag="div" class="chat-slider" name="slide">
+            <div v-if="showOrHideChatList" class="side_bar">
+                <div class="side_bar__header" :id="showOrHide">
+                    <h3>Chats</h3>
 
-                <button class="create-group-btn" v-on:click="createGroup">
-                    +
-                </button>
-                <span class="chat-list-toggle" @click="isMessageComponentShow">
-                    chat window (For testing now)
-                </span>
+                    <button class="create-group-btn" v-on:click="createGroup">
+                        +
+                    </button>
+                    <Multiselect
+                        v-model="selected_user.id"
+                        mode="tags"
+                        :searchable="true"
+                        :options="select_options.map(user => user.full_name)"
+                        placeholder="Select members to chat"
+                        class="multselect"
+                    />
+                </div>
 
-                <Multiselect
-                    v-model="selected_user.id"
-                    mode="tags"
-                    :searchable="true"
-                    :options="select_options.map(user => user.full_name)"
-                    placeholder="Select members to chat"
-                    class="multselect"
-                />
+                <div class="contact_list">
+                    <Group
+                        v-for="group in updateDirectGroupName(user_groups)"
+                        :class="{
+                            group_selected: currentActiveGroup == group.id,
+                        }"
+                        :is_team="group.is_team"
+                        :group_name="group.name"
+                        :group_id="group.id"
+                        :last_update="
+                            getRecentLastUpdate(group.recent_message.timestamp)
+                        "
+                        :recent_message="
+                            getRecentMessage(group, group.recent_message)
+                        "
+                        :key="group.key"
+                        @click="
+                            updateGroupId(group.id, group.name, group.is_team)
+                        "
+                    />
+                </div>
             </div>
-
-            <div class="contact_list">
-                <Group
-                    v-for="group in updateDirectGroupName(user_groups)"
-                    :class="{ group_selected: currentActiveGroup == group.id }"
-                    :is_team="group.is_team"
-                    :group_name="group.name"
-                    :group_id="group.id"
-                    :last_update="group.recent_message.timestamp"
-                    :recent_message="
-                        getRecentMessage(group, group.recent_message)
-                    "
-                    :key="group.key"
-                    @click="updateGroupId(group.id, group.name, group.is_team)"
-                />
-            </div>
-        </div>
+        </transition-group>
         <div class="chat-room-right">
             <MessagingComponent
                 v-if="render"
@@ -57,6 +61,7 @@ import Group from '../common/Group.vue';
 import MessagingComponent from '../common/MessagingComponent.vue';
 import Multiselect from '@vueform/multiselect';
 import Swal from 'sweetalert2';
+import { format } from 'date-fns';
 
 // import { db } from "@/firebase";
 
@@ -122,6 +127,8 @@ export default {
                 store.dispatch('setMessagingComponentIsTeam', group_is_team);
                 // shows which group is actively selected now
                 store.dispatch('setMessagingComponentActiveGroupId', group_id);
+                //Hide Chat Side Bar
+                isMessageComponentShow();
             }
         };
 
@@ -223,11 +230,15 @@ export default {
             return null;
         };
 
-        const showOrHideChatList = computed(() => store.state.isChatListHide);
+        const getRecentLastUpdate = recent_msg_timestamp => {
+            return format(new Date(recent_msg_timestamp), 'dd/MM/yyyy HH:mm');
+        };
+
+        const showOrHideChatList = computed(() => store.state.showChatList);
 
         const isMessageComponentShow = () => {
-            store.state.isChatListHide = !store.state.isChatListHide;
-            console.log(store.state.isChatListHide);
+            store.state.showChatList = !store.state.showChatList;
+            console.log(store.state.showChatList);
         };
 
         return {
@@ -247,20 +258,33 @@ export default {
             currentActiveGroup,
             isMessageComponentShow,
             showOrHideChatList,
+            getRecentLastUpdate,
         };
     },
 };
 </script>
 
 <style lang="scss" scoped>
+// .slide-leave-active,
+// .slide-enter-active {
+//     transition: 1s;
+// }
+// .slide-enter {
+//     transform: translate(100%, 0);
+// }
+// .slide-leave-to {
+//     transform: translate(-100%, 0);
+// }
+
 .side_bar {
     margin: 0;
     padding: 0;
-    width: 310px;
-    background-color: #f4f6fa;
+    width: 100%;
+    background-color: $chat-list-color;
     position: fixed;
     overflow: scroll;
-    height: 95%;
+    height: 100%;
+    z-index: 1;
     &__header {
         font-size: 30px;
         h3 {
@@ -282,7 +306,7 @@ export default {
         }
     }
     .group_selected {
-        background-color: rgb(230, 230, 230);
+        background-color: $selected-group-color;
     }
 }
 
@@ -306,11 +330,4 @@ export default {
         }
     }
 }
-
-// @media screen and (max-width: 400px) {
-//     .chat-list-toggle {
-//         visibility: visible;
-//         display: block;
-//     }
-// }
 </style>

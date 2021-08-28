@@ -18,6 +18,7 @@ import {
     faUserShield,
     faEllipsisV,
     faTimes,
+    faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faComments,
@@ -38,7 +39,8 @@ library.add(
     faCommentAlt,
     faHandshake,
     faEllipsisV,
-    faTimes
+    faTimes,
+    faArrowLeft
 );
 
 createApp(App)

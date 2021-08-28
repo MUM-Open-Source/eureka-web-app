@@ -64,8 +64,8 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    width: 100vh;
+    height: 100%;
+    width: 100%;
     position: fixed;
     left: 50%;
     top: 50%;
@@ -76,7 +76,7 @@ export default defineComponent({
         max-width: 640px;
         width: 80%;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px;
-        background-color: #fff;
+        background-color: $color-white;
         padding: 64px 16px;
 
         .side-group-nav-icon {
@@ -87,7 +87,7 @@ export default defineComponent({
             cursor: pointer;
 
             &hover {
-                color: crimson;
+                color: $color-light;
             }
         }
     }

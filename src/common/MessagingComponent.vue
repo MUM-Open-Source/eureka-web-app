@@ -2,15 +2,22 @@
     <div class="container-sm mt-20">
         <div class="chat_box">
             <div class="chat_nav_bar">
-                <div class="chat_nav_left">
-                    <h2>{{ group_name }}</h2>
+                <div class="chat_nav_bar__left">
+                    <span
+                        class="chat_nav_bar__left_content"
+                        @click="isMessageComponentShow"
+                    >
+                        <fa icon="arrow-left" size="md" class="arrow-left" />
+                        <h2>{{ group_name }}</h2>
+                    </span>
                 </div>
-                <div
-                    class="chat_nav_right"
-                    v-if="is_team"
-                    @click="toggleGroupMenuState"
-                >
-                    <fa icon="ellipsis-v" size="md" />
+                <div class="chat_nav_bar__right">
+                    <fa
+                        icon="ellipsis-v"
+                        size="md"
+                        v-if="is_team"
+                        @click="toggleGroupMenuState"
+                    />
                     <GroupMenu
                         v-if="isGroupMenuShown"
                         :onClick="toggleModal"
@@ -50,7 +57,7 @@
                     "
                 />
             </div>
-            <div class="bottom-divider" ref="scrollable"></div>
+            <div class="bottom_divider" ref="scrollable"></div>
 
             <div class="bottom">
                 <hr class="horizontal_divider" />
@@ -63,9 +70,6 @@
                             class="text_bar"
                             required
                         />
-                        <!-- <button class="button-send">
-                            <span class="button-icon">Send</span>
-                        </button> -->
                     </form>
                 </div>
             </div>
@@ -88,7 +92,7 @@ import GroupMenu from '../common/GroupMenu.vue';
 import Modal from '../common/Modal.vue';
 import { db } from '@/firebase';
 import { defineComponent } from 'vue';
-import moment from 'moment';
+import { isSameDay } from 'date-fns';
 
 export default defineComponent({
     name: 'MessagingComponent',
@@ -112,7 +116,9 @@ export default defineComponent({
 
         onUpdated(() => {
             nextTick(function() {
-                let box = document.querySelector('.bottom-divider');
+                let box = document.querySelector(
+                    '.message-text:nth-last-child(2)'
+                );
                 if (box !== null) {
                     box.scrollIntoView({ behavior: 'smooth' });
                     box = null;
@@ -149,18 +155,32 @@ export default defineComponent({
             window.scrollTo(0, 0);
 
             store.dispatch('getGroupMember', props.group_id);
-            const d = moment().format('DD-MM-YYYY');
-            console.log(d);
-            // const de = moment(d, 'DD-MM-YYYY');
-            // console.log(de);
-            // console.log(de.isValid());
         });
 
         onUnmounted(() => {
             let unsub = unsubscribe.value;
             unsub();
         });
+
         const messages = ref(store.state.messages);
+        const isGroupMenuShown = ref(false);
+        const isModalShown = ref(false);
+        const user_id = computed(() => store.state.user_data?.id);
+
+        const currentGroup = computed(
+            () => store.state.messagingComponent.currentGroupMembers
+        );
+
+        const toggleGroupMenuState = () => {
+            isGroupMenuShown.value = !isGroupMenuShown.value;
+        };
+
+        const toggleModal = () => {
+            isModalShown.value = !isModalShown.value;
+        };
+        const isMessageComponentShow = () => {
+            store.state.showChatList = !store.state.showChatList;
+        };
 
         const checkIsDateSame = (
             index: number,
@@ -168,30 +188,14 @@ export default defineComponent({
             lst: typeof Message[]
         ) => {
             if (index !== 0) {
-                let previous_messsage_date = moment(
-                    lst[index - 1].timestamp,
-                    'DD/MM/YYYY'
-                ).format('DD/MM/YYYY');
-                let current_message_date = moment(
-                    current_message_timestamp,
-                    'DD/MM/YYYY'
-                ).format('DD/MM/YYYY');
-                console.log(index);
-                return current_message_date === previous_messsage_date;
-                // return current_message_timestamp;
+                return isSameDay(
+                    new Date(current_message_timestamp),
+                    new Date(lst[index - 1].timestamp)
+                );
             } else {
                 return false;
-                // return current_message_timestamp;
             }
         };
-        const isGroupMenuShown = ref(false);
-        const isModalShown = ref(false);
-
-        const user_id = computed(() => store.state.user_data?.id);
-
-        const currentGroup = computed(
-            () => store.state.messagingComponent.currentGroupMembers
-        );
 
         //Sending message
         const inputMessage = ref('');
@@ -211,19 +215,11 @@ export default defineComponent({
                     type: 'text',
                     payload: inputMessage.value,
                     group_id: props.group_id,
-                    timestamp: new Date().toLocaleString(),
+                    timestamp: new Date().toISOString(),
                 });
             }
 
             inputMessage.value = '';
-        };
-
-        const toggleGroupMenuState = () => {
-            isGroupMenuShown.value = !isGroupMenuShown.value;
-        };
-
-        const toggleModal = () => {
-            isModalShown.value = !isModalShown.value;
         };
 
         return {
@@ -238,42 +234,38 @@ export default defineComponent({
             unsubscribe,
             user_id,
             checkIsDateSame,
+            isMessageComponentShow,
         };
     },
 });
 </script>
 
 <style lang="scss" scoped>
-// .button-send {
-//     padding-right: 20px;
-//     margin-bottom: 10px;
-//     width: 70px;
-//     height: 35px;
-//     bottom: 0;
-//     right: 0;
-//     position: fixed;
-//     background-color: #7069e7;
-// }
-
 .chat_box {
-    margin-left: 300px;
     padding: 1px 16px;
-    height: 1000px;
-
     .chat_nav_bar {
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid $color-dark;
         position: fixed;
         display: inline-block;
-        width: calc(100% - 310px);
+        width: 100%;
         margin-top: -5px;
         padding: 15px 5px;
-        background-color: #fff;
-        .chat_nav_left {
-            float: left;
+        background-color: $color-white;
+        &__left {
+            display: inline-block;
+            &_content {
+                display: flex;
+                font-size: 20px;
+                .arrow-left {
+                    padding: 5px;
+                    margin: 2px 20px 2px 2px;
+                }
+            }
         }
 
-        .chat_nav_right {
-            padding: 5px 30px;
+        &__right {
+            padding: 5px 40px;
+            font-size: 20px;
             float: right;
         }
     }
@@ -284,8 +276,8 @@ export default defineComponent({
         width: 100%;
         height: 65px;
         bottom: 0;
-        background-color: white;
-        &-divider {
+        background-color: $color-white;
+        &_divider {
             margin-bottom: 100px;
             width: 100%;
             height: 100px;
@@ -293,42 +285,38 @@ export default defineComponent({
         .text_bar {
             padding: 8px 10px;
             border: none;
-            background: #e0e4ee;
             outline: none;
-            font-size: 17px;
+            background: $color-light-grey-chat;
+            font-size: $body-font-size;
             position: fixed;
-            width: calc(100% - 400px);
+            width: calc(100% - 100px);
             bottom: 0;
             margin: 10px 20px;
         }
 
         .horizontal_divider {
-            border-top: 2px solid #bbb;
+            border-top: 2px solid $color-light;
         }
     }
 
     .message_box {
-        margin-top: 5%;
+        margin-top: $messagebox-margin-top;
     }
 
     .group-member-table {
         border-collapse: collapse;
         width: 100%;
-        border: 1px solid #ddd;
+        border: 1px solid $color-light;
     }
 }
 
 @media screen and (max-width: 700px) {
-    .chat_box {
-        margin-left: 0px;
-    }
-
     .chat_nav_bar {
         position: absolute;
         padding: 200px;
     }
     .text_bar {
-        width: 200px;
+        width: calc(100% - 50px);
     }
     .input-field-wrapper {
         width: 200px;
@@ -346,7 +334,7 @@ export default defineComponent({
     }
 
     .text_bar {
-        min-width: calc(100% - 80px);
+        min-width: calc(100% - 50px);
     }
 }
 
@@ -356,23 +344,23 @@ td {
     padding: 16px;
 }
 
-@media (min-width: 1281px) {
-    #sender-box {
-        margin-left: 200px;
-    }
+// @media (min-width: 1281px) {
+//     #sender-box {
+//         margin-left: 200px;
+//     }
 
-    #receiver-box {
-        margin-right: 200px;
-    }
-}
+//     #receiver-box {
+//         margin-right: 200px;
+//     }
+// }
 
-@media (min-width: 1581px) {
-    #sender-box {
-        margin-left: 700px;
-    }
+// @media (min-width: 1581px) {
+//     #sender-box {
+//         margin-left: 700px;
+//     }
 
-    #receiver-box {
-        margin-right: 700px;
-    }
-}
+//     #receiver-box {
+//         margin-right: 700px;
+//     }
+// }
 </style>

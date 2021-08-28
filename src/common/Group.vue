@@ -71,7 +71,7 @@ export default defineComponent({
     width: 100%;
     padding: 20px;
     &:hover:not(.active) {
-        background-color: rgb(200, 200, 200);
+        background-color: $color-bg-hover;
     }
 
     .wrapper {
@@ -86,7 +86,7 @@ export default defineComponent({
 
     .contact_name {
         font-size: 20px;
-        color: #000;
+        color: $color-dark;
         padding: 30px;
         margin-top: 200px;
     }

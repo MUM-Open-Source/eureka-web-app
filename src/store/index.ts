@@ -68,7 +68,7 @@ const getInitState = (): AppState => {
             is_team: false,
             active_group_id: '',
         },
-        isChatListHide: true,
+        showChatList: true,
     };
 };
 
@@ -852,12 +852,6 @@ export default createStore({
         },
 
         SEND_MESSAGE(state, message: Message) {
-            // message = {
-            //     ...message,
-            //     timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
-            // };
-
-            //console.log(message);
             db.collection('messages')
                 .add(message)
                 .catch(function(error) {
@@ -914,7 +908,7 @@ export default createStore({
                     group_id: group.id,
                     payload: '',
                     sender_full_name: '',
-                    timestamp: new Date().toLocaleString(),
+                    timestamp: new Date().toISOString(),
                     type: '',
                 },
             };
@@ -1069,84 +1063,6 @@ export default createStore({
                 });
         },
 
-        // EXIT_GROUP(state, group_id) {
-        //     let members: string[] = [];
-
-        //     db.collection('groups')
-        //         .doc(group_id)
-        //         .get()
-        //         .then(doc => {
-        //             members = doc.data()!.members;
-        //             //update user groups
-        //             members.forEach((user_id: string) => {
-        //                 if (user_id == auth.currentUser!.uid) {
-        //                     //Remove group from user's groups
-        //                     db.collection('users')
-        //                         .doc(user_id)
-        //                         .update({
-        //                             groups: firebase.firestore.FieldValue.arrayRemove(
-        //                                 group_id
-        //                             ),
-        //                         })
-        //                         .catch(function(error) {
-        //                             console.log(
-        //                                 'Error update user groups while quiting group' +
-        //                                     error
-        //                             );
-        //                         });
-
-        //                     let message = {
-        //                         timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
-        //                         from: '',
-        //                         sender_full_name: 'System Notification',
-        //                         type: 'text',
-        //                         payload:
-        //                             '<' +
-        //                             state.user_data?.full_name +
-        //                             ' has left the group>',
-        //                         group_id: group_id,
-        //                     };
-
-        //                     db.collection('messages')
-        //                         .add(message)
-        //                         .catch(function(error) {
-        //                             console.log(
-        //                                 'Error sending Message' + error
-        //                             );
-        //                         });
-
-        //                     //Remove member from group's members
-        //                     db.collection('groups')
-        //                         .doc(group_id)
-        //                         .update({
-        //                             members: firebase.firestore.FieldValue.arrayRemove(
-        //                                 user_id
-        //                             ),
-        //                             recent_message: message,
-        //                         })
-        //                         .catch(function(error) {
-        //                             console.log(
-        //                                 'Error update group members while quiting group' +
-        //                                     error
-        //                             );
-        //                         });
-        //                 }
-        //             });
-
-        //             state.groups.forEach((group, index) => {
-        //                 if (group.id == group_id) {
-        //                     state.groups.splice(index, 1);
-        //                 }
-        //             });
-
-        //             // state.messagingComponent.currentGroupMembers.forEach((member, index) => {
-        //             //     if (member.id == auth.currentUser!.uid) {
-        //             //         state.messagingComponent.currentGroupMembers.splice(index, 1);
-        //             //     }
-        //             // });
-        //         });
-        // },
-
         SET_MESSAGING_COMPO_RENDER(state, boo) {
             state.messagingComponent.render = boo;
         },
@@ -1280,10 +1196,6 @@ export default createStore({
         sendMessage({ commit }, message: Message) {
             commit('SEND_MESSAGE', message);
         },
-
-        // getMessage({ commit }, group_id: string) {
-        //     commit('GET_MESSAGE', group_id);
-        // },
 
         createGroup({ commit }, group: Group) {
             commit('CREATE_GROUP', group);

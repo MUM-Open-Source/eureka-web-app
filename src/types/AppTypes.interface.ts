@@ -61,5 +61,5 @@ export interface AppState {
         mentors: MentorFilter;
     };
     messagingComponent: MessagingComponent;
-    isChatListHide: boolean;
+    showChatList: boolean;
 }

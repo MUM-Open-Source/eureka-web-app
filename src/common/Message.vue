@@ -1,13 +1,9 @@
 <template>
     <div class="container">
-        <!-- <div class="message-date-container">
+        <div class="message-date-container">
             <span class="message-date" v-if="!isDateSame">{{ date }}</span>
-            <hr />
-        </div> -->
+        </div>
         <div v-if="sender_id !== user_id" class="message_receiver">
-            <div class="message-date-container-receiver">
-                <span class="message-date" v-if="!isDateSame">{{ date }}</span>
-            </div>
             <span
                 v-if="sender_id !== user_id"
                 class="message_receiver__texter_name"
@@ -26,9 +22,6 @@
         </div>
 
         <div v-else class="message_sender">
-            <div class="message-date-container-sender">
-                <span class="message-date" v-if="!isDateSame">{{ date }}</span>
-            </div>
             <div class="message_sender__text-container">
                 <p class="message-text">
                     {{ text }}
@@ -45,7 +38,8 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import store from '@/store';
-import moment from 'moment';
+import { format, formatRelative } from 'date-fns';
+import enGB from 'date-fns/locale/en-GB';
 
 export default defineComponent({
     props: {
@@ -74,13 +68,40 @@ export default defineComponent({
 
     setup(props) {
         const user_id = computed(() => store.state.user_data?.id);
-        const date = moment(props.datetime, 'DD/MM/YYYY')
-            .calendar()
-            .split(' at')[0];
-        const time = moment(props.datetime, 'YYYY ddd MMM HH:mm').format(
-            'HH:mm'
-        );
-        console.log(time);
+
+        //To overwrite the formatRelativeLocale method
+        const formatRelativeLocale = {
+            lastWeek: "'Last' eeee",
+            yesterday: "'Yesterday'",
+            today: "'Today'",
+            tomorrow: "'Tomorrow'",
+            nextWeek: "'Next' eeee",
+            other: 'dd/MM/yyyy',
+        };
+
+        const tokenType =
+            'lastWeek' ||
+            'yesterday' ||
+            'today' ||
+            'tomorrow' ||
+            'nextWeek' ||
+            'other';
+
+        const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (
+            key: U
+        ) => obj[key];
+        const locale = {
+            ...enGB,
+            formatRelative: (token: typeof tokenType) =>
+                getKeyValue(formatRelativeLocale)(token),
+        };
+
+        //Date and Time
+        const date = formatRelative(new Date(props.datetime), new Date(), {
+            locale,
+        });
+
+        const time = format(new Date(props.datetime), 'HH:mm');
 
         return {
             user_id,
@@ -93,12 +114,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .container {
-    z-index: 999;
-    .message-date-container-receiver {
-        text-align: right;
-        .message-date {
-            margin: 135px;
-        }
+    .message-date-container {
+        text-align: center;
     }
     .message_receiver {
         width: 100%;
@@ -110,33 +127,36 @@ export default defineComponent({
         }
         &__text-container {
             float: left;
-            background-color: #7069e7;
-            color: white;
+            background-color: $color-purple-chat;
+            color: $color-white;
             width: fit-content;
             border-radius: 10px;
             padding: 10px;
             -webkit-box-shadow: 0px 5px 8px 5px rgba(0, 0, 0, 0.03);
             box-shadow: 0px 5px 8px 5px rgba(0, 0, 0, 0.03);
             font-size: 17px;
+            margin-right: 100px;
         }
     }
 
     .message_sender__text-container {
         float: right;
-        background-color: #e0e4ee;
-        color: black;
+        background-color: $color-light-grey-chat;
+        color: $color-dark;
         width: fit-content;
         border-radius: 10px;
         padding: 10px;
         -webkit-box-shadow: 0px 5px 8px 5px rgba(0, 0, 0, 0.03);
         box-shadow: 0px 5px 8px 5px rgba(0, 0, 0, 0.03);
         font-size: 17px;
+        margin-left: 100px;
     }
 
     .message_sender {
         width: 100%;
         margin-top: 20px;
         overflow: auto;
+        display: inline-block;
     }
     .message-time {
         float: right;
@@ -144,10 +164,4 @@ export default defineComponent({
         margin-left: 50px;
     }
 }
-
-/* .message_sender__text-container,
-.message_receiver__text-container {
-    word-break: break-word;
-    width: 600px;
-} */
 </style>
