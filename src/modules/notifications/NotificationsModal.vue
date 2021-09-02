@@ -1,5 +1,5 @@
 <template>
-    <div class="modal pad--2 pad__t--1 pad__b--1">
+    <div class="modal pad--2 pad__t--1 pad__b">
         <div class="modal__header mar__t">
             <div class="subheading">Your Notifications</div>
             <button
@@ -11,7 +11,7 @@
                 Mark all as read
             </button>
         </div>
-        <hr class="divider mar__t--1 mar__b--1 mar__r--0 mar__l--0" />
+        <hr class="divider mar__t--1 mar__r--0 mar__l--0" />
         <div
             class="modal__body"
             :class="{ modal__noNotiStyle: !displayNotifications.length }"
@@ -25,7 +25,7 @@
                 Looks likes you have no notifications yet. Welcome to Eureka !
             </div>
         </div>
-        <div class="modal__footer mar--auto">
+        <div class="modal__footer mar--auto mar__t">
             <button
                 class="text--primary cta pad--1 cursor__pointer"
                 @click="toNotificationsPage"
@@ -83,7 +83,6 @@ export default {
     height: $modal-height;
     width: $modal-width;
     border-radius: $app-border-radius;
-    overflow-y: scroll;
     top: $user-menu-top;
     right: $user-menu-right;
     display: flex;
@@ -95,6 +94,7 @@ export default {
     }
     &__body {
         flex: 1;
+        overflow-y: scroll;
     }
     &__noNotiStyle {
         display: flex;
@@ -105,6 +105,10 @@ export default {
         color: $color-brand;
         text-align: center;
     }
+    // &__footer {
+    //     position: absolute;
+    //     bottom: 0;
+    // }
 }
 @media (max-width: 576px) {
     .modal {
