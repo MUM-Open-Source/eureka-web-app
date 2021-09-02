@@ -48,7 +48,6 @@
 import UserMenu from '@/modules/navigation/UserMenu.vue';
 import NotificationsModal from '@/modules/notifications/NotificationsModal.vue';
 import store from '@/store';
-import router from '@/router';
 import { computed, ref } from 'vue';
 export default {
     name: 'TopNav',
@@ -66,7 +65,7 @@ export default {
         // control individual modal opening
         const modalController = currentTab => {
             if (!isLoggedIn.value) {
-                router.push({ name: 'Login' });
+                store.dispatch('signUpUser');
                 return;
             }
             switch (currentTab) {
