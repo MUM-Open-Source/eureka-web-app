@@ -2,7 +2,7 @@ import 'firebase/auth';
 import firebaseApp from 'firebase/app';
 import { db } from '@/firebase';
 import { Notification } from '@/types/FirebaseTypes.interface';
-// import { sendEmail } from '@/helpers/mailer';
+import { sendEmail } from '@/helpers/mailer';
 
 export const sendNotification = async (
     notification: Notification,
@@ -32,7 +32,28 @@ export const sendNotification = async (
         });
 
     if (email) {
-        // TODO: send email
-        console.log('Setup functionality to send email');
+        // get the receiver's name and email from db
+        db.collection('users')
+            .doc(notification.user_id)
+            .get()
+            .then(doc => {
+                if (doc.exists) {
+                    // notification contains a body
+                    if ('body' in parsedNotification)
+                        sendEmail(
+                            doc.data()!.first_name,
+                            doc.data()!.social_links.email_id,
+                            parsedNotification.title,
+                            parsedNotification.body
+                        );
+                    // notification contains no body
+                    else
+                        sendEmail(
+                            doc.data()!.first_name,
+                            doc.data()!.social_links.email_id,
+                            parsedNotification.title
+                        );
+                }
+            });
     }
 };
