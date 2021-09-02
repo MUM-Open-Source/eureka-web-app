@@ -222,6 +222,21 @@ $bold: 900;
 }
 </style>
 
+### Static Styles
+
+When styling your Vue components, make sure to use SCSS variables for all static css like the examples below. Static styles include `px`, `em`, `%`, etc.. You get the idea!
+
+::: tip
+You should store your SCSS variables under `/src/common/styles/_variables.scss`.
+:::
+
+```scss
+// My Component
+$my-component-width: 50%;
+$my-component-height: 150px;
+$my-component-top: 0;
+```
+
 ## Typography
 
 Eureka sets some basic global typography styles. Whether you're creating a heading or simply a paragraph, make sure you use the css classes covered here before using custom styles.
