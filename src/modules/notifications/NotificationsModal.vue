@@ -81,9 +81,9 @@ export default {
     position: absolute;
     z-index: 50;
     background: $color-white;
-    max-width: 350px;
+    max-width: 80%;
     height: 450px;
-    width: 100%;
+    width: 300px;
     border-radius: 10px;
     overflow-y: scroll;
     margin: 0 10px;
@@ -114,9 +114,8 @@ export default {
         margin: 0 auto;
     }
 }
-@media (max-width: 48em) {
+@media (max-width: 576px) {
     .modal {
-        max-width: 300px;
         height: 400px; // constant height to allow overflow-y to work
         margin: 0 auto; // align to be center for absolute-positioned
         right: 0;
