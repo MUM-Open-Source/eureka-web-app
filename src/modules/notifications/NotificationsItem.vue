@@ -44,10 +44,11 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import store from '@/store';
 import { formatDistance } from 'date-fns';
 
-export default {
+export default defineComponent({
     name: 'NotificationsItem',
     props: {
         notification: { type: Notification, required: true },
@@ -71,7 +72,7 @@ export default {
         };
         return { getMoment, readIndividual };
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>

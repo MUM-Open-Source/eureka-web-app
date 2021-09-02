@@ -44,12 +44,12 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, computed, ref } from 'vue';
+import store from '@/store';
 import UserMenu from '@/modules/navigation/UserMenu.vue';
 import NotificationsModal from '@/modules/notifications/NotificationsModal.vue';
-import store from '@/store';
-import { computed, ref } from 'vue';
-export default {
+export default defineComponent({
     name: 'TopNav',
     components: { UserMenu, NotificationsModal },
     setup() {
@@ -63,7 +63,7 @@ export default {
         // check if user is logged in
         const isLoggedIn = computed(() => store.state.user !== null);
         // control individual modal opening
-        const modalController = currentTab => {
+        const modalController = (currentTab: string) => {
             if (!isLoggedIn.value) {
                 store.dispatch('signUpUser');
                 return;
@@ -113,7 +113,7 @@ export default {
             viewAllClicked,
         };
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>

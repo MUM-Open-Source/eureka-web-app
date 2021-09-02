@@ -10,13 +10,14 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import NotificationsItem from './NotificationsItem.vue';
-export default {
+export default defineComponent({
     name: 'NotificationsCategories',
     components: { NotificationsItem },
     props: {
         notifications: { type: Array, required: true },
         longNoti: { type: Boolean, required: true, default: false },
     },
-};
+});
 </script>

@@ -40,12 +40,11 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, computed } from 'vue';
 import store from '@/store';
-import { ref } from '@vue/reactivity';
 import NotificationsCategories from '@/modules/notifications/NotificationsCategories.vue';
-import { computed } from '@vue/runtime-core';
-export default {
+export default defineComponent({
     name: 'Notifications',
     components: { NotificationsCategories },
     setup() {
@@ -59,13 +58,13 @@ export default {
                     : notification.read_status == false
             )
         );
-        const onChangeFilter = e =>
+        const onChangeFilter = (e: any) =>
             (currentFilter.value =
                 e.target.options[e.target.options.selectedIndex].value);
         const readAll = () => store.dispatch('readAllNotifications');
         return { filteredNotifications, onChangeFilter, readAll };
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>

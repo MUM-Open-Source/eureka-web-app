@@ -37,11 +37,11 @@
 </template>
 
 <script>
-import { ref, computed } from '@vue/runtime-core';
+import { defineComponent, ref, computed } from '@vue/runtime-core';
 import router from '@/router';
 import store from '@/store';
 import NotificationsCategories from './NotificationsCategories.vue';
-export default {
+export default defineComponent({
     name: 'NotificationsModal',
     components: { NotificationsCategories },
     setup(_, { emit }) {
@@ -57,7 +57,7 @@ export default {
         const readAll = () => store.dispatch('readAllNotifications');
         return { readAll, displayNotifications, haha, toNotificationsPage };
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>
