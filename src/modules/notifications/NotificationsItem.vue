@@ -1,12 +1,15 @@
 <template>
-    <div v-if="noti.category == notiFor">
+    <div @click="readIndividual">
         <div
             class="noti-item pad--1 cursor__pointer"
-            :class="{ unread: !noti.read_status, longNotiStyle: longNoti }"
+            :class="{
+                unread: !notification.read_status,
+                longNotiStyle: longNoti,
+            }"
         >
             <div
                 class="noti-item-icon mar__r--1"
-                :class="{ badge: !noti.read_status }"
+                :class="{ badge: !notification.read_status }"
                 :style="{ backgroundColor: iconColor }"
                 data-count=""
             >
@@ -14,24 +17,25 @@
             </div>
             <div :style="{ flex: '1' }">
                 <div class="content-title mar__b">
-                    <div class="content-title__title-text">{{ title }}</div>
+                    <div class="content-title__title-text">
+                        {{ notification.title }}
+                    </div>
                     <span class="content-title__moment-text">
-                        {{ getMoment(noti.timestamp) }}
+                        {{ getMoment(notification.timestamp) }}
                     </span>
                 </div>
-                <div class="content-body">
+                <div v-if="notification.body" class="content-body">
                     <div :style="{ fontSize: '14px' }">
-                        {{ bodyText }}
+                        {{ notification.body }}
                     </div>
-                    <fa
+                    <!-- <fa
                         icon="mail-bulk"
                         :class="[
-                            noti.read_status
+                            notification.read_status
                                 ? 'content-body__invincible'
                                 : 'content-body__doneIcon',
-                        ]"
-                        @click="readIndividual"
-                    />
+                        ]"                        
+                    /> -->
                 </div>
             </div>
         </div>
@@ -46,17 +50,21 @@ import { formatDistance } from 'date-fns';
 export default {
     name: 'NotificationsItem',
     props: {
-        notiFor: { type: String },
-        noti: { type: Object },
-        icon: { type: String, required: true },
-        title: { type: String, required: true },
-        bodyText: { type: String, required: true },
-        iconColor: { type: String, required: true },
+        notification: { type: Notification, required: true },
         longNoti: { type: Boolean },
+        icon: { type: String, required: true },
+        iconColor: { type: String, required: true },
     },
     setup(props) {
-        const readIndividual = () =>
-            store.dispatch('readIndividualNotification', props.noti.id);
+        const readIndividual = () => {
+            if (!props.notification.read_status) {
+                console.log('shiiti');
+                store.dispatch(
+                    'readIndividualNotification',
+                    props.notification.id
+                );
+            }
+        };
 
         const getMoment = timestamp => {
             return formatDistance(timestamp, Date.now()).toString() + ' ago';
@@ -111,12 +119,12 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    &__doneIcon {
-        color: $color-brand-alt;
-    }
-    &__invincible {
-        visibility: hidden;
-    }
+    // &__doneIcon {
+    //     color: $color-brand-alt;
+    // }
+    // &__invincible {
+    //     visibility: hidden;
+    // }
 }
 .noti-item-icon {
     position: relative;

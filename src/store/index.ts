@@ -15,6 +15,7 @@ import {
     Event,
     Feedback,
     UserRoles,
+    Notification,
 } from '@/types/FirebaseTypes.interface';
 
 const getInitState = (): AppState => {
@@ -607,12 +608,17 @@ export default createStore({
                     to_user_id: toUserId,
                 })
                 .then(async () => {
-                    sendNotification(toUserId, {
-                        category: 'waves', // required parameter
-                        // extra parameters
-                        from_user_name: state.user_data?.first_name,
-                        from_user_id: state.user_data?.id,
-                    });
+                    const notification: Notification = {
+                        user_id: toUserId,
+                        category: 'wave',
+                        title: 'Someone waved at you',
+                        body:
+                            state.user_data?.first_name +
+                            ' just waved at you. Say hi to them back by giving a friendly wave back!',
+                        read_status: false,
+                        timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+                    };
+                    sendNotification(notification, false);
                 })
                 // Alert with SweetAlert2
                 .then(() => {
@@ -646,15 +652,16 @@ export default createStore({
                 .doc(auth.currentUser!.uid + '_' + toUserId)
                 .delete()
                 .then(() => {
-                    db.collection('notifications')
-                        .where('user_id', '==', toUserId)
-                        .where('from_user_id', '==', auth.currentUser?.uid)
-                        .get()
-                        .then(querySnapshots => {
-                            querySnapshots.forEach(doc => {
-                                doc.ref.delete();
-                            });
-                        });
+                    // reflect the changes in the notification document
+                    // db.collection('notifications')
+                    //     .where('user_id', '==', toUserId)
+                    //     .where('from_user_id', '==', auth.currentUser?.uid)
+                    //     .get()
+                    //     .then(querySnapshots => {
+                    //         querySnapshots.forEach(doc => {
+                    //             doc.ref.delete();
+                    //         });
+                    //     });
                 })
                 // Alert with SweetAlert2
                 .then(() => {
@@ -846,14 +853,17 @@ export default createStore({
                 .where('user_id', '==', auth.currentUser?.uid)
                 .onSnapshot(querySnapshot => {
                     querySnapshot.forEach(doc => {
+                        // checks if the notification exists in state
                         if (
                             state.notifications.some(
                                 notification => notification.id === doc.id
                             )
                         ) {
+                            // get index of notification
                             const objIndex = state.notifications.findIndex(
                                 notification => notification.id == doc.id
                             );
+                            // update timestamp
                             (state.notifications[objIndex] as any) = {
                                 ...doc.data(),
                                 timestamp: new Date(
@@ -863,6 +873,7 @@ export default createStore({
                         } else {
                             (state.notifications as any).push({
                                 ...doc.data(),
+                                id: doc.data().id,
                                 timestamp: new Date(
                                     doc.data().timestamp.seconds * 1000
                                 ),
@@ -882,7 +893,6 @@ export default createStore({
                 .get()
                 .then(snapshots => {
                     snapshots.forEach(doc => {
-                        console.log(doc.data());
                         doc.ref.update({ read_status: true });
                     });
                 });
