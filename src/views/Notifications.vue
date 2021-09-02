@@ -1,7 +1,6 @@
 <template>
     <div class="wrapper-container page-pad">
         <div class="wrapper-container__header">
-            <div class="subheading">Your Notifications</div>
             <select
                 name="filter"
                 class="selector"
@@ -10,6 +9,14 @@
                 <option value="all">All</option>
                 <option value="unread">Unread</option>
             </select>
+            <div class="subheading">Your Notifications</div>
+            <button
+                class="text--primary cta pad--1 pad__t pad__b cursor__pointer"
+                @click="readAll"
+                v-if="filteredNotifications.length"
+            >
+                Mark all as read
+            </button>
         </div>
         <div class="content">
             <div
@@ -55,7 +62,8 @@ export default {
         const onChangeFilter = e =>
             (currentFilter.value =
                 e.target.options[e.target.options.selectedIndex].value);
-        return { filteredNotifications, onChangeFilter };
+        const readAll = () => store.dispatch('readAllNotifications');
+        return { filteredNotifications, onChangeFilter, readAll };
     },
 };
 </script>
@@ -69,6 +77,23 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        .selector {
+            order: 1;
+        }
+        .subheading {
+            order: 2;
+        }
+        .cta {
+            order: 3;
+            font-weight: bold;
+            border: none;
+            border-radius: $app-border-radius-sm;
+            font-size: 12px;
+            background-color: transparent;
+            &:hover {
+                background-color: $color-bg-hover;
+            }
+        }
     }
 }
 .content {
@@ -105,6 +130,24 @@ export default {
 @media (max-width: 576px) {
     .content__content-available {
         width: 100%;
+    }
+    .wrapper-container {
+        &__header {
+            flex-wrap: wrap;
+            text-align: center;
+            .selector {
+                order: 2;
+                flex-grow: 1;
+            }
+            .subheading {
+                order: 1;
+                flex-grow: 1;
+            }
+            .cta {
+                order: 3;
+                flex-grow: 1;
+            }
+        }
     }
 }
 </style>

@@ -105,10 +105,6 @@ export default {
         color: $color-brand;
         text-align: center;
     }
-    // &__footer {
-    //     position: absolute;
-    //     bottom: 0;
-    // }
 }
 @media (max-width: 576px) {
     .modal {
