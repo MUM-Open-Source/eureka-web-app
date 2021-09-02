@@ -71,7 +71,7 @@ export default {
 .user-menu {
     @include shadow;
     position: absolute;
-    top: $user-menu-top + 25;
+    top: $user-menu-top;
     right: $user-menu-right;
     border-radius: $app-border-radius;
     background-color: $color-white;

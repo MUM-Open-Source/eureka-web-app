@@ -1,9 +1,9 @@
 <template>
-    <div class="modal">
-        <div class="modal__header">
+    <div class="modal pad--2 pad__t--1 pad__b--1">
+        <div class="modal__header mar__t">
             <div class="subheading">Your Notifications</div>
             <button
-                class="text--primary cta"
+                class="text--primary cta pad--1 cursor__pointer"
                 :style="{ padding: '5px 10px' }"
                 @click="readAll"
                 v-if="displayNotifications.length"
@@ -11,7 +11,7 @@
                 Mark all as read
             </button>
         </div>
-        <hr class="divider" />
+        <hr class="divider mar__t--1 mar__b--1 mar__r--0 mar__l--0" />
         <div
             class="modal__body"
             :class="{ modal__noNotiStyle: !displayNotifications.length }"
@@ -25,8 +25,11 @@
                 Looks likes you have no notifications yet. Welcome to Eureka !
             </div>
         </div>
-        <div class="modal__footer">
-            <button class="text--primary cta" @click="toNotificationsPage">
+        <div class="modal__footer mar--auto">
+            <button
+                class="text--primary cta pad--1 cursor__pointer"
+                @click="toNotificationsPage"
+            >
                 View All Notifications
             </button>
         </div>
@@ -59,16 +62,12 @@ export default {
 
 <style lang="scss" scoped>
 .divider {
-    border: 1px solid #e2e8ee;
-    border-radius: 5px;
-    margin: 15px 0;
+    border: 1px solid $color-bg-hover;
 }
 .cta {
     font-weight: bold;
-    cursor: pointer;
-    border: 0px;
-    padding: 10px;
-    border-radius: 5px;
+    border: none;
+    border-radius: $app-border-radius-sm;
     font-size: 12px;
     background-color: transparent;
     &:hover {
@@ -77,17 +76,15 @@ export default {
 }
 .modal {
     @include shadow;
-    padding: 15px 25px;
     position: absolute;
-    z-index: 50;
+    z-index: $modal-z-index;
     background: $color-white;
-    max-width: 80%;
-    height: 450px;
-    width: 300px;
-    border-radius: 10px;
+    max-width: $modal-max-width;
+    height: $modal-height;
+    width: $modal-width;
+    border-radius: $app-border-radius;
     overflow-y: scroll;
-    margin: 0 10px;
-    top: $user-menu-top + 25;
+    top: $user-menu-top;
     right: $user-menu-right;
     display: flex;
     flex-direction: column;
@@ -95,7 +92,6 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 35px;
     }
     &__body {
         flex: 1;
@@ -109,14 +105,10 @@ export default {
         color: $color-brand;
         text-align: center;
     }
-    &__footer {
-        height: 35px;
-        margin: 0 auto;
-    }
 }
 @media (max-width: 576px) {
     .modal {
-        height: 400px; // constant height to allow overflow-y to work
+        height: $modal-height-sm; // constant height to allow overflow-y to work
         margin: 0 auto; // align to be center for absolute-positioned
         right: 0;
         left: 0;

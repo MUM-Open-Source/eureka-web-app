@@ -14,7 +14,7 @@
             </div>
             <div class="top-nav__right">
                 <div
-                    class="noti-icon"
+                    class="noti-icon mar__r--1 pad--1 cursor__pointer"
                     data-count=""
                     :class="{ badge: unreadNotifications }"
                     @click="modalController('notification')"
@@ -118,26 +118,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.noti-icon {
-    position: relative;
-    margin-right: 10px;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    &:hover {
-        background: $color-bg-hover;
-    }
-}
-.badge[data-count]:after {
-    position: absolute;
-    top: 5%;
-    right: 5%;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #ff0000;
-    content: attr(data-count);
-}
 .top-nav {
     @include shadow--small;
     position: fixed;
@@ -162,6 +142,23 @@ export default {
     &__right {
         display: flex;
         align-items: center;
+        .noti-icon {
+            position: relative;
+            border-radius: $app-border-radius-sm;
+            &:hover {
+                background: $color-bg-hover;
+            }
+        }
+        .badge[data-count]:after {
+            position: absolute;
+            top: $top-nav-badge-pos;
+            right: $top-nav-badge-pos;
+            width: $top-nav-badge-width;
+            height: $top-nav-badge-height;
+            border-radius: $top-nav-badge-border-radius;
+            background: $color-brand;
+            content: attr(data-count);
+        }
     }
     &__icon {
         width: $top-nav-icon-width;

@@ -1,11 +1,11 @@
 <template>
     <div v-if="noti.category == notiFor">
         <div
-            class="noti-item"
+            class="noti-item pad--1 cursor__pointer"
             :class="{ unread: !noti.read_status, longNotiStyle: longNoti }"
         >
             <div
-                class="noti-item-icon "
+                class="noti-item-icon mar__r--1"
                 :class="{ badge: !noti.read_status }"
                 :style="{ backgroundColor: iconColor }"
                 data-count=""
@@ -13,7 +13,7 @@
                 <fa :icon="icon" :style="{ fontSize: '18px' }" />
             </div>
             <div :style="{ flex: '1' }">
-                <div class="content-title">
+                <div class="content-title mar__b">
                     <div class="content-title__title-text">{{ title }}</div>
                     <span class="content-title__moment-text">
                         {{ getMoment(noti.timestamp) }}
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <hr class="divider" v-if="!longNoti" />
+        <hr class="divider mar__t--1 mar__b--1" v-if="!longNoti" />
     </div>
 </template>
 
@@ -68,23 +68,20 @@ export default {
 
 <style lang="scss" scoped>
 .divider {
-    border: 1px solid #e2e8ee;
-    border-radius: 5px;
-    margin: 10px 0;
+    border: 1px solid $color-bg-hover;
 }
 .noti-item {
     display: flex;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
+    align-items: center;
+    border-radius: $app-border-radius-sm;
     &:hover {
         background: $color-bg-hover;
     }
 }
 .longNotiStyle {
     border: 2px solid $color-bg-hover;
-    margin-bottom: 10px;
-    padding: 25px !important;
+    margin-bottom: $long-noti-style-mar-b;
+    padding: $long-noti-style-pad !important;
     &:hover {
         transform: scale(1.05);
         background: none;
@@ -92,12 +89,11 @@ export default {
     }
 }
 .unread {
-    background: #e5f4fd;
+    background: $color-light-blue;
 }
 .content-title {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
     align-items: center;
     &__title-text {
         font-weight: bold;
@@ -116,7 +112,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     &__doneIcon {
-        color: #03bb40;
+        color: $color-brand-alt;
     }
     &__invincible {
         visibility: hidden;
@@ -127,19 +123,18 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 15px;
+    width: $noti-item-icon-width;
+    height: $noti-item-icon-height;
+    border-radius: $noti-item-icon-border-radius;
 }
 .badge[data-count]:after {
     position: absolute;
-    right: 0%;
-    top: 5%;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #ff0000;
+    right: $noti-item-badge-right;
+    top: $noti-item-badge-top;
+    width: $noti-item-badge-width;
+    height: $noti-item-badge-height;
+    border-radius: $noti-item-badge-border-radius;
+    background: $color-brand-alt;
     content: attr(data-count);
 }
 </style>

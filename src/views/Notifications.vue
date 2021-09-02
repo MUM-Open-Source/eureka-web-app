@@ -102,7 +102,7 @@ export default {
     width: 100px;
     border-radius: 8px;
 }
-@media (max-width: 48em) {
+@media (max-width: 576px) {
     .content__content-available {
         width: 100%;
     }

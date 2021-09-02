@@ -122,6 +122,7 @@ The classes specified here exist at `/src/common/styles/_variables.scss`.
 <div class="color-side-nav-bg">$color-side-nav-bg</div>
 <div class="color-bg-hover">$color-bg-hover</div>
 <div class="color-disabled">$color-disabled</div>
+<div class="color-light-blue">$color-light-blue</div>
 
 #### Examples
 
