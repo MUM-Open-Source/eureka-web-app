@@ -8,6 +8,8 @@ export type UserRoles =
     | 'staff'
     | 'public';
 
+export type NotificationCategory = 'waves' | 'projects' | 'none';
+
 export interface User {
     background?: string;
     bio?: string;
@@ -51,7 +53,7 @@ export interface Feedback {
 export interface Notification {
     id: string;
     user_id: string;
-    category: 'waves' | 'projects' | 'none';
+    category: NotificationCategory;
     read_status: boolean;
     timestamp: number;
     project_name?: string;
