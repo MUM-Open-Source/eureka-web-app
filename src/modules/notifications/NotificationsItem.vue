@@ -59,7 +59,6 @@ export default defineComponent({
     setup(props) {
         const readIndividual = () => {
             if (!props.notification.read_status) {
-                console.log('shiiti');
                 store.dispatch(
                     'readIndividualNotification',
                     props.notification.id
