@@ -10,7 +10,7 @@
                         class="profile__img--roundImage"
                         id="user-image"
                     />
-                    <div class="profile__img--upload mar__t--1">
+                    <!-- <div class="profile__img--upload mar__t--1">
                         <form class="btn-chooseFile mar--2">
                             <label
                                 for="imageUpload"
@@ -27,7 +27,6 @@
                             />
                         </form>
                         <div class="image-button-wrapper">
-                            <!-- <Button class="btn-upload" text="Upload" @click='handleImageUpload' /> -->
                             <Button
                                 v-if="!hasDefaultImage"
                                 class="btn-setDefaultImage"
@@ -38,7 +37,7 @@
                         <div class="tagline mar__t--1">
                             Acceptable formats: jpg, png
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="profile__inputs--wrapper">
                     <div class="profile__inputs mar__t--3 mar__b--3">
@@ -92,7 +91,7 @@
                         />
 
                         <!-- Background -->
-                        <label
+                        <!-- <label
                             for="background"
                             class="custom-input__label tagline--bold"
                         >
@@ -106,10 +105,10 @@
                             v-model="inputValues.background"
                             :placeholder="helper.backgroundPlaceholder"
                             @change="handleInputsUpdate"
-                        />
+                        /> -->
 
                         <!-- Bio -->
-                        <label
+                        <!-- <label
                             for="bio"
                             class="custom-input__label tagline--bold"
                         >
@@ -124,10 +123,10 @@
                             placeholder="I am.."
                             v-model="inputValues.bio"
                             required
-                        />
+                        /> -->
 
                         <!-- GitHub URL -->
-                        <label
+                        <!-- <label
                             for="github"
                             class="custom-input__label tagline--bold"
                         >
@@ -141,10 +140,10 @@
                             v-model="inputValues.github_url"
                             placeholder="https://www.github.com/username"
                             @change="handleInputsUpdate"
-                        />
+                        /> -->
 
                         <!-- Linkedin URL -->
-                        <label
+                        <!-- <label
                             for="linkedin"
                             class="custom-input__label tagline--bold"
                         >
@@ -158,10 +157,10 @@
                             v-model="inputValues.linkedin_url"
                             placeholder="https://www.linkedin.com/in/username"
                             @change="handleInputsUpdate"
-                        />
+                        /> -->
 
                         <!-- Website URL -->
-                        <label
+                        <!-- <label
                             for="website"
                             class="custom-input__label tagline--bold"
                         >
@@ -175,10 +174,10 @@
                             v-model="inputValues.website_url"
                             placeholder="https://www.your-awesome-site.com"
                             @change="handleInputsUpdate"
-                        />
+                        /> -->
 
                         <!-- Skills/Interests -->
-                        <label class="custom-input__label tagline--bold">
+                        <!-- <label class="custom-input__label tagline--bold">
                             {{ helper.skillsLabel }}
                         </label>
                         <div class="tagline skills__tagline">
@@ -195,10 +194,10 @@
                             :createTag="true"
                             @select="handleInputsUpdate"
                             @deselect="handleInputsUpdate"
-                        />
+                        /> -->
 
                         <!-- Experience -->
-                        <label class="custom-input__label tagline--bold">
+                        <!-- <label class="custom-input__label tagline--bold">
                             Experience*
                         </label>
                         <Multiselect
@@ -214,9 +213,9 @@
                             }"
                             @select="handleInputsUpdate"
                             @deselect="handleInputsUpdate"
-                        />
+                        /> -->
                     </div>
-                    <div class="text--center">
+                    <!-- <div class="text--center">
                         <div
                             v-if="state.hasUnsavedChanges"
                             class="tagline mar__b--1"
@@ -228,7 +227,7 @@
                             text="Save Changes"
                             @click="handleInfoUpdate"
                         />
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -240,13 +239,13 @@ import { reactive, computed } from 'vue';
 import store from '@/store';
 import router from '@/router';
 import RoundImage from '@/modules/main/RoundImage.vue';
-import Button from '@/common/Button.vue';
-import Multiselect from '@vueform/multiselect';
+// import Button from '@/common/Button.vue';
+// import Multiselect from '@vueform/multiselect';
 import Swal from 'sweetalert2';
 
 export default {
     name: 'UserProfile',
-    components: { RoundImage, Button, Multiselect },
+    components: { RoundImage },
 
     setup() {
         // fetching the user details with default data provided
@@ -330,7 +329,7 @@ export default {
         });
         const userInerestsIndices = computed(() => {
             let indices = [];
-            user?.interests.forEach(interest => {
+            user?.interests?.forEach(interest => {
                 const index = interestMenu.options.indexOf(interest);
                 if (index != -1) indices.push(index);
             });
