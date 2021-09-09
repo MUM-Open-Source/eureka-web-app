@@ -90,7 +90,7 @@ export default {
     justify-content: space-evenly;
 }
 
-@media (max-width: 736px) {
+@media (max-width: $md) {
     .browse-events {
         flex-direction: column;
     }
