@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue';
+import { defineComponent, computed, ref, watch } from 'vue';
 import store from '@/store';
 import UserMenu from '@/modules/navigation/UserMenu.vue';
 import NotificationsModal from '@/modules/notifications/NotificationsModal.vue';
@@ -79,6 +79,17 @@ export default defineComponent({
                     break;
             }
         };
+
+        watch(
+            () => store.state.isSideNavCollapsed,
+            val => {
+                if (val == false) {
+                    isUserMenuShown.value = false;
+                    notiState.value = false;
+                }
+            }
+        );
+
         const viewAllClicked = () => (notiState.value = false);
         // open and close side nav
         const toggleSideNavState = () => {
