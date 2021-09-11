@@ -623,3 +623,30 @@ Swal.mixin({
     title: 'Action successful',
 });
 ```
+
+### Notifications
+
+This feature allows developer to set to send user notification using the helper function. Once the notification is sent, user will receive the message in real-time and have the option to mark the notification as read.
+
+`sendNotification` accepts 2 parameters: notification and email
+
+**Type:** notification - `Notification`, email - `Boolean (False by default)`
+
+By default, sendNotification will only create a notification to the intended receipient. To send an email alongside the notification, mark the `email` field as `True`
+
+Below is an example of a notification being sent to user `Eureka2020`
+
+```js
+import { sendNotification } from './../helpers/notifications';
+
+const notification: Notification = {
+    user_id: 'Eureka2020',
+    category: 'wave',
+    title: 'Welcome to Eureka',
+    body: 'We hope you enjoy your time using this platform',
+    read_status: false,
+    timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+};
+
+sendNotification(notification, false);
+```
