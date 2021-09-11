@@ -11,8 +11,12 @@ import {
     User,
     Event,
     Feedback,
+    Project,
+    Message,
+    Group,
     UserRoles,
 } from '@/types/FirebaseTypes.interface';
+import { Static } from '@vue/runtime-core';
 
 const getInitState = (): AppState => {
     return {
@@ -27,9 +31,13 @@ const getInitState = (): AppState => {
         new_img_url: '',
         is_new: false, // used to ensure all mandatory details are filled after signup
         events: [],
+        projects: [],
         talent: [],
         mentors: [],
         feedback: [],
+        messages: [],
+        user_list_to_chat: [],
+        groups: [],
         liked_events: [], // list of events liked by the user
         user_waves: [], // list of users waved at by the auth user
         waves_from_other_users: [], // list of user ids who waved at the auth user
@@ -52,6 +60,15 @@ const getInitState = (): AppState => {
                 full_name: [],
             },
         },
+        messagingComponent: {
+            group_id: '',
+            group_name: '',
+            render: false,
+            currentGroupMembers: [],
+            is_team: false,
+            active_group_id: '',
+        },
+        showChatList: true,
     };
 };
 
@@ -133,6 +150,7 @@ export default createStore({
                     social_links: {
                         email_id: authUser?.email ?? '',
                     },
+                    groups: [],
                 };
 
                 // write to db
@@ -213,6 +231,7 @@ export default createStore({
                                 last_name: doc.data()!.last_name,
                                 roles: doc.data()!.roles,
                                 social_links: doc.data()!.social_links,
+                                groups: doc.data()!.groups,
                             };
 
                             // update the user roles (TEMP)
@@ -309,6 +328,18 @@ export default createStore({
                 });
         },
 
+        ADD_PROJECT(state, project: Project) {
+            db.collection('projects')
+                .doc(project.id)
+                .set(project)
+                .then(() => {
+                    state.projects.push(project);
+                })
+                .catch(function(error) {
+                    console.log('Error getting document: ' + error);
+                });
+        },
+
         GET_LIKED_EVENTS(state) {
             db.collection('event_likes')
                 .where('user_id', '==', auth.currentUser!.uid)
@@ -392,6 +423,7 @@ export default createStore({
                             last_name: doc.data().last_name,
                             roles: doc.data().roles,
                             social_links: doc.data().social_links,
+                            groups: doc.data().groups,
                         };
 
                         // populating the talent array
@@ -452,6 +484,7 @@ export default createStore({
                             last_name: doc.data().last_name,
                             roles: doc.data().roles,
                             social_links: doc.data().social_links,
+                            groups: doc.data().groups,
                         };
 
                         // populating the mentors array
@@ -817,6 +850,238 @@ export default createStore({
                     console.log('Error getting document:', error);
                 });
         },
+
+        SEND_MESSAGE(state, message: Message) {
+            db.collection('messages')
+                .add(message)
+                .catch(function(error) {
+                    console.log('Error sending Message' + error);
+                });
+
+            //Update recent message of the group
+            db.collection('groups')
+                .doc(message.group_id)
+                .update({
+                    recent_message: message,
+                });
+        },
+
+        GET_USER_LIST_TO_CHAT(state) {
+            db.collection('users')
+                .where('id', '!=', auth.currentUser!.uid)
+                .get()
+                .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        const user: User = {
+                            background: doc.data().background,
+                            bio: doc.data().bio,
+                            created_at: doc.data().created_at,
+                            experience_level: doc.data().experience_level,
+                            first_name: doc.data().first_name,
+                            full_name: doc.data().full_name,
+                            id: doc.data().id,
+                            image_url: doc.data().image_url,
+                            interests: doc.data().interests,
+                            last_login: doc.data().last_login,
+                            last_name: doc.data().last_name,
+                            roles: doc.data().roles,
+                            social_links: doc.data().social_links,
+                            groups: doc.data().groups,
+                        };
+                        state.user_list_to_chat.push(user);
+                    });
+                })
+                .catch(function(error) {
+                    console.log('Error getting document:', error);
+                });
+        },
+
+        CREATE_GROUP(state, group: Group) {
+            group = {
+                ...group,
+                created_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
+                created_by: auth.currentUser!.uid,
+                modified_at: firebaseApp.firestore.FieldValue.serverTimestamp(),
+                admin_id: auth.currentUser!.uid, // currently set the creator will be the only admin first
+                recent_message: {
+                    from: null,
+                    group_id: group.id,
+                    payload: '',
+                    sender_full_name: '',
+                    timestamp: new Date().toISOString(),
+                    type: '',
+                },
+            };
+
+            let existed = false;
+
+            //check for repeated direct message group
+            if (group.members.length === 2) {
+                state.groups.forEach(existing_group => {
+                    if (existing_group.members.length === 2) {
+                        if (
+                            existing_group.members[0] !==
+                                auth.currentUser?.uid &&
+                            group.members.includes(existing_group.members[0])
+                        ) {
+                            //Do checking on index 0 if it is not the creator user id
+                            //Fail, index 1 will be user own id, so we check for index 0 only
+                            existed = true;
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Similar Group Existed !',
+                            });
+                        } else if (
+                            existing_group.members[0] ===
+                                auth.currentUser?.uid &&
+                            group.members.includes(existing_group.members[1])
+                        ) {
+                            // console.log('YES EXISTED');
+                            //Fail, index 0 will be user own id, so we check for index 1 only
+                            existed = true;
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Similar Group Existed !',
+                            });
+                        }
+                    }
+                });
+            }
+
+            //Only unique group can be created
+            if (!existed) {
+                //Save in DB
+                db.collection('groups')
+                    .doc(group.id)
+                    .set(group)
+                    .catch(function(error) {
+                        console.log('Error creating group' + error);
+                    });
+
+                //update user groups
+                group.members.forEach((user_id: string) => {
+                    db.collection('users')
+                        .doc(user_id)
+                        .update({
+                            groups: firebase.firestore.FieldValue.arrayUnion(
+                                group.id
+                            ),
+                        })
+                        .catch(function(error) {
+                            console.log(
+                                'Error update user groups while creating' +
+                                    error
+                            );
+                        });
+                });
+                //update state groups too
+                // Swal.fire('Added!', 'A new group has been added', 'success');
+            }
+        },
+        GET_USER_GROUPS(state) {
+            db.collection('groups')
+                .where('members', 'array-contains', auth.currentUser!.uid)
+                .orderBy('recent_message.timestamp', 'desc')
+                .onSnapshot(snapshot => {
+                    // only working with the changes and not entire collection
+                    snapshot.docChanges().forEach(change => {
+                        if (change.type == 'added') {
+                            state.groups.push({
+                                created_at: change.doc.data().created_at,
+                                created_by: change.doc.data().created_by,
+                                modified_at: change.doc.data().modified_at,
+                                admin_id: change.doc.data().admin_id,
+                                id: change.doc.data().id,
+                                members: change.doc.data().members,
+                                name: change.doc.data().name,
+                                is_team: change.doc.data().is_team,
+                                recent_message: change.doc.data()
+                                    .recent_message,
+                            });
+                        }
+                        if (change.type === 'modified') {
+                            //update recent message when send
+                            state.groups.forEach((group, index) => {
+                                if (group.id == change.doc.data().id) {
+                                    state.groups.splice(index, 1);
+                                    state.groups.unshift({
+                                        ...group,
+                                        recent_message: change.doc.data()
+                                            .recent_message,
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+        },
+        GET_GROUP_MEMBERS(state, group_id) {
+            //restore the currentGroupMember state
+            let members: string[] = [];
+            db.collection('groups')
+                .doc(group_id)
+                .onSnapshot(doc => {
+                    if (doc.exists) {
+                        state.messagingComponent.currentGroupMembers = [];
+                        members = doc.data()!.members;
+                        members.forEach(member_id => {
+                            db.collection('users')
+                                .doc(member_id)
+                                .get()
+                                .then(doc => {
+                                    const user: User = {
+                                        background: doc.data()!.background,
+                                        bio: doc.data()!.bio,
+                                        created_at: doc.data()!.created_at,
+                                        experience_level: doc.data()!
+                                            .experience_level,
+                                        first_name: doc.data()!.first_name,
+                                        full_name: doc.data()!.full_name,
+                                        id: doc.data()!.id,
+                                        image_url: doc.data()!.image_url,
+                                        interests: doc.data()!.interests,
+                                        last_login: doc.data()!.last_login,
+                                        last_name: doc.data()!.last_name,
+                                        roles: doc.data()!.roles,
+                                        social_links: doc.data()!.social_links,
+                                        groups: doc.data()!.groups,
+                                    };
+                                    if (
+                                        !state.messagingComponent.currentGroupMembers.includes(
+                                            user
+                                        )
+                                    ) {
+                                        state.messagingComponent.currentGroupMembers.push(
+                                            user
+                                        );
+                                    }
+                                });
+                        });
+                    } else {
+                        console.log('Group Members not found');
+                    }
+                });
+        },
+
+        SET_MESSAGING_COMPO_RENDER(state, boo) {
+            state.messagingComponent.render = boo;
+        },
+
+        SET_MESSAGING_COMPO_GROUP_ID(state, group_id) {
+            state.messagingComponent.group_id = group_id;
+        },
+
+        SET_MESSAGING_COMPO_GROUP_NAME(state, group_name) {
+            state.messagingComponent.group_name = group_name;
+        },
+
+        SET_MESSAGING_COMPO_ACTIVE_GROUP_ID(state, group_id) {
+            state.messagingComponent.active_group_id = group_id;
+        },
+
+        SET_MESSAGING_COMPO_IS_TEAM(state, group_is_team) {
+            state.messagingComponent.is_team = group_is_team;
+        },
     },
 
     // functions to be called throughout the app that, in turn, call mutations
@@ -855,6 +1120,9 @@ export default createStore({
         },
         addEvents({ commit }, obj: Event) {
             commit('ADD_EVENT', obj);
+        },
+        addProjects({ commit }, obj: Project) {
+            commit('ADD_PROJECT', obj);
         },
         getMentors({ commit }) {
             commit('GET_MENTORS');
@@ -923,6 +1191,46 @@ export default createStore({
 
         getWavesFromOtherUsers({ commit }) {
             commit('GET_WAVES_FROM_OTHER_USERS');
+        },
+
+        sendMessage({ commit }, message: Message) {
+            commit('SEND_MESSAGE', message);
+        },
+
+        createGroup({ commit }, group: Group) {
+            commit('CREATE_GROUP', group);
+        },
+
+        getUserListToChat({ commit }) {
+            commit('GET_USER_LIST_TO_CHAT');
+        },
+
+        getUserGroup({ commit }) {
+            commit('GET_USER_GROUPS');
+        },
+
+        getGroupMember({ commit }, group_id: string) {
+            commit('GET_GROUP_MEMBERS', group_id);
+        },
+
+        setMessagingComponentRender({ commit }, boo: boolean) {
+            commit('SET_MESSAGING_COMPO_RENDER', boo);
+        },
+
+        setMessagingComponentGroupId({ commit }, group_id: string) {
+            commit('SET_MESSAGING_COMPO_GROUP_ID', group_id);
+        },
+
+        setMessagingComponentGroupName({ commit }, group_name: string) {
+            commit('SET_MESSAGING_COMPO_GROUP_NAME', group_name);
+        },
+
+        setMessagingComponentActiveGroupId({ commit }, group_id: string) {
+            commit('SET_MESSAGING_COMPO_ACTIVE_GROUP_ID', group_id);
+        },
+
+        setMessagingComponentIsTeam({ commit }, group_is_team: boolean) {
+            commit('SET_MESSAGING_COMPO_IS_TEAM', group_is_team);
         },
     },
 });

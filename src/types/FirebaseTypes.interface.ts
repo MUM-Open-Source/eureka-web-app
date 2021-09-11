@@ -27,6 +27,8 @@ export interface User {
         linkedin_url?: string;
         website_url?: string;
     };
+    groups: string[] ;
+
 }
 
 export interface Event {
@@ -40,10 +42,38 @@ export interface Event {
     type: string;
 }
 
+export interface Project {
+    id: string;
+    project_name: string;
+    project_duration: string;
+    project_fields: string[];
+}
+
 export interface Feedback {
     created_at: firebase.firestore.FieldValue;
     message: string;
     subject: string;
     user_id: string;
     user_name: string;
+}
+
+export interface Message {
+    from: string | null ;
+    sender_full_name: string ; 
+    type: string;
+    payload: string; // can be text or media files
+    group_id: string ;
+    timestamp: string ;
+}
+
+export interface Group {
+    created_at: firebase.firestore.FieldValue;
+    created_by: string ;
+    modified_at: firebase.firestore.FieldValue;;
+    admin_id: string ;
+    id: string ;
+    members: string[] ;
+    name: string | null; //team name
+    is_team: boolean | null ;
+    recent_message: Message | null ;
 }

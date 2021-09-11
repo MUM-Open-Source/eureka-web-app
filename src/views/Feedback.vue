@@ -32,6 +32,8 @@
                             class="mar--auto mar__t--3 mar__b--1"
                             type="submit"
                         />
+
+                        <MessagingComponent from="2" group_id="1" />
                     </form>
                 </div>
             </div>
@@ -45,10 +47,11 @@ import store from '@/store';
 import Multiselect from '@vueform/multiselect';
 import Button from '@/common/Button.vue';
 import Swal from 'sweetalert2';
+import MessagingComponent from '../common/MessagingComponent.vue';
 
 export default {
     name: 'FeedbackUI',
-    components: { Multiselect, Button },
+    components: { Multiselect, Button, MessagingComponent },
 
     setup() {
         // reactive filter data point

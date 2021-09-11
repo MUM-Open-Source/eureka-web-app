@@ -619,9 +619,9 @@ export default {
         &--icon {
             height: 20px;
         }
-        .active {
-            //border-right: 3px solid $color-brand;
-        }
+        // .active {
+        //     //border-right: 3px solid $color-brand;
+        // }
     }
     &__img {
         display: flex;

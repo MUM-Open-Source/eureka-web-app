@@ -1,5 +1,12 @@
 import firebase from 'firebase';
-import { User, Event, Feedback } from '@/types/FirebaseTypes.interface';
+import {
+    User,
+    Event,
+    Feedback,
+    Project,
+    Message,
+    Group,
+} from '@/types/FirebaseTypes.interface';
 import {
     EventFilter,
     MentorFilter,
@@ -17,6 +24,15 @@ export interface ImageToUpload {
     fileName: string;
 }
 
+export interface MessagingComponent {
+    group_id: string;
+    group_name: string;
+    render: boolean;
+    currentGroupMembers: User[];
+    is_team: boolean;
+    active_group_id: string;
+}
+
 export interface AppState {
     user: firebase.User | null;
     isSideNavCollapsed: boolean;
@@ -31,6 +47,10 @@ export interface AppState {
     events: Event[];
     talent: User[];
     mentors: User[];
+    groups: Group[];
+    projects: Project[];
+    messages: Message[];
+    user_list_to_chat: User[];
     feedback: Feedback[];
     liked_events: string[];
     user_waves: string[];
@@ -40,4 +60,6 @@ export interface AppState {
         talent: TalentFilter;
         mentors: MentorFilter;
     };
+    messagingComponent: MessagingComponent;
+    showChatList: boolean;
 }

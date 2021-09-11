@@ -25,7 +25,7 @@ const firebaseConfig: ConfigVars = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const db_init = firebase.initializeApp(firebaseConfig);
 
 const analytics = firebase.analytics();
 const db = firebase.firestore();

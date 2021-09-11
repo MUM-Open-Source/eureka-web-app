@@ -17,6 +17,7 @@ import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue';
 import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
+import ChatRoom from '@/views/ChatRoom.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -139,6 +140,12 @@ const routes: RouteRecordRaw[] = [
         name: 'Privacy',
         component: Privacy,
     },
+    {
+      path: '/chat-room',
+      name: 'ChatRoom',
+      component: ChatRoom,
+  
+    }
 
     // {
     //   path: '/about',

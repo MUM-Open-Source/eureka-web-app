@@ -149,6 +149,13 @@ $under-maintenance-img-width: 50%;
 $under-maintenance-img-width-sm: 250px;
 $under-maintenance-img-padding-right: 40px;
 
+// tabs
+$tab-wrapper-width: 100%;
+$tab-wrapper-margin: 0 auto;
+$tab-title-min-width: 80px;
+$tab-title-padding: 10px 20px;
+$tab-content-min-height: 300px;
+
 // Tag Input Styling
 $tag-input-width: 100%;
 $tag-input-border-radius: 1px;
@@ -164,3 +171,10 @@ $tag-input-text-line-height: 50px;
 
 // Star Rating Icon
 $star-rating-icon-padding: 5px;
+
+//Messaging Component
+$color-light-grey-chat: #e0e4ee;
+$color-purple-chat: #7069e7;
+$chat-list-color: #f4f6fa;
+$selected-group-color: rgb(230, 230, 230);
+$messagebox-margin-top: 100px;
