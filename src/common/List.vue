@@ -59,6 +59,10 @@
             <fa icon="heart" />
         </IconButton>
 
+        <IconButton @click="removeProject" v-if="displayDeleteIcon()">
+            <fa icon="heart" />
+        </IconButton>
+
         <div class="trailing">
             <div
                 class="tagline text--capsule cursor__default"
@@ -113,7 +117,7 @@ import {
     RECRUITMENT_STORE,
     SET_PROJECT_DETAILS_PAGE,
 } from '@/modules/recruitment/recruitmentStore';
-import { studentInterested } from '@/modules/recruitment/recruitmentAPi';
+import { studentInterested, deleteProject } from '@/modules/recruitment/recruitmentAPi';
 import Swal from 'sweetalert2';
 
 export default defineComponent({
@@ -166,6 +170,17 @@ export default defineComponent({
             );
         };
 
+        const removeProject = async () => {
+            await deleteProject({
+                id: props.project.id
+            }).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Project Deleted!',
+                })
+            })
+        }
+
         const showModal = () => {
             state.isModalVisible = true;
         };
@@ -181,6 +196,14 @@ export default defineComponent({
                 !state.involvement
             );
         };
+
+        const displayDeleteIcon = () => {
+            return (
+                state.userIsStaff &&
+                state.isYourProject &&
+                !state.involvement
+            )
+        }
 
         const displayApplyButton = () => {
             return state.involvement?.statusCode === RESEARCH_INTEREST_ACCEPTED;
@@ -242,6 +265,8 @@ export default defineComponent({
             expressInterest,
             displayInterestIcon,
             displayApplyButton,
+            removeProject,
+            displayDeleteIcon,
             ...props,
         };
     },

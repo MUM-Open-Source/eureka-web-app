@@ -1,4 +1,5 @@
-import { db, storage } from '@/firebase';
+import { auth, db, storage } from '@/firebase';
+// import { buildProps } from '@vue/compiler-core';
 import firebase from 'firebase';
 import { RESEARCH_APPLY, RESEARCH_INTEREST } from '../constants';
 
@@ -18,6 +19,45 @@ export const getAllProjects = async () =>
         id: p.id,
         ...p.data(),
     }));
+
+export const createProject = ({
+    project_name,
+    project_duration,
+    project_fields,
+    overview
+} : {
+    project_name: string,
+    project_duration: string,
+    project_fields: string[],
+    overview: string,
+    supervisor: string,
+    supervisor_id: number,
+    email: string
+}) => {
+    return db
+            .collection(PROJECT).add({
+                project_name,
+                project_duration,
+                overview,
+                supervisor: auth.currentUser!.displayName,
+                supervisor_id: auth.currentUser!.uid,
+                project_fields,
+                email: auth.currentUser!.email
+    })
+};
+
+export const deleteProject = ({
+    id
+} : {
+    id: number
+}) => {
+    console.log(id)
+    return db
+            .collection(PROJECT)
+            .doc(`${id}`)
+            .delete()
+}
+
 
 export const getRealtimeStudentInvolvements = async ({
     user_id,

@@ -46,8 +46,8 @@
 <script>
 import Multiselect from '@vueform/multiselect';
 import Button from '@/common/Button.vue';
-import store from '@/store'
 import Swal from "sweetalert2";
+import { createProject } from './recruitmentAPi';
 
 export default {
   name: 'NewProject',
@@ -73,29 +73,26 @@ export default {
   },
   methods: {
     addProject() {
-      console.log(this.indexes)
+      console.log(this.indexes, this.options)
       this.indexes.forEach((index) => {
-        this.project_fields.push(this.options[index])
+        this.project_fields.push(index)
       })
-      console.log({
+      console.log(this.project_fields)
+      createProject({
         project_name: this.project_name,
         project_duration: this.project_duration,
         project_fields: this.project_fields,
         overview: this.overview
+      })
+      .then(() => {
+        Swal.fire("Added!", "A new project has been added", "success");
+        this.project_name = "";
+        this.project_duration = "";
+        this.project_fields = [];
+        this.indexes = [];
+        this.overview = "";
       });
-      store.dispatch("addProjects", {
-        project_name: this.project_name,
-        project_duration: this.project_duration,
-        project_fields: this.project_fields,
-        overview: this.overview
-      });
-      Swal.fire("Added!", "A new project has been added", "success")
-      this.project_name = "",
-      this.project_duration = "",
-      this.project_fields = [];
-      this.indexes = [];
-      this.overview = "";
-    },
+    }
   },
 };
 </script>

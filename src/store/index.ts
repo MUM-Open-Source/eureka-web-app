@@ -11,7 +11,6 @@ import {
     User,
     Event,
     Feedback,
-    Project,
     UserRoles,
 } from '@/types/FirebaseTypes.interface';
 //import { RESEARCH_APPLY, RESEARCH_INTEREST } from '@/modules/constants/index';
@@ -869,18 +868,6 @@ export default createStore({
         },
         addEvents({ commit }, obj: Event) {
             commit('ADD_EVENT', obj);
-        },
-        addProjects({ commit }, obj: Project) {
-            commit('ADD_PROJECT', obj);
-        },
-        getProjects({ commit }) {
-            commit('GET_PROJECTS');
-        },
-        getProject({ commit }, { id, onRecieve }) {
-            commit('GET_PROJECT', { id, onRecieve });
-        },
-        getAllProjects({ commit }) {
-            commit('GET_ALL_PROJECTS');
         },
         getMentors({ commit }) {
             commit('GET_MENTORS');
