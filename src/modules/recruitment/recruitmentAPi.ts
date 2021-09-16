@@ -1,5 +1,4 @@
 import { auth, db, storage } from '@/firebase';
-// import { buildProps } from '@vue/compiler-core';
 import firebase from 'firebase';
 import { RESEARCH_APPLY, RESEARCH_INTEREST } from '../constants';
 
@@ -45,6 +44,33 @@ export const createProject = ({
                 email: auth.currentUser!.email
     })
 };
+
+export const updateProject = ({
+    id,
+    project_name,
+    project_duration,
+    project_fields,
+    overview
+} : {
+    id: number,
+    project_name: string,
+    project_duration: string,
+    project_fields: string[],
+    overview: string
+}) => {
+    return db
+            .collection(PROJECT)
+            .doc(`${id}`)
+            .update({
+                project_name,
+                project_duration,
+                overview,
+                supervisor: auth.currentUser!.displayName,
+                supervisor_id: auth.currentUser!.uid,
+                project_fields,
+                email: auth.currentUser!.email
+            })
+}
 
 export const deleteProject = ({
     id

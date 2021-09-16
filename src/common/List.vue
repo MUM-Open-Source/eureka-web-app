@@ -1,12 +1,7 @@
 <template>
     <div
-        class="
-            user__card
-            pad--2 pad__l--0
-            mar__b--2
-            cursor__pointer
-            show-bottom-border
-        "
+        v-bind:class="{ 'user__card': !inEdit, 'user__card--edit': inEdit }"
+        class="pad--2 pad__l--0 mar__b--2 cursor__pointer show-bottom-border"
     >
         <div class="user__card--details" @click="onCardClicked">
             <!-- project name -->
@@ -59,9 +54,28 @@
             <fa icon="heart" />
         </IconButton>
 
-        <IconButton @click="removeProject" v-if="displayDeleteIcon()">
-            <fa icon="heart" />
+        <IconButton
+            @click="onEditClicked()"
+            v-if="displayDeleteAndEditIcon() && inEdit"
+        >
+            <fa icon="times" />
         </IconButton>
+
+        <div class="user__card-buttons">
+            <IconButton
+                @click="removeProject"
+                v-if="displayDeleteAndEditIcon() && !inEdit"
+            >
+                <fa icon="trash" />
+            </IconButton>
+
+            <IconButton
+                @click="onEditClicked()"
+                v-if="displayDeleteAndEditIcon() && !inEdit"
+            >
+                <fa icon="pen" />
+            </IconButton>
+        </div>
 
         <div class="trailing">
             <div
@@ -79,6 +93,41 @@
                 <FlatButton text="CURRENT SUBMISSION" @click="downloadFile" />
                 <FlatButton text="RESUBMIT " @click="showModal" />
             </div>
+        </div>
+        <div v-if="inEdit" class="data pad--1">
+            <h4>Name</h4>
+            <input
+                type="text"
+                class="custom-input mar__b--2"
+                :placeholder="project.project_name"
+                v-model="project_name"
+            />
+            <h4>Project Duration</h4>
+            <input
+                type="text"
+                class="custom-input mar__b--2"
+                :placeholder="project.project_duration"
+                v-model="project_duration"
+            />
+            <h4>Project Interests</h4>
+            <Multiselect
+                v-model="indexes"
+                mode="tags"
+                :searchable="true"
+                :options="options"
+                :max="4"
+                placeholder="Choose Field..."
+                class="body new-project__multiselect mar__b--2"
+                :createTag="true"
+            />
+            <h4>Overview</h4>
+            <textarea
+                id="overview"
+                class="body user__card--textarea mar__b--2"
+                :placeholder="project.overview"
+                v-model="overview"
+            />
+            <Button text="Done" @click="editProject()" />
         </div>
     </div>
 
@@ -104,6 +153,8 @@ import { defineComponent, computed, reactive } from 'vue';
 import Modal from './Modal.vue';
 import IconButton from '@/modules/admin/IconButton.vue';
 import FlatButton from '@/modules/admin/FlatButton.vue';
+import Multiselect from '@vueform/multiselect';
+import Button from "@/common/Button.vue";
 import {
     RESEARCH_APPLICATION_ACCEPTED,
     RESEARCH_APPLY,
@@ -117,12 +168,16 @@ import {
     RECRUITMENT_STORE,
     SET_PROJECT_DETAILS_PAGE,
 } from '@/modules/recruitment/recruitmentStore';
-import { studentInterested, deleteProject } from '@/modules/recruitment/recruitmentAPi';
+import {
+    studentInterested,
+    deleteProject,
+    updateProject
+} from '@/modules/recruitment/recruitmentAPi';
 import Swal from 'sweetalert2';
 
 export default defineComponent({
     name: 'List',
-    components: { ApplyDialog, Modal, IconButton, FlatButton },
+    components: { ApplyDialog, Modal, IconButton, FlatButton, Multiselect, Button },
     props: {
         project: {
             type: Object,
@@ -136,6 +191,45 @@ export default defineComponent({
             type: Boolean,
             required: true,
         },
+    },
+    data() {
+        return {
+            inEdit: false,
+            project_name: '',
+            project_duration: '',
+            overview: '',
+            indexes: [],
+            project_fields: [],
+            options: [
+                'ML/AI',
+                'Cybersecurity',
+                'Data Mining',
+                'Algorithms',
+                'IoT',
+            ],
+        };
+    },
+    methods: {
+        onEditClicked() {
+            console.log(this.inEdit);
+            this.inEdit = !this.inEdit;
+        },
+        editProject() {
+            this.indexes.forEach((index) => {
+                this.project_fields.push(index)
+            });
+            updateProject({
+                id: this.$props.project.id,
+                project_name: this.project_name || this.$props.project.project_name,
+                project_duration: this.project_duration || this.$props.project.project_duration,
+                project_fields: this.project_fields || this.$props.project.project_fields,
+                overview: this.overview || this.$props.project.overview
+            })
+            .then(() => {
+                Swal.fire("Added!", "Project has been updated", "success");
+                this.onEditClicked()
+            }); 
+        }
     },
     setup(props) {
         const state = reactive({
@@ -172,14 +266,14 @@ export default defineComponent({
 
         const removeProject = async () => {
             await deleteProject({
-                id: props.project.id
+                id: props.project.id,
             }).then(() => {
                 Swal.fire({
                     icon: 'success',
                     title: 'Project Deleted!',
-                })
-            })
-        }
+                });
+            });
+        };
 
         const showModal = () => {
             state.isModalVisible = true;
@@ -197,13 +291,11 @@ export default defineComponent({
             );
         };
 
-        const displayDeleteIcon = () => {
+        const displayDeleteAndEditIcon = () => {
             return (
-                state.userIsStaff &&
-                state.isYourProject &&
-                !state.involvement
-            )
-        }
+                state.userIsStaff && state.isYourProject && !state.involvement
+            );
+        };
 
         const displayApplyButton = () => {
             return state.involvement?.statusCode === RESEARCH_INTEREST_ACCEPTED;
@@ -266,7 +358,7 @@ export default defineComponent({
             displayInterestIcon,
             displayApplyButton,
             removeProject,
-            displayDeleteIcon,
+            displayDeleteAndEditIcon,
             ...props,
         };
     },
@@ -316,6 +408,31 @@ export default defineComponent({
         height: $user-card-actions-height;
         align-self: center;
         margin-left: $user-card-row-margin-left;
+    }
+    &--buttons {
+        display: flex;
+        flex-direction: column;
+    }
+    &--edit {
+        display: flex;
+        flex-direction: column;
+    }
+    &--textarea {
+        height: 100px;
+    }
+}
+
+.custom-input {
+    width: 100%;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    border: 1px solid $color-bg-hover;
+    border-radius: 4px;
+    &__label {
+        color: $color-brand;
+    }
+    &::placeholder {
+        color: $color-bg-hover;
     }
 }
 

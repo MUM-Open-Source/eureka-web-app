@@ -64,14 +64,6 @@ export default {
       this.showAddEvent = !this.showAddEvent;
     },
     addEvent() {
-      console.log({
-        image_url: this.image_url,
-        name: this.name,
-        dates: this.dates,
-        organizer: this.organizer,
-        type: this.type,
-        description: this.description,
-      });
       if (
         this.image_url.trim().length >= 5 &&
         this.name.trim().length >= 5 &&

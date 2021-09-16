@@ -21,6 +21,8 @@ import {
     faHeart,
     faCheck,
     faFileDownload,
+    faTrash,
+    faPen
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faComments,
@@ -44,7 +46,9 @@ library.add(
     faArrowLeft,
     faHeart,
     faCheck,
-    faFileDownload
+    faFileDownload,
+    faTrash,
+    faPen
 );
 
 createApp(App)
