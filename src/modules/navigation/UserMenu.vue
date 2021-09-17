@@ -5,6 +5,7 @@
                 v-for="(item, i) in menu_items"
                 :key="i"
                 class="user-menu__items--loop"
+                @click="$emit('userMenuButtonClick', item.component_name)"
             >
                 <router-link :to="{ name: item.component_name }">
                     <div class="user-menu__item pad--2">
@@ -32,16 +33,14 @@
 
 <script>
 import store from '@/store';
-
 export default {
     name: 'UserMenu',
-
-    setup() {
+    setup(props, { emit }) {
         // logging out the user
         const handleLogout = () => {
+            emit('userMenuButtonClick', 'logout');
             store.dispatch('signoutUser');
         };
-
         // list of menu items to be displayed
         const menu_items = [
             {
@@ -60,7 +59,6 @@ export default {
                 icon_src: require('@/assets/profile-mentor-icon.svg'),
             },
         ];
-
         return {
             handleLogout,
             menu_items,
@@ -77,7 +75,6 @@ export default {
     right: $user-menu-right;
     border-radius: $app-border-radius;
     background-color: $color-white;
-
     &__items {
         &--loop:first-child .user-menu__item {
             border-radius: $app-border-radius $app-border-radius 0 0;
