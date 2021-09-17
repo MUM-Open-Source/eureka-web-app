@@ -86,7 +86,7 @@ export default {
         margin-left: $side-nav-width;
     }
 }
-@media (max-width: 576px) {
+@media (max-width: $sm) {
     .main__width {
         &--reduced {
             margin-left: 0;

@@ -1,3 +1,4 @@
+@use "sass:math";
 // find all static values stored here as variables
 
 // Colors
@@ -31,6 +32,14 @@ $normal: 400;
 $semibold: 600;
 $bold: 900;
 
+// responsive breakpoints
+$xs: 24em; //xs - smaller mobile phone
+$sm: 36em; // sm - mobile phone
+$md: 48em; // md - tablets
+$lg: 62em; // lg - desktop-screen/laptop
+$xl: 80em; // xl - very large screen
+$dxl: 96em; // dxl - doubly very large screen
+
 /********** COMPONENTS **********/
 $app-border-radius: 18px;
 $app-border-radius-sm: 9px;
@@ -57,7 +66,7 @@ $side-nav-group-bottom-mar-b: 10px;
 // top nav
 $top-nav-height: 60px;
 $top-nav-icon-width: 25px;
-$top-nav-img-height: $top-nav-height/1.5;
+$top-nav-img-height: math.div($top-nav-height, 1.5);
 $top-nav-elem-margin: 20px;
 $top-nav-bell-margin: 10px;
 $top-nav-badge-pos: 5%;

@@ -169,7 +169,7 @@ img {
     align-items: center;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: $lg) {
     .leading {
         width: 100%;
         display: flex;

@@ -340,7 +340,7 @@ export default defineComponent({
         }
     }
 }
-@media (max-width: 903px) {
+@media (max-width: $lg) {
     .home__features {
         .row {
             flex-direction: column-reverse;
