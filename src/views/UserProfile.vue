@@ -654,17 +654,17 @@ export default {
         background-color: $color-brand;
     }
 }
-@media (max-width: 954px) {
+@media (max-width: $lg) {
     .user-profile__multiselect {
         width: $multiselect-width-sm;
     }
 }
-@media (max-width: 425px) {
+@media (max-width: $sm) {
     .user-profile__multiselect {
         width: 100%;
     }
 }
-@media (max-width: 736px) {
+@media (max-width: $md) {
     .user-profile {
         flex-direction: column;
         align-items: center;

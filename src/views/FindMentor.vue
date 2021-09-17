@@ -103,7 +103,7 @@ export default {
     justify-content: space-evenly;
 }
 
-@media (max-width: 736px) {
+@media (max-width: $md) {
     .find-mentor {
         flex-direction: column;
     }

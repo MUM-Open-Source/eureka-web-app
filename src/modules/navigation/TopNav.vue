@@ -130,7 +130,7 @@ export default defineComponent({
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: $sm) {
     #top-nav__name {
         display: none;
     }
@@ -141,7 +141,7 @@ export default defineComponent({
     }
 }
 
-@media (max-width: 326px) {
+@media (max-width: $xs) {
     .top-nav__logo {
         display: none;
     }

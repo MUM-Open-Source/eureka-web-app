@@ -34,7 +34,7 @@ export default {
     }
 }
 
-@media (max-width: 765px) {
+@media (max-width: $md) {
     .not-found {
         justify-content: center;
         flex-direction: column;

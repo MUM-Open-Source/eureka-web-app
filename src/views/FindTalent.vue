@@ -98,7 +98,7 @@ export default {
     justify-content: space-evenly;
 }
 
-@media (max-width: 736px) {
+@media (max-width: $md) {
     .find-talent {
         flex-direction: column;
     }

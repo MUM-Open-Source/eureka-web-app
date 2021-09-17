@@ -1,3 +1,4 @@
+@use "sass:math";
 // find all static values stored here as variables
 
 // Colors
@@ -56,7 +57,7 @@ $side-nav-group-bottom-mar-b: 10px;
 // top nav
 $top-nav-height: 60px;
 $top-nav-icon-width: 25px;
-$top-nav-img-height: $top-nav-height/1.5;
+$top-nav-img-height: math.div($top-nav-height, 1.5);
 $top-nav-elem-margin: 20px;
 $top-nav-bell-margin: 10px;
 
@@ -164,3 +165,18 @@ $tag-input-text-line-height: 50px;
 
 // Star Rating Icon
 $star-rating-icon-padding: 5px;
+
+// breakpoints
+
+//xs - smaller mobile phone
+// sm - mobile phone
+// md - tablets
+// lg - desktop-screen/laptop
+// xl - very large screen
+// dxl - doubly very large screen
+$xs: 24em;
+$sm: 36em;
+$md: 48em;
+$lg: 62em;
+$xl: 80em;
+$dxl: 96em;
