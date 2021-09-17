@@ -626,18 +626,22 @@ Swal.mixin({
 
 ### Notifications
 
-This feature allows developer to set to send user notification using the helper function. Once the notification is sent, user will receive the message in real-time and have the option to mark the notification as read.
+::: tip FILE LOCATION
+The classes declaration of the helper function here exists at `/src/helpers/`.
+:::
+
+This feature allows the developer to send a user notification using a helper function. Once the notification is sent, the user will receive the message in real-time and have the option to mark the notification as read.
 
 `sendNotification` accepts 2 parameters: notification and email
 
 **Type:** notification - `Notification`, email - `Boolean (False by default)`
 
-By default, sendNotification will only create a notification to the intended receipient. To send an email alongside the notification, mark the `email` field as `True`
+By default, sendNotification will only create an in-app notification to the intended receipient. To send an email alongside the notification, set the `email` parameter as `True`
 
 Below is an example of a notification being sent to user `Eureka2020`
 
 ```js
-import { sendNotification } from './../helpers/notifications';
+import { sendNotification } from '@/helpers/notifications';
 
 const notification: Notification = {
     user_id: 'Eureka2020',
