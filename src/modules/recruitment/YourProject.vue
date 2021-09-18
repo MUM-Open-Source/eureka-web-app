@@ -18,7 +18,7 @@
 
 <script>
 import List from '@/common/List.vue';
-import { computed } from '@vue/runtime-core';
+import { computed, onMounted } from '@vue/runtime-core';
 import store from '@/store';
 import {
     GET_IS_LECTURER,
@@ -32,6 +32,9 @@ export default {
     name: 'AllProjects',
     components: { List },
     setup() {
+        onMounted(() => {
+            console.log(store.state?.user_data?.roles);
+        });
         const isStudent =
             store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
         const userProjects = computed(() => {

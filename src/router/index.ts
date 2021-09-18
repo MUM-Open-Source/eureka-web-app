@@ -145,11 +145,17 @@ const routes: RouteRecordRaw[] = [
         path: '/research-projects',
         name: 'ResearchProjects',
         component: ResearchProjects,
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: '/project-details/:id',
         name: 'ProjectDetails',
         component: ProjectDetails,
+        meta: {
+            requiresAuth: true,
+        },
     },
 
     // {
