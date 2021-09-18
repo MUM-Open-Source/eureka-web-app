@@ -36,6 +36,7 @@ import NewProject from '@/modules/recruitment/NewProject.vue';
 import store from '@/store';
 import {
     ACTION_GET_ALL_PROJECTS,
+    ACTION_GET_LECTURER_INVOLVEMENT_SUBSCRIPTION,
     ACTION_GET_USER_INVOLVEMENT_SUBSCRIPTION,
     GET_IS_LECTURER,
     GET_IS_STUDENT,
@@ -64,11 +65,14 @@ export default defineComponent({
 
         onMounted(() => {
             store.dispatch(`${RECRUITMENT_STORE}${ACTION_GET_ALL_PROJECTS}`);
-            if (userIsStudent) {
+            if (userIsStudent)
                 store.dispatch(
                     `${RECRUITMENT_STORE}${ACTION_GET_USER_INVOLVEMENT_SUBSCRIPTION}`
                 );
-            }
+            if (userIsStaff)
+                store.dispatch(
+                    `${RECRUITMENT_STORE}${ACTION_GET_LECTURER_INVOLVEMENT_SUBSCRIPTION}`
+                );
         });
 
         onUnmounted(() => {

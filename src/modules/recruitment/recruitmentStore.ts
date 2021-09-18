@@ -3,6 +3,7 @@ import { Project } from '@/types/FirebaseTypes.interface';
 import { Module } from 'vuex';
 import {
     getAllProjects,
+    getLecturerRealtimeStudentInvolvement,
     getProjectRealtimeStudentInvolvements,
     getRealtimeStudentInvolvements,
 } from './recruitmentAPi';
@@ -23,6 +24,7 @@ export const GET_PROJECT_DETAILS_STUDENTS = 'getProjectDetailsStudents';
 
 // Mutations
 export const SET_ALL_PROJECTS = 'setAllProjects';
+export const SET_APPEND_PROJECTS = 'setAppendProjects';
 export const SET_USER_INVOLVEMENTS = 'setUserInvolvements';
 export const SET_PROJECT_DETAILS_PAGE = 'setProjectsDetailsPage';
 export const SET_PROJECT_DETAILS_STUDENTS = 'setProjectDetailsStudents';
@@ -34,12 +36,18 @@ export const SET_PROJECT_DETAILS_STUDENTS_UNSUBSCRIBE =
     'setProjectDetailsStudentsUnsubscribe';
 export const SET_PROJECT_DETAILS_STUDENTS_SUBSCRIPTIONS =
     'setProjectDetailsStudentsSubscriptions';
+export const SET_LECTURER_PROJECTS = 'setLecturerProjects';
+export const SET_LECTURER_SUBSCRIPTION = 'setLecturerSubscription';
+export const SET_LECTURER_SUBSCRIPTION_UNSUBSCRIBE =
+    'setLecturerSubscriptionUnsubscribe';
 
 // Actions
 export const ACTION_GET_ALL_PROJECTS = 'getAllProjects';
 export const ACTION_GET_PROJECT_DETAILS = 'getProjectDetails';
 export const ACTION_GET_PROJECT_DETAILS_STUDENTS = 'getProjectDetailsStudents';
 export const ACTION_GET_STUDENT_LIST_SUBSCRIPTION = 'getStudentList';
+export const ACTION_GET_LECTURER_INVOLVEMENT_SUBSCRIPTION =
+    'getLecturerInvolvement';
 export const ACTION_GET_USER_INVOLVEMENT_SUBSCRIPTION =
     'userInvolvementSubscription';
 
@@ -51,10 +59,12 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
     state: {
         allProjects: [],
         userInvolvements: [],
+        supervisorResearch: [],
         userInvolvementSubscription: null,
         projectDetailsPageData: null,
         projectDetailsPageStudentList: [],
         projectDetailsPageStudentSubscription: null,
+        supervisorResearchSubscription: null,
     } as RecruitementStoreState,
     getters: {
         [GET_STUDENT_MY_PROJECTS]: state => {
@@ -71,10 +81,9 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
         [GET_IS_STUDENT]: (__, _, rootState) => {
             return rootState.user_data?.roles.includes('talent');
         },
-        [GET_LECTURER_MY_PROJECTS]: (state, _, rootState) => {
-            return state.allProjects.filter(
-                (p: Project) => p.supervisor_id === rootState.user?.uid
-            );
+        [GET_LECTURER_MY_PROJECTS]: state => {
+            console.log(state.supervisorResearch);
+            return state.supervisorResearch;
         },
         [GET_USER_INVOLVEMENT]: state => {
             return state.userInvolvements;
@@ -91,6 +100,9 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
         },
     },
     mutations: {
+        [SET_LECTURER_SUBSCRIPTION]: (state, { newSubscription }) => {
+            state.supervisorResearchSubscription = newSubscription;
+        },
         [SET_PROJECT_DETAILS_STUDENTS]: (
             state,
             { newStudentList }: { newStudentList: ResearchInvolvement[] }
@@ -115,6 +127,9 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
         ) => {
             state.userInvolvements = newUserInvolvement;
         },
+        [SET_LECTURER_PROJECTS]: (state, { newLecturerProjects }) => {
+            state.supervisorResearch = newLecturerProjects;
+        },
         [SET_USER_INVOLVEMENTS_SUBSCRIPTIONS]: (
             state,
             { newSubscription }: { newSubscription: any }
@@ -129,6 +144,12 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
             if (state.userInvolvementSubscription) {
                 state.userInvolvementSubscription();
                 state.userInvolvementSubscription = null;
+            }
+        },
+        [SET_LECTURER_SUBSCRIPTION_UNSUBSCRIBE]: state => {
+            if (state.supervisorResearchSubscription) {
+                state.supervisorResearchSubscription();
+                state.supervisorResearchSubscription = null;
             }
         },
         [SET_PROJECT_DETAILS_STUDENTS_UNSUBSCRIBE]: state => {
@@ -159,6 +180,23 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
             });
             commit(SET_PROJECT_DETAILS_STUDENTS_SUBSCRIPTIONS, {
                 newStudentsSubscriptions: subscription,
+            });
+        },
+        [ACTION_GET_LECTURER_INVOLVEMENT_SUBSCRIPTION]: async ({
+            commit,
+            rootState,
+        }) => {
+            const subscription = getLecturerRealtimeStudentInvolvement({
+                supervisor_id: rootState.user?.uid || '',
+                onSnapshot: (research: any) => {
+                    console.log(research);
+                    commit(SET_LECTURER_PROJECTS, {
+                        newLecturerProjects: research,
+                    });
+                },
+            });
+            commit(SET_LECTURER_SUBSCRIPTION, {
+                newSubscription: subscription,
             });
         },
         [ACTION_GET_USER_INVOLVEMENT_SUBSCRIPTION]: async ({

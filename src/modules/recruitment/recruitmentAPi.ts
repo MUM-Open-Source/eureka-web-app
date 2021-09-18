@@ -23,26 +23,25 @@ export const createProject = ({
     project_name,
     project_duration,
     project_fields,
-    overview
-} : {
-    project_name: string,
-    project_duration: string,
-    project_fields: string[],
-    overview: string,
-    supervisor: string,
-    supervisor_id: number,
-    email: string
+    overview,
+}: {
+    project_name: string;
+    project_duration: string;
+    project_fields: string[];
+    overview: string;
+    supervisor: string;
+    supervisor_id: number;
+    email: string;
 }) => {
-    return db
-            .collection(PROJECT).add({
-                project_name,
-                project_duration,
-                overview,
-                supervisor: auth.currentUser!.displayName,
-                supervisor_id: auth.currentUser!.uid,
-                project_fields,
-                email: auth.currentUser!.email
-    })
+    return db.collection(PROJECT).add({
+        project_name,
+        project_duration,
+        overview,
+        supervisor: auth.currentUser!.displayName,
+        supervisor_id: auth.currentUser!.uid,
+        project_fields,
+        email: auth.currentUser!.email,
+    });
 };
 
 export const updateProject = ({
@@ -50,40 +49,35 @@ export const updateProject = ({
     project_name,
     project_duration,
     project_fields,
-    overview
-} : {
-    id: number,
-    project_name: string,
-    project_duration: string,
-    project_fields: string[],
-    overview: string
+    overview,
+}: {
+    id: number;
+    project_name: string;
+    project_duration: string;
+    project_fields: string[];
+    overview: string;
 }) => {
     return db
-            .collection(PROJECT)
-            .doc(`${id}`)
-            .update({
-                project_name,
-                project_duration,
-                overview,
-                supervisor: auth.currentUser!.displayName,
-                supervisor_id: auth.currentUser!.uid,
-                project_fields,
-                email: auth.currentUser!.email
-            })
-}
+        .collection(PROJECT)
+        .doc(`${id}`)
+        .update({
+            project_name,
+            project_duration,
+            overview,
+            supervisor: auth.currentUser!.displayName,
+            supervisor_id: auth.currentUser!.uid,
+            project_fields,
+            email: auth.currentUser!.email,
+        });
+};
 
-export const deleteProject = ({
-    id
-} : {
-    id: number
-}) => {
-    console.log(id)
+export const deleteProject = ({ id }: { id: number }) => {
+    console.log(id);
     return db
-            .collection(PROJECT)
-            .doc(`${id}`)
-            .delete()
-}
-
+        .collection(PROJECT)
+        .doc(`${id}`)
+        .delete();
+};
 
 export const getRealtimeStudentInvolvements = async ({
     user_id,
@@ -110,6 +104,21 @@ export const getProjectRealtimeStudentInvolvements = async ({
     return db
         .collection(RESEARCH_INVOLVEMENTS)
         .where('research_id', '==', research_id)
+        .onSnapshot(snapshot =>
+            onSnapshot(snapshot.docs.map(doc => doc.data()))
+        );
+};
+
+export const getLecturerRealtimeStudentInvolvement = ({
+    supervisor_id,
+    onSnapshot,
+}: {
+    supervisor_id: string;
+    onSnapshot: Function;
+}) => {
+    return db
+        .collection(PROJECT)
+        .where('supervisor_id', '==', supervisor_id)
         .onSnapshot(snapshot =>
             onSnapshot(snapshot.docs.map(doc => doc.data()))
         );

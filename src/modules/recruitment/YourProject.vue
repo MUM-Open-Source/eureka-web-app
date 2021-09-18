@@ -18,7 +18,7 @@
 
 <script>
 import List from '@/common/List.vue';
-import { computed, onMounted } from '@vue/runtime-core';
+import { computed } from '@vue/runtime-core';
 import store from '@/store';
 import {
     GET_IS_LECTURER,
@@ -32,29 +32,23 @@ export default {
     name: 'AllProjects',
     components: { List },
     setup() {
-        onMounted(() => {
-            console.log(store.state?.user_data?.roles);
-        });
         const isStudent =
             store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
+        const isStaff = store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`];
+        const studentProjects = computed(
+            () =>
+                store.getters[`${RECRUITMENT_STORE}${GET_STUDENT_MY_PROJECTS}`]
+        );
+        const staffProjects = computed(
+            () =>
+                store.getters[`${RECRUITMENT_STORE}${GET_LECTURER_MY_PROJECTS}`]
+        );
         const userProjects = computed(() => {
-            const studentProjects =
-                store.getters[`${RECRUITMENT_STORE}${GET_STUDENT_MY_PROJECTS}`];
-            const staffProjects =
-                store.getters[
-                    `${RECRUITMENT_STORE}${GET_LECTURER_MY_PROJECTS}`
-                ];
-            const isStudent =
-                store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
-            const isStaff =
-                store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`];
-
+            console.log('this is ran');
             if (isStudent && isStaff)
-                return staffProjects.concat(studentProjects);
-            else if (store.getters[`${RECRUITMENT_STORE}${GET_IS_STUDENT}`])
-                return studentProjects;
-            else if (store.getters[`${RECRUITMENT_STORE}${GET_IS_LECTURER}`])
-                return staffProjects;
+                return staffProjects.value.concat(studentProjects.value);
+            else if (isStudent) return studentProjects;
+            else if (isStaff) return staffProjects;
         });
 
         return {

@@ -1,12 +1,13 @@
 export default interface RecruitementStoreState {
     allProjects: Project[];
+    supervisorResearch: Project[];
     projectDetailsPageData: any;
     userInvolvementSubscription: any;
     userInvolvements: ResearchInvolvement[];
     projectDetailsPageStudentSubscription: any;
+    supervisorResearchSubscription: any;
     projectDetailsPageStudentList: ResearchInvolvement[];
 }
-
 export interface ResearchInvolvement {
     research_id: string;
     status_code: number;
