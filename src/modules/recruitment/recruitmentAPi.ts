@@ -72,7 +72,6 @@ export const updateProject = ({
 };
 
 export const deleteProject = ({ id }: { id: number }) => {
-    console.log(id);
     return db
         .collection(PROJECT)
         .doc(`${id}`)
@@ -120,7 +119,9 @@ export const getLecturerRealtimeStudentInvolvement = ({
         .collection(PROJECT)
         .where('supervisor_id', '==', supervisor_id)
         .onSnapshot(snapshot =>
-            onSnapshot(snapshot.docs.map(doc => doc.data()))
+            onSnapshot(
+                snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            )
         );
 };
 

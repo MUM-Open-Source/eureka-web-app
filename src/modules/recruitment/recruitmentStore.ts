@@ -68,9 +68,10 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
     } as RecruitementStoreState,
     getters: {
         [GET_STUDENT_MY_PROJECTS]: state => {
-            return state.allProjects.filter((p: Project) =>
+            const studentProjects = state.allProjects.filter((p: Project) =>
                 state.userInvolvements.find(findProject(p))
             );
+            return studentProjects;
         },
         [GET_PROJECT_DETAILS]: state => {
             return state.projectDetailsPageData;

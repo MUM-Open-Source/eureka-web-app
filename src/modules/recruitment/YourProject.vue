@@ -1,19 +1,33 @@
 <template>
     <!-- List of projects -->
-    <div class="not-found" v-if="!userProjects || userProjects.length === 0">
+    <div
+        class="not-found"
+        v-if="studentProjects.length === 0 && staffProjects.length === 0"
+    >
         <img class="img" src="@/assets/search-result-not-found.png" />
         <div class="heading">You don't have any projects</div>
         <div class="body">
             {{ isStudent ? 'Find One In All Projects' : 'Create One !' }}
         </div>
     </div>
-    <List
-        v-for="project in userProjects"
-        :key="project.key"
-        :project="project"
-        :project_status="true"
-        :is_details_page="false"
-    />
+    <div v-if="isStudent">
+        <List
+            v-for="project in studentProjects"
+            :key="project.id"
+            :project="project"
+            :project_status="true"
+            :is_details_page="false"
+        />
+    </div>
+    <div v-if="isStaff">
+        <List
+            v-for="project in staffProjects"
+            :key="project.id"
+            :project="project"
+            :project_status="true"
+            :is_details_page="false"
+        />
+    </div>
 </template>
 
 <script>
@@ -43,17 +57,12 @@ export default {
             () =>
                 store.getters[`${RECRUITMENT_STORE}${GET_LECTURER_MY_PROJECTS}`]
         );
-        const userProjects = computed(() => {
-            console.log('this is ran');
-            if (isStudent && isStaff)
-                return staffProjects.value.concat(studentProjects.value);
-            else if (isStudent) return studentProjects;
-            else if (isStaff) return staffProjects;
-        });
 
         return {
-            userProjects,
+            studentProjects,
+            staffProjects,
             isStudent,
+            isStaff,
         };
     },
 };
