@@ -3,7 +3,7 @@ import {
     User,
     Event,
     Feedback,
-    Project,
+    Notification,
 } from '@/types/FirebaseTypes.interface';
 import {
     EventFilter,
@@ -62,4 +62,5 @@ export interface AppState {
         talent: TalentFilter;
         mentors: MentorFilter;
     };
+    notifications: Notification[];
 }

@@ -19,6 +19,7 @@ import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
 import ResearchProjects from '@/views/ResearchProjects.vue';
 import ProjectDetails from '@/views/ProjectDetails.vue';
+import Notifications from '@/views/Notifications.vue';
 
 // all the different paths for the SPA
 const routes: RouteRecordRaw[] = [
@@ -153,6 +154,11 @@ const routes: RouteRecordRaw[] = [
         path: '/project-details/:id',
         name: 'ProjectDetails',
         component: ProjectDetails,
+    },
+    {
+        path: '/notifications',
+        name: 'Notifications',
+        component: Notifications,
         meta: {
             requiresAuth: true,
         },

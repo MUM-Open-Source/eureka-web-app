@@ -8,6 +8,8 @@ export type UserRoles =
     | 'staff'
     | 'public';
 
+export type NotificationCategory = 'wave' | 'project' | 'none';
+
 export interface User {
     background?: string;
     bio?: string;
@@ -57,4 +59,14 @@ export interface Feedback {
     subject: string;
     user_id: string;
     user_name: string;
+}
+
+export interface Notification {
+    id?: string;
+    user_id: string;
+    category: NotificationCategory;
+    title: string;
+    body?: string;
+    read_status: boolean;
+    timestamp: firebase.firestore.FieldValue;
 }

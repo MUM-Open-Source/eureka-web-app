@@ -1,10 +1,13 @@
-import { createStore } from 'vuex';
+import { sendNotification } from './../helpers/notifications';
+import { createStore, Store } from 'vuex';
 import firebase from 'firebase';
 import firebaseApp from 'firebase/app';
 import 'firebase/auth';
 import { db, auth, storage } from '@/firebase';
 import router from '@/router';
 import Swal from 'sweetalert2';
+import { compareDesc } from 'date-fns';
+
 // types
 import { AppState } from '@/types/AppTypes.interface';
 import {
@@ -12,6 +15,7 @@ import {
     Event,
     Feedback,
     UserRoles,
+    Notification,
 } from '@/types/FirebaseTypes.interface';
 //import { RESEARCH_APPLY, RESEARCH_INTEREST } from '@/modules/constants/index';
 // import { getRealtimeStudentInvolvements } from '@/modules/recruitment/recruitmentAPi';
@@ -58,6 +62,7 @@ const getInitState = (): AppState => {
                 full_name: [],
             },
         },
+        notifications: [],
     };
 };
 
@@ -587,7 +592,7 @@ export default createStore({
                 });
         },
 
-        WAVE_AT_USER(_, toUserId: string) {
+        WAVE_AT_USER(state, toUserId: string) {
             // SweetAlert config
             const waveToast = Swal.mixin({
                 toast: true,
@@ -604,6 +609,19 @@ export default createStore({
                 .set({
                     from_user_id: auth.currentUser!.uid,
                     to_user_id: toUserId,
+                })
+                .then(async () => {
+                    const notification: Notification = {
+                        user_id: toUserId,
+                        category: 'wave',
+                        title: 'Someone waved at you',
+                        body:
+                            state.user_data?.first_name +
+                            ' just waved at you. Say hi to them back by giving a friendly wave back!',
+                        read_status: false,
+                        timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+                    };
+                    sendNotification(notification, false);
                 })
                 // Alert with SweetAlert2
                 .then(() => {
@@ -636,6 +654,18 @@ export default createStore({
                 // from_to -> userId_eventId
                 .doc(auth.currentUser!.uid + '_' + toUserId)
                 .delete()
+                .then(() => {
+                    // reflect the changes in the notification document
+                    // db.collection('notifications')
+                    //     .where('user_id', '==', toUserId)
+                    //     .where('from_user_id', '==', auth.currentUser?.uid)
+                    //     .get()
+                    //     .then(querySnapshots => {
+                    //         querySnapshots.forEach(doc => {
+                    //             doc.ref.delete();
+                    //         });
+                    //     });
+                })
                 // Alert with SweetAlert2
                 .then(() => {
                     waveToast.fire({
@@ -830,8 +860,65 @@ export default createStore({
                     console.log('Error getting document:', error);
                 });
         },
-    },
 
+        GET_USER_NOTIFICATIONS(state) {
+            db.collection('notifications')
+                .where('user_id', '==', auth.currentUser?.uid)
+                .onSnapshot(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        // checks if the notification exists in state
+                        if (
+                            state.notifications.some(
+                                notification => notification.id === doc.id
+                            )
+                        ) {
+                            // get index of notification
+                            const objIndex = state.notifications.findIndex(
+                                notification => notification.id == doc.id
+                            );
+                            // update timestamp
+                            (state.notifications[objIndex] as any) = {
+                                ...doc.data(),
+                                timestamp: new Date(
+                                    doc.data().timestamp.seconds * 1000
+                                ),
+                            };
+                        } else {
+                            (state.notifications as any).push({
+                                ...doc.data(),
+                                id: doc.data().id,
+                                timestamp: new Date(
+                                    doc.data().timestamp.seconds * 1000
+                                ),
+                            });
+                        }
+                    });
+                    state.notifications.sort((a: any, b: any) =>
+                        compareDesc(a.timestamp, b.timestamp)
+                    );
+                });
+        },
+
+        READ_ALL_NOTIFICATIONS() {
+            db.collection('notifications')
+                .where('user_id', '==', auth.currentUser?.uid)
+                .where('read_status', '==', false)
+                .get()
+                .then(snapshots => {
+                    snapshots.forEach(doc => {
+                        doc.ref.update({ read_status: true });
+                    });
+                });
+        },
+
+        READ_INDIVIDUAL_NOTIFICATION(_, notiId) {
+            db.collection('notifications')
+                .doc(notiId)
+                .update({
+                    read_status: true,
+                });
+        },
+    },
     // functions to be called throughout the app that, in turn, call mutations
     actions: {
         toggleSideNavState({ commit }) {
@@ -940,6 +1027,18 @@ export default createStore({
 
         getWavesFromOtherUsers({ commit }) {
             commit('GET_WAVES_FROM_OTHER_USERS');
+        },
+
+        getUserNotifications({ commit }) {
+            commit('GET_USER_NOTIFICATIONS');
+        },
+
+        readAllNotifications({ commit }) {
+            commit('READ_ALL_NOTIFICATIONS');
+        },
+
+        readIndividualNotification({ commit }, notiId) {
+            commit('READ_INDIVIDUAL_NOTIFICATION', notiId);
         },
     },
     modules: {

@@ -64,7 +64,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
-@media (max-width: 736px) {
+@media (max-width: $md) {
     .waves-from-users {
         flex-direction: column;
         &__content {

@@ -37,18 +37,29 @@ export default {
         onUpdated(() => {
             if (isNewUserDataAvailable.value) {
                 store.dispatch('fetchCurrentUserFromDB');
+                if (!store.state.notifications.length) {
+                    store.dispatch('getUserNotifications');
+                }
             }
         });
 
         // computed properties
         const isLoggedIn = computed(() => store.state.user !== null);
         // let isNewUserDataAvailable = ref(store.state.is_new_user_data_available);
-        let isNewUserDataAvailable = computed(() => store.state.is_new_user_data_available);
+        let isNewUserDataAvailable = computed(
+            () => store.state.is_new_user_data_available
+        );
 
         const isNewUser = computed(() => store.state.is_new);
         const isLoading = computed(() => store.state.isLoading === true);
-        const isUnderMaintenance = computed(() => store.state.is_under_maintenance === true);
-        const marginLeft = computed(() => (store.state.isSideNavCollapsed ? 'main__width--full' : 'main__width--reduced'));
+        const isUnderMaintenance = computed(
+            () => store.state.is_under_maintenance === true
+        );
+        const marginLeft = computed(() =>
+            store.state.isSideNavCollapsed
+                ? 'main__width--full'
+                : 'main__width--reduced'
+        );
 
         // return everything that needs to be referenced in the template
         return {
@@ -75,7 +86,7 @@ export default {
         margin-left: $side-nav-width;
     }
 }
-@media (max-width: 576px) {
+@media (max-width: $sm) {
     .main__width {
         &--reduced {
             margin-left: 0;
