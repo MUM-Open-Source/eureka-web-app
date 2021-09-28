@@ -21,6 +21,7 @@ body {
     scrollbar-width: none; /* Firefox */
     margin-top: $top-nav-height;
     transition: padding-right 0s; // to avoid the body content jump when displaying SweetAlert
+    max-width: 1440px;
 }
 
 ::-webkit-scrollbar {
