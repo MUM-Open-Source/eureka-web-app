@@ -154,6 +154,9 @@ const routes: RouteRecordRaw[] = [
         path: '/project-details/:id',
         name: 'ProjectDetails',
         component: ProjectDetails,
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: '/notifications',
