@@ -122,6 +122,7 @@ The classes specified here exist at `/src/common/styles/_variables.scss`.
 <div class="color-side-nav-bg">$color-side-nav-bg</div>
 <div class="color-bg-hover">$color-bg-hover</div>
 <div class="color-disabled">$color-disabled</div>
+<div class="color-light-blue">$color-light-blue</div>
 
 #### Examples
 
@@ -220,6 +221,21 @@ $bold: 900;
     }
 }
 </style>
+
+### Static Styles
+
+When styling your Vue components, make sure to use SCSS variables for all static css like the examples below. Static styles include `px`, `em`, `%`, etc.. You get the idea!
+
+::: tip
+You should store your SCSS variables under `/src/common/styles/_variables.scss`.
+:::
+
+```scss
+// My Component
+$my-component-width: 50%;
+$my-component-height: 150px;
+$my-component-top: 0;
+```
 
 ## Typography
 
@@ -606,4 +622,35 @@ Swal.mixin({
     icon: 'success',
     title: 'Action successful',
 });
+```
+
+### Notifications
+
+::: tip FILE LOCATION
+The classes declaration of the helper function here exists at `/src/helpers/`.
+:::
+
+This feature allows the developer to send a user notification using a helper function. Once the notification is sent, the user will receive the message in real-time and have the option to mark the notification as read.
+
+`sendNotification` accepts 2 parameters: notification and email
+
+**Type:** notification - `Notification`, email - `Boolean (False by default)`
+
+By default, sendNotification will only create an in-app notification to the intended receipient. To send an email alongside the notification, set the `email` parameter as `True`
+
+Below is an example of a notification being sent to user `Eureka2020`
+
+```js
+import { sendNotification } from '@/helpers/notifications';
+
+const notification: Notification = {
+    user_id: 'Eureka2020',
+    category: 'wave',
+    title: 'Welcome to Eureka',
+    body: 'We hope you enjoy your time using this platform',
+    read_status: false,
+    timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+};
+
+sendNotification(notification, false);
 ```

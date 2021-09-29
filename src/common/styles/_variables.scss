@@ -10,6 +10,7 @@ $color-white: #ffffff;
 $color-side-nav-bg: #f1f1f1;
 $color-bg-hover: #dddbdb;
 $color-disabled: #f1f1f1;
+$color-light-blue: #e5f4fd;
 
 // behaviour
 $transition-duration: 0.5s;
@@ -30,6 +31,14 @@ $thin: 200;
 $normal: 400;
 $semibold: 600;
 $bold: 900;
+
+// responsive breakpoints
+$xs: 24em; //xs - smaller mobile phone
+$sm: 36em; // sm - mobile phone
+$md: 48em; // md - tablets
+$lg: 62em; // lg - desktop-screen/laptop
+$xl: 80em; // xl - very large screen
+$dxl: 96em; // dxl - doubly very large screen
 
 /********** COMPONENTS **********/
 $app-border-radius: 18px;
@@ -60,6 +69,10 @@ $top-nav-icon-width: 25px;
 $top-nav-img-height: math.div($top-nav-height, 1.5);
 $top-nav-elem-margin: 20px;
 $top-nav-bell-margin: 10px;
+$top-nav-badge-pos: 5%;
+$top-nav-badge-width: 10px;
+$top-nav-badge-height: 10px;
+$top-nav-badge-border-radius: 50%;
 
 // profile card
 $profile-card-width: 280px;
@@ -121,7 +134,7 @@ $multiselect-width: 460px;
 $multiselect-width-sm: 320px;
 
 // user menu
-$user-menu-top: 105%;
+$user-menu-top: 75px;
 $user-menu-right: 25px;
 $user-menu-icon-width: 25px;
 $user-menu-icon-margin-right: 10px;
@@ -166,17 +179,21 @@ $tag-input-text-line-height: 50px;
 // Star Rating Icon
 $star-rating-icon-padding: 5px;
 
-// breakpoints
+// NotificationsModal
+$modal-z-index: 50;
+$modal-max-width: 80%;
+$modal-height: 450px;
+$modal-height-sm: 400px;
+$modal-width: 300px;
 
-//xs - smaller mobile phone
-// sm - mobile phone
-// md - tablets
-// lg - desktop-screen/laptop
-// xl - very large screen
-// dxl - doubly very large screen
-$xs: 24em;
-$sm: 36em;
-$md: 48em;
-$lg: 62em;
-$xl: 80em;
-$dxl: 96em;
+// Notifications Item
+$long-noti-style-mar-b: 10px;
+$long-noti-style-pad: 25px;
+$noti-item-icon-width: 40px;
+$noti-item-icon-height: 40px;
+$noti-item-icon-border-radius: 40px;
+$noti-item-badge-right: 0%;
+$noti-item-badge-top: 5%;
+$noti-item-badge-width: 10px;
+$noti-item-badge-height: 10px;
+$noti-item-badge-border-radius: 50%;
