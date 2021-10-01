@@ -4,6 +4,12 @@
 // padding for pages
 .page-pad {
     padding: $spacer * 5;
+
+    // try this
+    // if it is a smaller device then the page pad will be smaller value
+    @media (max-width: $sm) {
+        padding: $spacer * 2;
+    }
 }
 
 // Margins

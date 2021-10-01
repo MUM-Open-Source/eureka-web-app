@@ -237,6 +237,33 @@ $my-component-height: 150px;
 $my-component-top: 0;
 ```
 
+### Breakpoints
+
+Eureka introduced breakpoints which can be used in media queries, this will standardize the size with a pre-defined `em` value. By defining it with `em`, it ensures our design to scale proportionally without enabling awkward scroll bars in the web app when user wants to zoom in/out.
+
+::: tip Note
+The breakpoints can be revised in the future as it requires further consideration on factors such as the platform Eureka is mainly used (web vs mobile).
+:::
+
+```scss
+$xs: 24em; //xs - smaller mobile phone
+$sm: 36em; // sm - mobile phone
+$md: 48em; // md - tablets
+$lg: 62em; // lg - desktop-screen/laptop
+$xl: 80em; // xl - very large screen
+$dxl: 96em; // dxl - doubly very large screen
+```
+
+#### Example
+
+```scss
+@media (max-width: $sm) {
+    #the-component {
+        display: none;
+    }
+}
+```
+
 ## Typography
 
 Eureka sets some basic global typography styles. Whether you're creating a heading or simply a paragraph, make sure you use the css classes covered here before using custom styles.
@@ -414,6 +441,24 @@ If you don't specify a multipler, a small spacing of 5px will be the default val
     background-color: #FFF;
 }
 </style>
+
+### Wrappers
+
+Wrapper class is introduced to solve the issue with awkward looking component on extremely large-scale display. By setting a max-width, it ensures that the content does not try to take up the entire width on very large screens.
+
+::: tip Tip
+Wrapper class can be found at `/src/common/styles/global.scss`
+:::
+
+#### Example
+
+```md
+<div class="wrapper">
+    <div>
+    ...
+    </div>
+</div>
+```
 
 ## Icons
 
