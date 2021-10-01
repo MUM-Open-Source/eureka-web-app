@@ -221,6 +221,31 @@ $bold: 900;
 }
 </style>
 
+### Breakpoints
+
+Eureka introduced breakpoints which can be used in media queries, this will standardize the size with specific EMs. By defining it with EMs, this ensures our design to scale proportionally without enabling awkward scroll bars in the web app when user wants to zoom in/out.
+
+::: tip Note
+This can be further improved in the values standardize, as it requires further consideration on which platform Eureka is mainly used.
+:::
+
+```scss
+// breakpoints
+
+//xs - smaller mobile phone
+// sm - mobile phone
+// md - tablets
+// lg - desktop-screen/laptop
+// xl - very large screen
+// dxl - doubly very large screen
+$xs: 24em;
+$sm: 36em;
+$md: 48em;
+$lg: 62em;
+$xl: 80em;
+$dxl: 96em;
+```
+
 ## Typography
 
 Eureka sets some basic global typography styles. Whether you're creating a heading or simply a paragraph, make sure you use the css classes covered here before using custom styles.
@@ -398,6 +423,24 @@ If you don't specify a multipler, a small spacing of 5px will be the default val
     background-color: #FFF;
 }
 </style>
+
+### Wrappers
+
+Wrapper class is introduced to solve the issue with awkward looking component on extremely large-scale display. This ensures that certain part of the web app is scaled to response automatically while the others stay the same.
+
+::: tip Tip
+Wrapper class can be found at `/src/common/styles/global.scss`
+:::
+
+```scss
+// wrapper class - (code to ensure component looks fine on large-scale display)
+.wrapper {
+    //to avoid top and bottom to be override
+    margin-left: auto;
+    margin-right: auto;
+    max-width: $wrapper-max-width;
+}
+```
 
 ## Icons
 
