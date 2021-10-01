@@ -1,5 +1,5 @@
 <template>
-    <div class="find-talent page-pad">
+    <div class="find-talent page-pad wrapper">
         <!-- Filter passing data -->
         <Filter :filterOptions="filterOptions" @update-filter="updateFilter" />
         <div class="find-talent__content">
