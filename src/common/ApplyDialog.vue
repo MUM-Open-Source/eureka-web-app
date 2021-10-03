@@ -11,7 +11,12 @@
             Please compress your file into a single folder if you need to submit
             multiple files.
         </div>
-
+        <div
+            class="mar__t--2 text--primary tagline--bold"
+            v-if="state.uploading"
+        >
+            Uploading Your File ....
+        </div>
         <div
             class="mar__b--2 mar__t--2"
             style="
@@ -58,6 +63,7 @@
         <Button
             text="Submit"
             type="submit"
+            :disabled="state.uploading"
             class="modal__button--submit"
             @click.prevent="submitFiles"
         />
@@ -92,6 +98,7 @@ export default defineComponent({
     setup(props, context) {
         const state = reactive({
             files: [],
+            uploading: false,
         });
 
         const filePreview = (e: any) => {
@@ -105,6 +112,7 @@ export default defineComponent({
 
         const submitFiles = () => {
             const { user_id, research_id, user_name } = props.involvement;
+            state.uploading = true;
             studentUploadDocuments({
                 user_id,
                 user_name,
@@ -115,6 +123,7 @@ export default defineComponent({
                     file: file as any,
                 })),
             }).then(() => {
+                state.uploading = false;
                 context.emit('close');
                 Swal.fire({
                     icon: 'success',
