@@ -10,6 +10,7 @@
                 v-for="(question, index) in ratingQuestions"
                 :key="index"
                 :question="question"
+                :index="index"
                 @question-rating="handleRatingClick"
                 class="mar__b--3"
             />
@@ -65,6 +66,8 @@ export default defineComponent({
         },
     },
     setup(props) {
+
+        
         const ratingQuestions = [
             `How would you rate the overall performance of ${props.to_id}?`,
             `How well is ${props.to_id} able to collaborate and cooperate with the other teammates?`,
@@ -89,7 +92,7 @@ export default defineComponent({
         }
 
         function handlePeerReviewClick() {
-            const allMandatoryRatingsFilled = function() {
+            const allMandatoryRatingsFilled = () => {
                 for (let i = 0; i < inputRatings.length; i++) {
                     if (!Number.isInteger(inputRatings[i])) {
                         return false;
@@ -98,7 +101,7 @@ export default defineComponent({
                 return true;
             };
 
-            const allMandatoryFieldsFilled = function() {
+            const allMandatoryFieldsFilled = () => {
                 for (let i = 0; i < inputText.length; i++) {
                     if (
                         inputText[i] == undefined ||
@@ -133,7 +136,9 @@ export default defineComponent({
                 const peerReview = {
                     // To be changed
                     team_id: props.team_id,
+                    team_name: props.teamName,
                     to_id: props.to_id,
+                    to_name: props.to_id,
                     rating_count: ratingQuestions.length,
                     text_count: textQuestions.length,
                     rating_sum: totalRating(),

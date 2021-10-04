@@ -15,11 +15,11 @@ import StarRating from '@/common/StarRating.vue';
 export default defineComponent({
     name: 'QuestionCard',
     components: { StarRating },
-    props: ['questionNumber', 'question'],
+    props: ['index', 'question'],
     emits: ['question-rating'],
     setup(props, { emit }) {
         function onClickChild(value: number) {
-            emit('question-rating', props.questionNumber - 1, value);
+            emit('question-rating', props.index, value);
         }
 
         return {

@@ -832,6 +832,7 @@ export default createStore({
         NEW_PEER_REVIEW(state, peerReview: PeerReview) {
             peerReview.date_created = firebaseApp.firestore.FieldValue.serverTimestamp();
             peerReview.from_id = auth.currentUser!.uid;
+            peerReview.from_name = auth.currentUser!.displayName!
 
             const newPeerReviewRef = db.collection('peer_review').doc();
 
@@ -868,8 +869,11 @@ export default createStore({
                     querySnapshot.forEach(doc => {
                         const peerReview: PeerReview = {
                             team_id: doc.data().team_id,
+                            team_name: doc.data().team_name,
                             from_id: doc.data().from_id,
+                            from_name: doc.data().from_name,
                             to_id: doc.data().to_id,
+                            to_name: doc.data().to_name,
                             date_created: doc.data().date_created,
                             rating_count: doc.data().rating_count,
                             text_count: doc.data().text_count,
