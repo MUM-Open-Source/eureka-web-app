@@ -17,6 +17,9 @@ import {
     UserRoles,
     Notification,
 } from '@/types/FirebaseTypes.interface';
+//import { RESEARCH_APPLY, RESEARCH_INTEREST } from '@/modules/constants/index';
+// import { getRealtimeStudentInvolvements } from '@/modules/recruitment/recruitmentAPi';
+import { recruitementStore } from '@/modules/recruitment/recruitmentStore';
 
 const getInitState = (): AppState => {
     return {
@@ -31,11 +34,14 @@ const getInitState = (): AppState => {
         new_img_url: '',
         is_new: false, // used to ensure all mandatory details are filled after signup
         events: [],
+        dialog: [],
         talent: [],
         mentors: [],
+        upload_files: { url: '', fileName: '' },
         feedback: [],
         liked_events: [], // list of events liked by the user
         user_waves: [], // list of users waved at by the auth user
+        process_status: false,
         waves_from_other_users: [], // list of user ids who waved at the auth user
         filters: {
             event: {
@@ -63,13 +69,11 @@ const getInitState = (): AppState => {
 export default createStore({
     // application-level data
     state: getInitState(),
-
     // functions that affect the state
     mutations: {
         SET_IS_SIDE_NAV_COLLAPSED(state) {
             state.isSideNavCollapsed = !state.isSideNavCollapsed;
         },
-
         SET_AUTH_USER(state) {
             state.isLoading = true;
             // listening for changes to user auth
@@ -313,7 +317,6 @@ export default createStore({
                     if (index >= 0) state.events.splice(index, 1);
                 });
         },
-
         GET_LIKED_EVENTS(state) {
             db.collection('event_likes')
                 .where('user_id', '==', auth.currentUser!.uid)
@@ -726,20 +729,6 @@ export default createStore({
         },
 
         UPDATE_USER_PROFILE(state, user: User) {
-            // old code
-            // const updatedAttributes = {
-            //     background: user.background,
-            //     bio: user.bio,
-            //     interests: user.interests,
-            //     experience_level: parseInt(user.experience_level),
-            //     social_links: {
-            //         ...state.user_data.social_links,
-            //         github_url: user.github_url,
-            //         linkedin_url: user.linkedin_url,
-            //         website_url: user.website_url,
-            //     }
-            // }
-
             // updating user profile
             db.collection('users')
                 .doc(auth.currentUser!.uid)
@@ -829,6 +818,30 @@ export default createStore({
             task.then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
                 state.upload_image = { url: url, fileName: file.fileName };
             });
+        },
+
+        UPLOAD_FILES(state, files) {
+            state.process_status = false;
+            for (let i = 0; i < files.length; i++) {
+                console.log(files[i].fileName);
+                const task = storage
+                    .ref()
+                    .child(
+                        'documents/' +
+                            auth.currentUser!.uid +
+                            '/' +
+                            files[i].fileName
+                    )
+                    .put(files[i].file, files[i].metadata);
+                task.then(snapshot => snapshot.ref.getDownloadURL()).then(
+                    url =>
+                        (state.upload_files = {
+                            url: url,
+                            fileName: files[i].fileName,
+                        })
+                );
+            }
+            state.process_status = true;
         },
 
         GET_WAVES_FROM_OTHER_USERS(state) {
@@ -982,6 +995,10 @@ export default createStore({
             commit('SET_USER_IMAGE_URL');
         },
 
+        uploadFiles({ commit }, files) {
+            commit('UPLOAD_FILES', files);
+        },
+
         setDefaultUserImage({ commit }) {
             commit('SET_DEFAULT_USER_IMAGE');
         },
@@ -1023,5 +1040,8 @@ export default createStore({
         readIndividualNotification({ commit }, notiId) {
             commit('READ_INDIVIDUAL_NOTIFICATION', notiId);
         },
+    },
+    modules: {
+        recruitementStore,
     },
 });

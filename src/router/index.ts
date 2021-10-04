@@ -17,6 +17,8 @@ import CropImage from '@/views/CropImage.vue';
 import ResetPassword from '@/views/ResetPassword.vue';
 import Terms from '@/views/Terms.vue';
 import Privacy from '@/views/Privacy.vue';
+import ResearchProjects from '@/views/ResearchProjects.vue';
+import ProjectDetails from '@/views/ProjectDetails.vue';
 import Notifications from '@/views/Notifications.vue';
 
 // all the different paths for the SPA
@@ -139,6 +141,22 @@ const routes: RouteRecordRaw[] = [
         path: '/privacy-policy',
         name: 'Privacy',
         component: Privacy,
+    },
+    {
+        path: '/research-projects',
+        name: 'ResearchProjects',
+        component: ResearchProjects,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/project-details/:id',
+        name: 'ProjectDetails',
+        component: ProjectDetails,
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: '/notifications',

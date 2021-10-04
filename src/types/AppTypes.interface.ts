@@ -22,6 +22,20 @@ export interface ImageToUpload {
     fileName: string;
 }
 
+export interface FileUpload {
+    url: string;
+    fileName: string;
+}
+
+export interface ResearchInvolvement {
+    research_id: string;
+    status_code: number;
+    updateLog: number[];
+    user_email: string;
+    user_id: string;
+    user_name: string;
+}
+
 export interface AppState {
     user: firebase.User | null;
     isSideNavCollapsed: boolean;
@@ -33,12 +47,15 @@ export interface AppState {
     upload_image: ImageToUpload;
     new_img_url: string;
     is_new: boolean;
+    dialog: string[];
     events: Event[];
     talent: User[];
     mentors: User[];
+    upload_files: FileUpload;
     feedback: Feedback[];
     liked_events: string[];
     user_waves: string[];
+    process_status: boolean;
     waves_from_other_users: string[];
     filters: {
         event: EventFilter;

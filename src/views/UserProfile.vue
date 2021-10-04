@@ -1,26 +1,6 @@
 <template>
     <div class="user-profile page-pad">
         <div class="profile__page">
-            <!-- <div class="profile__menu mar__b--3">
-            <router-link :to="{ name: 'Profile'}">
-                <div class="active profile__menu--option pad__t--1 pad__b--1">
-                    <img class="profile__menu--icon" src="@/assets/profile-user-icon.svg" />
-                    <div class="body">User info</div>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'WavesFromTalent'}">
-                <div class="profile__menu--option pad__t--1 pad__b--1">
-                    <img class="profile__menu--icon" src="@/assets/profile-talent-icon.svg" />
-                    <div class="body">Waves from talent</div>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'WavesFromMentors'}">
-                <div class="profile__menu--option pad__t--1 pad__b--1">
-                    <img class="profile__menu--icon" src="@/assets/profile-mentor-icon.svg" />
-                    <div class="body">Waves from mentors</div>
-                </div>
-            </router-link>
-        </div> -->
             <div class="heading mar__b--3 text--center">User Profile</div>
             <div class="profile__content">
                 <div class="profile__img text--center pad--4">
@@ -466,25 +446,21 @@ export default {
 
         const isInputValid = () => {
             const { github_url, linkedin_url, website_url } = inputValues;
-
             if (
                 github_url.length > 0 &&
                 !/^(https:\/\/)(www\.?)?github\.com\//.test(github_url)
             ) {
                 return false;
             }
-
             if (
                 linkedin_url.length > 0 &&
                 !/^(https:\/\/)(www\.?)?linkedin\.com\/in\//.test(linkedin_url)
             ) {
                 return false;
             }
-
             if (website_url.length > 0 && !/^(https?:\/\/)/.test(website_url)) {
                 return false;
             }
-
             return true;
         };
 
@@ -528,6 +504,7 @@ export default {
                 store.dispatch('updateUserProfile', updatedValues);
                 state.hasUnsavedChanges = false;
             }
+
         }
 
         return {
@@ -547,7 +524,7 @@ export default {
             setDefaultImage,
             hasDefaultImage,
         };
-    },
+    }
 };
 </script>
 
@@ -619,9 +596,9 @@ export default {
         &--icon {
             height: 20px;
         }
-        .active {
-            //border-right: 3px solid $color-brand;
-        }
+        // .active {
+        //     //border-right: 3px solid $color-brand;
+        // }
     }
     &__img {
         display: flex;
