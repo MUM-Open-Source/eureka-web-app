@@ -80,7 +80,7 @@ export const recruitementStore: Module<RecruitementStoreState, AppState> = {
             return rootState.user_data?.roles.includes('staff');
         },
         [GET_IS_STUDENT]: (__, _, rootState) => {
-            return rootState.user_data?.roles.includes('talent');
+            return rootState.user_data?.roles.includes('student');
         },
         [GET_LECTURER_MY_PROJECTS]: state => {
             console.log(state.supervisorResearch);

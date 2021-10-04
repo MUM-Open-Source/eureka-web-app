@@ -48,6 +48,13 @@
                         : project.overview
                 }}
             </div>
+            <div class="user__card--button">
+                <Button
+                text="EOI Form (Compulsory)"
+                @click="downloadEoiForm"
+                v-if="state.involvement == 1"
+                />
+            </div>
         </div>
 
         <IconButton @click="expressInterest" v-if="displayInterestIcon()">
@@ -171,7 +178,7 @@ import {
 import {
     studentInterested,
     deleteProject,
-    updateProject
+    updateProject,
 } from '@/modules/recruitment/recruitmentAPi';
 import Swal from 'sweetalert2';
 
@@ -346,6 +353,15 @@ export default defineComponent({
             }
         };
 
+        const downloadEoiForm = () => {
+            var link = document.createElement('a');
+            link.download = "https://firebasestorage.googleapis.com/v0/b/eureka-development-5ff24.appspot.com/o/fit-expression-of-interest-form-Jan-2018.docx?alt=media&token=f4b55da5-32cc-42b1-9084-6eb02f534501"
+            link.target = "_blank";
+            link.href = "https://firebasestorage.googleapis.com/v0/b/eureka-development-5ff24.appspot.com/o/fit-expression-of-interest-form-Jan-2018.docx?alt=media&token=f4b55da5-32cc-42b1-9084-6eb02f534501"
+            document.body.appendChild(link);
+            link.click();
+        }
+
         return {
             state,
             showModal,
@@ -359,6 +375,7 @@ export default defineComponent({
             displayApplyButton,
             removeProject,
             displayDeleteAndEditIcon,
+            downloadEoiForm,
             ...props,
         };
     },
@@ -419,6 +436,9 @@ export default defineComponent({
     }
     &--textarea {
         height: 100px;
+    }
+    &--button {
+        padding-top: 10px;
     }
 }
 
