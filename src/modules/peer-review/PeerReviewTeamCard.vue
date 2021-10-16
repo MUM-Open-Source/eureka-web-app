@@ -12,7 +12,7 @@
                 <Button text="Enter Team" @click="handleEnterTeam" />
             </div>
             <div class="tagline user__card--actions mar__t--1" v-else>
-                <Button class="user__card--buttonOff" text="Enter Team" />
+                <Button class="user__card--buttonOff cursor__default" text="Enter Team" />
             </div>
         </div>
         <!-- Action items -->
@@ -68,11 +68,6 @@ export default defineComponent({
 .user__card {
     @include shadow--small;
     border-radius: $app-border-radius-sm;
-    &--name {
-        margin-right: 15px;
-        margin-top: auto;
-        margin-bottom: auto;
-    }
     &--row {
         display: flex;
         justify-content: space-between;
@@ -84,9 +79,6 @@ export default defineComponent({
     }
     &--buttonOff {
         opacity: 30%;
-        &:hover {
-            cursor: default;
-        }
     }
 }
 </style>

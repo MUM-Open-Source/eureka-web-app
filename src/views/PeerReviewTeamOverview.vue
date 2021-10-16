@@ -2,15 +2,15 @@
     <div class="page-pad">
         <div class="peer-review-team-overview-content text--center">
             <router-link :to="{ name: 'PeerReviewTeamList' }">
-                <button class="back-button">
+                <button class="back-button cursor__pointer">
                     <fa icon="angle-double-left" size="lg" />
                 </button>
             </router-link>
 
-            <div class="heading peer-review-team-overview-content__title">
+            <div class="heading mar__b--1">
                 {{ teamName }}
             </div>
-            <div class="peer-review-team-overview-content__usercard">
+            <div class="peer-review-team-overview-content__usercard pad--3">
                 <PeerReviewUserCard
                     class="mar__b--2 card"
                     v-for="i in [1, 2, 3, 4, 5]"
@@ -61,16 +61,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .peer-review-team-overview-content {
-    margin-left: auto;
-    margin-right: auto;
-
-    &__title {
-        margin-bottom: 15px;
-        font-size: 36px;
-    }
-
     &__usercard {
-        padding: 35px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -78,14 +69,9 @@ export default defineComponent({
     }
 }
 
-.back-icon {
-    font-size: 36px;
-}
-
 button {
     &:hover {
         transform: scale(1.2);
-        cursor: pointer;
     }
 }
 

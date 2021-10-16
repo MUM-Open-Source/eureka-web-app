@@ -196,24 +196,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-// .back-icon {
-//     font-size: 36px;
-// }
 
-// .back-button {
-//     @include gradientAnimation($color-brand, $color-brand-alt);
-//     @include shadow;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     color: $color-white;
-//     border: none;
-//     height: 50px;
-//     width: 50px;
-//     border-radius: 50%;
-//     z-index: 0;
-//     &:focus {
-//         outline: 0;
-//     }
-// }
 </style>

@@ -1,11 +1,11 @@
 <template>
     <div class="page-pad">
-        <div class="PR-current-team-overview-content text--center">
-            <button class="back-button" @click="handleBackButton">
+        <div class="text--center">
+            <button class="back-button cursor__pointer" @click="handleBackButton">
                 <fa icon="angle-double-left" size="lg" />
             </button>
 
-            <div class="heading PR-current-team-overview-content__title">Joined Team</div>
+            <div class="heading mar__b--3">Joined Team</div>
             <PeerReviewTeamCard
                 class="mar__b--2"
                 v-for="i in [1, 2, 3, 4, 5]"
@@ -38,24 +38,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.PR-current-team-overview-content {
-    margin-left: auto;
-    margin-right: auto;
-
-    &__title {
-        margin-bottom: 50px;
-        font-size: 36px;
-    }
-}
-
-.back-icon {
-    font-size: 36px;
-}
-
 button {
     &:hover {
         transform: scale(1.2);
-        cursor: pointer;
     }
 }
 
