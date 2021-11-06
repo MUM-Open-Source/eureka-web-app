@@ -51,11 +51,11 @@ export default {
 
 <style lang="scss" scoped>
 .group-menu {
-    border: 1px solid;
+    border: $message-group-menu-border-radius solid;
     background-color: $color-white;
-    width: 120px;
+    width: $message-group-menu-width;
     position: absolute;
-    margin-left: -100px;
+    margin-left: $message-group-menu-margin-left;
     &__item {
         display: flex;
         align-items: center;

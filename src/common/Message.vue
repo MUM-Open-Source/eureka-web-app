@@ -1,19 +1,19 @@
 <template>
     <div class="container">
         <div class="message-date-container">
-            <span class="message-date" v-if="!isDateSame">{{ date }}</span>
+            <div class="message-date" v-if="!isDateSame">{{ date }}</div>
         </div>
         <div v-if="sender_id !== user_id" class="message_receiver">
-            <span
+            <div
                 v-if="sender_id !== user_id"
                 class="message_receiver__texter_name"
             >
                 {{ sender_full_name }}
-            </span>
+            </div>
             <div class="message_receiver__text-container">
-                <p class="message-text">
+                <div class="message-text">
                     {{ text }}
-                </p>
+                </div>
                 <br />
                 <div class="message-time">
                     {{ time }}
@@ -23,9 +23,9 @@
 
         <div v-else class="message_sender">
             <div class="message_sender__text-container">
-                <p class="message-text">
+                <div class="message-text">
                     {{ text }}
-                </p>
+                </div>
                 <br />
                 <div class="message-time">
                     {{ time }}
@@ -118,11 +118,11 @@ export default defineComponent({
         text-align: center;
     }
     .message_receiver {
-        width: 100%;
-        margin-top: 20px;
+        width: $message-width;
+        margin-top: $message-margin-top;
         overflow: auto;
         &__texter_name {
-            font-size: 15px;
+            font-size: $message-receiver-name-font-size;
             display: block;
         }
         &__text-container {
@@ -130,12 +130,12 @@ export default defineComponent({
             background-color: $color-purple-chat;
             color: $color-white;
             width: fit-content;
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: $message-box-border-radius;
+            padding: $message-box-padding;
             -webkit-box-shadow: 0px 5px 8px 5px rgba(0, 0, 0, 0.03);
             box-shadow: 0px 5px 8px 5px rgba(0, 0, 0, 0.03);
-            font-size: 17px;
-            margin-right: 100px;
+            font-size: $message-box-font-size;
+            margin-right: $message-box-margin;
         }
     }
 
@@ -144,24 +144,24 @@ export default defineComponent({
         background-color: $color-light-grey-chat;
         color: $color-dark;
         width: fit-content;
-        border-radius: 10px;
-        padding: 10px;
+        border-radius: $message-box-border-radius;
+        padding: $message-box-padding;
         -webkit-box-shadow: 0px 5px 8px 5px rgba(0, 0, 0, 0.03);
         box-shadow: 0px 5px 8px 5px rgba(0, 0, 0, 0.03);
-        font-size: 17px;
-        margin-left: 100px;
+        font-size: $message-box-font-size;
+        margin-left: $message-box-margin;
     }
 
     .message_sender {
-        width: 100%;
-        margin-top: 20px;
+        width: $message-width;
+        margin-top: $message-margin-top;
         overflow: auto;
         display: inline-block;
     }
     .message-time {
         float: right;
-        font-size: 12px;
-        margin-left: 50px;
+        font-size: $message-time-font-size;
+        margin-left: $message-time-margin-left;
     }
 }
 </style>

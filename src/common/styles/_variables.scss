@@ -178,3 +178,37 @@ $color-purple-chat: #7069e7;
 $chat-list-color: #f4f6fa;
 $selected-group-color: rgb(230, 230, 230);
 $messagebox-margin-top: 100px;
+$message-width: 100%;
+$message-margin-top: 20px;
+$message-receiver-name-font-size: 15px;
+$message-box-border-radius: 10px;
+$message-box-padding: 10px;
+$message-box-font-size: 17px;
+$message-box-margin: 100px;
+$message-time-font-size: 12px;
+$message-time-margin-left: 50px;
+
+//Message Group Component
+$message-group-width: 100%;
+$message-group-padding: 20px;
+$message-group-profile-img-width: 80px;
+$message-group-profile-img-border-radius: 50%;
+$message-group-contact-name-font-size: 20px;
+$message-group-contact-name-padding: 30px;
+$message-group-contact-name-margin-top: 200px;
+$message-group-recent-message-padding: 5px 30px;
+$message-group-message-time-font-size: 11px;
+$message-group-message-time-padding: 30px;
+$message-group-message-time-padding: 30px;
+$message-group-menu-border-radius: 1px;
+$message-group-menu-width: 120px;
+$message-group-menu-margin-left: -100px;
+
+//Chat room
+$chat-room-side-bar-width: 100%;
+$chat-room-side-bar-height: 100%;
+$chat-room-side-bar-header-font-size: 30px;
+$chat-room-side-bar-create-group-btn-margin: 10px;
+$chat-room-side-bar-font-size: 15px;
+$chat-room-side-bar-padding: 10px;
+$chat-room-side-bar-search-field-mobile-width: 80px;

@@ -68,8 +68,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .container {
     display: inline-block;
-    width: 100%;
-    padding: 20px;
+    width: $message-group-width;
+    padding: $message-group-padding;
     &:hover:not(.active) {
         background-color: $color-bg-hover;
     }
@@ -80,25 +80,25 @@ export default defineComponent({
     }
 
     .contact_profile_img {
-        width: 80px;
-        border-radius: 50%;
+        width: $message-group-profile-img-width;
+        border-radius: $message-group-profile-img-border-radius;
     }
 
     .contact_name {
-        font-size: 20px;
+        font-size: $message-group-contact-name-font-size;
         color: $color-dark;
-        padding: 30px;
-        margin-top: 200px;
+        padding: $message-group-contact-name-padding;
+        margin-top: $message-group-contact-name-margin-top;
     }
 
     .recent-message {
         display: block;
-        padding: 5px 30px;
+        padding: $message-group-recent-message-padding;
     }
 
     .last-update-time {
-        font-size: 11px;
-        padding: 30px;
+        font-size: $message-group-message-time-font-size;
+        padding: $message-group-message-time-padding;
     }
 }
 </style>

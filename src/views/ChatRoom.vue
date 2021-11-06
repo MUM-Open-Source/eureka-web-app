@@ -34,9 +34,7 @@
                             getRecentMessage(group, group.recent_message)
                         "
                         :key="group.key"
-                        @click="
-                            updateGroupId(group.id, group.name, group.is_team)
-                        "
+                        @click="updateGroupId(group)"
                     />
                 </div>
             </div>
@@ -111,22 +109,16 @@ export default {
             users: [], // The creator must be one of the member inside the group
         });
 
-        const updateGroupId = (group_id, group_name, group_is_team) => {
-            if (currentGroupId.value !== group_id) {
+        const updateGroupId = group => {
+            if (currentGroupId.value !== group.id) {
                 //clear the messages in the state
                 store.state.messages = [];
                 //increment the key to rerender the messaging component
                 chat_group_info.msgKey += 1;
-                store.dispatch('setMessagingComponentRender', true);
 
-                //update the group id when clicking groups
-                store.dispatch('setMessagingComponentGroupId', group_id);
-                // update the group name;
-                store.dispatch('setMessagingComponentGroupName', group_name);
-                // update group is_team status
-                store.dispatch('setMessagingComponentIsTeam', group_is_team);
-                // shows which group is actively selected now
-                store.dispatch('setMessagingComponentActiveGroupId', group_id);
+                // Fetch group content to messaging component
+                store.dispatch('setMessagingComponent', group);
+
                 //Hide Chat Side Bar
                 isMessageComponentShow();
             }
@@ -277,28 +269,26 @@ export default {
 // }
 
 .side_bar {
-    margin: 0;
-    padding: 0;
-    width: 100%;
+    width: $chat-room-side-bar-width;
     background-color: $chat-list-color;
     position: fixed;
     overflow: scroll;
-    height: 100%;
+    height: $chat-room-side-bar-height;
     z-index: 1;
     &__header {
-        font-size: 30px;
+        font-size: $chat-room-side-bar-header-font-size;
         h3 {
             float: left;
         }
         .create-group-btn {
-            margin: 10px;
-            font-size: 15px;
+            margin: $chat-room-side-bar-create-group-btn-margin;
+            font-size: $chat-room-side-bar-font-size;
         }
         .chat-list-toggle {
             float: right;
-            font-size: 15px;
+            font-size: $chat-room-side-bar-font-size;
             text-decoration: underline;
-            padding: 10px;
+            padding: $chat-room-side-bar-padding;
         }
 
         .multselect {
@@ -318,10 +308,10 @@ export default {
 
 @media screen and (max-width: 700px) {
     .side_bar {
-        width: 100%;
+        width: $chat-room-side-bar-width;
         z-index: 1;
         .chat-search-field {
-            width: 80px;
+            width: $chat-room-side-bar-search-field-mobile-width;
         }
 
         .chat-list-toggle {

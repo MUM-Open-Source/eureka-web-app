@@ -1062,25 +1062,12 @@ export default createStore({
                     }
                 });
         },
-
-        SET_MESSAGING_COMPO_RENDER(state, boo) {
-            state.messagingComponent.render = boo;
-        },
-
-        SET_MESSAGING_COMPO_GROUP_ID(state, group_id) {
-            state.messagingComponent.group_id = group_id;
-        },
-
-        SET_MESSAGING_COMPO_GROUP_NAME(state, group_name) {
-            state.messagingComponent.group_name = group_name;
-        },
-
-        SET_MESSAGING_COMPO_ACTIVE_GROUP_ID(state, group_id) {
-            state.messagingComponent.active_group_id = group_id;
-        },
-
-        SET_MESSAGING_COMPO_IS_TEAM(state, group_is_team) {
-            state.messagingComponent.is_team = group_is_team;
+        SET_MESSAGING_COMPONENT(state, group) {
+            state.messagingComponent.render = true;
+            state.messagingComponent.group_id = group.id;
+            state.messagingComponent.active_group_id = group.id;
+            state.messagingComponent.group_name = group.name;
+            state.messagingComponent.is_team = group.is_team;
         },
     },
 
@@ -1213,24 +1200,8 @@ export default createStore({
             commit('GET_GROUP_MEMBERS', group_id);
         },
 
-        setMessagingComponentRender({ commit }, boo: boolean) {
-            commit('SET_MESSAGING_COMPO_RENDER', boo);
-        },
-
-        setMessagingComponentGroupId({ commit }, group_id: string) {
-            commit('SET_MESSAGING_COMPO_GROUP_ID', group_id);
-        },
-
-        setMessagingComponentGroupName({ commit }, group_name: string) {
-            commit('SET_MESSAGING_COMPO_GROUP_NAME', group_name);
-        },
-
-        setMessagingComponentActiveGroupId({ commit }, group_id: string) {
-            commit('SET_MESSAGING_COMPO_ACTIVE_GROUP_ID', group_id);
-        },
-
-        setMessagingComponentIsTeam({ commit }, group_is_team: boolean) {
-            commit('SET_MESSAGING_COMPO_IS_TEAM', group_is_team);
+        setMessagingComponent({ commit }, group: Group) {
+            commit('SET_MESSAGING_COMPONENT', group);
         },
     },
 });
